@@ -1,0 +1,81 @@
+{% extends "cdadsurvey/base.html" %}
+{% load staticfiles %}
+{% load bootstrap_tags %}
+
+{% block content %}
+    <div class="container">
+    	<div class="row">
+			<div class="col-md-6">
+				<h3>Log In</h3>
+				<form method="post" action=".">
+				  {% csrf_token %} 
+				  {{ form|as_bootstrap }}
+				  <input type="submit" class="btn btn-default" value="Log in" />
+				  <input type="hidden" name="next" value="{{ next }}" />
+				</form>
+				<br />
+				<p>Forgot your password? <a href="{% url 'auth_password_reset' %}">Reset it here.</a></p>
+				<p>Not registered? <a href="{% url 'registration_register' %}">Register here!</a></p>
+			</div>
+		</div>
+    </div> <!-- /container -->
+{% endblock %}
+
+
+{% block modal_block %}
+<!-- ajax loading page modal -->
+<div class="modal fade" id="introductionLogin" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body modalContent">
+      	<h3 class="text-center text-uppercase">Thank you for participating<br />in d[COM]nunity</h3>
+      	<p class="text-justify">
+	      	Thank you for participating in d[COM]munity by completing this survey. Your responses are important in helping build a greater understanding of where Detroit's community organizations are located, their activities, and services. Your participation will (literally) put your organization on the map and will be a great resource to all Detroiters! Through a publicly accessible and easily updated map and directory tool, CDAD aims to highlight the many organizations working in Detroit, facilitate greater collaboration, and assist in neighborhood capacity building. We appreciate your thoughtful and complete answers to the following questions.
+      	</p>
+		<p class="text-justify">
+			<strong>A note for survey takers:</strong> In order to provide a clear and detailed picture about your organization, the survey questions are rather in depth and the length of time to complete can vary depending on the level of detail you provide (from 20 minutes to an hour).  Please be prepared to provide information such as the organization's mission or purpose, your activities, projects and accomplishments, key contact information, meeting times, and location or service area boundaries. We appreciate your thoughtful and complete answers to the survey questions.
+		</p>
+		<div class="clearfix"></div>
+        <button id="closeIntroModalLogin" class="btn btn-primary btn-lg btn-block" type="submit">Log in and Begin the Survey</button>
+        <a class="btn btn-default btn-lg btn-block" href="{% url 'registration_register' %}">Register for an Account</a>
+        <div class="checkbox text-center text-uppercase">
+		  <label>
+		    <input type="checkbox" id="toggleIntroCookieLogin" value="NoShow" checked>
+		   Don't Show This Message
+		  </label>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js_block %}
+
+	<script type="text/javascript" src="{% static 'cdadmap/js/jquery.cookie.js' %}"></script>
+
+	<!-- open introductory modal on page load -->
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			if (!$.cookie('noIntroLogin')) {
+				$('#introductionLogin').modal('show');
+				// close if button clicked
+				$('#closeIntroModalLogin').click(function() {
+					$('#introductionLogin').modal('hide');
+				});
+				// set cookie if don't show this message is checked
+				$('#toggleIntroCookieLogin').change(function() {
+					if($(this).is(":checked")) {
+						$.cookie('noIntroLogin', 'noIntroLogin', { expires: 365, path: '/' });
+					} else {
+						$.removeCookie('noIntroLogin', { path: '/' });
+					}
+				});
+			}
+			// set cookie on page load -- remove only if user elects to remove
+			$.cookie('noIntroLogin', 'noIntroLogin', { expires: 365, path: '/' });
+
+		});
+	</script>
+{% endblock %}
+

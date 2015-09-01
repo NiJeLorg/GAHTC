@@ -1,0 +1,9 @@
+Thank you for signing up for a {{ site.name }} account. To activate your account, please follow the link below:
+
+http://{{ site.domain }}{% url 'registration_activate' activation_key %}
+
+This link is valid for {{ expiration_days }} days.
+
+Thank you!
+d[COM]munity
+a project of Community Development Advocates of Detroit
