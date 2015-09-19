@@ -3,16 +3,26 @@ from django.db import models
 # course modules
 class modules(models.Model):
 	created = models.DateTimeField(auto_now=True)
+	title = models.CharField(max_length=255, default='', null=False, blank=False)
+	authors = models.CharField(max_length=255, default='', null=False, blank=False)
 	syllabus = models.FileField(upload_to="module_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	syllabus_contents = models.TextField(default='', null=True, blank=True)
 	overview = models.FileField(upload_to="module_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	overview_contents = models.TextField(default='', null=True, blank=True)
 
+	def __unicode__(self):
+		return self.title
+
 # lectures
 class lectures(models.Model):
 	module = models.ForeignKey(modules)
 	created = models.DateTimeField(auto_now=True)
+	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	presentation = models.FileField(upload_to="presentations/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
+	presentation_text = models.TextField(default='', null=True, blank=True)
+
+	def __unicode__(self):
+		return self.title
 
 # lecture documents
 class lectureDocuments(models.Model):

@@ -1,0 +1,43 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block head_js_block %}
+{% endblock %}
+	
+
+{% block body_block %}
+<!-- Page Content -->
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1 searchbar">
+			<h1 class="greybackground">Search for Course Materials</h1>
+			<ul>
+			{% for module in modulesreturned %}
+			    <li>{{ module }}</li>
+			{% endfor %}
+			</ul>
+			<ul>
+			{% for lecture in lecturesreturned %}
+			    <li>{{ lecture }}</li>
+			{% endfor %}
+			</ul>
+			<ul>
+			{% for lecture_document in lecture_documentsreturned %}
+			    <li>{{ lecture_document }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>				
+{% endblock %}
+
+{% block modal_block %}
+{% endblock %}
+
+{% block js_block %}
+	<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+{% endblock %}
