@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 import operator
 from django.db.models import TextField, CharField
 from django.db.models import Q
@@ -20,13 +21,18 @@ def search(request):
 	"""
 	  Queries the database for search terms and returns list of results
 	"""
+
+	# search terms
+	try:
+		keyword = request.POST['keyword']
+	except KeyError:
+		return HttpResponseRedirect("/")
+	
 	# empty search strings and query Qs
 	modules_keywords_query = Q()
 	lectures_keywords_query = Q()
 	lecture_documents_keywords_query = Q()
-
-	# search terms
-	keyword = request.POST['keyword']
+	lecture_slides_keywords_query = Q()
 
 	if(keyword != ""):
 		# group of keyword queries for text in modules documents
@@ -46,13 +52,74 @@ def search(request):
 		lecture_documents_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in lecture_documents_fields]
 		for q in lecture_documents_queries:
 			lecture_documents_keywords_query = lecture_documents_keywords_query | q       
+		# group of keyword queries for text in lecture slides
+		lecture_slides_fields = [f for f in lectureSlides._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
+		lecture_slides_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in lecture_slides_fields]
+		for q in lecture_slides_queries:
+			lecture_slides_keywords_query = lecture_slides_keywords_query | q
 
-	modulesreturned = modules.objects.filter(modules_keywords_query)
-	lecturesreturned = lectures.objects.filter(lectures_keywords_query)
-	lecture_documentsreturned = lectureDocuments.objects.filter(lecture_documents_keywords_query)
 
+	# get count and if no objects returned, send to different tempalate
+	modules_returned_count = modules.objects.filter(modules_keywords_query).count()
+	lectures_returned_count = lectures.objects.filter(lectures_keywords_query).count()
+	lecture_documents_returned_count = lectureDocuments.objects.filter(lecture_documents_keywords_query).count()
+	lecture_slides_returned_count = lectureSlides.objects.filter(lecture_slides_keywords_query).count()
 
-	context_dict = {'modulesreturned':modulesreturned, 'lecturesreturned':lecturesreturned, 'lecture_documentsreturned':lecture_documentsreturned}
-	return render(request, 'website/search.html', context_dict)
+	if (modules_returned_count == 0 and lectures_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
+		context_dict = {'keyword':keyword}
+		return render(request, 'website/no_search_results.html', context_dict)
+	else:
+		modules_returned = modules.objects.filter(modules_keywords_query)
+		lectures_returned = lectures.objects.filter(lectures_keywords_query)
+		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)
+		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)
+
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned}
+		return render(request, 'website/search.html', context_dict)
 	
+
+
+def showModule(request, id=None):
+	"""
+	  Response from AJAX request to show module in sidebar
+	"""
+	#get module
+	module_returned = modules.objects.get(pk=id)
+
+	#get first lecture uploaded
+	earliest_lecture = lectures.objects.filter(module=module_returned).earliest('created')
+
+	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture}
+	return render(request, 'website/show_module.html', context_dict)
+
+def showLecture(request, id=None):
+	"""
+	  Response from AJAX request to show lecture in sidebar
+	"""
+	#get module
+	lecture_returned = lectures.objects.get(pk=id)
+
+	context_dict = {'lecture_returned':lecture_returned}
+	return render(request, 'website/show_lecture.html', context_dict)
+
+def showLectureDocument(request, id=None):
+	"""
+	  Response from AJAX request to show lecture document in sidebar
+	"""
+	#get module
+	lecture_document_returned = lectureDocuments.objects.get(pk=id)
+
+	context_dict = {'lecture_document_returned':lecture_document_returned}
+	return render(request, 'website/show_lecture_document.html', context_dict)
+
+def showLectureSlide(request, id=None):
+	"""
+	  Response from AJAX request to show lecture slide in sidebar
+	"""
+	#get module
+	lecture_slide_returned = lectureSlides.objects.get(pk=id)
+
+	context_dict = {'lecture_slide_returned':lecture_slide_returned}
+	return render(request, 'website/show_lecture_slide.html', context_dict)
+
 

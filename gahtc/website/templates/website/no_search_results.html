@@ -1,0 +1,107 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block title %}No Search Results{% endblock %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block head_js_block %}
+{% endblock %}
+	
+
+{% block content %}
+<!-- Page Content -->
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<form class="form-horizontal" method="post" action=".">
+				{% csrf_token %}
+				<div class="form-group">
+					<div class="col-xs-2">
+						<h4 class="searchText">Search</h4>
+					</div>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" name="keyword" placeholder="Results for: {{ keyword }}" />
+					</div>
+					<div class="col-xs-1">
+						<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+					</div>
+					<div class="col-xs-1">
+						<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-6">
+			<button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#downloadModal">
+			  Download Course Bundles
+			</button>
+		</div>		
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#search-results" aria-controls="home" role="tab" data-toggle="tab">Search Results</a></li>
+				<li role="presentation"><a href="#my-course-bundles" aria-controls="profile" role="tab" data-toggle="tab">My Course Bundles</a></li>
+				<li role="presentation"><a href="#my-saved-searches" aria-controls="messages" role="tab" data-toggle="tab">My Saved Searches</a></li>
+				<li role="presentation"><a href="#my-profile" aria-controls="settings" role="tab" data-toggle="tab">My Profile</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="search-results">
+					<div class="col-md-6 searchResultsScroll">
+						<h4>No Search Results</h4>
+						<p>Your search yielded no results from our course materials. Please try another search above.</p>
+					</div>
+					<div class="col-md-6">
+
+					</div>
+					
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="my-course-bundles">
+					Bundles
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="my-saved-searches">
+					Saved Searches
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="my-profile">
+					Profile
+				</div>
+			</div>			
+
+		</div>
+	</div>
+</div>				
+{% endblock %}
+
+{% block modal_block %}
+<!-- Download Course Bundle Modal -->
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title" id="myModalLabel">Download Course Bundles</h2>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Download</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js_block %}
+	<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+{% endblock %}

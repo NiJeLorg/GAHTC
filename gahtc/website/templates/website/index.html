@@ -1,6 +1,8 @@
 {% extends 'website/base.html' %}
 {% load staticfiles %}
 
+{% block title %}Home{% endblock %}
+
 {% block css_block %}
 {% endblock %}
 
@@ -8,7 +10,7 @@
 {% endblock %}
 	
 
-{% block body_block %}
+{% block content %}
 <!-- Page Content -->
 <ul id="background" class="fadein">
 	<li></li>
@@ -22,7 +24,7 @@
 				{% csrf_token %}
 				<div class="form-group">
 					<div class="col-xs-11">
-						<input type="text" class="form-control" name="keyword" placeholder="by keyword, geography, year, ect." />
+						<input type="text" class="form-control" name="keyword" placeholder="by keyword, geography, year, etc." />
 					</div>
 					<div class="col-xs-1">
 						<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>

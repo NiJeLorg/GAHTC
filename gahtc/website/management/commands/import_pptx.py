@@ -1,11 +1,15 @@
 import sys,os
 from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
+from django.core.files import File
+from subprocess import call
 from website.models import *
 import pptx
 from pptx import Presentation
 
 """
   Opens pptx files and extracts all text
+  Requires libreoffice and Imagemagick
 """
 
 from pptx.util import lazyproperty, Pt
@@ -21,6 +25,8 @@ from pptx.oxml import register_element_cls
 from pptx import content_type_to_part_class_map
 from pptx.opc.package import PartFactory
 
+# path to media root for libreoffice to find files
+MEDIA_ROOT = settings.MEDIA_ROOT
 
 class CT_NotesSlide(BaseOxmlElement):
     """
@@ -187,33 +193,69 @@ def strip_non_ascii(string):
 class Command(BaseCommand):
     
     def extract_text_from_pptx(self):
-        # pull PPTX from database
-        lecturesObjects = lectures.objects.all()
+        # pull PPTX from database where content hasn't yet been extracted
+        lecturesObjects = lectures.objects.filter(extracted=False)
 
         # loop through lectures and pull all text
         for lecturesObject in lecturesObjects:
             prs = Presentation(lecturesObject.presentation)
 
+            # convert lecturesObject.presentation to a pdf file in memory for imagemagick
+            #where is the presentation?
+            path_to_file = MEDIA_ROOT + '/' + str(lecturesObject.presentation)
+            print path_to_file
+            head, tail = os.path.split(path_to_file)
+
+            #name of pdf
+            croppedtail = tail[:-5]
+            pdffilename = croppedtail + ".pdf"
+
+            # run the command and put the output in "head"
+            # libreoffice --headless --convert-to pdf --outdir head path_to_file
+            call(["libreoffice","--headless","--convert-to","pdf","--outdir",head,path_to_file])
+
+            #extract all slides in pdf in imagemagic 
+            # convert head/pdffilename[index] head/slide.png
+            pdfpath = head + '/' + pdffilename
+            pngpath = head + "/slide.jpg"
+            call(["convert",pdfpath,pngpath])
+
             # text_runs will be populated with a list of strings,
             # one for each text run in presentation
             main_text = []
             notes_text = []
+            slide_main_text = ''
+            slide_notes_text = ''
 
-            for slide in prs.slides:
+            for index, slide in enumerate(prs.slides):
+                # extract the text for each slide and append to array of text to save back to lecturesObject
                 for shape in slide.shapes:
                     if not shape.has_text_frame:
                         continue
                     for paragraph in shape.text_frame.paragraphs:
                         for run in paragraph.runs:
-                            run.text = strip_non_ascii(run.text)
-                            main_text.append(run.text)
+                            slide_main_text = strip_non_ascii(run.text)
+                            main_text.append(slide_main_text)
 
                 notes_slide = SlideWrapper(slide).notes_page()
                 for shape in notes_slide.shapes.__iter__():
                     for paragraph in shape.text_frame.paragraphs:
                         for run in paragraph.runs:
-                            run.text = strip_non_ascii(run.text)
-                            notes_text.append(run.text)
+                            slide_notes_text = strip_non_ascii(run.text)
+                            notes_text.append(slide_notes_text)
+
+                # add slide to lectureSlides
+                addslide = lectureSlides()
+                addslide.lecture = lecturesObject
+                addslide.slide_number = index
+                addslide.slide_main_text = slide_main_text
+                addslide.slide_notes = slide_notes_text
+                addslide.save()
+                f = open(head + "/slide-"+ str(index) +".jpg")
+                image_file = File(f)
+                addslide.slide.save("slide-"+ str(index) +".jpg", image_file)
+                os.remove(head + "/slide-"+ str(index) +".jpg")
+
 
             main_string = " ".join(main_text)
             notes_string = " ".join(notes_text)
@@ -223,11 +265,12 @@ class Command(BaseCommand):
 
             # save this string
             lecturesObject.presentation_text = string
+            lecturesObject.extracted = True
             lecturesObject.save()
 
 
     def handle(self, *args, **options):
-        print "Extracting PPTX text...."
+        print "Extracting PPTX files...."
         self.extract_text_from_pptx()
 
 

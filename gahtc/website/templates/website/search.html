@@ -1,6 +1,8 @@
 {% extends 'website/base.html' %}
 {% load staticfiles %}
 
+{% block title %}Search Results{% endblock %}
+
 {% block css_block %}
 {% endblock %}
 
@@ -8,36 +10,245 @@
 {% endblock %}
 	
 
-{% block body_block %}
+{% block content %}
 <!-- Page Content -->
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-1 searchbar">
-			<h1 class="greybackground">Search for Course Materials</h1>
-			<ul>
-			{% for module in modulesreturned %}
-			    <li>{{ module }}</li>
-			{% endfor %}
+		<div class="col-md-6">
+			<form class="form-horizontal" method="post" action=".">
+				{% csrf_token %}
+				<div class="form-group">
+					<div class="col-xs-2">
+						<h4 class="searchText">Search</h4>
+					</div>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" name="keyword" placeholder="Results for: {{ keyword }}" />
+					</div>
+					<div class="col-xs-1">
+						<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+					</div>
+					<div class="col-xs-1">
+						<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-6">
+			<button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#downloadModal">
+			  Download Course Bundles
+			</button>
+		</div>		
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#search-results" aria-controls="home" role="tab" data-toggle="tab">Search Results</a></li>
+				<li role="presentation"><a href="#my-course-bundles" aria-controls="profile" role="tab" data-toggle="tab">My Course Bundles</a></li>
+				<li role="presentation"><a href="#my-saved-searches" aria-controls="messages" role="tab" data-toggle="tab">My Saved Searches</a></li>
+				<li role="presentation"><a href="#my-profile" aria-controls="settings" role="tab" data-toggle="tab">My Profile</a></li>
 			</ul>
-			<ul>
-			{% for lecture in lecturesreturned %}
-			    <li>{{ lecture }}</li>
-			{% endfor %}
-			</ul>
-			<ul>
-			{% for lecture_document in lecture_documentsreturned %}
-			    <li>{{ lecture_document }}</li>
-			{% endfor %}
-			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="search-results">
+					<div class="col-md-6 searchResultsScroll">
+						<div class="row selectedAddDropdown">
+							<div class="col-xs-8">
+								<div class="dropdown">
+									<button id="selectedAdd" class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Add all Selected to Bundle
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="selectedAdd">
+										<li><a href="#">Bundle 1</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<div class="checkbox pull-right">
+								  <label>
+								    <input type="checkbox" value="">
+								    Select All/None
+								  </label>
+								</div>
+							</div>
+						</div>
+						{% for module in modules_returned %}
+						<div class="row searchResult module" data-moduleid="{{ module.id }}">
+							<div class="col-xs-3">
+								<img class="img-responsive" src="http://placehold.it/100x100" />
+							</div>							
+							<div class="col-xs-9">
+								<div class="row">
+									<div class="col-xs-8 searchResultTitle">
+										<p><strong>MODULE: {{ module.title }}</strong></p>
+									</div>
+									<div class="col-xs-4">
+										<div class="checkbox">
+										    <input type="checkbox" value="">
+										</div>
+										<div class="dropdown">
+											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Add to Bundle
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="">
+												<li><a href="#">Bundle 1</a></li>
+											</ul>
+										</div>										
+									</div>								
+								</div>
+								<div class="row">
+									{% if module.overview_contents %}
+										<p>{{ module.overview_contents|truncatechars:75 }}</p>
+									{% else %}
+										<p>{{ module.syllabus_contents|truncatechars:75 }}</p>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						{% for lecture in lectures_returned %}
+						<div class="row searchResult lecture" data-lectureid="{{ lecture.id }}">
+							<div class="col-xs-3">
+								<img class="img-responsive" src="/media/{{ lecture.getSlideOne }}" />
+							</div>							
+							<div class="col-xs-9">
+								<div class="row">
+									<div class="col-xs-8 searchResultTitle">
+										<p><strong>LECTURE: {{ lecture.title }}</strong></p>
+									</div>
+									<div class="col-xs-4">
+										<div class="checkbox">
+										    <input type="checkbox" value="">
+										</div>
+										<div class="dropdown">
+											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Add to Bundle
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="">
+												<li><a href="#">Bundle 1</a></li>
+											</ul>
+										</div>										
+									</div>								
+								</div>
+								<div class="row">
+									<p>{{ lecture.presentation_text|truncatechars:75 }}</p>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						{% for lecture_document in lecture_documents_returned %}
+						<div class="row searchResult lecture_document" data-lecturedocumentid="{{ lecture_document.id }}">
+							<div class="col-xs-3">
+								<img class="img-responsive" src="http://placehold.it/100x100" />
+							</div>							
+							<div class="col-xs-9">
+								<div class="row">
+									<div class="col-xs-8 searchResultTitle">
+										<p><strong>LECTURE DOCUMENT FROM: {{ lecture_document.lecture.title }}</strong></p>
+									</div>
+									<div class="col-xs-4">
+										<div class="checkbox">
+										    <input type="checkbox" value="">
+										</div>
+										<div class="dropdown">
+											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Add to Bundle
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="">
+												<li><a href="#">Bundle 1</a></li>
+											</ul>
+										</div>										
+									</div>								
+								</div>
+								<div class="row">
+									<p>{{ lecture_document.document_contents|truncatechars:75 }}</p>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						{% for lecture_slide in lecture_slides_returned %}
+						<div class="row searchResult lecture_slide" data-lectureslideid="{{ lecture_slide.id }}">
+							<div class="col-xs-3">
+								<img class="img-responsive" src="/media/{{ lecture_slide.slide }}" />
+							</div>							
+							<div class="col-xs-9">
+								<div class="row">
+									<div class="col-xs-8 searchResultTitle">
+										<p><strong>SLIDE FROM: {{ lecture_slide.lecture.title }}</strong></p>
+									</div>
+									<div class="col-xs-4">
+										<div class="checkbox">
+										    <input type="checkbox" value="">
+										</div>
+										<div class="dropdown">
+											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Add to Bundle
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="">
+												<li><a href="#">Bundle 1</a></li>
+											</ul>
+										</div>										
+									</div>								
+								</div>
+								<div class="row">
+									<p>{{ lecture_slide.slide_notes|truncatechars:75 }}</p>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+
+					</div>
+					<div class="col-md-6 rightSidebar"></div>
+					
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="my-course-bundles">
+					Bundles
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="my-saved-searches">
+					Saved Searches
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="my-profile">
+					Profile
+				</div>
+			</div>			
+
 		</div>
 	</div>
 </div>				
 {% endblock %}
 
 {% block modal_block %}
+<!-- Download Course Bundle Modal -->
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title" id="myModalLabel">Download Course Bundles</h2>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Download</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block js_block %}
 	<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+	<script type="text/javascript" src="{% static 'website/js/query.js' %}"></script>
 {% endblock %}

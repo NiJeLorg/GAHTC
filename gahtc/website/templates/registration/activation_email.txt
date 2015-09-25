@@ -5,5 +5,4 @@ http://{{ site.domain }}{% url 'registration_activate' activation_key %}
 This link is valid for {{ expiration_days }} days.
 
 Thank you!
-d[COM]munity
-a project of Community Development Advocates of Detroit
+GAHTC | Global Architectural History Teaching Collaborative

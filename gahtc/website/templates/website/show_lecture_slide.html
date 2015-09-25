@@ -1,0 +1,68 @@
+{% load staticfiles %}
+
+	<div class="row">
+		<div class="col-md-8">
+			<h4 class="noTopMargin">SLIDE FROM: {{ lecture_slide_returned.lecture.title }}</h4>
+		</div>	
+		<div class="col-md-1">
+			<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-share" aria-hidden="true"></span></button>
+		</div>
+		<div class="col-md-3">
+			<div class="dropdown">
+				<button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Add to Bundle
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="">
+					<li><a href="#">Bundle 1</a></li>
+				</ul>
+			</div>
+		</div>	
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<img class="img-responsive" src="/media/{{ lecture_slide_returned.slide }}" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="textbox">
+				<p>{{ lecture_document_returned.slide_notes|linebreaksbr }}</p>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			  <div class="panel panel-default">
+			    <div class="panel-heading" role="tab" id="headingOne">
+			      <h4 class="panel-title">
+			        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+			          Comments
+			        </a>
+			      </h4>
+			    </div>
+			    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+			      <div class="panel-body">
+			     	<p>Comment box here.</p>
+			      </div>
+			    </div>
+			  </div>
+			  <div class="panel panel-default">
+			    <div class="panel-heading" role="tab" id="headingTwo">
+			      <h4 class="panel-title">
+			        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+			          Suggested Similar Content
+			        </a>
+			      </h4>
+			    </div>
+			    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+			      <div class="panel-body">
+			      	<p>Suggested similar content here.</p>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+			

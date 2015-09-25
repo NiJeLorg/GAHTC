@@ -6,6 +6,7 @@ XlsxWriter==0.7.3
 argcomplete==1.0.0
 beautifulsoup4==4.4.0
 chardet==2.3.0
+django-forms-bootstrap==3.0.1
 django-registration-redux==1.2
 lxml==3.4.4
 pdfminer==20140328
