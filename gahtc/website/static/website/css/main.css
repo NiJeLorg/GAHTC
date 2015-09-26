@@ -120,6 +120,10 @@
 	background-color: #ddd;
 }
 
+.searchResult.active {
+	background-color: #ddd;
+}
+
 .searchResultTitle {
 	padding-left: 0px;
 }
@@ -131,6 +135,10 @@
 
 .noTopMargin {
 	margin-top: 0px;
+}
+
+.marginBottom15 {
+	margin-bottom: 15px;
 }
 
 .textbox {

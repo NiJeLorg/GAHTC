@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 import operator
 from django.db.models import TextField, CharField
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 
 # import all website models
@@ -17,6 +18,7 @@ def index(request):
 	return render(request, 'website/index.html', context_dict)
 
 
+@login_required
 def search(request):
 	"""
 	  Queries the database for search terms and returns list of results
