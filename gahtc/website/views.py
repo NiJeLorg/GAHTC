@@ -73,10 +73,13 @@ def search(request):
 	else:
 		modules_returned = modules.objects.filter(modules_keywords_query)
 		lectures_returned = lectures.objects.filter(lectures_keywords_query)
-		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)
-		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)
+		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)[:50]
+		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)[:50]
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned}
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned}
 		return render(request, 'website/search.html', context_dict)
 	
 
@@ -91,37 +94,139 @@ def showModule(request, id=None):
 	#get first lecture uploaded
 	earliest_lecture = lectures.objects.filter(module=module_returned).earliest('created')
 
-	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture}
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture, 'bundles_returned':bundles_returned}
 	return render(request, 'website/show_module.html', context_dict)
 
 def showLecture(request, id=None):
 	"""
 	  Response from AJAX request to show lecture in sidebar
 	"""
-	#get module
+	#get lecture
 	lecture_returned = lectures.objects.get(pk=id)
 
-	context_dict = {'lecture_returned':lecture_returned}
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+	context_dict = {'lecture_returned':lecture_returned, 'bundles_returned':bundles_returned}
 	return render(request, 'website/show_lecture.html', context_dict)
 
 def showLectureDocument(request, id=None):
 	"""
 	  Response from AJAX request to show lecture document in sidebar
 	"""
-	#get module
+	#get lecture document
 	lecture_document_returned = lectureDocuments.objects.get(pk=id)
 
-	context_dict = {'lecture_document_returned':lecture_document_returned}
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+	context_dict = {'lecture_document_returned':lecture_document_returned, 'bundles_returned':bundles_returned}
 	return render(request, 'website/show_lecture_document.html', context_dict)
 
 def showLectureSlide(request, id=None):
 	"""
 	  Response from AJAX request to show lecture slide in sidebar
 	"""
-	#get module
+	#get lecture slide
 	lecture_slide_returned = lectureSlides.objects.get(pk=id)
 
-	context_dict = {'lecture_slide_returned':lecture_slide_returned}
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+	context_dict = {'lecture_slide_returned':lecture_slide_returned, 'bundles_returned':bundles_returned}
 	return render(request, 'website/show_lecture_slide.html', context_dict)
+
+
+def createNewBundle(request):
+	"""
+	  AJAX request to create new bundle and attach an item to the bundle
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		title = request.GET.get("title","")
+		itemid = request.GET.get("itemid","")
+
+		# create bundle
+		bundle = bundles(user=request.user, title=title)
+		bundle.save()
+
+		# add item to appropriate bundle 
+		itemid = itemid.split("_")
+		if itemid[0] == 'module':
+			#look up module
+			module = modules.objects.get(pk=itemid[1])
+			bm = bundleModule(bundle=bundle, module=module)
+			bm.save()
+		elif itemid[0] == 'lecture':
+			#look up lecture
+			lecture = lectures.objects.get(pk=itemid[1])
+			bl = bundleLecture(bundle=bundle, lecture=lecture)
+			bl.save()
+		elif itemid[0] == 'lecturedocument':
+			#look up lectureDocument
+			lectureDocument = lectureDocuments.objects.get(pk=itemid[1])
+			bld = bundleLectureDocument(bundle=bundle, lectureDocument=lectureDocument)
+			bld.save()
+		else:
+			#look up lectureSlide
+			lectureSlide = lectureSlides.objects.get(pk=itemid[1])
+			bls = bundleLectureSlides(bundle=bundle, lectureSlide=lectureSlide)
+			bls.save()
+
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+
+	context_dict = {'bundles_returned':bundles_returned}
+	return render(request, 'website/bundle.html', context_dict)
+
+
+def addToBundle(request):
+	"""
+	  AJAX request to attach an item to the bundle
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		bundleid = request.GET.get("bundle","")
+		itemid = request.GET.get("itemid","")
+
+		# get bundle
+		bundle = bundles.objects.get(pk=bundleid)
+
+		# add item to appropriate bundle 
+		itemid = itemid.split("_")
+		if itemid[0] == 'module':
+			#look up module
+			module = modules.objects.get(pk=itemid[1])
+			bm = bundleModule(bundle=bundle, module=module)
+			bm.save()
+		elif itemid[0] == 'lecture':
+			#look up lecture
+			lecture = lectures.objects.get(pk=itemid[1])
+			bl = bundleLecture(bundle=bundle, lecture=lecture)
+			bl.save()
+		elif itemid[0] == 'lecturedocument':
+			#look up lectureDocument
+			lectureDocument = lectureDocuments.objects.get(pk=itemid[1])
+			bld = bundleLectureDocument(bundle=bundle, lectureDocument=lectureDocument)
+			bld.save()
+		else:
+			#look up lectureSlide
+			lectureSlide = lectureSlides.objects.get(pk=itemid[1])
+			bls = bundleLectureSlides(bundle=bundle, lectureSlide=lectureSlide)
+			bls.save()
+
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+
+	context_dict = {'bundles_returned':bundles_returned}
+	return render(request, 'website/bundle.html', context_dict)
+
 
 

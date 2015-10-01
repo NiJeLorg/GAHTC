@@ -68,5 +68,44 @@ $( document ).ready(function() {
 	    e.preventDefault(); // prevent the default action (scroll / move caret)
 	});
 
+	// create new bundle
+	$( ".create-new-bundle" ).click(function() {
+		console.log('hello!');
+		// open the modal
+		$('#newBundleModal').modal('show');
+		// pull data value from parent element
+		var itemid = $(this).parents( "ul" ).data( "itemid" );
+		// add data value to hidden field in modal form
+		$("#newBundleName").data( "itemid", itemid );
+	});
+
+	// run ajax to create new bundle when save is clicked
+	$(" #createNewBundle ").click(function() {
+		// check to see if a title was added
+		if ($(" #newBundleName ").val().length == 0) {
+			$(" #noBundleTitleAlert ").removeClass('hidden');
+		} else {
+			// run function 
+			gahtcApplication.createNewBundle();
+
+			// close the modal
+			$('#newBundleModal').modal('hide');
+
+		}
+	});
+
+	// add to a bundle
+	$( ".add-to-bundle" ).click(function() {
+		// pull bundle id
+		var bundle = $(this).data( "bundle" )
+		// pull data value from parent element
+		var itemid = $(this).parents( "ul" ).data( "itemid" );
+		// set title in alert
+		var title = $(this).text();
+		// run function
+		gahtcApplication.addToBundle(bundle, itemid, title);
+
+	});
+
 
 });

@@ -52,17 +52,18 @@
 
 			<!-- Tab panes -->
 			<div class="tab-content">
+
 				<div role="tabpanel" class="tab-pane active" id="search-results">
 					<div class="col-md-6 searchResultsScroll">
 						<div class="row selectedAddDropdown">
 							<div class="col-xs-8">
 								<div class="dropdown">
 									<button id="selectedAdd" class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Add all Selected to Bundle
+										Add All Selected to Bundle
 										<span class="caret"></span>
 									</button>
-									<ul class="dropdown-menu" aria-labelledby="selectedAdd">
-										<li><a href="#">Bundle 1</a></li>
+									<ul class="dropdown-menu bundles" aria-labelledby="selectedAdd" data-itemid="allchecked">
+										{% include "website/bundle.html" %}
 									</ul>
 								</div>
 							</div>
@@ -94,8 +95,8 @@
 												Add to Bundle
 												<span class="caret"></span>
 											</button>
-											<ul class="dropdown-menu" aria-labelledby="">
-												<li><a href="#">Bundle 1</a></li>
+											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module.id }}">
+												{% include "website/bundle.html" %}
 											</ul>
 										</div>										
 									</div>								
@@ -129,8 +130,8 @@
 												Add to Bundle
 												<span class="caret"></span>
 											</button>
-											<ul class="dropdown-menu" aria-labelledby="">
-												<li><a href="#">Bundle 1</a></li>
+											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.id }}">
+												{% include "website/bundle.html" %}
 											</ul>
 										</div>										
 									</div>								
@@ -160,8 +161,8 @@
 												Add to Bundle
 												<span class="caret"></span>
 											</button>
-											<ul class="dropdown-menu" aria-labelledby="">
-												<li><a href="#">Bundle 1</a></li>
+											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.id }}">
+												{% include "website/bundle.html" %}
 											</ul>
 										</div>										
 									</div>								
@@ -191,8 +192,8 @@
 												Add to Bundle
 												<span class="caret"></span>
 											</button>
-											<ul class="dropdown-menu" aria-labelledby="">
-												<li><a href="#">Bundle 1</a></li>
+											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide.id }}">
+												{% include "website/bundle.html" %}
 											</ul>
 										</div>										
 									</div>								
@@ -234,14 +235,41 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title" id="myModalLabel">Download Course Bundles</h2>
+        <h4 class="modal-title" id="myModalLabel">Download Course Bundles</h4>
       </div>
       <div class="modal-body">
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary">Download</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Download Course Bundle Modal -->
+<div class="modal fade" id="newBundleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create New Bundle</h4>
+      </div>
+      <div class="modal-body">
+		<form>
+		  <div class="form-group">
+		    <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
+		  </div>
+			<div id="noBundleTitleAlert" class="alert alert-warning alert-dismissible hidden" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				Please add a title!
+			</div>
+		</form>      	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="createNewBundle">Save</button>
       </div>
     </div>
   </div>

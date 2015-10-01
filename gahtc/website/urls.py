@@ -12,4 +12,6 @@ urlpatterns = [
     url(r'^show_lecture/(?P<id>\d+)/$', views.showLecture, name='showLecture'),
     url(r'^show_lecture_document/(?P<id>\d+)/$', views.showLectureDocument, name='showLectureDocument'),
     url(r'^show_lecture_slide/(?P<id>\d+)/$', views.showLectureSlide, name='showLectureSlide'),
+    url(r'^create_new_bundle/$', views.createNewBundle, name='createNewBundle'),
+    url(r'^add_to_bundle/$', views.addToBundle, name='addToBundle'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

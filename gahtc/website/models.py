@@ -1,5 +1,8 @@
 from django.db import models
 
+# import User model
+from django.contrib.auth.models import User
+
 # course modules
 class modules(models.Model):
 	created = models.DateTimeField(auto_now=True)
@@ -49,3 +52,31 @@ class lectureSlides(models.Model):
 	slide_number = models.IntegerField(default=0, null=True, blank=True)
 	slide_main_text = models.TextField(default='', null=True, blank=True)
 	slide_notes = models.TextField(default='', null=True, blank=True)
+
+
+#bundles
+class bundles(models.Model):
+	# Links bundle to a User model instance.
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=255, null=False, blank=False)
+
+#modules in bundle
+class bundleModule(models.Model):
+	bundle = models.ForeignKey(bundles)
+	module = models.ForeignKey(modules)
+
+#lectures in bundle
+class bundleLecture(models.Model):
+	bundle = models.ForeignKey(bundles)
+	lecture = models.ForeignKey(lectures)
+
+#lectureDocuments in bundle
+class bundleLectureDocument(models.Model):
+	bundle = models.ForeignKey(bundles)
+	lectureDocument = models.ForeignKey(lectureDocuments)
+
+#lectureSlides in bundle
+class bundleLectureSlides(models.Model):
+	bundle = models.ForeignKey(bundles)
+	lectureSlide = models.ForeignKey(lectureSlides)
+

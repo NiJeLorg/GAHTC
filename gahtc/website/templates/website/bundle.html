@@ -1,0 +1,8 @@
+{% for bundle in bundles_returned %}
+	<li><a class="add-to-bundle" href="#" data-bundle="{{ bundle.id }}" >{{ bundle.title }}</a></li>
+{% endfor %}
+{% if bundles_returned|length > 0 %}
+	<li role="separator" class="divider"></li>
+{% endif %}
+	<li><a class="create-new-bundle" href="#">Create New Bundle</a></li>
+

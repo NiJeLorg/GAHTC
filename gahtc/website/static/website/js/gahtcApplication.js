@@ -20,17 +20,6 @@ gahtcApplication.whichToGet = function (sel) {
 	} else {}
 }
 
-gahtcApplication.scrollIntoView = function (element, container) {
-	var containerTop = container.scrollTop(); 
-	console.log(containerTop);
-	var containerBottom = containerTop + container.height(); 
-	var elemPos = element.position();
-	var elemBottom = elemPos.top + element.height(); 
-	console.log(elemPos.top);
-	if (elemBottom < containerBottom) {
-		container.scrollTop(elemPos.top);
-	} 
-}
 
 gahtcApplication.getModule = function (module_id) {
 	$.ajax({
@@ -72,5 +61,39 @@ gahtcApplication.getLectureSlide = function (lecture_slide_id) {
 	});
 }
 
+gahtcApplication.createNewBundle = function () {
+	// get values
+	var title = $(" #newBundleName ").val();
+	var itemid = $(" #newBundleName ").data( "itemid" );
+
+	$.ajax({
+		type: "GET",
+		url: "/create_new_bundle/?title=" + title + "&itemid=" + itemid,
+		success: function(data){
+			// success alert message
+			$('.bundle-add_alert').removeClass('hidden');
+			$('#bundle-title').text(title);
+
+			// add response from template to bundles uls
+			$('.bundles').html(data);
+        }
+	});
+}
+
+gahtcApplication.addToBundle = function (bundle, itemid, title) {
+	$.ajax({
+		type: "GET",
+		url: "/add_to_bundle/?bundle=" + bundle + "&itemid=" + itemid,
+		success: function(data){
+			// success alert message
+			$('.bundle-add-alert').removeClass('hidden');
+			$('#bundle-title').text(title);
+
+			// add response from template to bundles uls
+			$('.bundles').html(data);
+			console.log(data);
+        }
+	});
+}
 
 
