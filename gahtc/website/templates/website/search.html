@@ -56,6 +56,14 @@
 				<div role="tabpanel" class="tab-pane active" id="search-results">
 					<div class="col-md-6 searchResultsScroll">
 						<div class="row selectedAddDropdown">
+							<p>
+								<span class="label label-primary">{{ modules_returned_count }}</span> Modules 
+								<span class="label label-success">{{ lectures_returned_count }}</span> Lectures 
+								<span class="label label-info">{{ lecture_documents_returned_count }}</span> Lecture Doucuments 
+								<span class="label label-warning">{{ lecture_slides_returned_count }}</span> Lecture Slides 
+							</p>
+						</div>
+						<div class="row selectedAddDropdown">
 							<div class="col-xs-8">
 								<div class="dropdown">
 									<button id="selectedAdd" class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -137,6 +145,7 @@
 									</div>								
 								</div>
 								<div class="row">
+									<p>{{ lecture.count }}</p>
 									<p>{{ lecture.presentation_text|truncatechars:75 }}</p>
 								</div>
 							</div>
@@ -261,7 +270,7 @@
 		  <div class="form-group">
 		    <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
 		  </div>
-			<div id="noBundleTitleAlert" class="alert alert-warning alert-dismissible hidden" role="alert">
+			<div id="noBundleTitleAlert" class="alert alert-warning hidden" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				Please add a title!
 			</div>

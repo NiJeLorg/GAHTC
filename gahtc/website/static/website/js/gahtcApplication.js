@@ -88,10 +88,7 @@ gahtcApplication.addToBundle = function (bundle, itemid, title) {
 			// success alert message
 			$('.bundle-add-alert').removeClass('hidden');
 			$('#bundle-title').text(title);
-
-			// add response from template to bundles uls
-			$('.bundles').html(data);
-			console.log(data);
+			console.log($('#bundle-title'));
         }
 	});
 }

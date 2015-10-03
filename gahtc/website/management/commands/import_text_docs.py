@@ -18,35 +18,20 @@ def strip_non_ascii(string):
 
 class Command(BaseCommand):
 
-    def extract_text_from_syllabus(self):
+    def extract_text_from_moduleDocuments(self):
         # pull files from database
-        modulesObjects = modules.objects.all()
+        moduleDocumentsObjects = moduleDocuments.objects.all()
 
         # loop through modules and pull all text
-        for modulesObject in modulesObjects:
-            if modulesObject.syllabus:
-                print modulesObject.syllabus
-                path_to_file = MEDIA_ROOT + '/' + str(modulesObject.syllabus)
-                syllabus_contents = textract.process(path_to_file)
+        for moduleDocumentsObject in moduleDocumentsObjects:
+            if moduleDocumentsObject.document:
+                print moduleDocumentsObject.document
+                path_to_file = MEDIA_ROOT + '/' + str(moduleDocumentsObject.document)
+                document_contents = textract.process(path_to_file)
 
                 # save this string
-                modulesObject.syllabus_contents = strip_non_ascii(syllabus_contents)
-                modulesObject.save()
-
-    def extract_text_from_overview(self):
-        # pull files from database
-        modulesObjects = modules.objects.all()
-
-        # loop through modules and pull all text
-        for modulesObject in modulesObjects:
-            if modulesObject.overview:
-                print modulesObject.overview
-                path_to_file = MEDIA_ROOT + '/' + str(modulesObject.overview)
-                overview_contents = textract.process(path_to_file)
-
-                # save this string
-                modulesObject.overview_contents = strip_non_ascii(overview_contents)
-                modulesObject.save()
+                moduleDocumentsObject.document_contents = strip_non_ascii(document_contents)
+                moduleDocumentsObject.save()
 
     def extract_text_from_lectureDocuments(self):
         # pull files from database
@@ -65,10 +50,8 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        print "Extracting text from syllabus...."
-        self.extract_text_from_syllabus()
-        print "Extracting text from overview...."
-        self.extract_text_from_overview()
+        print "Extracting text from moduleDocuments...."
+        self.extract_text_from_moduleDocuments()
         print "Extracting text from lectureDocuments...."
         self.extract_text_from_lectureDocuments()
         print "Done."

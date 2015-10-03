@@ -218,55 +218,58 @@ class Command(BaseCommand):
             # convert head/pdffilename[index] head/slide.png
             pdfpath = head + '/' + pdffilename
             pngpath = head + "/slide.jpg"
-            call(["convert",pdfpath,pngpath])
 
-            # text_runs will be populated with a list of strings,
-            # one for each text run in presentation
-            main_text = []
-            notes_text = []
-            slide_main_text = ''
-            slide_notes_text = ''
+            # only run the rest of script if pdf is present
+            if os.path.isfile(pdfpath): 
+                call(["convert",pdfpath,pngpath])
 
-            for index, slide in enumerate(prs.slides):
-                # extract the text for each slide and append to array of text to save back to lecturesObject
-                for shape in slide.shapes:
-                    if not shape.has_text_frame:
-                        continue
-                    for paragraph in shape.text_frame.paragraphs:
-                        for run in paragraph.runs:
-                            slide_main_text = strip_non_ascii(run.text)
-                            main_text.append(slide_main_text)
+                # text_runs will be populated with a list of strings,
+                # one for each text run in presentation
+                main_text = []
+                notes_text = []
+                slide_main_text = ''
+                slide_notes_text = ''
 
-                notes_slide = SlideWrapper(slide).notes_page()
-                for shape in notes_slide.shapes.__iter__():
-                    for paragraph in shape.text_frame.paragraphs:
-                        for run in paragraph.runs:
-                            slide_notes_text = strip_non_ascii(run.text)
-                            notes_text.append(slide_notes_text)
+                for index, slide in enumerate(prs.slides):
+                    # extract the text for each slide and append to array of text to save back to lecturesObject
+                    for shape in slide.shapes:
+                        if not shape.has_text_frame:
+                            continue
+                        for paragraph in shape.text_frame.paragraphs:
+                            for run in paragraph.runs:
+                                slide_main_text = strip_non_ascii(run.text)
+                                main_text.append(slide_main_text)
 
-                # add slide to lectureSlides
-                addslide = lectureSlides()
-                addslide.lecture = lecturesObject
-                addslide.slide_number = index
-                addslide.slide_main_text = slide_main_text
-                addslide.slide_notes = slide_notes_text
-                addslide.save()
-                f = open(head + "/slide-"+ str(index) +".jpg")
-                image_file = File(f)
-                addslide.slide.save("slide-"+ str(index) +".jpg", image_file)
-                os.remove(head + "/slide-"+ str(index) +".jpg")
+                    notes_slide = SlideWrapper(slide).notes_page()
+                    for shape in notes_slide.shapes.__iter__():
+                        for paragraph in shape.text_frame.paragraphs:
+                            for run in paragraph.runs:
+                                slide_notes_text = strip_non_ascii(run.text)
+                                notes_text.append(slide_notes_text)
+
+                    # add slide to lectureSlides
+                    addslide = lectureSlides()
+                    addslide.lecture = lecturesObject
+                    addslide.slide_number = index
+                    addslide.slide_main_text = slide_main_text
+                    addslide.slide_notes = slide_notes_text
+                    addslide.save()
+                    f = open(head + "/slide-"+ str(index) +".jpg")
+                    image_file = File(f)
+                    addslide.slide.save("slide-"+ str(index) +".jpg", image_file)
+                    os.remove(head + "/slide-"+ str(index) +".jpg")
 
 
-            main_string = " ".join(main_text)
-            notes_string = " ".join(notes_text)
+                main_string = " ".join(main_text)
+                notes_string = " ".join(notes_text)
 
-            # concatonate strings together
-            string = main_string + notes_string
+                # concatonate strings together
+                string = main_string + notes_string
 
-            # save this string
-            lecturesObject.presentation_text = string
-            lecturesObject.extracted = True
-            lecturesObject.save()
+                # save this string
+                lecturesObject.presentation_text = string
+                lecturesObject.extracted = True
+                lecturesObject.save()
 
 
     def handle(self, *args, **options):

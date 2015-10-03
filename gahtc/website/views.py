@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 import operator
-from django.db.models import TextField, CharField
-from django.db.models import Q
+from django.db.models import TextField, CharField, Q, Count
 from django.contrib.auth.decorators import login_required
 
 
@@ -32,6 +31,7 @@ def search(request):
 	
 	# empty search strings and query Qs
 	modules_keywords_query = Q()
+	module_documents_keywords_query = Q()
 	lectures_keywords_query = Q()
 	lecture_documents_keywords_query = Q()
 	lecture_slides_keywords_query = Q()
@@ -41,7 +41,13 @@ def search(request):
 		modules_fields = [f for f in modules._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
 		modules_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in modules_fields]
 		for q in modules_queries:
-			modules_keywords_query = modules_keywords_query | q       
+			modules_keywords_query = modules_keywords_query | q 
+
+		# group of keyword queries for text in modules documents
+		module_documents_fields = [f for f in moduleDocuments._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
+		module_documents_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in module_documents_fields]
+		for q in module_documents_queries:
+			module_documents_keywords_query = module_documents_keywords_query | q
 
 		# group of keyword queries for text in lectures
 		lectures_fields = [f for f in lectures._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
@@ -63,23 +69,30 @@ def search(request):
 
 	# get count and if no objects returned, send to different tempalate
 	modules_returned_count = modules.objects.filter(modules_keywords_query).count()
+	module_documents_returned_count = moduleDocuments.objects.filter(module_documents_keywords_query).count()
 	lectures_returned_count = lectures.objects.filter(lectures_keywords_query).count()
 	lecture_documents_returned_count = lectureDocuments.objects.filter(lecture_documents_keywords_query).count()
 	lecture_slides_returned_count = lectureSlides.objects.filter(lecture_slides_keywords_query).count()
 
-	if (modules_returned_count == 0 and lectures_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
+	if (modules_returned_count == 0 and module_documents_returned_count == 0 lectures_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
 		context_dict = {'keyword':keyword}
 		return render(request, 'website/no_search_results.html', context_dict)
 	else:
 		modules_returned = modules.objects.filter(modules_keywords_query)
+		module_documents_returned = moduleDocuments.objects.filter(module_documents_keywords_query)
 		lectures_returned = lectures.objects.filter(lectures_keywords_query)
 		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)[:50]
 		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)[:50]
 
+		for lecture in lectures_returned:
+			lecture.count = lecture.presentation_text.lower().count(keyword.lower()) + lecture.title.lower().count(keyword.lower()) + lecture.authors.lower().count(keyword.lower())
+
+		lectures_returned = sorted(lectures_returned, key=operator.attrgetter('count'), reverse=True)
+
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count}
 		return render(request, 'website/search.html', context_dict)
 	
 

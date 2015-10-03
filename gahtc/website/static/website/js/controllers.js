@@ -69,8 +69,7 @@ $( document ).ready(function() {
 	});
 
 	// create new bundle
-	$( ".create-new-bundle" ).click(function() {
-		console.log('hello!');
+	$(document).on('click', '.create-new-bundle', function() { 
 		// open the modal
 		$('#newBundleModal').modal('show');
 		// pull data value from parent element
@@ -95,7 +94,7 @@ $( document ).ready(function() {
 	});
 
 	// add to a bundle
-	$( ".add-to-bundle" ).click(function() {
+	$(document).on('click', '.add-to-bundle', function() { 
 		// pull bundle id
 		var bundle = $(this).data( "bundle" )
 		// pull data value from parent element

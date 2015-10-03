@@ -13,7 +13,7 @@
 					Add to Bundle
 					<span class="caret"></span>
 				</button>
-				<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.id }}">
+				<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture_returned.id }}">
 					{% include "website/bundle.html" %}
 				</ul>
 			</div>
@@ -21,7 +21,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="alert alert-success alert-dismissible bundle-add-alert hidden" role="alert">
+			<div class="alert alert-success bundle-add-alert hidden" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<p><strong>Lecture Added!</strong> This lecture has been added to your bundle, <span id="bundle-title"></span>.</p>
 			</div>
