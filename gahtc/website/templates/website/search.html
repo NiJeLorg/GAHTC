@@ -110,11 +110,11 @@
 									</div>								
 								</div>
 								<div class="row">
-									{% if module.overview_contents %}
-										<p>{{ module.overview_contents|truncatechars:75 }}</p>
-									{% else %}
-										<p>{{ module.syllabus_contents|truncatechars:75 }}</p>
-									{% endif %}
+									{% for moduleDocs in moduleDocsCount %}
+										{% if moduleDocs.module == module %}
+												<p>{{ moduleDocs.document_contents|truncatechars:75 }}</p>
+										{% endif %}
+									{% endfor %}	
 								</div>
 							</div>
 						</div>

@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 import operator
 from django.db.models import TextField, CharField, Q, Count
 from django.contrib.auth.decorators import login_required
+from itertools import chain
 
 
 # import all website models
@@ -74,25 +75,81 @@ def search(request):
 	lecture_documents_returned_count = lectureDocuments.objects.filter(lecture_documents_keywords_query).count()
 	lecture_slides_returned_count = lectureSlides.objects.filter(lecture_slides_keywords_query).count()
 
-	if (modules_returned_count == 0 and module_documents_returned_count == 0 lectures_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
+	if (modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
 		context_dict = {'keyword':keyword}
 		return render(request, 'website/no_search_results.html', context_dict)
 	else:
 		modules_returned = modules.objects.filter(modules_keywords_query)
 		module_documents_returned = moduleDocuments.objects.filter(module_documents_keywords_query)
 		lectures_returned = lectures.objects.filter(lectures_keywords_query)
-		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)[:50]
-		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)[:50]
+		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)[:100]
+		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)[:100]
+
+		# concatonate module querysets
+		# first create list of modules
+		module_documents_modules = []
+		lectures_modules = []
+
+		for module_document in module_documents_returned:
+			module_documents_modules.append(module_document.module)
+
+		for lecture in lectures_returned:
+			lectures_modules.append(lecture.module)
+
+		module_list = list(chain(modules_returned, module_documents_modules, lectures_modules))
+
+		# make unique
+		module_set = set(module_list)
+		unique_module_list = list(module_set)
+		unique_module_list_count = len(unique_module_list)
+
+		#set for template
+		modules_returned = unique_module_list
+		modules_returned_count = unique_module_list_count
+		
+		# sort decending by number of times words show up in the list
+		for module in modules_returned:
+			# look up docs
+			moduleDocsCount = moduleDocuments.objects.filter(module=module)
+			#count number of times keyword comes up in docs
+			moduleDocsWordCount = 0
+			for doc in moduleDocsCount:
+				moduleDocsWordCount = moduleDocsWordCount + doc.document_contents.lower().count(keyword.lower())
+
+			# look up lectures
+			lecturesCount = lectures.objects.filter(module=module)
+			#count number of times keyword comes up in lectures
+			lecturesWordCount = 0
+			for lec in lecturesCount:
+				lecturesWordCount = lecturesWordCount + lec.title.lower().count(keyword.lower()) + lec.authors.lower().count(keyword.lower()) + lec.presentation_text.lower().count(keyword.lower())
+
+			module.count = module.title.lower().count(keyword.lower()) + module.authors.lower().count(keyword.lower()) + moduleDocsWordCount + lecturesWordCount
+
+		modules_returned = sorted(modules_returned, key=operator.attrgetter('count'), reverse=True)
+
 
 		for lecture in lectures_returned:
 			lecture.count = lecture.presentation_text.lower().count(keyword.lower()) + lecture.title.lower().count(keyword.lower()) + lecture.authors.lower().count(keyword.lower())
 
 		lectures_returned = sorted(lectures_returned, key=operator.attrgetter('count'), reverse=True)
 
+
+		for lectureDocs in lecture_documents_returned:
+			lectureDocs.count = lectureDocs.document_contents.lower().count(keyword.lower())
+
+		lecture_documents_returned = sorted(lecture_documents_returned, key=operator.attrgetter('count'), reverse=True)
+
+
+		for lectureSlide in lecture_slides_returned:
+			lectureSlide.count = lectureSlide.slide_main_text.lower().count(keyword.lower()) + lectureSlide.slide_notes.lower().count(keyword.lower())
+
+		lecture_slides_returned = sorted(lecture_slides_returned, key=operator.attrgetter('count'), reverse=True)
+
+
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count}
 		return render(request, 'website/search.html', context_dict)
 	
 

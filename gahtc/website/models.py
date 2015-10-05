@@ -14,14 +14,14 @@ class modules(models.Model):
 
 #module documents
 class moduleDocuments(models.Model):
-	module = models.ForeignKey(modules)
+	module = models.ForeignKey(modules, related_name='moduleDocsModule')
 	created = models.DateTimeField(auto_now=True)
 	document = models.FileField(upload_to="module_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	document_contents = models.TextField(default='', null=True, blank=True)
 
 # lectures
 class lectures(models.Model):
-	module = models.ForeignKey(modules)
+	module = models.ForeignKey(modules, related_name='lecturesModule')
 	created = models.DateTimeField(auto_now=True)
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	authors = models.CharField(max_length=255, default='', null=False, blank=False)
@@ -42,14 +42,14 @@ class lectures(models.Model):
 
 # lecture documents
 class lectureDocuments(models.Model):
-	lecture = models.ForeignKey(lectures)
+	lecture = models.ForeignKey(lectures, related_name='lectureDocsLecture')
 	created = models.DateTimeField(auto_now=True)
 	document = models.FileField(upload_to="presentation_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	document_contents = models.TextField(default='', null=True, blank=True)
 
 # lecture slides
 class lectureSlides(models.Model):
-	lecture = models.ForeignKey(lectures)
+	lecture = models.ForeignKey(lectures, related_name='lectureSlidesLecture')
 	created = models.DateTimeField(auto_now=True)
 	slide = models.ImageField(upload_to="presentation_slides/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	slide_number = models.IntegerField(default=0, null=True, blank=True)
