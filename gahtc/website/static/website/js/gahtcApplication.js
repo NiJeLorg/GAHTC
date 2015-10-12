@@ -26,7 +26,7 @@ gahtcApplication.getModule = function (module_id) {
 		type: "GET",
 		url: "/show_module/" + module_id + "/" ,
 		success: function(data){
-			$('.rightSidebar').html(data);
+			$('.searchSidebar').html(data);
         }
 	});
 }
@@ -36,7 +36,7 @@ gahtcApplication.getLecture = function (lecture_id) {
 		type: "GET",
 		url: "/show_lecture/" + lecture_id + "/" ,
 		success: function(data){
-			$('.rightSidebar').html(data);
+			$('.searchSidebar').html(data);
         }
 	});		
 }
@@ -46,7 +46,7 @@ gahtcApplication.getLectureDocument = function (lecture_document_id) {
 		type: "GET",
 		url: "/show_lecture_document/" + lecture_document_id + "/" ,
 		success: function(data){
-			$('.rightSidebar').html(data);
+			$('.searchSidebar').html(data);
         }
 	});		
 }
@@ -56,7 +56,7 @@ gahtcApplication.getLectureSlide = function (lecture_slide_id) {
 		type: "GET",
 		url: "/show_lecture_slide/" + lecture_slide_id + "/" ,
 		success: function(data){
-			$('.rightSidebar').html(data);
+			$('.searchSidebar').html(data);
         }
 	});
 }
@@ -78,6 +78,9 @@ gahtcApplication.createNewBundle = function () {
 			$('.bundles').html(data);
         }
 	});
+
+	gahtcApplication.refreshSidebarBundle();
+
 }
 
 gahtcApplication.addToBundle = function (bundle, itemid, title) {
@@ -88,7 +91,48 @@ gahtcApplication.addToBundle = function (bundle, itemid, title) {
 			// success alert message
 			$('.bundle-add-alert').removeClass('hidden');
 			$('#bundle-title').text(title);
-			console.log($('#bundle-title'));
+        }
+	});
+}
+
+gahtcApplication.removeFromBundle = function (bundle, itemid, type) {
+	$.ajax({
+		type: "GET",
+		url: "/remove_from_bundle/?bundle=" + bundle + "&itemid=" + itemid + "&type=" + type,
+		success: function(data){
+			gahtcApplication.getBundle(bundle);
+        }
+	});
+}
+
+gahtcApplication.getBundle = function (bundle_id) {
+	$.ajax({
+		type: "GET",
+		url: "/show_bundle/" + bundle_id + "/" ,
+		success: function(data){
+			$('.bundleSidebar').html(data);
+        }
+	});
+}
+
+gahtcApplication.zipUpBundle = function (bundle_id) {
+	$.ajax({
+		type: "GET",
+		url: "/zip_up_bundle/" + bundle_id + "/" ,
+		success: function(data){
+			$('#downloadFileArea').html(data);
+        }
+	});
+}
+
+gahtcApplication.refreshSidebarBundle = function () {
+	// refresh list of bundles in the sidebar
+	$.ajax({
+		type: "GET",
+		url: "/refresh_sidebar_bundle/",
+		success: function(data){
+			// populate sidebar
+			$('.bundleList').html(data);
         }
 	});
 }

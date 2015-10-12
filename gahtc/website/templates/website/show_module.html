@@ -14,7 +14,7 @@
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
-					{% include "website/bundle.html" %}
+					{% include "website/bundle_dropdown.html" %}
 				</ul>
 			</div>
 		</div>	
@@ -34,11 +34,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="textbox">
-			{% if module_returned.overview_contents %}
-				<p>{{ module_returned.overview_contents|linebreaksbr }}</p>
-			{% else %}
-				<p>{{ module_returned.syllabus_contents|linebreaksbr }}</p>
-			{% endif %}
+				<p>{{ module_returned.document_contents|linebreaksbr }}</p>
 			</div>
 		</div>
 	</div>

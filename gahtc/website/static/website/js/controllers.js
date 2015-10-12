@@ -9,12 +9,19 @@ $( document ).ready(function() {
 	$(".fadein").fadeIn("slow");
 
 	// select first in list and populate search result bar
-	$( ".searchResult:first" ).addClass('active');
-	gahtcApplication.whichToGet($( ".searchResult:first" ));
+	$( ".result:first" ).addClass('active');
+	gahtcApplication.whichToGet($( ".result:first" ));
+
+	// select first in bundle list and pull bundle for right sidebar
+	$( ".bundleResult:first" ).addClass('active');
+	var bundleid = $( ".bundleResult:first" ).data( 'bundleid' );
+	if (bundleid) {
+		gahtcApplication.getBundle(bundleid);
+	}
 
 	// on click of module, run query to pull module
 	$( ".module" ).click(function() {
-		$( ".searchResult" ).removeClass('active');
+		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var module_id = $( this ).data( "moduleid" );
 		gahtcApplication.getModule(module_id);
@@ -22,7 +29,7 @@ $( document ).ready(function() {
 
 	// on click of lecture, run query to pull lecture
 	$( ".lecture" ).click(function() {
-		$( ".searchResult" ).removeClass('active');
+		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_id = $( this ).data( "lectureid" );
 		gahtcApplication.getLecture(lecture_id);
@@ -30,7 +37,7 @@ $( document ).ready(function() {
 
 	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_document" ).click(function() {
-		$( ".searchResult" ).removeClass('active');
+		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_document_id = $( this ).data( "lecturedocumentid" );
 		gahtcApplication.getLectureDocument(lecture_document_id);
@@ -38,28 +45,47 @@ $( document ).ready(function() {
 
 	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_slide" ).click(function() {
-		$( ".searchResult" ).removeClass('active');
+		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_slide_id = $( this ).data( "lectureslideid" );
 		gahtcApplication.getLectureSlide(lecture_slide_id);
 	});
 
 
+	$( ".bundleResult" ).click(function() {
+		$( ".bundleResult" ).removeClass('active');
+		$( this ).addClass('active');
+		var bundleid = $( this ).data( 'bundleid' );
+		gahtcApplication.getBundle(bundleid);
+	});
+
+
+
 	$(document).keydown(function(e) {
 	    switch(e.which) {
 	        case 38: // up
-	        if ( $( ".searchResult.active" ).prev().hasClass("searchResult") ) {
-				gahtcApplication.whichToGet($( ".searchResult.active" ).prev());
-		        $( ".searchResult.active" ).removeClass('active').prev().addClass('active');
-		        $(".searchResultsScroll").scrollTo(".searchResult.active");
+	        if ( $( "#search-results" ).hasClass("active") && $( ".result.active" ).prev().hasClass("result") ) {
+				gahtcApplication.whichToGet($( ".result.active" ).prev());
+		        $( ".result.active" ).removeClass('active').prev().addClass('active');
+		        $(".resultsScroll").scrollTo(".result.active");
+	        } else if ( $( "#my-course-bundles" ).hasClass("active") && $( ".bundleResult.active" ).prev().hasClass("bundleResult") ) {
+		        $( ".bundleResult.active" ).removeClass('active').prev().addClass('active');
+	        	var bundleid = $( ".bundleResult.active" ).data( 'bundleid' );
+	        	gahtcApplication.getBundle(bundleid);
+	        	$(".resultsScrollBundle").scrollTo(".bundleResult.active");     	
 	        }
 	        break;
 
 	        case 40: // down
-	        if ( $( ".searchResult.active" ).next().hasClass("searchResult") ) {
-				gahtcApplication.whichToGet($( ".searchResult.active" ).next());
-		        $( ".searchResult.active" ).removeClass('active').next().addClass('active');
-		        $(".searchResultsScroll").scrollTo(".searchResult.active");
+	        if ( $( "#search-results" ).hasClass("active") && $( ".result.active" ).next().hasClass("result") ) {
+				gahtcApplication.whichToGet($( ".result.active" ).next());
+		        $( ".result.active" ).removeClass('active').next().addClass('active');
+		        $(".resultsScroll").scrollTo(".result.active");
+	        } else if ( $( "#my-course-bundles" ).hasClass("active") && $( ".bundleResult.active" ).next().hasClass("bundleResult") ) {
+		        $( ".bundleResult.active" ).removeClass('active').next().addClass('active');
+	        	var bundleid = $( ".bundleResult.active" ).data( 'bundleid' );
+	        	gahtcApplication.getBundle(bundleid);
+	        	$(".resultsScrollBundle").scrollTo(".bundleResult.active");     	
 	        }
 	        break;
 
@@ -69,7 +95,7 @@ $( document ).ready(function() {
 	});
 
 	// create new bundle
-	$(document).on('click', '.create-new-bundle', function() { 
+	$(document).on('click', '.create-new-bundle', function() {
 		// open the modal
 		$('#newBundleModal').modal('show');
 		// pull data value from parent element
@@ -96,7 +122,7 @@ $( document ).ready(function() {
 	// add to a bundle
 	$(document).on('click', '.add-to-bundle', function() { 
 		// pull bundle id
-		var bundle = $(this).data( "bundle" )
+		var bundle = $(this).data( "bundle" );
 		// pull data value from parent element
 		var itemid = $(this).parents( "ul" ).data( "itemid" );
 		// set title in alert
@@ -106,5 +132,49 @@ $( document ).ready(function() {
 
 	});
 
+	// add to a bundle
+	$(document).on('click', '.remove-from-bundle', function() { 
+		// pull bundle id
+		var bundle = $(this).data( "bundleid" );
+		// pull data value from parent element
+		if ($(this).data( "moduleid" )) {
+			var type = 'module';
+			var itemid = $(this).data( "moduleid" );
+		} else if ($(this).data( "lectureid" )) {
+			var type = 'lecture';
+			var itemid = $(this).data( "lectureid" );
+		} else if ($(this).data( "lecturedocumentid" )) {
+			var type = 'lecturedocument';
+			var itemid = $(this).data( "lecturedocumentid" );
+		} else if ($(this).data( "lectureslideid" )) {
+			var type = 'lectureslide';
+			var itemid = $(this).data( "lectureslideid" );			
+		}
+		// run function
+		gahtcApplication.removeFromBundle(bundle, itemid, type);
+
+	});
+
+	// switch tab on download button click
+	$(" .switchToBundle ").click(function() {
+		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
+	});
+	
+	// download bundle
+	$(document).on('click', '.downloadBundle', function() { 
+		// open modal
+		$('#downloadModal').modal('show');
+		// pull bundle id
+		var bundle = $(this).data( "bundleid" );
+		// run function
+		gahtcApplication.zipUpBundle(bundle);
+
+	});
+
+	// return to previous html after modal is closed
+	$('#downloadModal').on('hidden.bs.modal', function (e) {
+		$('#downloadFileArea').html('<div class="containter"><div class="row"><div class="col-md-3"><img class="img-responsive pull-right" src="/static/website/css/images/spiffygif_114x114.gif" /></div><div class="col-md-9"><h2>Zipping Up Your Bundle!</h2></div></div></div>');
+
+	});
 
 });

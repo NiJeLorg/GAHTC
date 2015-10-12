@@ -35,7 +35,7 @@
 			</form>
 		</div>
 		<div class="col-md-6">
-			<button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#downloadModal">
+			<button type="button" class="btn btn-default pull-right switchToBundle">
 			  Download Course Bundles
 			</button>
 		</div>		
@@ -44,17 +44,17 @@
 		<div class="col-md-12">
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="#search-results" aria-controls="home" role="tab" data-toggle="tab">Search Results</a></li>
-				<li role="presentation"><a href="#my-course-bundles" aria-controls="profile" role="tab" data-toggle="tab">My Course Bundles</a></li>
-				<li role="presentation"><a href="#my-saved-searches" aria-controls="messages" role="tab" data-toggle="tab">My Saved Searches</a></li>
-				<li role="presentation"><a href="#my-profile" aria-controls="settings" role="tab" data-toggle="tab">My Profile</a></li>
+				<li role="presentation" class="active"><a href="#search-results" aria-controls="search" role="tab" data-toggle="tab">Search Results</a></li>
+				<li role="presentation"><a href="#my-course-bundles" aria-controls="bundles" role="tab" data-toggle="tab">My Course Bundles</a></li>
+				<li role="presentation"><a href="#my-saved-searches" aria-controls="savedsearches" role="tab" data-toggle="tab">My Saved Searches</a></li>
+				<li role="presentation"><a href="#my-profile" aria-controls="profile" role="tab" data-toggle="tab">My Profile</a></li>
 			</ul>
 
 			<!-- Tab panes -->
 			<div class="tab-content">
 
 				<div role="tabpanel" class="tab-pane active" id="search-results">
-					<div class="col-md-6 searchResultsScroll">
+					<div class="col-md-6 resultsScroll">
 						<div class="row selectedAddDropdown">
 							<p>
 								<span class="label label-primary">{{ modules_returned_count }}</span> Modules 
@@ -71,7 +71,7 @@
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu bundles" aria-labelledby="selectedAdd" data-itemid="allchecked">
-										{% include "website/bundle.html" %}
+										{% include "website/bundle_dropdown.html" %}
 									</ul>
 								</div>
 							</div>
@@ -85,13 +85,13 @@
 							</div>
 						</div>
 						{% for module in modules_returned %}
-						<div class="row searchResult module" data-moduleid="{{ module.id }}">
+						<div class="row result module" data-moduleid="{{ module.id }}">
 							<div class="col-xs-3">
 								<img class="img-responsive" src="http://placehold.it/100x100" />
 							</div>							
 							<div class="col-xs-9">
 								<div class="row">
-									<div class="col-xs-8 searchResultTitle">
+									<div class="col-xs-8 resultTitle">
 										<p><strong>MODULE: {{ module.title }}</strong></p>
 									</div>
 									<div class="col-xs-4">
@@ -104,29 +104,25 @@
 												<span class="caret"></span>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module.id }}">
-												{% include "website/bundle.html" %}
+												{% include "website/bundle_dropdown.html" %}
 											</ul>
 										</div>										
 									</div>								
 								</div>
 								<div class="row">
-									{% for moduleDocs in moduleDocsCount %}
-										{% if moduleDocs.module == module %}
-												<p>{{ moduleDocs.document_contents|truncatechars:75 }}</p>
-										{% endif %}
-									{% endfor %}	
+									<p><span class="label label-primary">{{ keyword }}</span> appears <span class="label label-primary">{{ module.count }}</span> time{{ module.count|pluralize }} in this module.</p>
 								</div>
 							</div>
 						</div>
 						{% endfor %}
 						{% for lecture in lectures_returned %}
-						<div class="row searchResult lecture" data-lectureid="{{ lecture.id }}">
+						<div class="row result lecture" data-lectureid="{{ lecture.id }}">
 							<div class="col-xs-3">
 								<img class="img-responsive" src="/media/{{ lecture.getSlideOne }}" />
 							</div>							
 							<div class="col-xs-9">
 								<div class="row">
-									<div class="col-xs-8 searchResultTitle">
+									<div class="col-xs-8 resultTitle">
 										<p><strong>LECTURE: {{ lecture.title }}</strong></p>
 									</div>
 									<div class="col-xs-4">
@@ -139,26 +135,28 @@
 												<span class="caret"></span>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.id }}">
-												{% include "website/bundle.html" %}
+												{% include "website/bundle_dropdown.html" %}
 											</ul>
 										</div>										
 									</div>								
 								</div>
 								<div class="row">
-									<p>{{ lecture.count }}</p>
-									<p>{{ lecture.presentation_text|truncatechars:75 }}</p>
+									<p><span class="label label-success">{{ keyword }}</span> appears <span class="label label-success">{{ lecture.count }}</span> time{{ lecture.count|pluralize }} in this lecture.</p>
+								</div>
+								<div class="row">
+									<p>From the module: <em>{{ lecture.module.title }}</em></p>
 								</div>
 							</div>
 						</div>
 						{% endfor %}
 						{% for lecture_document in lecture_documents_returned %}
-						<div class="row searchResult lecture_document" data-lecturedocumentid="{{ lecture_document.id }}">
+						<div class="row result lecture_document" data-lecturedocumentid="{{ lecture_document.id }}">
 							<div class="col-xs-3">
 								<img class="img-responsive" src="http://placehold.it/100x100" />
 							</div>							
 							<div class="col-xs-9">
 								<div class="row">
-									<div class="col-xs-8 searchResultTitle">
+									<div class="col-xs-8 resultTitle">
 										<p><strong>LECTURE DOCUMENT FROM: {{ lecture_document.lecture.title }}</strong></p>
 									</div>
 									<div class="col-xs-4">
@@ -171,25 +169,28 @@
 												<span class="caret"></span>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.id }}">
-												{% include "website/bundle.html" %}
+												{% include "website/bundle_dropdown.html" %}
 											</ul>
 										</div>										
 									</div>								
 								</div>
 								<div class="row">
-									<p>{{ lecture_document.document_contents|truncatechars:75 }}</p>
+									<p><span class="label label-info">{{ keyword }}</span> appears <span class="label label-info">{{ lecture_document.count }}</span> time{{ lecture_document.count|pluralize }} in this lecture document.</p>
+								</div>
+								<div class="row">
+									<p>From the module: <em>{{ lecture_document.lecture.module.title }}</em></p>
 								</div>
 							</div>
 						</div>
 						{% endfor %}
 						{% for lecture_slide in lecture_slides_returned %}
-						<div class="row searchResult lecture_slide" data-lectureslideid="{{ lecture_slide.id }}">
+						<div class="row result lecture_slide" data-lectureslideid="{{ lecture_slide.id }}">
 							<div class="col-xs-3">
 								<img class="img-responsive" src="/media/{{ lecture_slide.slide }}" />
 							</div>							
 							<div class="col-xs-9">
 								<div class="row">
-									<div class="col-xs-8 searchResultTitle">
+									<div class="col-xs-8 resultTitle">
 										<p><strong>SLIDE FROM: {{ lecture_slide.lecture.title }}</strong></p>
 									</div>
 									<div class="col-xs-4">
@@ -202,25 +203,33 @@
 												<span class="caret"></span>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide.id }}">
-												{% include "website/bundle.html" %}
+												{% include "website/bundle_dropdown.html" %}
 											</ul>
 										</div>										
 									</div>								
 								</div>
 								<div class="row">
-									<p>{{ lecture_slide.slide_notes|truncatechars:75 }}</p>
+									<p><span class="label label-warning">{{ keyword }}</span> appears <span class="label label-warning">{{ lecture_slide.count }}</span> time{{ lecture_slide.count|pluralize }} in this lecture slide.</p>
+								</div>
+								<div class="row">
+									<p>From the module: <em>{{ lecture_slide.lecture.module.title }}</em></p>
 								</div>
 							</div>
 						</div>
 						{% endfor %}
 
 					</div>
-					<div class="col-md-6 rightSidebar"></div>
+					<div class="col-md-6 rightSidebar searchSidebar"></div>
 					
 				</div>
 
 				<div role="tabpanel" class="tab-pane" id="my-course-bundles">
-					Bundles
+
+					<div class="col-md-6 resultsScrollBundle">
+						{% include "website/bundle_list.html" %}
+					</div>
+					<div class="col-md-6 rightSidebar bundleSidebar"></div>
+
 				</div>
 
 				<div role="tabpanel" class="tab-pane" id="my-saved-searches">
@@ -247,17 +256,24 @@
         <h4 class="modal-title" id="myModalLabel">Download Course Bundles</h4>
       </div>
       <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Download</button>
+        <div id="downloadFileArea">
+        	<div class="containter">
+        		<div class="row">
+        			<div class="col-md-3">
+        				<img class="img-responsive pull-right" src="{% static 'website/css/images/spiffygif_114x114.gif' %}" />
+        			</div>
+        			<div class="col-md-9">
+        				<h2>Zipping Up Your Bundle!</h2>
+        			</div>
+        		</div>
+        	</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Download Course Bundle Modal -->
+<!-- Create New Bundle Modal -->
 <div class="modal fade" id="newBundleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">

@@ -1,10 +1,14 @@
+import os,zipfile
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 import operator
 from django.db.models import TextField, CharField, Q, Count
 from django.contrib.auth.decorators import login_required
 from itertools import chain
+from django.conf import settings
 
+# path to media root for adding a zip archive
+MEDIA_ROOT = settings.MEDIA_ROOT
 
 # import all website models
 from website.models import *
@@ -113,8 +117,14 @@ def search(request):
 			moduleDocsCount = moduleDocuments.objects.filter(module=module)
 			#count number of times keyword comes up in docs
 			moduleDocsWordCount = 0
+			contents = []
 			for doc in moduleDocsCount:
 				moduleDocsWordCount = moduleDocsWordCount + doc.document_contents.lower().count(keyword.lower())
+				#add document contents to modules
+				contents.append(doc.document_contents)
+
+			# join document contents together
+			module.document_contents = '\n'.join(contents)
 
 			# look up lectures
 			lecturesCount = lectures.objects.filter(module=module)
@@ -160,6 +170,15 @@ def showModule(request, id=None):
 	"""
 	#get module
 	module_returned = modules.objects.get(pk=id)
+
+	moduleDocsCount = moduleDocuments.objects.filter(module=module_returned)
+	contents = []
+	for doc in moduleDocsCount:
+		#add document contents to modules
+		contents.append(doc.document_contents)
+
+	# join document contents together
+	module_returned.document_contents = '\n'.join(contents)	
 
 	#get first lecture uploaded
 	earliest_lecture = lectures.objects.filter(module=module_returned).earliest('created')
@@ -252,7 +271,7 @@ def createNewBundle(request):
 
 
 	context_dict = {'bundles_returned':bundles_returned}
-	return render(request, 'website/bundle.html', context_dict)
+	return render(request, 'website/bundle_dropdown.html', context_dict)
 
 
 def addToBundle(request):
@@ -273,30 +292,253 @@ def addToBundle(request):
 		if itemid[0] == 'module':
 			#look up module
 			module = modules.objects.get(pk=itemid[1])
-			bm = bundleModule(bundle=bundle, module=module)
-			bm.save()
+			#does bundle/module exist already?
+			if bundleModule.objects.filter(bundle=bundle, module=module).exists() == False:
+				bm = bundleModule(bundle=bundle, module=module)
+				bm.save()
 		elif itemid[0] == 'lecture':
 			#look up lecture
 			lecture = lectures.objects.get(pk=itemid[1])
-			bl = bundleLecture(bundle=bundle, lecture=lecture)
-			bl.save()
+			if bundleLecture.objects.filter(bundle=bundle, lecture=lecture).exists() == False:
+				bl = bundleLecture(bundle=bundle, lecture=lecture)
+				bl.save()
 		elif itemid[0] == 'lecturedocument':
 			#look up lectureDocument
 			lectureDocument = lectureDocuments.objects.get(pk=itemid[1])
-			bld = bundleLectureDocument(bundle=bundle, lectureDocument=lectureDocument)
-			bld.save()
+			if bundleLectureDocument.objects.filter(bundle=bundle, lectureDocument=lectureDocument).exists() == False:
+				bld = bundleLectureDocument(bundle=bundle, lectureDocument=lectureDocument)
+				bld.save()
 		else:
 			#look up lectureSlide
 			lectureSlide = lectureSlides.objects.get(pk=itemid[1])
-			bls = bundleLectureSlides(bundle=bundle, lectureSlide=lectureSlide)
-			bls.save()
+			if bundleLectureSlides.objects.filter(bundle=bundle, lectureSlide=lectureSlide).exists() == False:
+				bls = bundleLectureSlides(bundle=bundle, lectureSlide=lectureSlide)
+				bls.save()
 
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
 
 	context_dict = {'bundles_returned':bundles_returned}
-	return render(request, 'website/bundle.html', context_dict)
+	return render(request, 'website/bundle_dropdown.html', context_dict)
 
+
+def removeFromBundle(request):
+	"""
+	  AJAX request to remove an item to the bundle
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		bundleid = request.GET.get("bundle","")
+		itemid = request.GET.get("itemid","")
+		typename = request.GET.get("type","")
+
+		# get bundle
+		bundle = bundles.objects.get(pk=bundleid)
+
+		# remove item from appropriate bundle 
+		if typename == 'module':
+			#look up module
+			module = modules.objects.get(pk=itemid)
+			bm = bundleModule.objects.filter(bundle=bundle, module=module)
+			for rec in bm:
+				rec.delete()
+			
+		elif typename == 'lecture':
+			#look up lecture
+			lecture = lectures.objects.get(pk=itemid)
+			bl = bundleLecture.objects.filter(bundle=bundle, lecture=lecture)
+			for rec in bl:
+				rec.delete()
+
+		elif typename == 'lecturedocument':
+			#look up lectureDocument
+			lectureDocument = lectureDocuments.objects.get(pk=itemid)
+			bld = bundleLectureDocument.objects.filter(bundle=bundle, lectureDocument=lectureDocument)
+			for rec in bld:
+				rec.delete()
+		else:
+			#look up lectureSlide
+			lectureSlide = lectureSlides.objects.get(pk=itemid)
+			bls = bundleLectureSlides.objects.filter(bundle=bundle, lectureSlide=lectureSlide)
+			for rec in bls:
+				bls.delete()
+
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+
+	context_dict = {'bundles_returned':bundles_returned}
+	return render(request, 'website/bundle_dropdown.html', context_dict)
+
+
+def showBundle(request, id=None):
+	"""
+	  Response from AJAX request to show bundle in sidebar
+	"""
+	#get lecture slide
+	bundle_returned = bundles.objects.get(pk=id, user=request.user)
+
+	#get return all other content
+	bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
+	bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+	bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
+	bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
+
+	# for each module in a bundle, attach the module documents and the lectures
+	for bundle in bundle_modules:
+		#look up module docs 
+		moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
+		# just get the file name
+		for doc in moduleDocs:
+			document = str(doc.document)
+			document = document.split('/')
+			doc.documentName = document[2]
+
+		#attach to the bundle
+		bundle.module.moduleDocs = moduleDocs
+
+		#look up the lectures
+		moduleLecs = lectures.objects.filter(module=bundle.module)
+		# get the file name
+		for lec in moduleLecs:
+			lecture = str(lec.presentation)
+			lecture = lecture.split('/')
+			lec.lectureName = lecture[2]
+
+		bundle.module.lectures = moduleLecs
+
+
+	#for each lecture document strip out name of file
+	for bundle in bundle_lecture_documents:
+		document = str(bundle.lectureDocument.document)
+		document = document.split('/')
+		bundle.lectureDocument.documentName = document[2]
+
+	#for each lecture slide strip out name of file and slide notes file
+	for bundle in bundle_lecture_slides:
+		slide = str(bundle.lectureSlide.slide)
+		slide = slide.split('/')
+		bundle.lectureSlide.slideName = slide[2]
+		slideNotes = str(bundle.lectureSlide.slide_notes_document)
+		slideNotes = slideNotes.split('/')
+		bundle.lectureSlide.slideNotesName = slideNotes[2]
+
+
+	context_dict = {'bundle_returned':bundle_returned, 'bundle_modules':bundle_modules, 'bundle_lectures': bundle_lectures, 'bundle_lecture_documents': bundle_lecture_documents, 'bundle_lecture_slides': bundle_lecture_slides}
+	return render(request, 'website/show_bundle.html', context_dict)
+
+
+def zipUpBundle(request, id=None):
+	"""
+	  Response from AJAX request to zip up bundle and create download
+	"""
+	#folder for zip file
+	folder = "/zip_files/"+ id +"/"
+	filename = "GAHTC_bundle_"+ id +".zip"
+
+	if not os.path.exists(MEDIA_ROOT + folder):
+		os.makedirs(MEDIA_ROOT + folder)
+
+	#create zip file
+	with zipfile.ZipFile(MEDIA_ROOT + folder + filename, "w", allowZip64=True) as myzip:
+
+		#get lecture slide
+		bundle_returned = bundles.objects.get(pk=id, user=request.user)
+
+		#get return all other content
+		bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
+		bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+		bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
+		bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
+
+		# for each module in a bundle, attach the module documents and the lectures
+		for bundle in bundle_modules:
+			# create directory for module
+
+			#look up module docs 
+			moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
+			#loop over docs and add to zip archive in the correct folder
+			for doc in moduleDocs:
+				modTitle = ''.join(bundle.module.title.split())
+				document = str(doc.document)
+				document = document.split('/')
+				directory = os.path.join("modules/" + modTitle + "/documents", document[2])
+				myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
+
+			#look up the lectures
+			moduleLecs = lectures.objects.filter(module=bundle.module)
+			#loop over lectures and add to zip archive in the correct folder
+			for lec in moduleLecs:
+				modTitle = ''.join(bundle.module.title.split())
+				lecTitle = ''.join(lec.title.split())
+				document = str(lec.presentation)
+				document = document.split('/')
+				directory = os.path.join("modules/" + modTitle + "/lectures/" + lecTitle, document[2])
+				myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
+
+				# look up lecture documents
+				moduleLecDocs = lectureDocuments.objects.filter(lecture=lec)
+				for lecDoc in moduleLecDocs:
+					document = str(lecDoc.document)
+					document = document.split('/')
+					directory = os.path.join("modules/" + modTitle + "/lectures/" + lecTitle, document[2])
+					myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
+
+
+		# for each lecture write to zip archive 
+		for bundle in bundle_lectures:
+			lecTitle = ''.join(bundle.lecture.title.split())
+			document = str(bundle.lecture.presentation)
+			document = document.split('/')
+			directory = os.path.join("lectures/" + lecTitle, document[2])
+			myzip.write(MEDIA_ROOT + '/' + str(bundle.lecture.presentation), directory)
+
+			# look up lecture documents and add these to zip archive
+			lecDocs = lectureDocuments.objects.filter(lecture=bundle.lecture)
+			for lecDoc in lecDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				directory = os.path.join("lectures/" + lecTitle, document[2])
+				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
+
+
+		#for each lecture document strip out name of file
+		for bundle in bundle_lecture_documents:
+			lecTitle = ''.join(bundle.lectureDocument.lecture.title.split())	
+			document = str(bundle.lectureDocument.document)
+			document = document.split('/')
+			directory = os.path.join("lecture_documents/" + lecTitle, document[2])
+			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureDocument.document), directory)
+
+		#for each lecture slide strip out name of file and slide notes file
+		for bundle in bundle_lecture_slides:
+			lecTitle = ''.join(bundle.lectureSlide.lecture.title.split())	
+			document = str(bundle.lectureSlide.slide)
+			document = document.split('/')
+			directory = os.path.join("lecture_slides/" + lecTitle, document[2])
+			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.slide), directory)
+			document = str(bundle.lectureSlide.slide_notes_document)
+			document = document.split('/')			
+			directory = os.path.join("lecture_slides/" + lecTitle, document[2])
+			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.slide_notes_document), directory)
+
+	#get size of zip file
+	filesize = os.path.getsize(MEDIA_ROOT + folder + filename)
+
+	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize}
+	return render(request, 'website/bundle_download.html', context_dict)
+
+
+
+def refreshSidebarBundle(request):
+
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+
+	context_dict = {'bundles_returned':bundles_returned}
+	return render(request, 'website/bundle_list.html', context_dict)
 
 

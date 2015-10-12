@@ -260,8 +260,8 @@ class Command(BaseCommand):
                     os.remove(head + "/slide-"+ str(index) +".jpg")
 
 
-                main_string = " ".join(main_text)
-                notes_string = " ".join(notes_text)
+                main_string = '\n'.join(main_text)
+                notes_string = '\n'.join(notes_text)
 
                 # concatonate strings together
                 string = main_string + notes_string

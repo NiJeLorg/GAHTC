@@ -1,0 +1,139 @@
+{% load staticfiles %}
+
+	<div class="row marginBottom15">
+		<div class="col-md-8">
+			<h4 class="noTopMargin">BUNDLE: {{ bundle_returned.title }}</h4>
+		</div>	
+		<div class="col-md-4">
+			<button type="button" class="btn btn-default downloadBundle" data-bundleid="{{ bundle_returned.id }}">Download Bundle</button>
+		</div>								
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{% for bundle in bundle_modules %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="http://placehold.it/100x100" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong>MODULE: {{ bundle.module.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-moduleid="{{ bundle.module.id }}">
+								Remove
+							</button>									
+						</div>								
+					</div>
+					<div class="row">
+						{% if bundle.module.moduleDocs|length > 0 %}
+							<strong>Documents</strong>
+							<br />
+							<ul>				
+							{% for doc in bundle.module.moduleDocs %}
+								<li><a href="/media/{{ doc.document }}">{{ doc.documentName }}</a> ({{ doc.document.size|filesizeformat }})</li>
+							{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+					<div class="row">
+						{% if bundle.module.lectures|length > 0 %}
+							<strong>Lectures</strong>
+							<br />
+							<ul>				
+							{% for lec in bundle.module.lectures %}
+								<li><a href="/media/{{ lec.presentation }}">{{ lec.title }}</a> ({{ lec.presentation.size|filesizeformat }})</li>
+							{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% for bundle in bundle_lectures %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="/media/{{ bundle.lecture.getSlideOne }}" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong>LECTURE: {{ bundle.lecture.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lectureid="{{ bundle.lecture.id }}">
+								Remove
+							</button>									
+						</div>								
+					</div>
+					<div class="row">
+						<p><a href="/media/{{ bundle.lecture.presentation }}">{{ bundle.lecture.title }}</a> ({{ bundle.lecture.presentation.size|filesizeformat }})</p>
+					</div>
+					<div class="row">
+						<p>From the module: <em>{{ bundle.lecture.module.title }}</em></p>
+					</div>
+
+				</div>
+			</div>
+			{% endfor %}
+			{% for bundle in bundle_lecture_documents %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="http://placehold.it/100x100" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong>LECTURE DOCUMENT FROM: {{ bundle.lectureDocument.lecture.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lecturedocumentid="{{ bundle.lectureDocument.id }}">
+								Remove
+							</button>
+						</div>							
+					</div>
+					<div class="row">
+						<p><a href="/media/{{ bundle.lectureDocument.document }}">{{ bundle.lectureDocument.documentName }}</a> ({{ bundle.lectureDocument.document.size|filesizeformat }})</p>
+					</div>
+					<div class="row">
+						<p>From the module: <em>{{ bundle.lectureDocument.lecture.module.title }}</em></p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% for bundle in bundle_lecture_slides %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="/media/{{ bundle.lectureSlide.slide }}" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong>SLIDE FROM: {{ bundle.lectureSlide.lecture.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lectureslideid="{{ bundle.lectureSlide.id }}">
+								Remove
+							</button>
+						</div>							
+					</div>
+					<div class="row">
+						<p>
+							Slide: <a href="/media/{{ bundle.lectureSlide.slide }}">{{ bundle.lectureSlide.slideName }}</a> ({{ bundle.lectureSlide.slide.size|filesizeformat }})
+							<br />
+							Slide Notes: <a href="/media/{{ bundle.lectureSlide.slide_notes_document }}">{{ bundle.lectureSlide.slideNotesName }}</a> ({{ bundle.lectureSlide.slide_notes_document.size|filesizeformat }})
+
+
+						</p>
+					</div>
+					<div class="row">
+						<p>From the module: <em>{{ bundle.lectureSlide.lecture.module.title }}</em></p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>
+			

@@ -99,8 +99,14 @@
 	margin-top: 6px;
 }
 
-.searchResultsScroll {
-	height: 80vh;
+.resultsScroll {
+	height: 100vh;
+	overflow: auto;
+	border-right: 1px solid #ccc; 
+}
+
+.resultsScrollBundle {
+	height: 100vh;
 	overflow: auto;
 	border-right: 1px solid #ccc; 
 }
@@ -110,23 +116,43 @@
 	margin-bottom: 10px;
 }
 
-.searchResult {
+.result {
 	padding: 10px 0px;
 	cursor: pointer;
 	border-bottom: 1px solid #ccc; 
 }
 
-.searchResult:hover {
+.result:hover {
 	background-color: #ddd;
 }
 
-.searchResult.active {
+.result.active {
 	background-color: #ddd;
 }
 
-.searchResultTitle {
+.resultTitle {
 	padding-left: 0px;
 }
+
+.bundleResult {
+	padding: 10px 0px;
+	cursor: pointer;
+	border-bottom: 1px solid #ccc; 
+}
+
+.bundleResult:hover {
+	background-color: #ddd;
+}
+
+.bundleResult.active {
+	background-color: #ddd;
+}
+
+.bundleList {
+	padding: 10px 0px;
+	border-bottom: 1px solid #ccc; 
+}
+
 
 .rightSidebar {
 	padding-top: 15px;
