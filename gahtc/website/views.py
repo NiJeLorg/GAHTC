@@ -437,6 +437,7 @@ def zipUpBundle(request, id=None):
 	#folder for zip file
 	folder = "/zip_files/"+ id +"/"
 	filename = "GAHTC_bundle_"+ id +".zip"
+	zipfolder = "GAHTC_bundle_"+ id
 
 	if not os.path.exists(MEDIA_ROOT + folder):
 		os.makedirs(MEDIA_ROOT + folder)
@@ -464,7 +465,7 @@ def zipUpBundle(request, id=None):
 				modTitle = ''.join(bundle.module.title.split())
 				document = str(doc.document)
 				document = document.split('/')
-				directory = os.path.join("modules/" + modTitle + "/documents", document[2])
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", document[2])
 				myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 			#look up the lectures
@@ -475,7 +476,7 @@ def zipUpBundle(request, id=None):
 				lecTitle = ''.join(lec.title.split())
 				document = str(lec.presentation)
 				document = document.split('/')
-				directory = os.path.join("modules/" + modTitle + "/lectures/" + lecTitle, document[2])
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, document[2])
 				myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 				# look up lecture documents
@@ -483,7 +484,7 @@ def zipUpBundle(request, id=None):
 				for lecDoc in moduleLecDocs:
 					document = str(lecDoc.document)
 					document = document.split('/')
-					directory = os.path.join("modules/" + modTitle + "/lectures/" + lecTitle, document[2])
+					directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, document[2])
 					myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -492,7 +493,7 @@ def zipUpBundle(request, id=None):
 			lecTitle = ''.join(bundle.lecture.title.split())
 			document = str(bundle.lecture.presentation)
 			document = document.split('/')
-			directory = os.path.join("lectures/" + lecTitle, document[2])
+			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, document[2])
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lecture.presentation), directory)
 
 			# look up lecture documents and add these to zip archive
@@ -500,7 +501,7 @@ def zipUpBundle(request, id=None):
 			for lecDoc in lecDocs:
 				document = str(lecDoc.document)
 				document = document.split('/')
-				directory = os.path.join("lectures/" + lecTitle, document[2])
+				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, document[2])
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -509,7 +510,7 @@ def zipUpBundle(request, id=None):
 			lecTitle = ''.join(bundle.lectureDocument.lecture.title.split())	
 			document = str(bundle.lectureDocument.document)
 			document = document.split('/')
-			directory = os.path.join("lecture_documents/" + lecTitle, document[2])
+			directory = os.path.join(zipfolder+ "/lecture_documents/" + lecTitle, document[2])
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureDocument.document), directory)
 
 		#for each lecture slide strip out name of file and slide notes file
@@ -517,11 +518,11 @@ def zipUpBundle(request, id=None):
 			lecTitle = ''.join(bundle.lectureSlide.lecture.title.split())	
 			document = str(bundle.lectureSlide.slide)
 			document = document.split('/')
-			directory = os.path.join("lecture_slides/" + lecTitle, document[2])
+			directory = os.path.join(zipfolder+ "/lecture_slides/" + lecTitle, document[2])
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.slide), directory)
 			document = str(bundle.lectureSlide.slide_notes_document)
 			document = document.split('/')			
-			directory = os.path.join("lecture_slides/" + lecTitle, document[2])
+			directory = os.path.join(zipfolder+ "/lecture_slides/" + lecTitle, document[2])
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.slide_notes_document), directory)
 
 	#get size of zip file
