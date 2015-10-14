@@ -28,6 +28,8 @@ class Command(BaseCommand):
                 ls.slide_notes_document.save("/slide-"+ str(ls.slide_number) +".txt", textfile)
                 textfile.closed
                 f.closed
+                ls.extracted = True
+                ls.save()
 
             os.remove(MEDIA_ROOT + "/slide-"+ str(ls.slide_number) +".txt")
 

@@ -68,6 +68,7 @@ class lectureSlides(models.Model):
 	slide_main_text = models.TextField(default='', null=True, blank=True)
 	slide_notes = models.TextField(default='', null=True, blank=True)
 	slide_notes_document = models.FileField(upload_to="slide_notes_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
+	extracted = models.BooleanField(default=False)
 
 
 #bundles
