@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     def create_text_files(self):
         # pull files from database
-        lectureSlidesObjects = lectureSlides.objects.all()
+        lectureSlidesObjects = lectureSlides.objects.filter(extracted=False)
 
         # loop through modules and pull all text
         for ls in lectureSlidesObjects:
