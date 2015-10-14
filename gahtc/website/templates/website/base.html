@@ -68,8 +68,8 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
-            <li><a href="#">Hello {{ user }}!</a></li>
-            <li><a href="#">My Course Bundles</a></li>
+            <li><a href="{% url 'myprofile' %}">Hello {{ user }}!</a></li>
+            <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
             <li><a href="#">My Saved Searches</a></li>
             <li><a href="{% url 'auth_logout' %}">Logout</a></li>
           {% else %}

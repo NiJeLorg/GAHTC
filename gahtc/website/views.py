@@ -10,8 +10,9 @@ from django.conf import settings
 # path to media root for adding a zip archive
 MEDIA_ROOT = settings.MEDIA_ROOT
 
-# import all website models
+# import all website models and forms
 from website.models import *
+from website.forms import *
 
 # GAHTC Views
 def index(request):
@@ -21,19 +22,10 @@ def index(request):
 	context_dict = {}
 	return render(request, 'website/index.html', context_dict)
 
-
-@login_required
-def search(request):
+def mainSearchCode(request, keyword, tab):
 	"""
-	  Queries the database for search terms and returns list of results
+	  Queries the database for search terms and returns list of results -- used in search and bundles
 	"""
-
-	# search terms
-	try:
-		keyword = request.POST['keyword']
-	except KeyError:
-		return HttpResponseRedirect("/")
-	
 	# empty search strings and query Qs
 	modules_keywords_query = Q()
 	module_documents_keywords_query = Q()
@@ -80,8 +72,20 @@ def search(request):
 	lecture_slides_returned_count = lectureSlides.objects.filter(lecture_slides_keywords_query).count()
 
 	if (modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
-		context_dict = {'keyword':keyword}
-		return render(request, 'website/no_search_results.html', context_dict)
+		modules_returned = modules.objects.none()
+		moduleDocsCount = moduleDocuments.objects.none()
+		lectures_returned = lectures.objects.none()
+		lecture_documents_returned = lectureDocuments.objects.none()
+		lecture_slides_returned = lectureSlides.objects.none()
+
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+
+		# pull user profile
+		user_profile = profile.objects.get(user=request.user)
+
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile}
+
 	else:
 		modules_returned = modules.objects.filter(modules_keywords_query)
 		module_documents_returned = moduleDocuments.objects.filter(module_documents_keywords_query)
@@ -159,8 +163,59 @@ def search(request):
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count}
-		return render(request, 'website/search.html', context_dict)
+		# pull user profile
+		user_profile = profile.objects.get(user=request.user)
+
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile}
+
+	return context_dict
+
+
+@login_required
+def search(request):
+	"""
+	  Queries the database for search terms and returns list of results
+	"""
+
+	# search terms
+	try:
+		keyword = request.POST['keyword']
+		tab = 'search'
+		context_dict = mainSearchCode(request, keyword, tab)
+	except KeyError:
+		return HttpResponseRedirect("/")
+	
+	return render(request, 'website/profile.html', context_dict)
+
+
+@login_required
+def mybundles(request):
+	"""
+	  Queries the database for search terms and returns list of results; goes to bundle
+	"""
+
+	# placeholder keyword to return all items
+	keyword = 'Architecture'
+	tab = 'bundle'
+	context_dict = mainSearchCode(request, keyword, tab)	
+
+	return render(request, 'website/profile.html', context_dict)
+
+
+@login_required
+def myprofile(request):
+	"""
+	  Queries the database for search terms and returns list of results; goes to bundle
+	"""
+
+	# placeholder keyword to return all items
+	keyword = 'Architecture'
+	tab = 'profile'
+	context_dict = mainSearchCode(request, keyword, tab)	
+
+	return render(request, 'website/profile.html', context_dict)
+
+
 	
 
 
@@ -170,6 +225,31 @@ def showModule(request, id=None):
 	"""
 	#get module
 	module_returned = modules.objects.get(pk=id)
+
+	#look up module docs 
+	moduleDocs = moduleDocuments.objects.filter(module=module_returned)
+	# just get the file name
+	for doc in moduleDocs:
+		document = str(doc.document)
+		document = document.split('/')
+		doc.documentName = document[2]
+
+	#look up the lectures
+	moduleLecs = lectures.objects.filter(module=module_returned)
+	# get the file name
+	for lec in moduleLecs:
+		lecture = str(lec.presentation)
+		lecture = lecture.split('/')
+		lec.lectureName = lecture[2]
+		# get lecture documents
+		lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+		lec.lectureDocs = lectureDocs
+		for lecDoc in lec.lectureDocs:
+			document = str(lecDoc.document)
+			document = document.split('/')
+			lecDoc.documentName = document[2]
+
+
 
 	moduleDocsCount = moduleDocuments.objects.filter(module=module_returned)
 	contents = []
@@ -186,7 +266,7 @@ def showModule(request, id=None):
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
-	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture, 'bundles_returned':bundles_returned}
+	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture, 'bundles_returned':bundles_returned, 'moduleDocs':moduleDocs, 'moduleLecs':moduleLecs}
 	return render(request, 'website/show_module.html', context_dict)
 
 def showLecture(request, id=None):
@@ -406,6 +486,13 @@ def showBundle(request, id=None):
 			lecture = str(lec.presentation)
 			lecture = lecture.split('/')
 			lec.lectureName = lecture[2]
+			# get lecture documents
+			lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+			lec.lectureDocs = lectureDocs
+			for lecDoc in lec.lectureDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				lecDoc.documentName = document[2]
 
 		bundle.module.lectures = moduleLecs
 
@@ -541,5 +628,50 @@ def refreshSidebarBundle(request):
 
 	context_dict = {'bundles_returned':bundles_returned}
 	return render(request, 'website/bundle_list.html', context_dict)
+
+
+
+@login_required
+def updateProfile(request):
+	"""
+	  Loads the user profile page for editing
+	"""	
+
+
+	#get user profile data and pass to view
+	try:
+		user_profile = profile.objects.get(user=request.user)
+	except profile.DoesNotExist:
+		user_profile = None
+		
+	if request.method == 'POST':
+		user_form = UserInfoForm(data=request.POST, instance=request.user)
+		profile_form = UserProfileForm(data=request.POST, instance=user_profile)
+		if user_form.is_valid() and profile_form.is_valid():
+			user_form.save()       
+			pf = profile_form.save(commit=False)
+			pf.pic = request.FILES['pic'] 
+			pf.user = request.user
+			pf.save()
+
+			return HttpResponseRedirect("/profile/")
+						
+		else:
+			print user_form.errors, profile_form.errors
+			
+	else:
+		user_form = UserInfoForm(instance=request.user)
+		profile_form = UserProfileForm(instance=user_profile)
+
+
+	keyword = 'Architecture'
+	tab = 'profile'
+	context_dict = mainSearchCode(request, keyword, tab)	
+
+	context_dict_extra = {'user_form': user_form, 'profile_form': profile_form}
+
+	context_dict.update(context_dict_extra)
+
+	return render(request, 'website/update_profile.html', context_dict)
 
 

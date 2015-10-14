@@ -3,6 +3,18 @@ from django.db import models
 # import User model
 from django.contrib.auth.models import User
 
+# user profile
+class profile(models.Model):
+	user = models.OneToOneField(User)
+	name = models.CharField(max_length=255, default='', null=False, blank=False)
+	institution = models.CharField(max_length=255, default='', null=False, blank=False)
+	teaching = models.TextField(default='', null=False, blank=False)
+	introduction = models.TextField(default='', null=False, blank=False)
+	pic = models.ImageField(upload_to="bio_pics/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
+
+	def __unicode__(self):
+		return self.name
+
 # course modules
 class modules(models.Model):
 	created = models.DateTimeField(auto_now=True)

@@ -1,12 +1,9 @@
 {% load staticfiles %}
 
 	<div class="row marginBottom15">
-		<div class="col-md-8">
+		<div class="col-md-9">
 			<h4 class="noTopMargin">LECTURE: {{ lecture_returned.title }}</h4>
 		</div>	
-		<div class="col-md-1">
-			<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-share" aria-hidden="true"></span></button>
-		</div>
 		<div class="col-md-3">
 			<div class="dropdown">
 				<button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -22,7 +19,6 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="alert alert-success bundle-add-alert hidden" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<p><strong>Lecture Added!</strong> This lecture has been added to your bundle, <span id="bundle-title"></span>.</p>
 			</div>
 		</div>

@@ -79,8 +79,6 @@
 }
 
 
-
-
 /* Search Bar */
 .searchbar {
 	margin-top: 10%;
@@ -167,6 +165,14 @@
 	margin-bottom: 15px;
 }
 
+.marginRight15 {
+	margin-right: 15px;
+}
+
+.marginTop30 {
+	margin-top: 30px;
+}
+
 .textbox {
 	height: 20vh;
 	overflow: auto;
@@ -179,3 +185,8 @@
     background-color: #ddd;
 }
 
+
+/* Add a of bottom padding to containers */
+.container {
+	padding-bottom:15px;
+}

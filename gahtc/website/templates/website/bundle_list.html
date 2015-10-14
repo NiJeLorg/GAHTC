@@ -1,7 +1,9 @@
+{% load staticfiles %}
+
 {% for bundle in bundles_returned %}
 <div class="row bundleResult" data-bundleid="{{ bundle.id }}">
 	<div class="col-xs-3">
-		<img class="img-responsive" src="http://placehold.it/100x100" />
+		<img class="img-responsive" src="{% static 'website/css/images/bundle.png' %}" />
 	</div>							
 	<div class="col-xs-9">
 		<div class="row">

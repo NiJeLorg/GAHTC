@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from website import urls as website_urls
+from website import regbackend
 
 urlpatterns = [
 	url(r'^', include(website_urls)),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/register/$', regbackend.MyRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
 
 ]

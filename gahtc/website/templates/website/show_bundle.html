@@ -13,7 +13,7 @@
 			{% for bundle in bundle_modules %}
 			<div class="row bundleList">
 				<div class="col-xs-3">
-					<img class="img-responsive" src="http://placehold.it/100x100" />
+					<img class="img-responsive" src="{% static 'website/css/images/module.png' %}" />
 				</div>							
 				<div class="col-xs-9">
 					<div class="row">
@@ -44,6 +44,13 @@
 							<ul>				
 							{% for lec in bundle.module.lectures %}
 								<li><a href="/media/{{ lec.presentation }}">{{ lec.title }}</a> ({{ lec.presentation.size|filesizeformat }})</li>
+								{% if lec.lectureDocs|length > 0 %}
+									<ul>
+									{% for lecDoc in lec.lectureDocs %}
+										<li><a href="/media/{{ lecDoc.document }}">{{ lecDoc.documentName }}</a> ({{ lecDoc.document.size|filesizeformat }})</li>
+									{% endfor %}
+									</ul>
+								{% endif %}								
 							{% endfor %}
 							</ul>
 						{% endif %}
@@ -80,7 +87,7 @@
 			{% for bundle in bundle_lecture_documents %}
 			<div class="row bundleList">
 				<div class="col-xs-3">
-					<img class="img-responsive" src="http://placehold.it/100x100" />
+					<img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
 				</div>							
 				<div class="col-xs-9">
 					<div class="row">

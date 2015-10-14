@@ -1,0 +1,29 @@
+{% extends 'website/search.html' %}
+{% load staticfiles %}
+
+{% block profile_block %}
+<div class="container">
+	<div class="row marginTop30">
+		<div class="col-md-4">
+			{% if user_profile.pic %}
+				<img class="img-responsive" src="/media/{{ user_profile.pic }}" />
+			{% else %}
+				<img class="img-responsive" src="{% static 'website/css/images/icon-profile.png' %}" />
+			{% endif %}
+		</div>	
+		<div class="col-md-7 col-md-offset-1">
+			<div class="row marginBottom15 marginRight15">
+				<a class="btn btn-default pull-right" href="{% url 'updateProfile' %}" role="button">Update My Profile</a>
+			</div>
+			<div class="row">
+				<p><strong>My Name:</strong> {{ user_profile.name }}</p>
+				<p><strong>My Email:</strong> {{ user.email }} </p>
+				<p><strong>My Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
+				<p><strong>My Introduction:</strong> {{ user_profile.introduction }}</p>
+			</div>
+
+		</div>								
+	</div>
+</div>
+{% endblock %}	
+			

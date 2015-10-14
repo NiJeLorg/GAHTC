@@ -70,16 +70,17 @@ gahtcApplication.createNewBundle = function () {
 		type: "GET",
 		url: "/create_new_bundle/?title=" + title + "&itemid=" + itemid,
 		success: function(data){
-			// success alert message
-			$('.bundle-add_alert').removeClass('hidden');
-			$('#bundle-title').text(title);
+			var timeout = window.setTimeout(slowAlert, 300);
+			function slowAlert() {
+				// success alert message
+				$('.bundle-add_alert').removeClass('hidden');
+				$('#bundle-title').text(title);
+			}
 
 			// add response from template to bundles uls
 			$('.bundles').html(data);
         }
 	});
-
-	gahtcApplication.refreshSidebarBundle();
 
 }
 
@@ -89,8 +90,12 @@ gahtcApplication.addToBundle = function (bundle, itemid, title) {
 		url: "/add_to_bundle/?bundle=" + bundle + "&itemid=" + itemid,
 		success: function(data){
 			// success alert message
-			$('.bundle-add-alert').removeClass('hidden');
-			$('#bundle-title').text(title);
+			var timeout = window.setTimeout(slowAlert, 300);
+			function slowAlert() {
+				$('.bundle-add-alert').removeClass('hidden');
+				$('#bundle-title').text(title);
+			}
+
         }
 	});
 }
@@ -131,8 +136,14 @@ gahtcApplication.refreshSidebarBundle = function () {
 		type: "GET",
 		url: "/refresh_sidebar_bundle/",
 		success: function(data){
-			// populate sidebar
-			$('.bundleList').html(data);
+			// populate bundle list 
+			$('.resultsScrollBundle').html(data);
+			$( ".bundleResult:first" ).addClass('active');
+			// pull data for active bundle into sidebar
+			var bundleid = $( ".bundleResult:first" ).data( 'bundleid' );
+			if (bundleid) {
+				gahtcApplication.getBundle(bundleid);
+			}
         }
 	});
 }

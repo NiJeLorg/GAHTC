@@ -8,6 +8,13 @@ $( document ).ready(function() {
 	// fade in main image and search bar
 	$(".fadein").fadeIn("slow");
 
+	// if user had picked my course bundles, then switch them to that tab
+	if (tab == "bundle") {
+		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
+	} else if (tab == "profile") {
+		$('.nav-tabs a[href="#my-profile"]').tab('show');		
+	}
+
 	// select first in list and populate search result bar
 	$( ".result:first" ).addClass('active');
 	gahtcApplication.whichToGet($( ".result:first" ));
@@ -20,7 +27,8 @@ $( document ).ready(function() {
 	}
 
 	// on click of module, run query to pull module
-	$( ".module" ).click(function() {
+	$( ".module" ).click(function(e) {
+		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var module_id = $( this ).data( "moduleid" );
@@ -28,7 +36,8 @@ $( document ).ready(function() {
 	});
 
 	// on click of lecture, run query to pull lecture
-	$( ".lecture" ).click(function() {
+	$( ".lecture" ).click(function(e) {
+		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_id = $( this ).data( "lectureid" );
@@ -36,7 +45,8 @@ $( document ).ready(function() {
 	});
 
 	// on click of lecture-document, run query to pull lecture document
-	$( ".lecture_document" ).click(function() {
+	$( ".lecture_document" ).click(function(e) {
+		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_document_id = $( this ).data( "lecturedocumentid" );
@@ -44,15 +54,16 @@ $( document ).ready(function() {
 	});
 
 	// on click of lecture-document, run query to pull lecture document
-	$( ".lecture_slide" ).click(function() {
+	$( ".lecture_slide" ).click(function(e) {
+		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_slide_id = $( this ).data( "lectureslideid" );
 		gahtcApplication.getLectureSlide(lecture_slide_id);
 	});
 
-
-	$( ".bundleResult" ).click(function() {
+	$(document).on('click', '.bundleResult', function(e) {
+		e.preventDefault();
 		$( ".bundleResult" ).removeClass('active');
 		$( this ).addClass('active');
 		var bundleid = $( this ).data( 'bundleid' );
@@ -95,7 +106,8 @@ $( document ).ready(function() {
 	});
 
 	// create new bundle
-	$(document).on('click', '.create-new-bundle', function() {
+	$(document).on('click', '.create-new-bundle', function(e) {
+		e.preventDefault();
 		// open the modal
 		$('#newBundleModal').modal('show');
 		// pull data value from parent element
@@ -105,7 +117,8 @@ $( document ).ready(function() {
 	});
 
 	// run ajax to create new bundle when save is clicked
-	$(" #createNewBundle ").click(function() {
+	$(" #createNewBundle ").click(function(e) {
+		e.preventDefault();
 		// check to see if a title was added
 		if ($(" #newBundleName ").val().length == 0) {
 			$(" #noBundleTitleAlert ").removeClass('hidden');
@@ -116,11 +129,15 @@ $( document ).ready(function() {
 			// close the modal
 			$('#newBundleModal').modal('hide');
 
+			// update bundle page
+			gahtcApplication.refreshSidebarBundle();
+
 		}
 	});
 
 	// add to a bundle
-	$(document).on('click', '.add-to-bundle', function() { 
+	$(document).on('click', '.add-to-bundle', function(e) { 
+		e.preventDefault();
 		// pull bundle id
 		var bundle = $(this).data( "bundle" );
 		// pull data value from parent element
@@ -130,10 +147,13 @@ $( document ).ready(function() {
 		// run function
 		gahtcApplication.addToBundle(bundle, itemid, title);
 
+		// refresh bundle page
+		gahtcApplication.refreshSidebarBundle();
 	});
 
 	// add to a bundle
-	$(document).on('click', '.remove-from-bundle', function() { 
+	$(document).on('click', '.remove-from-bundle', function(e) { 
+		e.preventDefault();
 		// pull bundle id
 		var bundle = $(this).data( "bundleid" );
 		// pull data value from parent element
@@ -156,12 +176,14 @@ $( document ).ready(function() {
 	});
 
 	// switch tab on download button click
-	$(" .switchToBundle ").click(function() {
+	$(" .switchToBundle ").click(function(e) {
+		e.preventDefault();
 		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
 	});
 	
 	// download bundle
-	$(document).on('click', '.downloadBundle', function() { 
+	$(document).on('click', '.downloadBundle', function(e) { 
+		e.preventDefault();
 		// open modal
 		$('#downloadModal').modal('show');
 		// pull bundle id

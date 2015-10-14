@@ -5,9 +5,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from website import views
 
+
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^search/$', views.search, name='search'),
+    url(r'^bundles/$', views.mybundles, name='mybundles'),
+    url(r'^profile/$', views.myprofile, name='myprofile'),
     url(r'^show_module/(?P<id>\d+)/$', views.showModule, name='showModule'),
     url(r'^show_lecture/(?P<id>\d+)/$', views.showLecture, name='showLecture'),
     url(r'^show_lecture_document/(?P<id>\d+)/$', views.showLectureDocument, name='showLectureDocument'),
@@ -18,4 +21,6 @@ urlpatterns = [
     url(r'^show_bundle/(?P<id>\d+)/$', views.showBundle, name='showBundle'),
     url(r'^zip_up_bundle/(?P<id>\d+)/$', views.zipUpBundle, name='zipUpBundle'),
     url(r'^refresh_sidebar_bundle/$', views.refreshSidebarBundle, name='refreshSidebarBundle'),
+    url(r'^update_profile/$', views.updateProfile, name='updateProfile'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
