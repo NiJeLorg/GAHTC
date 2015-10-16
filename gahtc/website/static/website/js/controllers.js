@@ -13,6 +13,8 @@ $( document ).ready(function() {
 		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
 	} else if (tab == "profile") {
 		$('.nav-tabs a[href="#my-profile"]').tab('show');		
+	} else if (tab == "none") {
+		// do nothing
 	}
 
 	// select first in list and populate search result bar
@@ -190,6 +192,30 @@ $( document ).ready(function() {
 		var bundle = $(this).data( "bundleid" );
 		// run function
 		gahtcApplication.zipUpBundle(bundle);
+
+	});
+
+	// download module
+	$(document).on('click', '.downloadModule', function(e) { 
+		e.preventDefault();
+		// open modal
+		$('#downloadModal').modal('show');
+		// pull bundle id
+		var module = $(this).data( "moduleid" );
+		// run function
+		gahtcApplication.zipUpModule(module);
+
+	});
+
+	// download module
+	$(document).on('click', '.downloadLecture', function(e) { 
+		e.preventDefault();
+		// open modal
+		$('#downloadModal').modal('show');
+		// pull bundle id
+		var lecture = $(this).data( "lectureid" );
+		// run function
+		gahtcApplication.zipUpLecture(lecture);
 
 	});
 

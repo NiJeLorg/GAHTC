@@ -20,7 +20,11 @@ urlpatterns = [
     url(r'^remove_from_bundle/$', views.removeFromBundle, name='removeFromBundle'),
     url(r'^show_bundle/(?P<id>\d+)/$', views.showBundle, name='showBundle'),
     url(r'^zip_up_bundle/(?P<id>\d+)/$', views.zipUpBundle, name='zipUpBundle'),
+    url(r'^zip_up_module/(?P<id>\d+)/$', views.zipUpModule, name='zipUpModule'),
+    url(r'^zip_up_lecture/(?P<id>\d+)/$', views.zipUpLecture, name='zipUpLecture'),
     url(r'^refresh_sidebar_bundle/$', views.refreshSidebarBundle, name='refreshSidebarBundle'),
     url(r'^update_profile/$', views.updateProfile, name='updateProfile'),
+    url(r'^modules/$', views.modulesView, name='modulesView'),
+    url(r'^lectures/$', views.lecturesView, name='lecturesView'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

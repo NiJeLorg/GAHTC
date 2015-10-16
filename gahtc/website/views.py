@@ -216,7 +216,6 @@ def myprofile(request):
 	return render(request, 'website/profile.html', context_dict)
 
 
-	
 
 
 def showModule(request, id=None):
@@ -619,6 +618,103 @@ def zipUpBundle(request, id=None):
 	return render(request, 'website/bundle_download.html', context_dict)
 
 
+def zipUpModule(request, id=None):
+	"""
+	  Response from AJAX request to zip up module and create download
+	"""
+	#folder for zip file
+	folder = "/zip_files/module_"+ id +"/"
+	filename = "GAHTC_module_"+ id +".zip"
+	zipfolder = "GAHTC_module_"+ id
+
+	if not os.path.exists(MEDIA_ROOT + folder):
+		os.makedirs(MEDIA_ROOT + folder)
+
+	#create zip file
+	with zipfile.ZipFile(MEDIA_ROOT + folder + filename, "w", allowZip64=True) as myzip:
+
+		#get module
+		module_returned = modules.objects.get(pk=id)
+
+		#look up module docs 
+		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
+		#loop over docs and add to zip archive in the correct folder
+		for doc in moduleDocs:
+			modTitle = ''.join(module_returned.title.split())
+			document = str(doc.document)
+			document = document.split('/')
+			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", document[2])
+			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
+
+		#look up the lectures
+		moduleLecs = lectures.objects.filter(module=module_returned)
+		#loop over lectures and add to zip archive in the correct folder
+		for lec in moduleLecs:
+			modTitle = ''.join(module_returned.title.split())
+			lecTitle = ''.join(lec.title.split())
+			document = str(lec.presentation)
+			document = document.split('/')
+			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, document[2])
+			myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
+
+			# look up lecture documents
+			moduleLecDocs = lectureDocuments.objects.filter(lecture=lec)
+			for lecDoc in moduleLecDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, document[2])
+				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
+
+
+
+	#get size of zip file
+	filesize = os.path.getsize(MEDIA_ROOT + folder + filename)
+
+	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize}
+	return render(request, 'website/bundle_download.html', context_dict)
+
+
+def zipUpLecture(request, id=None):
+	"""
+	  Response from AJAX request to zip up lectures and create download
+	"""
+	#folder for zip file
+	folder = "/zip_files/lecture_"+ id +"/"
+	filename = "GAHTC_lecture_"+ id +".zip"
+	zipfolder = "GAHTC_lecture_"+ id
+
+	if not os.path.exists(MEDIA_ROOT + folder):
+		os.makedirs(MEDIA_ROOT + folder)
+
+	#create zip file
+	with zipfile.ZipFile(MEDIA_ROOT + folder + filename, "w", allowZip64=True) as myzip:
+
+		#get lecture
+		lec = lectures.objects.get(pk=id)
+
+		lecTitle = ''.join(lec.title.split())
+		document = str(lec.presentation)
+		document = document.split('/')
+		directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, document[2])
+		myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
+
+		# look up lecture documents
+		lecDocs = lectureDocuments.objects.filter(lecture=lec)
+		for lecDoc in lecDocs:
+			document = str(lecDoc.document)
+			document = document.split('/')
+			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, document[2])
+			myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
+
+
+
+	#get size of zip file
+	filesize = os.path.getsize(MEDIA_ROOT + folder + filename)
+
+	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize}
+	return render(request, 'website/bundle_download.html', context_dict)
+
+
 
 def refreshSidebarBundle(request):
 
@@ -673,5 +769,79 @@ def updateProfile(request):
 	context_dict.update(context_dict_extra)
 
 	return render(request, 'website/update_profile.html', context_dict)
+
+
+@login_required
+def modulesView(request):
+	"""
+	  Loads all modules 
+	"""	
+
+	modules_returned = modules.objects.all()
+
+	for module_returned in modules_returned:
+		#look up module docs 
+		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
+		# just get the file name
+		contents = []
+		for doc in moduleDocs:
+			document = str(doc.document)
+			document = document.split('/')
+			doc.documentName = document[2]
+			contents.append(doc.document_contents)
+
+		# join document contents together
+		module_returned.document_contents = '\n'.join(contents)	
+
+		#attach the module docs to the module returned 
+		module_returned.moduleDocs = moduleDocs
+
+		#look up the lectures
+		moduleLecs = lectures.objects.filter(module=module_returned)
+		# get the file name
+		for lec in moduleLecs:
+			lecture = str(lec.presentation)
+			lecture = lecture.split('/')
+			lec.lectureName = lecture[2]
+			# get lecture documents
+			lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+			lec.lectureDocs = lectureDocs
+			for lecDoc in lec.lectureDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				lecDoc.documentName = document[2]
+
+		#attach the module docs to the module returned 
+		module_returned.moduleLecs = moduleLecs
+
+
+	context_dict = {'modules_returned':modules_returned}
+	return render(request, 'website/modules.html', context_dict)
+
+
+
+@login_required
+def lecturesView(request):
+	"""
+	  Loads all lectures 
+	"""	
+
+	lectures_returned = lectures.objects.all()
+
+	for lec in lectures_returned:
+		lecture = str(lec.presentation)
+		lecture = lecture.split('/')
+		lec.lectureName = lecture[2]
+		# get lecture documents
+		lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+		lec.lectureDocs = lectureDocs
+		for lecDoc in lec.lectureDocs:
+			document = str(lecDoc.document)
+			document = document.split('/')
+			lecDoc.documentName = document[2]
+
+
+	context_dict = {'lectures_returned':lectures_returned}
+	return render(request, 'website/lectures.html', context_dict)
 
 

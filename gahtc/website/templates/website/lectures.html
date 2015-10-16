@@ -1,0 +1,108 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Lectures{% endblock %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block head_js_block %}
+{% endblock %}
+	
+
+{% block content %}
+<!-- Page Content -->
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Lectures</h1>
+		</div>
+	</div>
+	{% for lecture_returned in lectures_returned %}
+
+	<div class="row marginBottom15">
+		<div class="col-md-9">
+			<h3 class="noTopMargin">{{ lecture_returned.title }}</h3>
+		</div>	
+		<div class="col-md-3">
+			<button type="button" class="btn btn-default downloadLecture pull-right" data-lectureid="{{ lecture_returned.id }}">Download Lecture</button>
+		</div>	
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<p>From the module: <em>{{ lecture_returned.module.title }}</em></p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<h4>This lecture includes:</h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<strong>Lecture: </strong>
+			<a href="/media/{{ lecture_returned.presentation }}">{{ lecture_returned.title }}</a> (PPTX; {{ lecture_returned.presentation.size|filesizeformat }})</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{% if lecture_returned.lectureDocs|length > 0 %}
+				<strong>Documents</strong>
+				<br />
+				<ul>				
+				{% for lecDoc in lecture_returned.lectureDocs %}
+					<li><a href="/media/{{ lecDoc.document }}">{{ lecDoc.documentName }}</a> ({{ lecDoc.document.size|filesizeformat }})</li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	</div>
+
+
+	<hr />
+
+	{% endfor %}
+
+
+</div>				
+{% endblock %}
+
+{% block modal_block %}
+<!-- Download Course Bundle Modal -->
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Download Lectures</h4>
+      </div>
+      <div class="modal-body">
+        <div id="downloadFileArea">
+        	<div class="containter">
+        		<div class="row">
+        			<div class="col-md-3">
+        				<img class="img-responsive pull-right" src="{% static 'website/css/images/spiffygif_114x114.gif' %}" />
+        			</div>
+        			<div class="col-md-9">
+        				<h2>Zipping Up Your Lecture!</h2>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js_block %}
+	<script type="text/javascript">
+		var tab = "none";
+	</script>
+	<script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+	<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+	<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+{% endblock %}

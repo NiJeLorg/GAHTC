@@ -130,6 +130,26 @@ gahtcApplication.zipUpBundle = function (bundle_id) {
 	});
 }
 
+gahtcApplication.zipUpModule = function (module_id) {
+	$.ajax({
+		type: "GET",
+		url: "/zip_up_module/" + module_id + "/" ,
+		success: function(data){
+			$('#downloadFileArea').html(data);
+        }
+	});
+}
+
+gahtcApplication.zipUpLecture = function (lecture_id) {
+	$.ajax({
+		type: "GET",
+		url: "/zip_up_lecture/" + lecture_id + "/" ,
+		success: function(data){
+			$('#downloadFileArea').html(data);
+        }
+	});
+}
+
 gahtcApplication.refreshSidebarBundle = function () {
 	// refresh list of bundles in the sidebar
 	$.ajax({
