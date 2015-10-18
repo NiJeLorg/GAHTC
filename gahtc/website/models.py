@@ -97,3 +97,10 @@ class bundleLectureSlides(models.Model):
 	bundle = models.ForeignKey(bundles)
 	lectureSlide = models.ForeignKey(lectureSlides)
 
+
+#saved Searches
+class savedSearches(models.Model):
+	# Links bundle to a User model instance.
+    user = models.ForeignKey(User)
+    searchString = models.CharField(max_length=255, null=False, blank=False)
+

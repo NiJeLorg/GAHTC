@@ -168,4 +168,16 @@ gahtcApplication.refreshSidebarBundle = function () {
 	});
 }
 
+gahtcApplication.saveSearchString = function (searchString) {
+	$.ajax({
+		type: "GET",
+		url: "/save_search/?searchString=" + keyword,
+		success: function(data){
+			$('#searchSaved').removeClass('hidden');
+			$('.savedSearchList').html(data);
+        }
+	});
+}
+
+
 

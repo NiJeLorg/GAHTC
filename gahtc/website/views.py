@@ -1,5 +1,6 @@
 import os,zipfile
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.http import HttpResponseRedirect
 import operator
 from django.db.models import TextField, CharField, Q, Count
@@ -34,34 +35,42 @@ def mainSearchCode(request, keyword, tab):
 	lecture_slides_keywords_query = Q()
 
 	if(keyword != ""):
+		# split keyword into components is spaces in string
+		keywords = keyword.split(' ')
+
 		# group of keyword queries for text in modules documents
 		modules_fields = [f for f in modules._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		modules_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in modules_fields]
-		for q in modules_queries:
-			modules_keywords_query = modules_keywords_query | q 
+		for kw in keywords:
+			modules_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in modules_fields]
+			for q in modules_queries:
+				modules_keywords_query = modules_keywords_query | q 
 
 		# group of keyword queries for text in modules documents
 		module_documents_fields = [f for f in moduleDocuments._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		module_documents_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in module_documents_fields]
-		for q in module_documents_queries:
-			module_documents_keywords_query = module_documents_keywords_query | q
+		for kw in keywords:
+			module_documents_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in module_documents_fields]
+			for q in module_documents_queries:
+				module_documents_keywords_query = module_documents_keywords_query | q
 
 		# group of keyword queries for text in lectures
 		lectures_fields = [f for f in lectures._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		lectures_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in lectures_fields]
-		for q in lectures_queries:
-			lectures_keywords_query = lectures_keywords_query | q       
+		for kw in keywords:
+			lectures_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in lectures_fields]
+			for q in lectures_queries:
+				lectures_keywords_query = lectures_keywords_query | q       
 
 		# group of keyword queries for text in lecture documents
 		lecture_documents_fields = [f for f in lectureDocuments._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		lecture_documents_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in lecture_documents_fields]
-		for q in lecture_documents_queries:
-			lecture_documents_keywords_query = lecture_documents_keywords_query | q       
+		for kw in keywords:
+			lecture_documents_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in lecture_documents_fields]
+			for q in lecture_documents_queries:
+				lecture_documents_keywords_query = lecture_documents_keywords_query | q       
 		# group of keyword queries for text in lecture slides
 		lecture_slides_fields = [f for f in lectureSlides._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		lecture_slides_queries = [Q(**{"%s__icontains" % f.name: keyword}) for f in lecture_slides_fields]
-		for q in lecture_slides_queries:
-			lecture_slides_keywords_query = lecture_slides_keywords_query | q
+		for kw in keywords:
+			lecture_slides_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in lecture_slides_fields]
+			for q in lecture_slides_queries:
+				lecture_slides_keywords_query = lecture_slides_keywords_query | q
 
 
 	# get count and if no objects returned, send to different tempalate
@@ -123,7 +132,8 @@ def mainSearchCode(request, keyword, tab):
 			moduleDocsWordCount = 0
 			contents = []
 			for doc in moduleDocsCount:
-				moduleDocsWordCount = moduleDocsWordCount + doc.document_contents.lower().count(keyword.lower())
+				for kw in keywords:
+					moduleDocsWordCount = moduleDocsWordCount + doc.document_contents.lower().count(kw.lower())
 				#add document contents to modules
 				contents.append(doc.document_contents)
 
@@ -135,7 +145,8 @@ def mainSearchCode(request, keyword, tab):
 			#count number of times keyword comes up in lectures
 			lecturesWordCount = 0
 			for lec in lecturesCount:
-				lecturesWordCount = lecturesWordCount + lec.title.lower().count(keyword.lower()) + lec.authors.lower().count(keyword.lower()) + lec.presentation_text.lower().count(keyword.lower())
+				for kw in keywords:
+					lecturesWordCount = lecturesWordCount + lec.title.lower().count(kw.lower()) + lec.authors.lower().count(kw.lower()) + lec.presentation_text.lower().count(kw.lower())
 
 			module.count = module.title.lower().count(keyword.lower()) + module.authors.lower().count(keyword.lower()) + moduleDocsWordCount + lecturesWordCount
 
@@ -143,19 +154,25 @@ def mainSearchCode(request, keyword, tab):
 
 
 		for lecture in lectures_returned:
-			lecture.count = lecture.presentation_text.lower().count(keyword.lower()) + lecture.title.lower().count(keyword.lower()) + lecture.authors.lower().count(keyword.lower())
+			lecture.count = 0
+			for kw in keywords:
+				lecture.count = lecture.count + lecture.presentation_text.lower().count(kw.lower()) + lecture.title.lower().count(kw.lower()) + lecture.authors.lower().count(kw.lower())
 
 		lectures_returned = sorted(lectures_returned, key=operator.attrgetter('count'), reverse=True)
 
 
 		for lectureDocs in lecture_documents_returned:
-			lectureDocs.count = lectureDocs.document_contents.lower().count(keyword.lower())
+			lectureDocs.count = 0
+			for kw in keywords:
+				lectureDocs.count = lectureDocs.count + lectureDocs.document_contents.lower().count(kw.lower())
 
 		lecture_documents_returned = sorted(lecture_documents_returned, key=operator.attrgetter('count'), reverse=True)
 
 
 		for lectureSlide in lecture_slides_returned:
-			lectureSlide.count = lectureSlide.slide_main_text.lower().count(keyword.lower()) + lectureSlide.slide_notes.lower().count(keyword.lower())
+			lectureSlide.count = 0
+			for kw in keywords:
+				lectureSlide.count = lectureSlide.count + lectureSlide.slide_main_text.lower().count(kw.lower()) + lectureSlide.slide_notes.lower().count(kw.lower())
 
 		lecture_slides_returned = sorted(lecture_slides_returned, key=operator.attrgetter('count'), reverse=True)
 
@@ -166,7 +183,10 @@ def mainSearchCode(request, keyword, tab):
 		# pull user profile
 		user_profile = profile.objects.get(user=request.user)
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile}
+		# pull saved searches
+		saved_searches = savedSearches.objects.filter(user=request.user)
+
+		context_dict = {'keyword':keyword, 'keywords':keywords, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
 
 	return context_dict
 
@@ -176,14 +196,23 @@ def search(request):
 	"""
 	  Queries the database for search terms and returns list of results
 	"""
+	if request.method == 'POST':
+		# search terms
+		try:
+			keyword = request.POST['keyword']
+			tab = 'search'
+			context_dict = mainSearchCode(request, keyword, tab)
+		except KeyError:
+			return HttpResponseRedirect("/")
 
-	# search terms
-	try:
-		keyword = request.POST['keyword']
-		tab = 'search'
-		context_dict = mainSearchCode(request, keyword, tab)
-	except KeyError:
-		return HttpResponseRedirect("/")
+	else:
+		try:
+			keyword = request.GET['keyword']
+			tab = 'search'
+			context_dict = mainSearchCode(request, keyword, tab)
+		except KeyError:
+			return HttpResponseRedirect("/")
+
 	
 	return render(request, 'website/profile.html', context_dict)
 
@@ -215,6 +244,19 @@ def myprofile(request):
 
 	return render(request, 'website/profile.html', context_dict)
 
+
+@login_required
+def mysavedsearches(request):
+	"""
+	  Queries the database for search terms and returns list of results; goes to bundle
+	"""
+
+	# placeholder keyword to return all items
+	keyword = 'Architecture'
+	tab = 'searches'
+	context_dict = mainSearchCode(request, keyword, tab)	
+
+	return render(request, 'website/profile.html', context_dict)
 
 
 
@@ -844,4 +886,34 @@ def lecturesView(request):
 	context_dict = {'lectures_returned':lectures_returned}
 	return render(request, 'website/lectures.html', context_dict)
 
+
+@login_required
+def membersView(request):
+	"""
+	  Loads all user profiles
+	"""	
+
+	profiles_returned = profile.objects.all().order_by('name')
+
+	context_dict = {'profiles_returned':profiles_returned}
+	return render(request, 'website/profiles.html', context_dict)
+
+
+def saveSearchString(request):
+	"""
+	  AJAX request to save search string
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		searchString = request.GET.get("searchString","")
+
+		# create bundle
+		s = savedSearches(user=request.user, searchString=searchString)
+		s.save()
+
+	saved_searches = savedSearches.objects.filter(user=request.user)
+
+	context_dict = {'saved_searches':saved_searches}
+	return render(request, 'website/saved_searches.html', context_dict)
 

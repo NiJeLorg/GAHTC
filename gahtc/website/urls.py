@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^search/$', views.search, name='search'),
     url(r'^bundles/$', views.mybundles, name='mybundles'),
     url(r'^profile/$', views.myprofile, name='myprofile'),
+    url(r'^searches/$', views.mysavedsearches, name='mysavedsearches'),
     url(r'^show_module/(?P<id>\d+)/$', views.showModule, name='showModule'),
     url(r'^show_lecture/(?P<id>\d+)/$', views.showLecture, name='showLecture'),
     url(r'^show_lecture_document/(?P<id>\d+)/$', views.showLectureDocument, name='showLectureDocument'),
@@ -26,5 +27,7 @@ urlpatterns = [
     url(r'^update_profile/$', views.updateProfile, name='updateProfile'),
     url(r'^modules/$', views.modulesView, name='modulesView'),
     url(r'^lectures/$', views.lecturesView, name='lecturesView'),
+    url(r'^members/$', views.membersView, name='membersView'),
+    url(r'^save_search/$', views.saveSearchString, name='saveSearchString'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

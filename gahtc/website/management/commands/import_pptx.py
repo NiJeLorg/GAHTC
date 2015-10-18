@@ -231,6 +231,9 @@ class Command(BaseCommand):
                 slide_notes_text = ''
 
                 for index, slide in enumerate(prs.slides):
+                    # array for this slides text and notes to add the lectureSlides Object
+                    main_text_this_slide = []
+                    notes_text_this_slide = []
                     # extract the text for each slide and append to array of text to save back to lecturesObject
                     for shape in slide.shapes:
                         if not shape.has_text_frame:
@@ -238,6 +241,7 @@ class Command(BaseCommand):
                         for paragraph in shape.text_frame.paragraphs:
                             for run in paragraph.runs:
                                 slide_main_text = strip_non_ascii(run.text)
+                                main_text_this_slide.append(slide_main_text)
                                 main_text.append(slide_main_text)
 
                     notes_slide = SlideWrapper(slide).notes_page()
@@ -245,14 +249,15 @@ class Command(BaseCommand):
                         for paragraph in shape.text_frame.paragraphs:
                             for run in paragraph.runs:
                                 slide_notes_text = strip_non_ascii(run.text)
+                                notes_text_this_slide.append(slide_notes_text)
                                 notes_text.append(slide_notes_text)
 
                     # add slide to lectureSlides
                     addslide = lectureSlides()
                     addslide.lecture = lecturesObject
                     addslide.slide_number = index
-                    addslide.slide_main_text = slide_main_text
-                    addslide.slide_notes = slide_notes_text
+                    addslide.slide_main_text = '\n'.join(main_text_this_slide)
+                    addslide.slide_notes = '\n'.join(notes_text_this_slide)
                     addslide.save()
                     f = open(head + "/slide-"+ str(index) +".jpg")
                     image_file = File(f)

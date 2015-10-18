@@ -26,10 +26,10 @@
 						<input type="text" class="form-control" name="keyword" placeholder="Results for: {{ keyword }}" />
 					</div>
 					<div class="col-xs-1">
-						<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+						<button type="submit" class="btn btn-default pull-right" title="Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 					</div>
 					<div class="col-xs-1">
-						<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+						<button id="saveSearchString" class="btn btn-default pull-right" title="Save This Search"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 					</div>
 				</div>
 			</form>
@@ -39,6 +39,11 @@
 			  Download Course Bundles
 			</button>
 		</div>		
+	</div>
+	<div class="row">
+		<div id="searchSaved" class="alert alert-success hidden" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		Search saved!
 	</div>
 	<div class="row">
 		<div class="col-md-12">
@@ -123,7 +128,7 @@
 									</div>								
 								</div>
 								<div class="row">
-									<p><span class="label label-primary">{{ keyword }}</span> appears <span class="label label-primary">{{ module.count }}</span> time{{ module.count|pluralize }} in this module.</p>
+									<p><span class="label label-primary">{% for kw in keywords %}{{ kw }}{% if forloop.last %}{% else %}<em> or </em>{% endif %}{% endfor %}</span> appears <span class="label label-primary">{{ module.count }}</span> time{{ module.count|pluralize }} in this module.</p>
 								</div>
 							</div>
 						</div>
@@ -156,7 +161,7 @@
 									</div>								
 								</div>
 								<div class="row">
-									<p><span class="label label-success">{{ keyword }}</span> appears <span class="label label-success">{{ lecture.count }}</span> time{{ lecture.count|pluralize }} in this lecture.</p>
+									<p><span class="label label-success">{% for kw in keywords %}{{ kw }}{% if forloop.last %}{% else %}<em> or </em>{% endif %}{% endfor %}</span> appears <span class="label label-success">{{ lecture.count }}</span> time{{ lecture.count|pluralize }} in this lecture.</p>
 								</div>
 								<div class="row">
 									<p>From the module: <em>{{ lecture.module.title }}</em></p>
@@ -192,7 +197,7 @@
 									</div>								
 								</div>
 								<div class="row">
-									<p><span class="label label-info">{{ keyword }}</span> appears <span class="label label-info">{{ lecture_document.count }}</span> time{{ lecture_document.count|pluralize }} in this lecture document.</p>
+									<p><span class="label label-info">{% for kw in keywords %}{{ kw }}{% if forloop.last %}{% else %}<em> or </em>{% endif %}{% endfor %}</span> appears <span class="label label-info">{{ lecture_document.count }}</span> time{{ lecture_document.count|pluralize }} in this lecture document.</p>
 								</div>
 								<div class="row">
 									<p>From the module: <em>{{ lecture_document.lecture.module.title }}</em></p>
@@ -228,7 +233,7 @@
 									</div>								
 								</div>
 								<div class="row">
-									<p><span class="label label-warning">{{ keyword }}</span> appears <span class="label label-warning">{{ lecture_slide.count }}</span> time{{ lecture_slide.count|pluralize }} in this lecture slide.</p>
+									<p><span class="label label-warning">{% for kw in keywords %}{{ kw }}{% if forloop.last %}{% else %}<em> or </em>{% endif %}{% endfor %}</span> appears <span class="label label-warning">{{ lecture_slide.count }}</span> time{{ lecture_slide.count|pluralize }} in this lecture slide.</p>
 								</div>
 								<div class="row">
 									<p>From the module: <em>{{ lecture_slide.lecture.module.title }}</em></p>
@@ -252,7 +257,9 @@
 				</div>
 
 				<div role="tabpanel" class="tab-pane" id="my-saved-searches">
-					Saved Searches
+					<div class="col-md-12 savedSearchList">
+						{% include "website/saved_searches.html" %}
+					</div>
 				</div>
 
 				<div role="tabpanel" class="tab-pane" id="my-profile">
@@ -323,6 +330,7 @@
 {% block js_block %}
 	<script type="text/javascript">
 		var tab = "{{ tab }}"; 
+		var keyword = "{{ keyword }}"; 
 	</script>
 	<script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>

@@ -1,0 +1,21 @@
+
+{% load staticfiles %}
+
+<div class="container">
+	<div class="row marginTop30">
+		{% if saved_searches %}
+			<h4>Saved Searches</h4>
+			<ul>
+			{% for search in saved_searches %}
+				<li><a href="/search/?keyword={{ search.searchString }}">{{ search.searchString }}</a></li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<div class="col-md-6">
+				<h4>No Searches Yet Saved!</h4>
+				<p>After you have searched for course materials using the search box above, you can save and return to your search by clicking the <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> button to the right of the search box.</p>
+			</div>
+		{% endif %}
+	</div>
+</div>				
+

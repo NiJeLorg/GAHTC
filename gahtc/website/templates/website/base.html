@@ -32,6 +32,7 @@
 
   <body>
 
+  <a href="#" class="updating">Search may not return intended results from 9:00pm - 11:00pm EDT. Hang tight!</a>
   <a href="https://docs.google.com/forms/d/1gaAK1MtAfQ7okMqL0d5jbCsE9kpXJnTORnXvNGSNSco/viewform" class="feedback" target="_blank">Feedback?</a>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -61,7 +62,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">People <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Members</a></li>
+                <li><a href="{% url 'membersView' %}">Members</a></li>
                 <li><a href="#">Affiliations</a></li>
                 <li><a href="#">Funders</a></li>
               </ul>
@@ -71,7 +72,7 @@
           {% if user.is_authenticated %}
             <li><a href="{% url 'myprofile' %}">Hello {{ user }}!</a></li>
             <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
-            <li><a href="#">My Saved Searches</a></li>
+            <li><a href="{% url 'mysavedsearches' %}">My Saved Searches</a></li>
             <li><a href="{% url 'auth_logout' %}">Logout</a></li>
           {% else %}
             <li><a href="{% url 'auth_login' %}">Log In</a></li>

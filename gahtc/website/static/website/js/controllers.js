@@ -13,6 +13,8 @@ $( document ).ready(function() {
 		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
 	} else if (tab == "profile") {
 		$('.nav-tabs a[href="#my-profile"]').tab('show');		
+	} else if (tab == "searches") {
+		$('.nav-tabs a[href="#my-saved-searches"]').tab('show');		
 	} else if (tab == "none") {
 		// do nothing
 	}
@@ -183,6 +185,7 @@ $( document ).ready(function() {
 		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
 	});
 	
+
 	// download bundle
 	$(document).on('click', '.downloadBundle', function(e) { 
 		e.preventDefault();
@@ -224,5 +227,13 @@ $( document ).ready(function() {
 		$('#downloadFileArea').html('<div class="containter"><div class="row"><div class="col-md-3"><img class="img-responsive pull-right" src="/static/website/css/images/spiffygif_114x114.gif" /></div><div class="col-md-9"><h2>Zipping Up Your Bundle!</h2></div></div></div>');
 
 	});
+
+	// save search string
+	// switch tab on download button click
+	$(" #saveSearchString ").click(function(e) {
+		e.preventDefault();
+		gahtcApplication.saveSearchString();
+	});
+
 
 });
