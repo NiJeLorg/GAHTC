@@ -788,7 +788,10 @@ def updateProfile(request):
 		if user_form.is_valid() and profile_form.is_valid():
 			user_form.save()       
 			pf = profile_form.save(commit=False)
-			pf.pic = request.FILES['pic'] 
+			try:
+				pf.pic = request.FILES['pic'] 
+			except KeyError:
+				nothing = {}
 			pf.user = request.user
 			pf.save()
 
