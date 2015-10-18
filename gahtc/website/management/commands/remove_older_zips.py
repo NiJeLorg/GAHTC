@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
         for lecture in lectureObjects:
 
-            path_to_file = MEDIA_ROOT + "/zip_files/lecture_" + str(module.id) + "/"
+            path_to_file = MEDIA_ROOT + "/zip_files/lecture_" + str(lecture.id) + "/"
             print path_to_file
             call(["find",path_to_file,"-cmin","+15","-exec","rm","{}","+"])
 
