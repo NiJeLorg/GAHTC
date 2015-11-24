@@ -84,6 +84,32 @@
 				</div>
 			</div>
 			{% endfor %}
+			{% for bundle in bundle_lecture_segments %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="/media/{{ bundle.lectureSegment.getSlideOne }}" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong>LECTURE SEGMENT: {{ bundle.lectureSegment.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lecturesegmentid="{{ bundle.lectureSegment.id }}">
+								Remove
+							</button>									
+						</div>								
+					</div>
+					<div class="row">
+						<p><a href="/media/{{ bundle.lectureSegment.presentation }}">{{ bundle.lectureSegment.title }}</a> ({{ bundle.lectureSegment.presentation.size|filesizeformat }})</p>
+					</div>
+					<div class="row">
+						<p>From the lecture: <em>{{ bundle.lectureSegment.lecture.title }}</em></p>
+					</div>
+
+				</div>
+			</div>
+			{% endfor %}
 			{% for bundle in bundle_lecture_documents %}
 			<div class="row bundleList">
 				<div class="col-xs-3">

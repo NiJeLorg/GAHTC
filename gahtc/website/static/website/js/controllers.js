@@ -49,6 +49,15 @@ $( document ).ready(function() {
 	});
 
 	// on click of lecture-document, run query to pull lecture document
+	$( ".lecture_segment" ).click(function(e) {
+		e.preventDefault();
+		$( ".result" ).removeClass('active');
+		$( this ).addClass('active');
+		var lecture_segment_id = $( this ).data( "lecturesegmentid" );
+		gahtcApplication.getLectureSegment(lecture_segment_id);
+	});
+
+	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_document" ).click(function(e) {
 		e.preventDefault();
 		$( ".result" ).removeClass('active');
@@ -155,7 +164,7 @@ $( document ).ready(function() {
 		gahtcApplication.refreshSidebarBundle();
 	});
 
-	// add to a bundle
+	// remove from a bundle
 	$(document).on('click', '.remove-from-bundle', function(e) { 
 		e.preventDefault();
 		// pull bundle id
@@ -167,6 +176,9 @@ $( document ).ready(function() {
 		} else if ($(this).data( "lectureid" )) {
 			var type = 'lecture';
 			var itemid = $(this).data( "lectureid" );
+		} else if ($(this).data( "lecturesegmentid" )) {
+			var type = 'lecturesegment';
+			var itemid = $(this).data( "lecturesegmentid" );
 		} else if ($(this).data( "lecturedocumentid" )) {
 			var type = 'lecturedocument';
 			var itemid = $(this).data( "lecturedocumentid" );

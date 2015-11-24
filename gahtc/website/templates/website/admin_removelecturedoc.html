@@ -1,0 +1,57 @@
+{% extends 'website/base_admin.html' %}
+{% load staticfiles %}
+{% load bootstrap_tags %}
+
+{% block head_js_block %}
+{{ media }}
+{% endblock %}
+
+{% block css_block %}
+{% endblock %}	
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h3>Remove Lecture Document</h3>
+      <p><strong><span class="text-danger">Be careful! This operation cannot be undone!</span></strong>
+    </div>
+   </div>
+   	<div class="row">
+		<div class="col-md-8">
+			<h4>{{ lecturedocObject.title }}</h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<p><a href="/media/{{ lecturedocObject.document }}">{{ lecturedocObject.document.documentName }}</a> ({{ lecturedocObject.document.size|filesizeformat }})</p>
+		</div>
+	</div>
+	<br />
+   <div class="row">
+    <div class="col-md-8">
+		<form method="post" action=".">
+			{% csrf_token %}
+			{{ form|as_bootstrap }}
+			<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
+			<input type="submit" name="delete" class="btn btn-danger" value="Remove Lecture Document" />
+		</form>
+    </div>
+  </div>
+</div> <!-- /container -->
+
+
+{% endblock %}
+
+
+{% block js_block %}
+{% endblock %}
+
+
+
+
+
+	
+	
+

@@ -60,7 +60,7 @@
 
 				<div role="tabpanel" class="tab-pane active" id="search-results">
 					<div class="col-md-6 resultsScroll">
-						{% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 %}
+						{% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 %}
 						<div class="row selectedAddDropdown">
 							<div class="col-xs-12">
 								<h4>No Search Results</h4>
@@ -72,6 +72,7 @@
 							<p>
 								<span class="label label-primary">{{ modules_returned_count }}</span> Module{{ modules_returned_count|pluralize }}
 								<span class="label label-success">{{ lectures_returned_count }}</span> Lecture{{ lectures_returned_count|pluralize }}
+								<span class="label label-ls">{{ lecture_segments_returned_count }}</span> Lecture Segment{{ lecture_segments_returned_count|pluralize }}
 								<span class="label label-info">{{ lecture_documents_returned_count }}</span> Lecture Document{{ lecture_documents_returned_count|pluralize }} 
 								<span class="label label-warning">{{ lecture_slides_returned_count }}</span> Lecture Slide{{ lecture_slides_returned_count|pluralize }} 
 							</p>
@@ -130,6 +131,13 @@
 								<div class="row">
 									<p><span class="label label-primary">{% for kw in keywords %}{{ kw }}{% if forloop.last %}{% else %}<em> or </em>{% endif %}{% endfor %}</span> appears <span class="label label-primary">{{ module.count }}</span> time{{ module.count|pluralize }} in this module.</p>
 								</div>
+								<div class="row">
+									<p>
+									{% for tag in module.tags.all|slice:":6" %}
+							            <span class="label label-default">{{ tag.name }}</span>
+							        {% endfor %}
+							        </p>
+								</div>
 							</div>
 						</div>
 						{% endfor %}
@@ -165,6 +173,56 @@
 								</div>
 								<div class="row">
 									<p>From the module: <em>{{ lecture.module.title }}</em></p>
+								</div>
+								<div class="row">
+									<p>
+									{% for tag in lecture.tags.all|slice:":6" %}
+							            <span class="label label-default">{{ tag.name }}</span>
+							        {% endfor %}
+							        </p>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						{% for lecture_segment in lecture_segments_returned %}
+						<div class="row result lecture_segment" data-lecturesegmentid="{{ lecture_segment.id }}">
+							<div class="col-xs-3">
+								<img class="img-responsive" src="/media/{{ lecture_segment.getSlideOne }}" />
+							</div>							
+							<div class="col-xs-9">
+								<div class="row">
+									<div class="col-xs-8 resultTitle">
+										<p><strong>LECTURE SEGMENT FROM: {{ lecture_segment.lecture.title }}</strong></p>
+									</div>
+									<div class="col-xs-4">
+										<!--
+										<div class="checkbox">
+										    <input type="checkbox" value="">
+										</div>
+										-->
+										<div class="dropdown">
+											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Add to Bundle
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturesegment_{{ lecture_segment.id }}">
+												{% include "website/bundle_dropdown.html" %}
+											</ul>
+										</div>										
+									</div>								
+								</div>
+								<div class="row">
+									<p><span class="label label-ls">{% for kw in keywords %}{{ kw }}{% if forloop.last %}{% else %}<em> or </em>{% endif %}{% endfor %}</span> appears <span class="label label-ls">{{ lecture_segment.count }}</span> time{{ lecture_segment.count|pluralize }} in this lecture segment.</p>
+								</div>
+								<div class="row">
+									<p>From the module: <em>{{ lecture_segment.lecture.module.title }}</em></p>
+								</div>
+								<div class="row">
+									<p>
+									{% for tag in lecture_segment.tags.all|slice:":6" %}
+							            <span class="label label-default">{{ tag.name }}</span>
+							        {% endfor %}
+							        </p>
 								</div>
 							</div>
 						</div>
@@ -202,6 +260,13 @@
 								<div class="row">
 									<p>From the module: <em>{{ lecture_document.lecture.module.title }}</em></p>
 								</div>
+								<div class="row">
+									<p>
+									{% for tag in lecture_document.tags.all|slice:":6" %}
+							            <span class="label label-default">{{ tag.name }}</span>
+							        {% endfor %}
+							        </p>
+								</div>
 							</div>
 						</div>
 						{% endfor %}
@@ -237,6 +302,13 @@
 								</div>
 								<div class="row">
 									<p>From the module: <em>{{ lecture_slide.lecture.module.title }}</em></p>
+								</div>
+								<div class="row">
+									<p>
+									{% for tag in lecture_slide.tags.all|slice:":6" %}
+							            <span class="label label-default">{{ tag.name }}</span>
+							        {% endfor %}
+							        </p>
 								</div>
 							</div>
 						</div>

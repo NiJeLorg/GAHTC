@@ -185,6 +185,10 @@
     background-color: #ddd;
 }
 
+.label-ls {
+    background-color: #756BB1;
+}
+
 
 /* Add a of bottom padding to containers */
 .container {
@@ -219,4 +223,9 @@
   color: #fff;
   text-decoration: none;
   background-color: #d9534f;
+}
+
+/* Admin Forms */
+ul.as-selections li.as-original input {
+    height: 39px !important;
 }

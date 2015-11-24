@@ -1,0 +1,52 @@
+{% extends 'website/base_admin.html' %}
+{% load staticfiles %}
+{% load bootstrap_tags %}
+
+{% block head_js_block %}
+{{ media }}
+{% endblock %}
+
+{% block css_block %}
+{% endblock %}	
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h3>Module Document</h3>
+		<form enctype="multipart/form-data" method="post" action=".">
+			{% csrf_token %}
+			{{ form|as_bootstrap }}
+			<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
+			<input type="submit" name="save" class="btn btn-primary" value="Save" />
+			<input type="submit" name="new_module_document" class="btn btn-primary" value="Save and Add a Another Module Document" />
+		</form>
+    </div>
+  </div>
+</div> <!-- /container -->
+
+
+{% endblock %}
+
+
+{% block js_block %}
+<script type="text/javascript">
+	// select the module we came from on page load
+	$( document ).ready(function() {
+		// if no is selected, add 0 to board member number values
+		var moduleid = '{{ moduleid }}';
+		if (moduleid != 'None' && moduleid != '0') {
+			$('#id_module').val(moduleid);
+		}
+	});
+</script>
+{% endblock %}
+
+
+
+
+
+	
+	
+

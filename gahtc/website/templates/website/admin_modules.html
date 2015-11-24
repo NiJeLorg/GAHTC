@@ -1,0 +1,43 @@
+{% extends 'website/base_admin.html' %}
+{% load staticfiles %}
+{% load bootstrap_tags %}
+
+{% block head_js_block %}
+{{ media }}
+{% endblock %}
+
+{% block css_block %}
+{% endblock %}	
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h3>Module</h3>
+		<form method="post" action=".">
+			{% csrf_token %}
+			{{ form|as_bootstrap }}
+			<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
+			<input type="submit" name="save" class="btn btn-primary" value="Save" />
+			<input type="submit" name="new_module_document" class="btn btn-primary" value="Save and Add a Module Document" />
+			<input type="submit" name="new_lecture" class="btn btn-primary" value="Save and Add a Lecture" />
+		</form>
+    </div>
+  </div>
+</div> <!-- /container -->
+
+
+{% endblock %}
+
+
+{% block js_block %}
+{% endblock %}
+
+
+
+
+
+	
+	
+

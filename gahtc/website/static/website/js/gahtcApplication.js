@@ -41,6 +41,16 @@ gahtcApplication.getLecture = function (lecture_id) {
 	});		
 }
 
+gahtcApplication.getLectureSegment = function (lecture_segment_id) {
+	$.ajax({
+		type: "GET",
+		url: "/show_lecture_segment/" + lecture_segment_id + "/" ,
+		success: function(data){
+			$('.searchSidebar').html(data);
+        }
+	});		
+}
+
 gahtcApplication.getLectureDocument = function (lecture_document_id) {
 	$.ajax({
 		type: "GET",

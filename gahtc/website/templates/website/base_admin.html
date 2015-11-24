@@ -9,12 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!-- fonts -->
-    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="{% static 'website/css/bootstrap.min.css' %}">
-	{% block css_block %}
-	{% endblock %}
-	<link rel="stylesheet" type="text/css" href="{% static 'website/css/main.css' %}">
     <!--  javascript
     ================================================== -->
     <!-- Only jquery goes here to load autocomplete on forms-->	
@@ -27,12 +21,18 @@
     <![endif]-->
 	{% block head_js_block %}
 	{% endblock %}
+
+    <!-- fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'website/css/bootstrap.min.css' %}">
+  {% block css_block %}
+  {% endblock %}
+  <link rel="stylesheet" type="text/css" href="{% static 'website/css/main.css' %}">
+
 		
   </head>
 
   <body>
-
-  <!--<a href="https://docs.google.com/forms/d/1gaAK1MtAfQ7okMqL0d5jbCsE9kpXJnTORnXvNGSNSco/viewform" class="feedback" target="_blank">Feedback?</a>-->
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -48,34 +48,14 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="gahtc-navbar-collapse">
-          <ul class="nav navbar-nav navbar-left">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Modules <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'modulesView' %}">Modules</a></li>
-                <li><a href="{% url 'lecturesView' %}">Lectures</a></li>
-              </ul>
-            </li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">People <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'membersView' %}">Members</a></li>
-                <li><a href="#">Affiliations</a></li>
-                <li><a href="#">Funders</a></li>
-              </ul>
-            </li>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
             <li><a href="{% url 'myprofile' %}">Hello {{ user }}!</a></li>
-            <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
-            <li><a href="{% url 'mysavedsearches' %}">My Saved Searches</a></li>
+            <li><a href="#">Create New Admin</a></li>
+            <li><a href="#">Administer Accounts</a></li>
             <li><a href="{% url 'auth_logout' %}">Logout</a></li>
           {% else %}
             <li><a href="{% url 'auth_login' %}">Log In</a></li>
-            <li><a href="{% url 'registration_register' %}">Create Account</a></li>
           {% endif %}               
           </ul>
         </div><!-- /.navbar-collapse -->

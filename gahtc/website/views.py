@@ -2,6 +2,7 @@ import os,zipfile
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 import operator
 from django.db.models import TextField, CharField, Q, Count
 from django.contrib.auth.decorators import login_required
@@ -18,6 +19,12 @@ from website.forms import *
 # GAHTC Views
 def index(request):
 	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
 	  Index page
 	"""
 	context_dict = {}
@@ -31,6 +38,7 @@ def mainSearchCode(request, keyword, tab):
 	modules_keywords_query = Q()
 	module_documents_keywords_query = Q()
 	lectures_keywords_query = Q()
+	lecture_segments_keywords_query = Q()
 	lecture_documents_keywords_query = Q()
 	lecture_slides_keywords_query = Q()
 
@@ -59,6 +67,13 @@ def mainSearchCode(request, keyword, tab):
 			for q in lectures_queries:
 				lectures_keywords_query = lectures_keywords_query | q       
 
+		# group of keyword queries for text in lectures
+		lecture_segments_fields = [f for f in lectureSegments._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
+		for kw in keywords:
+			lecture_segments_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in lecture_segments_fields]
+			for q in lecture_segments_queries:
+				lecture_segments_keywords_query = lecture_segments_keywords_query | q  
+
 		# group of keyword queries for text in lecture documents
 		lecture_documents_fields = [f for f in lectureDocuments._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
 		for kw in keywords:
@@ -77,13 +92,15 @@ def mainSearchCode(request, keyword, tab):
 	modules_returned_count = modules.objects.filter(modules_keywords_query).count()
 	module_documents_returned_count = moduleDocuments.objects.filter(module_documents_keywords_query).count()
 	lectures_returned_count = lectures.objects.filter(lectures_keywords_query).count()
+	lecture_segments_returned_count = lectureSegments.objects.filter(lecture_segments_keywords_query).count()
 	lecture_documents_returned_count = lectureDocuments.objects.filter(lecture_documents_keywords_query).count()
 	lecture_slides_returned_count = lectureSlides.objects.filter(lecture_slides_keywords_query).count()
 
-	if (modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
+	if (modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
 		modules_returned = modules.objects.none()
 		moduleDocsCount = moduleDocuments.objects.none()
 		lectures_returned = lectures.objects.none()
+		lecture_segments_returned = lectureSegments.objects.none()
 		lecture_documents_returned = lectureDocuments.objects.none()
 		lecture_slides_returned = lectureSlides.objects.none()
 
@@ -93,14 +110,15 @@ def mainSearchCode(request, keyword, tab):
 		# pull user profile
 		user_profile = profile.objects.get(user=request.user)
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile}
 
 	else:
 		modules_returned = modules.objects.filter(modules_keywords_query)
 		module_documents_returned = moduleDocuments.objects.filter(module_documents_keywords_query)
 		lectures_returned = lectures.objects.filter(lectures_keywords_query)
-		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)[:100]
-		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)[:100]
+		lecture_segments_returned = lectureSegments.objects.filter(lecture_segments_keywords_query)
+		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)
+		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)
 
 		# concatonate module querysets
 		# first create list of modules
@@ -133,7 +151,8 @@ def mainSearchCode(request, keyword, tab):
 			contents = []
 			for doc in moduleDocsCount:
 				for kw in keywords:
-					moduleDocsWordCount = moduleDocsWordCount + doc.document_contents.lower().count(kw.lower())
+					moduleDocsWordCount = moduleDocsWordCount + doc.document_contents.lower().count(kw.lower()) + doc.title.lower().count(kw.lower()) + doc.authors.lower().count(kw.lower()) + doc.description.lower().count(kw.lower())
+
 				#add document contents to modules
 				contents.append(doc.document_contents)
 
@@ -146,9 +165,9 @@ def mainSearchCode(request, keyword, tab):
 			lecturesWordCount = 0
 			for lec in lecturesCount:
 				for kw in keywords:
-					lecturesWordCount = lecturesWordCount + lec.title.lower().count(kw.lower()) + lec.authors.lower().count(kw.lower()) + lec.presentation_text.lower().count(kw.lower())
+					lecturesWordCount = lecturesWordCount + lec.title.lower().count(kw.lower()) + lec.authors.lower().count(kw.lower()) + lec.presentation_text.lower().count(kw.lower()) + lec.description.lower().count(kw.lower())
 
-			module.count = module.title.lower().count(keyword.lower()) + module.authors.lower().count(keyword.lower()) + moduleDocsWordCount + lecturesWordCount
+			module.count = module.title.lower().count(keyword.lower()) + module.authors.lower().count(keyword.lower()) + module.description.lower().count(kw.lower()) + moduleDocsWordCount + lecturesWordCount
 
 		modules_returned = sorted(modules_returned, key=operator.attrgetter('count'), reverse=True)
 
@@ -156,15 +175,23 @@ def mainSearchCode(request, keyword, tab):
 		for lecture in lectures_returned:
 			lecture.count = 0
 			for kw in keywords:
-				lecture.count = lecture.count + lecture.presentation_text.lower().count(kw.lower()) + lecture.title.lower().count(kw.lower()) + lecture.authors.lower().count(kw.lower())
+				lecture.count = lecture.count + lecture.presentation_text.lower().count(kw.lower()) + lecture.title.lower().count(kw.lower()) + lecture.authors.lower().count(kw.lower()) + lecture.description.lower().count(kw.lower())
 
 		lectures_returned = sorted(lectures_returned, key=operator.attrgetter('count'), reverse=True)
+
+
+		for lectureSegs in lecture_segments_returned:
+			lectureSegs.count = 0
+			for kw in keywords:
+				lectureSegs.count = lectureSegs.count + lectureSegs.presentation_text.lower().count(kw.lower()) + lectureSegs.title.lower().count(kw.lower()) + lectureSegs.description.lower().count(kw.lower())
+
+		lecture_segments_returned = sorted(lecture_segments_returned, key=operator.attrgetter('count'), reverse=True)
 
 
 		for lectureDocs in lecture_documents_returned:
 			lectureDocs.count = 0
 			for kw in keywords:
-				lectureDocs.count = lectureDocs.count + lectureDocs.document_contents.lower().count(kw.lower())
+				lectureDocs.count = lectureDocs.count + lectureDocs.document_contents.lower().count(kw.lower()) + lectureDocs.title.lower().count(kw.lower()) + lectureDocs.description.lower().count(kw.lower())
 
 		lecture_documents_returned = sorted(lecture_documents_returned, key=operator.attrgetter('count'), reverse=True)
 
@@ -186,13 +213,19 @@ def mainSearchCode(request, keyword, tab):
 		# pull saved searches
 		saved_searches = savedSearches.objects.filter(user=request.user)
 
-		context_dict = {'keyword':keyword, 'keywords':keywords, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
+		context_dict = {'keyword':keyword, 'keywords':keywords, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
 
 	return context_dict
 
 
 @login_required
 def search(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
 	"""
 	  Queries the database for search terms and returns list of results
 	"""
@@ -220,6 +253,12 @@ def search(request):
 @login_required
 def mybundles(request):
 	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
 	  Queries the database for search terms and returns list of results; goes to bundle
 	"""
 
@@ -234,6 +273,12 @@ def mybundles(request):
 @login_required
 def myprofile(request):
 	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
 	  Queries the database for search terms and returns list of results; goes to bundle
 	"""
 
@@ -247,6 +292,12 @@ def myprofile(request):
 
 @login_required
 def mysavedsearches(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
 	"""
 	  Queries the database for search terms and returns list of results; goes to bundle
 	"""
@@ -322,6 +373,19 @@ def showLecture(request, id=None):
 
 	context_dict = {'lecture_returned':lecture_returned, 'bundles_returned':bundles_returned}
 	return render(request, 'website/show_lecture.html', context_dict)
+
+def showLectureSegment(request, id=None):
+	"""
+	  Response from AJAX request to show lecture segment in sidebar
+	"""
+	#get lecture
+	lecture_segment_returned = lectureSegments.objects.get(pk=id)
+
+	# pull bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+	context_dict = {'lecture_segment_returned':lecture_segment_returned, 'bundles_returned':bundles_returned}
+	return render(request, 'website/show_lecture_segment.html', context_dict)
 
 def showLectureDocument(request, id=None):
 	"""
@@ -423,6 +487,12 @@ def addToBundle(request):
 			if bundleLecture.objects.filter(bundle=bundle, lecture=lecture).exists() == False:
 				bl = bundleLecture(bundle=bundle, lecture=lecture)
 				bl.save()
+		elif itemid[0] == 'lecturesegment':
+			#look up lectureDocument
+			lectureSegment = lectureSegments.objects.get(pk=itemid[1])
+			if bundleLectureSegments.objects.filter(bundle=bundle, lectureSegment=lectureSegment).exists() == False:
+				blseg = bundleLectureSegments(bundle=bundle, lectureSegment=lectureSegment)
+				blseg.save()
 		elif itemid[0] == 'lecturedocument':
 			#look up lectureDocument
 			lectureDocument = lectureDocuments.objects.get(pk=itemid[1])
@@ -473,6 +543,13 @@ def removeFromBundle(request):
 			for rec in bl:
 				rec.delete()
 
+		elif typename == 'lecturesegment':
+			#look up lectureDocument
+			lectureSegment = lectureSegments.objects.get(pk=itemid)
+			blseg = bundleLectureSegments.objects.filter(bundle=bundle, lectureSegment=lectureSegment)
+			for rec in blseg:
+				rec.delete()
+
 		elif typename == 'lecturedocument':
 			#look up lectureDocument
 			lectureDocument = lectureDocuments.objects.get(pk=itemid)
@@ -504,6 +581,7 @@ def showBundle(request, id=None):
 	#get return all other content
 	bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
 	bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+	bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
 	bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
 	bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
 
@@ -554,7 +632,7 @@ def showBundle(request, id=None):
 		bundle.lectureSlide.slideNotesName = slideNotes[2]
 
 
-	context_dict = {'bundle_returned':bundle_returned, 'bundle_modules':bundle_modules, 'bundle_lectures': bundle_lectures, 'bundle_lecture_documents': bundle_lecture_documents, 'bundle_lecture_slides': bundle_lecture_slides}
+	context_dict = {'bundle_returned':bundle_returned, 'bundle_modules':bundle_modules, 'bundle_lectures': bundle_lectures, 'bundle_lecture_segments':bundle_lecture_segments , 'bundle_lecture_documents': bundle_lecture_documents, 'bundle_lecture_slides': bundle_lecture_slides}
 	return render(request, 'website/show_bundle.html', context_dict)
 
 
@@ -579,6 +657,7 @@ def zipUpBundle(request, id=None):
 		#get return all other content
 		bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
 		bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+		bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
 		bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
 		bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
 
@@ -631,6 +710,15 @@ def zipUpBundle(request, id=None):
 				document = document.split('/')
 				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, document[2])
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
+
+
+		# for each lecture segment write to zip archive 
+		for bundle in bundle_lecture_segments:
+			lecTitle = ''.join(bundle.lectureSegment.title.split())
+			document = str(bundle.lectureSegment.presentation)
+			document = document.split('/')
+			directory = os.path.join(zipfolder+ "/lecture_segments/" + lecTitle, document[2])
+			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSegment.presentation), directory)
 
 
 		#for each lecture document strip out name of file
@@ -772,6 +860,12 @@ def refreshSidebarBundle(request):
 @login_required
 def updateProfile(request):
 	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
 	  Loads the user profile page for editing
 	"""	
 
@@ -818,6 +912,12 @@ def updateProfile(request):
 
 @login_required
 def modulesView(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
 	"""
 	  Loads all modules 
 	"""	
@@ -868,6 +968,12 @@ def modulesView(request):
 @login_required
 def lecturesView(request):
 	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
 	  Loads all lectures 
 	"""	
 
@@ -892,6 +998,12 @@ def lecturesView(request):
 
 @login_required
 def membersView(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
 	"""
 	  Loads all user profiles
 	"""	
@@ -919,4 +1031,494 @@ def saveSearchString(request):
 
 	context_dict = {'saved_searches':saved_searches}
 	return render(request, 'website/saved_searches.html', context_dict)
+
+
+
+@login_required
+def dashboard(request):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	"""
+	  Admin dashboard
+	"""	
+
+	modulesObjects = modules.objects.all().order_by('title')
+	moduleDocumentsObjects = moduleDocuments.objects.all().order_by('title')
+	lecturesObjects = lectures.objects.all().order_by('title')
+	lectureSegmentsObjects = lectureSegments.objects.all().order_by('title')
+	lectureDocumentsObjects = lectureDocuments.objects.all().order_by('title')
+
+	context_dict = {'modulesObjects': modulesObjects, 'moduleDocumentsObjects': moduleDocumentsObjects, 'lecturesObjects': lecturesObjects, 'lectureSegmentsObjects': lectureSegmentsObjects, 'lectureDocumentsObjects': lectureDocumentsObjects}
+	return render(request, 'website/dashboard.html', context_dict)
+
+
+# admin form views
+@login_required
+def admin_module(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id:
+		modulesObject = modules.objects.get(id=id)
+	else:
+		modulesObject = modules()
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = modulesForm(request.POST, instance=modulesObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# Save the new data to the database.
+			f = form.save()
+
+			# route user depending on what button they clicked
+			if 'save' in request.POST:
+				# send back to dashboard
+				return HttpResponseRedirect('/dashboard/')
+			elif 'new_module_document' in request.POST:
+				# send to new module doc form
+				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.id)))
+			else:
+				# send to new lecture form
+				return HttpResponseRedirect(reverse('admin_lecture', args=(0,f.id)))			
+			
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = modulesForm(instance=modulesObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_modules.html', {'form': form, 'media': form.media})
+
+
+@login_required
+def admin_removemodule(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id:
+		modulesObject = modules.objects.get(id=id)
+			#look up module docs 
+		moduleDocs = moduleDocuments.objects.filter(module=modulesObject)
+		# just get the file name
+		for doc in moduleDocs:
+			document = str(doc.document)
+			document = document.split('/')
+			doc.documentName = document[2]
+
+		#look up the lectures
+		moduleLecs = lectures.objects.filter(module=modulesObject)
+		# get the file name
+		for lec in moduleLecs:
+			lecture = str(lec.presentation)
+			lecture = lecture.split('/')
+			lec.lectureName = lecture[2]
+			# get lecture documents
+			lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+			lec.lectureDocs = lectureDocs
+			for lecDoc in lec.lectureDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				lecDoc.documentName = document[2]
+
+	else:
+		return HttpResponseRedirect('/dashboard/')
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = modulesRemoveForm(request.POST, instance=modulesObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# if form submitted, delete module
+			if 'delete' in request.POST:
+				modulesObject.delete()
+				return HttpResponseRedirect('/dashboard/')
+	
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = modulesRemoveForm(instance=modulesObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_removemodules.html', {'form': form, 'modulesObject': modulesObject, 'moduleDocs': moduleDocs, 'moduleLecs': moduleLecs})
+
+
+
+@login_required
+def admin_moduledoc(request, id=None, moduleid=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id and int(id) > 0:
+		moduleDocumentsObject = moduleDocuments.objects.get(id=id)
+	else:
+		moduleDocumentsObject = moduleDocuments()
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = moduleDocumentsForm(request.POST, request.FILES, instance=moduleDocumentsObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# Save the new data to the database.
+			f = form.save()
+
+			# route user depending on what button they clicked
+			if 'save' in request.POST:
+				# send back to dashboard
+				return HttpResponseRedirect('/dashboard/')
+			else:
+				# send to new module doc form
+				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.module.id,)))
+			
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = moduleDocumentsForm(instance=moduleDocumentsObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_moduledoc.html', {'form': form, 'media': form.media, 'moduleid': moduleid})
+
+
+@login_required
+def admin_removemoduledoc(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id:
+		moduleDocumentsObject = moduleDocuments.objects.get(id=id)
+		document = str(moduleDocumentsObject.document)
+		document = document.split('/')
+		moduleDocumentsObject.document.documentName = document[2]
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = moduleDocumentsRemoveForm(request.POST, instance=moduleDocumentsObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# if form submitted, delete module
+			if 'delete' in request.POST:
+				moduleDocumentsObject.delete()
+				return HttpResponseRedirect('/dashboard/')
+	
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = moduleDocumentsRemoveForm(instance=moduleDocumentsObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_removemoduledoc.html', {'form': form, 'moduleDocumentsObject': moduleDocumentsObject})
+
+
+@login_required
+def admin_lecture(request, id=None, moduleid=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id and int(id) > 0:
+		lectureObject = lectures.objects.get(id=id)
+	else:
+		lectureObject = lectures()
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = lectureForm(request.POST, request.FILES, instance=lectureObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# Save the new data to the database.
+			f = form.save()
+
+			# route user depending on what button they clicked
+			if 'save' in request.POST:
+				# send back to dashboard
+				return HttpResponseRedirect('/dashboard/')
+			elif 'new_lecure_document' in request.POST:
+				# send to new lecture doc form
+				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.id)))
+			elif 'new_lecure_segment' in request.POST:
+				# send to new lecture doc form
+				return HttpResponseRedirect(reverse('admin_lecturesegment', args=(0,f.id)))
+			else:
+				# send to new module doc form
+				return HttpResponseRedirect(reverse('admin_lecture', args=(0,f.module.id,)))
+			
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = lectureForm(instance=lectureObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_lecture.html', {'form': form, 'media': form.media, 'moduleid': moduleid})
+
+
+@login_required
+def admin_removelecture(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id:
+		lectureObject = lectures.objects.get(id=id)
+		document = str(lectureObject.presentation)
+		document = document.split('/')
+		lectureObject.presentation.documentName = document[2]
+
+		# get lecture documents
+		lectureDocs = lectureDocuments.objects.filter(lecture=lectureObject)
+		for lecDoc in lectureDocs:
+			document = str(lecDoc.document)
+			document = document.split('/')
+			lecDoc.documentName = document[2]
+
+		# get lecture segments
+		lectureSegs = lectureSegments.objects.filter(lecture=lectureObject)
+		for seg in lectureSegs:
+			document = str(seg.presentation)
+			document = document.split('/')
+			seg.documentName = document[2]
+
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = lectureRemoveForm(request.POST, instance=lectureObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# if form submitted, delete module
+			if 'delete' in request.POST:
+				lectureObject.delete()
+				return HttpResponseRedirect('/dashboard/')
+	
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = lectureRemoveForm(instance=lectureObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_removelecture.html', {'form': form, 'lectureObject': lectureObject, 'lectureDocs': lectureDocs, 'lectureSegs': lectureSegs})
+
+
+
+@login_required
+def admin_lecturesegment(request, id=None, lectureid=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id and int(id) > 0:
+		lecturesegmentObject = lectureSegments.objects.get(id=id)
+	else:
+		lecturesegmentObject = lectureSegments()
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = lecturesegmentForm(request.POST, request.FILES, instance=lecturesegmentObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# Save the new data to the database.
+			f = form.save()
+
+			# route user depending on what button they clicked
+			if 'save' in request.POST:
+				# send back to dashboard
+				return HttpResponseRedirect('/dashboard/')
+			else:
+				# send to new module doc form
+				return HttpResponseRedirect(reverse('admin_lecturesegment', args=(0,f.lecture.id,)))
+			
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = lecturesegmentForm(instance=lecturesegmentObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_lecturesegment.html', {'form': form, 'media': form.media, 'lectureid': lectureid})
+
+
+@login_required
+def admin_removelecturesegment(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id:
+		lecturesegmentObject = lectureSegments.objects.get(id=id)
+		document = str(lecturesegmentObject.presentation)
+		document = document.split('/')
+		lecturesegmentObject.presentation.documentName = document[2]
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = lecturesegmentRemoveForm(request.POST, instance=lecturesegmentObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# if form submitted, delete module
+			if 'delete' in request.POST:
+				lecturesegmentObject.delete()
+				return HttpResponseRedirect('/dashboard/')
+	
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = lecturesegmentRemoveForm(instance=lecturesegmentObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_removelecturesegment.html', {'form': form, 'lecturesegmentObject': lecturesegmentObject})
+
+
+
+@login_required
+def admin_lecturedoc(request, id=None, lectureid=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id and int(id) > 0:
+		lecturedocObject = lectureDocuments.objects.get(id=id)
+	else:
+		lecturedocObject = lectureDocuments()
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = lecturedocForm(request.POST, request.FILES, instance=lecturedocObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# Save the new data to the database.
+			f = form.save()
+
+			# route user depending on what button they clicked
+			if 'save' in request.POST:
+				# send back to dashboard
+				return HttpResponseRedirect('/dashboard/')
+			else:
+				# send to new lecture doc form
+				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.lecture.id,)))
+			
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = lecturedocForm(instance=lecturedocObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_lecturedoc.html', {'form': form, 'media': form.media, 'lectureid': lectureid})
+
+
+@login_required
+def admin_removelecturedoc(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id:
+		lecturedocObject = lectureDocuments.objects.get(id=id)
+		document = str(lecturedocObject.document)
+		document = document.split('/')
+		lecturedocObject.document.documentName = document[2]
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = lecturedocRemoveForm(request.POST, instance=lecturedocObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# if form submitted, delete module
+			if 'delete' in request.POST:
+				lecturedocObject.delete()
+				return HttpResponseRedirect('/dashboard/')
+	
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = lecturedocRemoveForm(instance=lecturedocObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_removelecturedoc.html', {'form': form, 'lecturedocObject': lecturedocObject})
 

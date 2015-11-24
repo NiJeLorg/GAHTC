@@ -6,6 +6,8 @@ from subprocess import call
 from website.models import *
 import pptx
 from pptx import Presentation
+import string
+from textblob import TextBlob
 
 """
   Opens pptx files and extracts all text
@@ -27,6 +29,10 @@ from pptx.opc.package import PartFactory
 
 # path to media root for libreoffice to find files
 MEDIA_ROOT = settings.MEDIA_ROOT
+
+#global exclude to exclude punctuation
+exclude = set(string.punctuation)
+
 
 class CT_NotesSlide(BaseOxmlElement):
     """
@@ -190,9 +196,10 @@ def strip_non_ascii(string):
     return ''.join(stripped)
 
 
+
 class Command(BaseCommand):
     
-    def extract_text_from_pptx(self):
+    def extract_text_from_pptx_lectures(self):
         # pull PPTX from database where content hasn't yet been extracted
         lecturesObjects = lectures.objects.filter(extracted=False)
 
@@ -259,12 +266,35 @@ class Command(BaseCommand):
                     addslide.slide_main_text = '\n'.join(main_text_this_slide)
                     addslide.slide_notes = '\n'.join(notes_text_this_slide)
                     addslide.save()
+                    # add in tags for this slide
+                    # create tags from noun_phrases for main slide text
+                    mt = '. '.join(main_text_this_slide)
+                    blobbed = TextBlob(mt)
+                    np = blobbed.noun_phrases
+                    np = list(set(np))
+                    np = [s for s in np if s]
+                    addslide.tags.clear()
+                    for item in np:
+                        s = ''.join(ch for ch in item if ch not in exclude)
+                        addslide.tags.add(s)
+
+                    # create tags from noun_phrases for slide notes
+                    nt = '. '.join(notes_text_this_slide)
+                    blobbed = TextBlob(nt)
+                    np = blobbed.noun_phrases
+                    np = list(set(np))
+                    np = [s for s in np if s]
+                    for item in np:
+                        s = ''.join(ch for ch in item if ch not in exclude)
+                        addslide.tags.add(s)
+
                     f = open(head + "/slide-"+ str(index) +".jpg")
                     image_file = File(f)
                     addslide.slide.save("slide-"+ str(index) +".jpg", image_file)
                     os.remove(head + "/slide-"+ str(index) +".jpg")
 
 
+                #for text searching
                 main_string = '\n'.join(main_text)
                 notes_string = '\n'.join(notes_text)
 
@@ -276,11 +306,136 @@ class Command(BaseCommand):
                 lecturesObject.extracted = True
                 lecturesObject.save()
 
+                #add tags for entire presentation
+                # create tags from noun_phrases for main slide text
+                mt = '. '.join(main_text)
+                blobbed = TextBlob(mt)
+                np = blobbed.noun_phrases
+                np = list(set(np))
+                np = [s for s in np if s]
+                lecturesObject.tags.clear()
+                for item in np:
+                    s = ''.join(ch for ch in item if ch not in exclude)
+                    lecturesObject.tags.add(s)
+
+                # create tags from noun_phrases for slide notes
+                nt = '. '.join(notes_text)
+                blobbed = TextBlob(nt)
+                np = blobbed.noun_phrases
+                np = list(set(np))
+                np = [s for s in np if s]
+                for item in np:
+                    s = ''.join(ch for ch in item if ch not in exclude)
+                    lecturesObject.tags.add(s)               
+
+    def extract_text_from_pptx_segments(self):
+        # pull PPTX from database where content hasn't yet been extracted
+        lecturesObjects = lectureSegments.objects.filter(extracted=False)
+
+        # loop through lectures and pull all text
+        for lecturesObject in lecturesObjects:
+            prs = Presentation(lecturesObject.presentation)
+
+            # convert lecturesObject.presentation to a pdf file in memory for imagemagick
+            #where is the presentation?
+            path_to_file = MEDIA_ROOT + '/' + str(lecturesObject.presentation)
+            print path_to_file
+            head, tail = os.path.split(path_to_file)
+
+            #name of pdf
+            croppedtail = tail[:-5]
+            pdffilename = croppedtail + ".pdf"
+
+            # run the command and put the output in "head"
+            # libreoffice --headless --convert-to pdf --outdir head path_to_file
+            call(["libreoffice","--headless","--convert-to","pdf","--outdir",head,path_to_file])
+
+            #extract all slides in pdf in imagemagic 
+            # convert head/pdffilename[index] head/slide.png
+            pdfpath = head + '/' + pdffilename
+            pngpath = head + "/slide.jpg"
+
+            # only run the rest of script if pdf is present
+            if os.path.isfile(pdfpath): 
+                call(["convert",pdfpath,pngpath])
+
+                # text_runs will be populated with a list of strings,
+                # one for each text run in presentation
+                main_text = []
+                notes_text = []
+                slide_main_text = ''
+                slide_notes_text = ''
+
+                for index, slide in enumerate(prs.slides):
+                    # extract the text for each slide and append to array of text to save back to lecturesObject
+                    for shape in slide.shapes:
+                        if not shape.has_text_frame:
+                            continue
+                        for paragraph in shape.text_frame.paragraphs:
+                            for run in paragraph.runs:
+                                slide_main_text = strip_non_ascii(run.text)
+                                main_text.append(slide_main_text)
+
+                    notes_slide = SlideWrapper(slide).notes_page()
+                    for shape in notes_slide.shapes.__iter__():
+                        for paragraph in shape.text_frame.paragraphs:
+                            for run in paragraph.runs:
+                                slide_notes_text = strip_non_ascii(run.text)
+                                notes_text.append(slide_notes_text)
+
+                    # add slide to lectureSlides
+                    addslide = lectureSlidesSegment()
+                    addslide.lecture_segment = lecturesObject
+                    addslide.slide_number = index
+                    addslide.save()
+
+                    f = open(head + "/slide-"+ str(index) +".jpg")
+                    image_file = File(f)
+                    addslide.slide.save("slide-"+ str(index) +".jpg", image_file)
+                    os.remove(head + "/slide-"+ str(index) +".jpg")
+
+
+                #for text searching
+                main_string = '\n'.join(main_text)
+                notes_string = '\n'.join(notes_text)
+
+                # concatonate strings together
+                string = main_string + notes_string
+
+                # save this string
+                lecturesObject.presentation_text = string
+                lecturesObject.extracted = True
+                lecturesObject.save()
+
+                #add tags for entire presentation
+                # create tags from noun_phrases for main slide text
+                mt = '. '.join(main_text)
+                blobbed = TextBlob(mt)
+                np = blobbed.noun_phrases
+                np = list(set(np))
+                np = [s for s in np if s]
+                lecturesObject.tags.clear()
+                for item in np:
+                    s = ''.join(ch for ch in item if ch not in exclude)
+                    lecturesObject.tags.add(s)
+
+                # create tags from noun_phrases for slide notes
+                nt = '. '.join(notes_text)
+                blobbed = TextBlob(nt)
+                np = blobbed.noun_phrases
+                np = list(set(np))
+                np = [s for s in np if s]
+                for item in np:
+                    s = ''.join(ch for ch in item if ch not in exclude)
+                    lecturesObject.tags.add(s)               
+
 
     def handle(self, *args, **options):
-        print "Extracting PPTX files...."
-        self.extract_text_from_pptx()
-
+        print "Extracting Lecture PPTX files...."
+        self.extract_text_from_pptx_lectures()
+        print "Extracting Lecture Segment PPTX files...."
+        self.extract_text_from_pptx_segments()
+        print "Done."
 
 
 

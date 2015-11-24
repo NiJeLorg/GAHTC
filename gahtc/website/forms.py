@@ -41,3 +41,124 @@ class UserProfileForm(forms.ModelForm):
             'teaching': forms.Textarea(),
             'introduction': forms.Textarea(),
         }
+
+
+# module form
+class modulesForm(forms.ModelForm):
+    class Meta:
+        model = modules
+        fields = ('title', 'authors', 'description', 'tags')
+        labels = {
+            'title': 'Title (Required)',
+            'authors': 'Authors (Required)',
+            'description': 'Description',
+            'tags': 'Tags',
+        }
+        widgets = {
+            'title': forms.TextInput(),
+            'authors': forms.TextInput(),
+            'description': forms.Textarea(),
+        }
+
+class modulesRemoveForm(forms.ModelForm):
+    class Meta:
+        model = modules
+        fields = ()
+
+
+class moduleDocumentsForm(forms.ModelForm):
+    class Meta:
+        model = moduleDocuments
+        fields = ('document', 'module', 'title', 'authors', 'description', 'tags')
+        labels = {
+            'document': 'File (Required)',
+            'module': 'Related Module (Required)',
+            'title': 'Title (Required)',
+            'authors': 'Authors (Required)',
+            'description': 'Description',
+            'tags': 'Tags',
+        }
+        widgets = {
+            'title': forms.TextInput(),
+            'authors': forms.TextInput(),
+            'description': forms.Textarea(),
+        }
+
+class moduleDocumentsRemoveForm(forms.ModelForm):
+    class Meta:
+        model = moduleDocuments
+        fields = ()
+
+
+class lectureForm(forms.ModelForm):
+    class Meta:
+        model = lectures
+        fields = ('presentation', 'module', 'title', 'authors', 'description', 'mindate', 'maxdate', 'tags')
+        labels = {
+            'presentation': 'File (Required)',
+            'module': 'Related Module (Required)',
+            'title': 'Title (Required)',
+            'authors': 'Authors (Required)',
+            'description': 'Description',
+            'mindate': 'Earliest Date',
+            'maxdate': 'Latest Date',
+            'tags': 'Tags',
+        }
+        widgets = {
+            'title': forms.TextInput(),
+            'authors': forms.TextInput(),
+            'description': forms.Textarea(),
+        }
+
+class lectureRemoveForm(forms.ModelForm):
+    class Meta:
+        model = lectures
+        fields = ()
+
+
+class lecturesegmentForm(forms.ModelForm):
+    class Meta:
+        model = lectureSegments
+        fields = ('presentation', 'lecture', 'title', 'description', 'mindate', 'maxdate', 'tags')
+        labels = {
+            'presentation': 'File (Required)',
+            'lecture': 'Related Lecture (Required)',
+            'title': 'Title (Required)',
+            'description': 'Description',
+            'mindate': 'Earliest Date',
+            'maxdate': 'Latest Date',
+            'tags': 'Tags',
+        }
+        widgets = {
+            'title': forms.TextInput(),
+            'description': forms.Textarea(),
+        }
+
+class lecturesegmentRemoveForm(forms.ModelForm):
+    class Meta:
+        model = lectureSegments
+        fields = ()
+
+
+class lecturedocForm(forms.ModelForm):
+    class Meta:
+        model = lectureDocuments
+        fields = ('document', 'lecture', 'title', 'description', 'tags')
+        labels = {
+            'document': 'File (Required)',
+            'lecture': 'Related Lecture (Required)',
+            'title': 'Title (Required)',
+            'description': 'Description',
+            'tags': 'Tags',
+        }
+        widgets = {
+            'title': forms.TextInput(),
+            'description': forms.Textarea(),
+        }
+
+class lecturedocRemoveForm(forms.ModelForm):
+    class Meta:
+        model = lectureDocuments
+        fields = ()
+
+
