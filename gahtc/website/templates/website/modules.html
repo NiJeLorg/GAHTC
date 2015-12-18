@@ -41,7 +41,7 @@
 				<br />
 				<ul>				
 				{% for doc in module_returned.moduleDocs %}
-					<li><a href="/media/{{ doc.document }}">{{ doc.documentName }}</a> ({{ doc.document.size|filesizeformat }})</li>
+					<li>{{ doc.title }} (<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }})</li>
 				{% endfor %}
 				</ul>
 			{% endif %}
@@ -54,11 +54,11 @@
 				<br />
 				<ul>				
 				{% for lec in module_returned.moduleLecs %}
-					<li><a href="/media/{{ lec.presentation }}">{{ lec.title }}</a> (PPTX; {{ lec.presentation.size|filesizeformat }})</li>
+					<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> (<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }})</li>
 						{% if lec.lectureDocs|length > 0 %}
 							<ul>
 							{% for lecDoc in lec.lectureDocs %}
-								<li><a href="/media/{{ lecDoc.document }}">{{ lecDoc.documentName }}</a> ({{ lecDoc.document.size|filesizeformat }})</li>
+								<li>{{ lecDoc.title }} (<a href="/media/{{ lecDoc.document }}">download</a> | {{ lecDoc.document.size|filesizeformat }})</li>
 							{% endfor %}
 							</ul>
 						{% endif %}
@@ -102,6 +102,11 @@
     </div>
   </div>
 </div>
+
+<!-- Lecture Slides Modal -->
+<div class="modal fade" id="slideshow" tabindex="-1" role="dialog" aria-labelledby="mySlideshow">
+</div>
+
 {% endblock %}
 
 {% block js_block %}

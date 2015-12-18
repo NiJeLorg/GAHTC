@@ -71,6 +71,28 @@ gahtcApplication.getLectureSlide = function (lecture_slide_id) {
 	});
 }
 
+gahtcApplication.getLectureModal = function (lecture_id) {
+	$.ajax({
+		type: "GET",
+		url: "/show_lecture_modal/" + lecture_id + "/" ,
+		success: function(data){
+			$('#slideshow').html(data);
+			$('#slideshow').modal('show');
+        }
+	});		
+}
+
+gahtcApplication.getLectureSegmentModal = function (lecture_segment_id) {
+	$.ajax({
+		type: "GET",
+		url: "/show_lecture_segment_modal/" + lecture_segment_id + "/" ,
+		success: function(data){
+			$('#slideshow').html(data);
+			$('#slideshow').modal('show');
+        }
+	});		
+}
+
 gahtcApplication.createNewBundle = function () {
 	// get values
 	var title = $(" #newBundleName ").val();
@@ -185,6 +207,16 @@ gahtcApplication.saveSearchString = function (searchString) {
 		success: function(data){
 			$('#searchSaved').removeClass('hidden');
 			$('.savedSearchList').html(data);
+        }
+	});
+}
+
+gahtcApplication.saveComment = function (comment, itemid) {
+	$.ajax({
+		type: "GET",
+		url: "/save_comment/?comment=" + comment + "&itemid=" + itemid,
+		success: function(data){
+			$('.searchSidebar').html(data);
         }
 	});
 }

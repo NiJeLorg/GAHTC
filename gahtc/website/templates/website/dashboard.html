@@ -166,7 +166,9 @@
 		      {% for ls in lectureSegmentsObjects %}
 		        <tr>
 		          <td>
-		            {% if ls.extracted %}
+		            {% if ls.updated_lecture_review %}
+		              <p class="text-warning"><strong>Updated Lecture, Please Review</strong></p>
+		            {% elif ls.extracted %}
 		              <p class="text-success"><strong>Ready to Go</strong></p>
 		            {% else %}
 		              <p class="text-info"><strong>Data Being Extracted</strong></p>

@@ -1,0 +1,2 @@
+{{ object.slide_main_text }}
+{{ object.slide_notes }}

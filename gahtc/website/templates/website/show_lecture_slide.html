@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load bootstrap_tags %}
 
 	<div class="row marginBottom15">
 		<div class="col-md-9">
@@ -25,11 +26,14 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
+			<p><strong>Slide Preview</strong></p>
 			<img class="img-responsive" src="/media/{{ lecture_slide_returned.slide }}" />
 		</div>
 	</div>
+	<br />
 	<div class="row">
 		<div class="col-md-12">
+			<p><strong>Slide Text and Notes</strong></p>
 			<div class="textbox">
 				<p>{{ lecture_slide_returned.slide_main_text|linebreaksbr }}</p>
 				<p>{{ lecture_slide_returned.slide_notes|linebreaksbr }}</p>
@@ -47,9 +51,27 @@
 			        </a>
 			      </h4>
 			    </div>
-			    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+			    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 			      <div class="panel-body">
-			     	<p>Comment box here.</p>
+					{% if comments %}
+						{% for comment in comments %}
+							{% if comment.user == request.user %}
+								<!--<div id="removeComment" class="pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></div>-->
+							{% endif %}	
+							<p>{{ comment.comment }}</p>		
+							<p class="pull-right"><small>{{ comment.user }} ({{comment.created|timesince }} ago)</small></p>
+							<div class="clearfix"></div>
+							<hr>
+						{% endfor %}
+					{% endif %}
+					<br />
+					{% if comment_form %}
+						<form role="form" method="post" action="." >
+							{% csrf_token %}
+							{{ comment_form|as_bootstrap }}
+							<button data-itemid="lectureslide_{{ lecture_slide_returned.id }}" type="submit" class="btn btn-default submitComment" name="submit" value="submit">Submit</button>
+						</form>
+					{% endif %}
 			      </div>
 			    </div>
 			  </div>

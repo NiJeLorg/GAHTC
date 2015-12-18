@@ -32,7 +32,7 @@
 							<br />
 							<ul>				
 							{% for doc in bundle.module.moduleDocs %}
-								<li><a href="/media/{{ doc.document }}">{{ doc.documentName }}</a> ({{ doc.document.size|filesizeformat }})</li>
+								<li>{{ doc.title }} (<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }})</li>
 							{% endfor %}
 							</ul>
 						{% endif %}
@@ -43,14 +43,14 @@
 							<br />
 							<ul>				
 							{% for lec in bundle.module.lectures %}
-								<li><a href="/media/{{ lec.presentation }}">{{ lec.title }}</a> ({{ lec.presentation.size|filesizeformat }})</li>
-								{% if lec.lectureDocs|length > 0 %}
-									<ul>
-									{% for lecDoc in lec.lectureDocs %}
-										<li><a href="/media/{{ lecDoc.document }}">{{ lecDoc.documentName }}</a> ({{ lecDoc.document.size|filesizeformat }})</li>
-									{% endfor %}
-									</ul>
-								{% endif %}								
+								<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> (<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }})</li>
+									{% if lec.lectureDocs|length > 0 %}
+										<ul>
+										{% for lecDoc in lec.lectureDocs %}
+											<li>{{ lecDoc.title }} (<a href="/media/{{ lecDoc.document }}">download</a> | {{ lecDoc.document.size|filesizeformat }})</li>
+										{% endfor %}
+										</ul>
+									{% endif %}
 							{% endfor %}
 							</ul>
 						{% endif %}
@@ -75,7 +75,7 @@
 						</div>								
 					</div>
 					<div class="row">
-						<p><a href="/media/{{ bundle.lecture.presentation }}">{{ bundle.lecture.title }}</a> ({{ bundle.lecture.presentation.size|filesizeformat }})</p>
+						<p><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ bundle.lecture.id }}">{{ bundle.lecture.title }}</button> (<a href="/media/{{ bundle.lecture.presentation }}">download</a> | {{ bundle.lecture.presentation.size|filesizeformat }})</p>
 					</div>
 					<div class="row">
 						<p>From the module: <em>{{ bundle.lecture.module.title }}</em></p>
@@ -101,10 +101,11 @@
 						</div>								
 					</div>
 					<div class="row">
-						<p><a href="/media/{{ bundle.lectureSegment.presentation }}">{{ bundle.lectureSegment.title }}</a> ({{ bundle.lectureSegment.presentation.size|filesizeformat }})</p>
+						<p><button type="button" class="btn btn-default btn-xs launchSegmentModal" data-lecturesegmentid="{{ bundle.lectureSegment.id }}">{{ bundle.lectureSegment.title }}</button> (<a href="/media/{{ bundle.lectureSegment.presentation }}">download</a> | {{ bundle.lectureSegment.presentation.size|filesizeformat }})</p>
 					</div>
 					<div class="row">
 						<p>From the lecture: <em>{{ bundle.lectureSegment.lecture.title }}</em></p>
+						<p>From the module: <em>{{ bundle.lectureSegment.lecture.module.title }}</em></p>
 					</div>
 
 				</div>
@@ -118,7 +119,7 @@
 				<div class="col-xs-9">
 					<div class="row">
 						<div class="col-xs-8 resultTitle">
-							<p><strong>LECTURE DOCUMENT FROM: {{ bundle.lectureDocument.lecture.title }}</strong></p>
+							<p><strong>LECTURE DOCUMENT: {{ bundle.lectureDocument.title }}</strong></p>
 						</div>
 						<div class="col-xs-4">
 							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lecturedocumentid="{{ bundle.lectureDocument.id }}">
@@ -127,9 +128,10 @@
 						</div>							
 					</div>
 					<div class="row">
-						<p><a href="/media/{{ bundle.lectureDocument.document }}">{{ bundle.lectureDocument.documentName }}</a> ({{ bundle.lectureDocument.document.size|filesizeformat }})</p>
+						<p>{{ bundle.lectureDocument.title }} (<a href="/media/{{ bundle.lectureDocument.document }}">download</a> | {{ bundle.lectureDocument.document.size|filesizeformat }})</p>
 					</div>
 					<div class="row">
+						<p>From the lecture: <em>{{ bundle.lectureDocument.lecture.title }}</em></p>
 						<p>From the module: <em>{{ bundle.lectureDocument.lecture.module.title }}</em></p>
 					</div>
 				</div>
@@ -157,10 +159,10 @@
 							<br />
 							Slide Notes: <a href="/media/{{ bundle.lectureSlide.slide_notes_document }}">{{ bundle.lectureSlide.slideNotesName }}</a> ({{ bundle.lectureSlide.slide_notes_document.size|filesizeformat }})
 
-
 						</p>
 					</div>
 					<div class="row">
+						<p>From the lecture: <em>{{ bundle.lectureSlide.lecture.title }}</em></p>
 						<p>From the module: <em>{{ bundle.lectureSlide.lecture.module.title }}</em></p>
 					</div>
 				</div>

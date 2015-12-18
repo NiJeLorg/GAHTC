@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load bootstrap_tags %}
 
 	<div class="row marginBottom15">
 		<div class="col-md-9">
@@ -35,7 +36,7 @@
 				<br />
 				<ul>				
 				{% for doc in moduleDocs %}
-					<li><a href="/media/{{ doc.document }}">{{ doc.documentName }}</a> ({{ doc.document.size|filesizeformat }})</li>
+					<li>{{ doc.title }} (<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }})</li>
 				{% endfor %}
 				</ul>
 			{% endif %}
@@ -48,11 +49,11 @@
 				<br />
 				<ul>				
 				{% for lec in moduleLecs %}
-					<li><a href="/media/{{ lec.presentation }}">{{ lec.title }}</a> (PPTX; {{ lec.presentation.size|filesizeformat }})</li>
+					<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> (<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }})</li> 
 						{% if lec.lectureDocs|length > 0 %}
 							<ul>
 							{% for lecDoc in lec.lectureDocs %}
-								<li><a href="/media/{{ lecDoc.document }}">{{ lecDoc.documentName }}</a> ({{ lecDoc.document.size|filesizeformat }})</li>
+								<li>{{ lecDoc.title }} (<a href="/media/{{ lecDoc.document }}">download</a> | {{ lecDoc.document.size|filesizeformat }})</li>
 							{% endfor %}
 							</ul>
 						{% endif %}
@@ -79,9 +80,28 @@
 			        </a>
 			      </h4>
 			    </div>
-			    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+			    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 			      <div class="panel-body">
-			     	<p>Comment box here.</p>
+					{% if comments %}
+						{% for comment in comments %}
+							{% if comment.user == request.user %}
+								<!--<div id="removeComment" class="pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></div>-->
+							{% endif %}	
+							<p>{{ comment.comment }}</p>		
+							<p class="pull-right"><small>{{ comment.user }} ({{comment.created|timesince }} ago)</small></p>
+							<div class="clearfix"></div>
+							<hr>
+						{% endfor %}
+					{% endif %}
+					<br />
+					{% if comment_form %}
+						<form role="form" method="post" action="." >
+							{% csrf_token %}
+							{{ comment_form|as_bootstrap }}
+							<button data-itemid="module_{{ module_returned.id }}" type="submit" class="btn btn-default submitComment" name="submit" value="submit">Submit</button>
+						</form>
+					{% endif %}
+
 			      </div>
 			    </div>
 			  </div>
@@ -102,4 +122,3 @@
 			</div>
 		</div>
 	</div>
-			

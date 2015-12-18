@@ -13,7 +13,7 @@ class profileForm(RegistrationForm):
     institution = forms.CharField(required=True, widget=forms.TextInput(), label="Institutional Affiliation")
     teaching = forms.CharField(required=True, widget=forms.Textarea(), label="Please describe your teaching responsibilities at your institution.")
     introduction = forms.CharField(required=True, widget=forms.Textarea(), label="Please introduce yourself to your GAHTC colleagues.")
-    pic = forms.ImageField(required=False, label="Please upload a bio picture for others to view on the GAHTC website.")
+    avatar = forms.ImageField(required=False, label="Please upload a bio picture for others to view on the GAHTC website.")
 
 
 # allow users to edit their email address in the profile form
@@ -27,13 +27,13 @@ class UserInfoForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'institution', 'teaching', 'introduction', 'pic')
+        fields = ('name', 'institution', 'teaching', 'introduction', 'avatar')
         labels = {
             'name': 'Full Name',
             'institution': 'Institutional Affiliation',
             'teaching': 'Please describe your teaching responsibilities at your institution.',
             'introduction': 'Please introduce yourself to your GAHTC colleagues.',
-            'pic': 'Please upload a bio picture for others to view on the GAHTC website.',
+            'avatar': 'Please upload a bio picture for others to view on the GAHTC website.',
         }
         widgets = {
             'name': forms.TextInput(),
@@ -119,11 +119,12 @@ class lectureRemoveForm(forms.ModelForm):
 class lecturesegmentForm(forms.ModelForm):
     class Meta:
         model = lectureSegments
-        fields = ('presentation', 'lecture', 'title', 'description', 'mindate', 'maxdate', 'tags')
+        fields = ('lecture', 'minslidenumber', 'maxslidenumber', 'title', 'description', 'mindate', 'maxdate', 'tags')
         labels = {
-            'presentation': 'File (Required)',
             'lecture': 'Related Lecture (Required)',
             'title': 'Title (Required)',
+            'minslidenumber': 'First Slide (Required)',
+            'maxslidenumber': 'Last Slide (Required)',
             'description': 'Description',
             'mindate': 'Earliest Date',
             'maxdate': 'Latest Date',
@@ -162,3 +163,43 @@ class lecturedocRemoveForm(forms.ModelForm):
         fields = ()
 
 
+# Comments Forms
+class modulesCommentsForm(forms.ModelForm):    
+    class Meta:
+        model = modulesComments
+        fields = ('comment',)
+        widgets = {
+            'comment': forms.widgets.Textarea(attrs={'rows': 2}),
+        }
+
+class lecturesCommentsForm(forms.ModelForm):    
+    class Meta:
+        model = lecturesComments
+        fields = ('comment',)
+        widgets = {
+            'comment': forms.widgets.Textarea(attrs={'rows': 2}),
+        }
+
+class lectureSegmentsCommentsForm(forms.ModelForm):    
+    class Meta:
+        model = lectureSegmentsComments
+        fields = ('comment',)
+        widgets = {
+            'comment': forms.widgets.Textarea(attrs={'rows': 2}),
+        }
+
+class lectureDocumentsCommentsForm(forms.ModelForm):    
+    class Meta:
+        model = lectureDocumentsComments
+        fields = ('comment',)
+        widgets = {
+            'comment': forms.widgets.Textarea(attrs={'rows': 2}),
+        }
+
+class lectureSlidesCommentsForm(forms.ModelForm):    
+    class Meta:
+        model = lectureSlidesComments
+        fields = ('comment',)
+        widgets = {
+            'comment': forms.widgets.Textarea(attrs={'rows': 2}),
+        }

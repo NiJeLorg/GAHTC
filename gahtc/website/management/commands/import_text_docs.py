@@ -28,31 +28,33 @@ class Command(BaseCommand):
                 document_contents = textract.process(path_to_file, encoding='ascii')
 
                 # create tags from noun_phrases
-                blobbed = TextBlob(document_contents)
-                np = blobbed.noun_phrases
-                np = list(set(np))
-                np = [s for s in np if s]
-                moduleDocumentsObject.tags.clear()
-                for item in np:
-                    s = ''.join(ch for ch in item if ch not in exclude)
-                    moduleDocumentsObject.tags.add(s)
+                # only add tags if none exist
+                if not moduleDocumentsObject.tags:
+                    blobbed = TextBlob(document_contents)
+                    np = blobbed.noun_phrases
+                    np = list(set(np))
+                    np = [s for s in np if s]
+                    moduleDocumentsObject.tags.clear()
+                    for item in np:
+                        s = ''.join(ch for ch in item if ch not in exclude)
+                        moduleDocumentsObject.tags.add(s)
 
                 # TODO pull dates
-                words = blobbed.words
-                print words
-                numbers = []
-                for w in words:
-                    try:
-                        int(w)
-                        numbers.append(int(w))
-                    except ValueError:
-                        pass
+                # words = blobbed.words
+                # print words
+                # numbers = []
+                # for w in words:
+                #     try:
+                #         int(w)
+                #         numbers.append(int(w))
+                #     except ValueError:
+                #         pass
 
-                print numbers
-                numbers_not_single_digits =  [x for x in numbers if not 0 <= x <= 20]
-                print numbers_not_single_digits
-                numbers_pub_dates = [x for x in numbers_not_single_digits if not 0 <= x <= 2020]
-                print numbers_pub_dates
+                # print numbers
+                # numbers_not_single_digits =  [x for x in numbers if not 0 <= x <= 20]
+                # print numbers_not_single_digits
+                # numbers_pub_dates = [x for x in numbers_not_single_digits if not 0 <= x <= 2020]
+                # print numbers_pub_dates
                 #end TODO
 
 
@@ -74,14 +76,16 @@ class Command(BaseCommand):
                 document_contents = textract.process(path_to_file, encoding='ascii')
 
                 # create tags from noun_phrases
-                blobbed = TextBlob(document_contents)
-                np = blobbed.noun_phrases
-                np = list(set(np))
-                np = [s for s in np if s]
-                lectureDocumentsObject.tags.clear()
-                for item in np:
-                    s = ''.join(ch for ch in item if ch not in exclude)
-                    lectureDocumentsObject.tags.add(s)
+                # only add tags if none exist
+                if not lectureDocumentsObject.tags:
+                    blobbed = TextBlob(document_contents)
+                    np = blobbed.noun_phrases
+                    np = list(set(np))
+                    np = [s for s in np if s]
+                    lectureDocumentsObject.tags.clear()
+                    for item in np:
+                        s = ''.join(ch for ch in item if ch not in exclude)
+                        lectureDocumentsObject.tags.add(s)
 
                 # save this string
                 lectureDocumentsObject.document_contents = document_contents

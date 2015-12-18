@@ -1,0 +1,5 @@
+{{ object.title }}
+{{ object.authors }}
+{{ object.description }}
+{{ object.document_contents }}
+{{ object.tags.all }}

@@ -30,6 +30,11 @@ $( document ).ready(function() {
 		gahtcApplication.getBundle(bundleid);
 	}
 
+	// swap out <em> tags for <strong> tags for search results
+	$( ".swapem em").replaceWith(function(){
+	    return $("<strong />").append($(this).contents());
+	});
+
 	// on click of module, run query to pull module
 	$( ".module" ).click(function(e) {
 		e.preventDefault();
@@ -73,6 +78,20 @@ $( document ).ready(function() {
 		$( this ).addClass('active');
 		var lecture_slide_id = $( this ).data( "lectureslideid" );
 		gahtcApplication.getLectureSlide(lecture_slide_id);
+	});
+
+	// launch modal to show lectures slides
+	$(document).on('click', '.launchModal', function(e) {
+		e.preventDefault();
+        var lecture_id = $( this ).data( "lectureid" );
+        gahtcApplication.getLectureModal(lecture_id);
+	});
+
+	// launch modal to show lecture segment slides
+	$(document).on('click', '.launchSegmentModal', function(e) {
+		e.preventDefault();
+        var lecture_segment_id = $( this ).data( "lecturesegmentid" );
+        gahtcApplication.getLectureSegmentModal(lecture_segment_id);
 	});
 
 	$(document).on('click', '.bundleResult', function(e) {
@@ -246,6 +265,15 @@ $( document ).ready(function() {
 		e.preventDefault();
 		gahtcApplication.saveSearchString();
 	});
+
+	// submit comment form
+	$(document).on('click', '.submitComment', function(e) {
+		e.preventDefault();
+        var comment = $( "#id_comment" ).val();
+		var itemid = $( this ).data( "itemid" );
+        gahtcApplication.saveComment(comment, itemid);
+	});	
+
 
 
 });

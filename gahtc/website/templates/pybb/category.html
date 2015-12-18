@@ -1,0 +1,13 @@
+{% load url from future %}
+{% load i18n pybb_tags %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+			<div class='category'>
+			    <h3>{{ category.name }} {% if category.hidden %}[{% trans "Hidden" %}]{% endif %}</h3>
+			    {% include 'pybb/forum_list.html' with forum_list=category.forums_accessed category=category parent_forum='' %}
+			</div>
+        </div>
+    </div>
+</div>

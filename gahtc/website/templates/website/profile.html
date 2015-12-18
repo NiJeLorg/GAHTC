@@ -5,8 +5,8 @@
 <div class="container">
 	<div class="row marginTop30">
 		<div class="col-md-4">
-			{% if user_profile.pic %}
-				<img class="img-responsive" src="/media/{{ user_profile.pic }}" />
+			{% if user_profile.avatar %}
+				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
 			{% else %}
 				<img class="img-responsive" src="{% static 'website/css/images/icon-profile.png' %}" />
 			{% endif %}

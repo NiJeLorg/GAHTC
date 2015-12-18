@@ -8,6 +8,11 @@ from django.db.models import TextField, CharField, Q, Count
 from django.contrib.auth.decorators import login_required
 from itertools import chain
 from django.conf import settings
+from django.core.files import File
+import pptx
+from pptx import Presentation
+
+from haystack.query import SearchQuerySet
 
 # path to media root for adding a zip archive
 MEDIA_ROOT = settings.MEDIA_ROOT
@@ -34,69 +39,47 @@ def mainSearchCode(request, keyword, tab):
 	"""
 	  Queries the database for search terms and returns list of results -- used in search and bundles
 	"""
-	# empty search strings and query Qs
-	modules_keywords_query = Q()
-	module_documents_keywords_query = Q()
-	lectures_keywords_query = Q()
-	lecture_segments_keywords_query = Q()
-	lecture_documents_keywords_query = Q()
-	lecture_slides_keywords_query = Q()
+	
+	modules_returned_count = 0
+	module_documents_returned_count = 0
+	lectures_returned_count = 0
+	lecture_segments_returned_count = 0
+	lecture_documents_returned_count = 0
+	lecture_slides_returned_count = 0
 
-	if(keyword != ""):
-		# split keyword into components is spaces in string
-		keywords = keyword.split(' ')
+	if keyword != "":
+		all_results = SearchQuerySet().filter(content=keyword).highlight()
+		modules_returned = []
+		module_documents_returned = []
+		lectures_returned = []
+		lecture_segments_returned = []
+		lecture_documents_returned = []
+		lecture_slides_returned = []
 
-		# group of keyword queries for text in modules documents
-		modules_fields = [f for f in modules._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		for kw in keywords:
-			modules_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in modules_fields]
-			for q in modules_queries:
-				modules_keywords_query = modules_keywords_query | q 
+		# sort search query to bins
+		for r in all_results:
+			if r.model_name == "modules":
+				modules_returned.append(r)
+			elif r.model_name == "moduledocuments":
+				module_documents_returned.append(r)
+			elif r.model_name == "lectures":
+				lectures_returned.append(r)
+			elif r.model_name == "lecturesegments":
+				lecture_segments_returned.append(r)
+			elif r.model_name == "lecturedocuments":
+				lecture_documents_returned.append(r)
+			elif r.model_name == "lectureslides":
+				lecture_slides_returned.append(r)
 
-		# group of keyword queries for text in modules documents
-		module_documents_fields = [f for f in moduleDocuments._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		for kw in keywords:
-			module_documents_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in module_documents_fields]
-			for q in module_documents_queries:
-				module_documents_keywords_query = module_documents_keywords_query | q
-
-		# group of keyword queries for text in lectures
-		lectures_fields = [f for f in lectures._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		for kw in keywords:
-			lectures_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in lectures_fields]
-			for q in lectures_queries:
-				lectures_keywords_query = lectures_keywords_query | q       
-
-		# group of keyword queries for text in lectures
-		lecture_segments_fields = [f for f in lectureSegments._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		for kw in keywords:
-			lecture_segments_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in lecture_segments_fields]
-			for q in lecture_segments_queries:
-				lecture_segments_keywords_query = lecture_segments_keywords_query | q  
-
-		# group of keyword queries for text in lecture documents
-		lecture_documents_fields = [f for f in lectureDocuments._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		for kw in keywords:
-			lecture_documents_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in lecture_documents_fields]
-			for q in lecture_documents_queries:
-				lecture_documents_keywords_query = lecture_documents_keywords_query | q       
-		# group of keyword queries for text in lecture slides
-		lecture_slides_fields = [f for f in lectureSlides._meta.fields if (isinstance(f, TextField)) or (isinstance(f, CharField))]
-		for kw in keywords:
-			lecture_slides_queries = [Q(**{"%s__icontains" % f.name: kw}) for f in lecture_slides_fields]
-			for q in lecture_slides_queries:
-				lecture_slides_keywords_query = lecture_slides_keywords_query | q
+		modules_returned_count = len(modules_returned)
+		module_documents_returned_count = len(module_documents_returned)
+		lectures_returned_count = len(lectures_returned)
+		lecture_segments_returned_count = len(lecture_segments_returned)
+		lecture_documents_returned_count = len(lecture_documents_returned)
+		lecture_slides_returned_count = len(lecture_slides_returned)
 
 
-	# get count and if no objects returned, send to different tempalate
-	modules_returned_count = modules.objects.filter(modules_keywords_query).count()
-	module_documents_returned_count = moduleDocuments.objects.filter(module_documents_keywords_query).count()
-	lectures_returned_count = lectures.objects.filter(lectures_keywords_query).count()
-	lecture_segments_returned_count = lectureSegments.objects.filter(lecture_segments_keywords_query).count()
-	lecture_documents_returned_count = lectureDocuments.objects.filter(lecture_documents_keywords_query).count()
-	lecture_slides_returned_count = lectureSlides.objects.filter(lecture_slides_keywords_query).count()
-
-	if (modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0):
+	if modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0:
 		modules_returned = modules.objects.none()
 		moduleDocsCount = moduleDocuments.objects.none()
 		lectures_returned = lectures.objects.none()
@@ -113,25 +96,25 @@ def mainSearchCode(request, keyword, tab):
 		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile}
 
 	else:
-		modules_returned = modules.objects.filter(modules_keywords_query)
-		module_documents_returned = moduleDocuments.objects.filter(module_documents_keywords_query)
-		lectures_returned = lectures.objects.filter(lectures_keywords_query)
-		lecture_segments_returned = lectureSegments.objects.filter(lecture_segments_keywords_query)
-		lecture_documents_returned = lectureDocuments.objects.filter(lecture_documents_keywords_query)
-		lecture_slides_returned = lectureSlides.objects.filter(lecture_slides_keywords_query)
-
 		# concatonate module querysets
 		# first create list of modules
+		module_modules = []
 		module_documents_modules = []
 		lectures_modules = []
 
+		for module in modules_returned:
+			if module.object is not None:
+				module_modules.append(module.object)
+
 		for module_document in module_documents_returned:
-			module_documents_modules.append(module_document.module)
+			if module_document.object is not None:
+				module_documents_modules.append(module_document.object.module)
 
 		for lecture in lectures_returned:
-			lectures_modules.append(lecture.module)
+			if lecture.object is not None:
+				lectures_modules.append(lecture.object.module)
 
-		module_list = list(chain(modules_returned, module_documents_modules, lectures_modules))
+		module_list = list(chain(module_modules, module_documents_modules, lectures_modules))
 
 		# make unique
 		module_set = set(module_list)
@@ -139,71 +122,10 @@ def mainSearchCode(request, keyword, tab):
 		unique_module_list_count = len(unique_module_list)
 
 		#set for template
-		modules_returned = unique_module_list
-		modules_returned_count = unique_module_list_count
+		modules_returned_unique = unique_module_list
+		modules_returned_unique_count = unique_module_list_count
+
 		
-		# sort decending by number of times words show up in the list
-		for module in modules_returned:
-			# look up docs
-			moduleDocsCount = moduleDocuments.objects.filter(module=module)
-			#count number of times keyword comes up in docs
-			moduleDocsWordCount = 0
-			contents = []
-			for doc in moduleDocsCount:
-				for kw in keywords:
-					moduleDocsWordCount = moduleDocsWordCount + doc.document_contents.lower().count(kw.lower()) + doc.title.lower().count(kw.lower()) + doc.authors.lower().count(kw.lower()) + doc.description.lower().count(kw.lower())
-
-				#add document contents to modules
-				contents.append(doc.document_contents)
-
-			# join document contents together
-			module.document_contents = '\n'.join(contents)
-
-			# look up lectures
-			lecturesCount = lectures.objects.filter(module=module)
-			#count number of times keyword comes up in lectures
-			lecturesWordCount = 0
-			for lec in lecturesCount:
-				for kw in keywords:
-					lecturesWordCount = lecturesWordCount + lec.title.lower().count(kw.lower()) + lec.authors.lower().count(kw.lower()) + lec.presentation_text.lower().count(kw.lower()) + lec.description.lower().count(kw.lower())
-
-			module.count = module.title.lower().count(keyword.lower()) + module.authors.lower().count(keyword.lower()) + module.description.lower().count(kw.lower()) + moduleDocsWordCount + lecturesWordCount
-
-		modules_returned = sorted(modules_returned, key=operator.attrgetter('count'), reverse=True)
-
-
-		for lecture in lectures_returned:
-			lecture.count = 0
-			for kw in keywords:
-				lecture.count = lecture.count + lecture.presentation_text.lower().count(kw.lower()) + lecture.title.lower().count(kw.lower()) + lecture.authors.lower().count(kw.lower()) + lecture.description.lower().count(kw.lower())
-
-		lectures_returned = sorted(lectures_returned, key=operator.attrgetter('count'), reverse=True)
-
-
-		for lectureSegs in lecture_segments_returned:
-			lectureSegs.count = 0
-			for kw in keywords:
-				lectureSegs.count = lectureSegs.count + lectureSegs.presentation_text.lower().count(kw.lower()) + lectureSegs.title.lower().count(kw.lower()) + lectureSegs.description.lower().count(kw.lower())
-
-		lecture_segments_returned = sorted(lecture_segments_returned, key=operator.attrgetter('count'), reverse=True)
-
-
-		for lectureDocs in lecture_documents_returned:
-			lectureDocs.count = 0
-			for kw in keywords:
-				lectureDocs.count = lectureDocs.count + lectureDocs.document_contents.lower().count(kw.lower()) + lectureDocs.title.lower().count(kw.lower()) + lectureDocs.description.lower().count(kw.lower())
-
-		lecture_documents_returned = sorted(lecture_documents_returned, key=operator.attrgetter('count'), reverse=True)
-
-
-		for lectureSlide in lecture_slides_returned:
-			lectureSlide.count = 0
-			for kw in keywords:
-				lectureSlide.count = lectureSlide.count + lectureSlide.slide_main_text.lower().count(kw.lower()) + lectureSlide.slide_notes.lower().count(kw.lower())
-
-		lecture_slides_returned = sorted(lecture_slides_returned, key=operator.attrgetter('count'), reverse=True)
-
-
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
 
@@ -213,7 +135,7 @@ def mainSearchCode(request, keyword, tab):
 		# pull saved searches
 		saved_searches = savedSearches.objects.filter(user=request.user)
 
-		context_dict = {'keyword':keyword, 'keywords':keywords, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
 
 	return context_dict
 
@@ -358,7 +280,13 @@ def showModule(request, id=None):
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
-	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture, 'bundles_returned':bundles_returned, 'moduleDocs':moduleDocs, 'moduleLecs':moduleLecs}
+	# get comments
+	comments = modulesComments.objects.filter(module=module_returned)
+
+	# comment form
+	comment_form = modulesCommentsForm()
+
+	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture, 'bundles_returned':bundles_returned, 'moduleDocs':moduleDocs, 'moduleLecs':moduleLecs, 'comments':comments , 'comment_form':comment_form}
 	return render(request, 'website/show_module.html', context_dict)
 
 def showLecture(request, id=None):
@@ -367,11 +295,18 @@ def showLecture(request, id=None):
 	"""
 	#get lecture
 	lecture_returned = lectures.objects.get(pk=id)
+	lecture_slides = lectureSlides.objects.filter(lecture=lecture_returned).order_by("slide_number")
 
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
-	context_dict = {'lecture_returned':lecture_returned, 'bundles_returned':bundles_returned}
+	# get comments
+	comments = lecturesComments.objects.filter(lecture=lecture_returned)
+
+	# comment form
+	comment_form = lecturesCommentsForm()
+
+	context_dict = {'lecture_returned':lecture_returned, 'lecture_slides': lecture_slides, 'bundles_returned':bundles_returned, 'comments':comments , 'comment_form':comment_form}
 	return render(request, 'website/show_lecture.html', context_dict)
 
 def showLectureSegment(request, id=None):
@@ -380,11 +315,18 @@ def showLectureSegment(request, id=None):
 	"""
 	#get lecture
 	lecture_segment_returned = lectureSegments.objects.get(pk=id)
+	lecture_slides = lectureSlidesSegment.objects.filter(lecture_segment=lecture_segment_returned).order_by("slide_number")
 
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
-	context_dict = {'lecture_segment_returned':lecture_segment_returned, 'bundles_returned':bundles_returned}
+	# get comments
+	comments = lectureSegmentsComments.objects.filter(lectureSegment=lecture_segment_returned)
+
+	# comment form
+	comment_form = lectureSegmentsCommentsForm()
+
+	context_dict = {'lecture_segment_returned':lecture_segment_returned, 'lecture_slides': lecture_slides, 'bundles_returned':bundles_returned, 'comments':comments , 'comment_form':comment_form}
 	return render(request, 'website/show_lecture_segment.html', context_dict)
 
 def showLectureDocument(request, id=None):
@@ -397,7 +339,13 @@ def showLectureDocument(request, id=None):
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
-	context_dict = {'lecture_document_returned':lecture_document_returned, 'bundles_returned':bundles_returned}
+	# get comments
+	comments = lectureDocumentsComments.objects.filter(lectureDocument=lecture_document_returned)
+
+	# comment form
+	comment_form = lectureDocumentsCommentsForm()
+
+	context_dict = {'lecture_document_returned':lecture_document_returned, 'bundles_returned':bundles_returned, 'comments':comments , 'comment_form':comment_form}
 	return render(request, 'website/show_lecture_document.html', context_dict)
 
 def showLectureSlide(request, id=None):
@@ -410,9 +358,36 @@ def showLectureSlide(request, id=None):
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
-	context_dict = {'lecture_slide_returned':lecture_slide_returned, 'bundles_returned':bundles_returned}
+	# get comments
+	comments = lectureSlidesComments.objects.filter(lectureSlide=lecture_slide_returned)
+
+	# comment form
+	comment_form = lectureSlidesCommentsForm()
+
+	context_dict = {'lecture_slide_returned':lecture_slide_returned, 'bundles_returned':bundles_returned, 'comments':comments , 'comment_form':comment_form}
 	return render(request, 'website/show_lecture_slide.html', context_dict)
 
+def showLectureModal(request, id=None):
+	"""
+	  Response from AJAX request to show lecture slides in modal
+	"""
+	#get lecture
+	lecture_returned = lectures.objects.get(pk=id)
+	lecture_slides = lectureSlides.objects.filter(lecture=lecture_returned).order_by("slide_number")
+
+	context_dict = {'lecture_returned':lecture_returned, 'lecture_slides':lecture_slides}
+	return render(request, 'website/show_lecture_modal.html', context_dict)
+
+def showLectureSegmentModal(request, id=None):
+	"""
+	  Response from AJAX request to show lecture segment slides in modal
+	"""
+	#get lecture
+	lecture_returned = lectureSegments.objects.get(pk=id)
+	lecture_slides = lectureSlidesSegment.objects.filter(lecture_segment=lecture_returned).order_by("slide_number")
+
+	context_dict = {'lecture_returned':lecture_returned, 'lecture_slides':lecture_slides}
+	return render(request, 'website/show_lecture_modal.html', context_dict)
 
 def createNewBundle(request):
 	"""
@@ -1023,14 +998,63 @@ def saveSearchString(request):
 		#gather variables from get request
 		searchString = request.GET.get("searchString","")
 
-		# create bundle
-		s = savedSearches(user=request.user, searchString=searchString)
-		s.save()
+		# create saved search unless one already exists
+		exists = savedSearches.objects.filter(user=request.user, searchString=searchString).count()
+		if exists == 0:
+			s = savedSearches(user=request.user, searchString=searchString)
+			s.save()
 
 	saved_searches = savedSearches.objects.filter(user=request.user)
 
 	context_dict = {'saved_searches':saved_searches}
 	return render(request, 'website/saved_searches.html', context_dict)
+
+
+def saveComment(request):
+	"""
+	  AJAX request to save comments
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		itemid = request.GET.get("itemid","")
+		comment = request.GET.get("comment","")
+
+		# add item to appropriate bundle 
+		itemid = itemid.split("_")
+		if itemid[0] == 'module':
+			#look up module
+			module = modules.objects.get(pk=itemid[1])
+			#does bundle/module exist already?
+			c = modulesComments(user=request.user, module=module, comment=comment)
+			c.save()
+			return HttpResponseRedirect(reverse('showModule', args=(module.id,)))
+		elif itemid[0] == 'lecture':
+			#look up lecture
+			lecture = lectures.objects.get(pk=itemid[1])
+			c = lecturesComments(user=request.user, lecture=lecture, comment=comment)
+			c.save()
+			return HttpResponseRedirect(reverse('showLecture', args=(lecture.id,)))
+		elif itemid[0] == 'lecturesegment':
+			#look up lectureSegment
+			lectureSegment = lectureSegments.objects.get(pk=itemid[1])
+			c = lectureSegmentsComments(user=request.user, lectureSegment=lectureSegment, comment=comment)
+			c.save()
+			return HttpResponseRedirect(reverse('showLectureSegment', args=(lectureSegment.id,)))
+		elif itemid[0] == 'lecturedocument':
+			#look up lectureDocument
+			lectureDocument = lectureDocuments.objects.get(pk=itemid[1])
+			c = lectureDocumentsComments(user=request.user, lectureDocument=lectureDocument, comment=comment)
+			c.save()
+			return HttpResponseRedirect(reverse('showLectureDocument', args=(lectureDocument.id,)))
+		else:
+			#look up lectureSlide
+			lectureSlide = lectureSlides.objects.get(pk=itemid[1])
+			c = lectureSlidesComments(user=request.user, lectureSlide=lectureSlide, comment=comment)
+			c.save()
+			return HttpResponseRedirect(reverse('showLectureSlide', args=(lectureSlide.id,)))
+
+	return True
 
 
 
@@ -1251,6 +1275,7 @@ def admin_removemoduledoc(request, id=None):
 	return render(request, 'website/admin_removemoduledoc.html', {'form': form, 'moduleDocumentsObject': moduleDocumentsObject})
 
 
+
 @login_required
 def admin_lecture(request, id=None, moduleid=None):
 	"""
@@ -1273,7 +1298,22 @@ def admin_lecture(request, id=None, moduleid=None):
 		# Have we been provided with a valid form?
 		if form.is_valid():
 			# Save the new data to the database.
-			f = form.save()
+			f = form.save(commit=False)
+
+			#ensure extracted is False -- important for updates to files
+			f.extracted = False
+			f.save()
+
+			# flag any associated lecture segments for review
+			lectureSegs = lectureSegments.objects.filter(lecture=lectureObject)
+			for seg in lectureSegs:
+				seg.updated_lecture_review = True
+				seg.save()
+
+			# remove any associated lecture slides
+			slides = lectureSlides.objects.filter(lecture=lectureObject)
+			for slide in slides:
+				slide.delete()
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
@@ -1373,12 +1413,37 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 
 	# A HTTP POST?
 	if request.method == 'POST':
-		form = lecturesegmentForm(request.POST, request.FILES, instance=lecturesegmentObject)
+		form = lecturesegmentForm(request.POST, instance=lecturesegmentObject)
 
 		# Have we been provided with a valid form?
 		if form.is_valid():
 			# Save the new data to the database.
-			f = form.save()
+			f = form.save(commit=False)
+			#ensure extracted is False and lecture review is False -- important after lecture has been updated
+			f.extracted = False
+			f.updated_lecture_review = False
+
+			# create a ppt file using the slide numbers
+			minslide = f.minslidenumber - 1
+			maxslide = f.maxslidenumber - 1
+
+			prs = Presentation(f.lecture.presentation)
+
+			for index, slide in enumerate(prs.slides):
+				if index < minslide or index > maxslide:
+					prs.slides.remove_slide(index)
+
+
+			path_to_file = MEDIA_ROOT + '/' + str(f.lecture.presentation) + "_" + str(f.minslidenumber) + "-" + str(f.maxslidenumber) + ".pptx"
+			prs.save(path_to_file)
+
+			seg = open(path_to_file)
+			seg_file = File(seg)
+			head, tail = os.path.split(path_to_file)
+			f.presentation.save(tail, seg_file)
+			os.remove(path_to_file)
+
+			f.save()
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
@@ -1521,4 +1586,6 @@ def admin_removelecturedoc(request, id=None):
 	# Bad form (or form details), no form supplied...
 	# Render the form with error messages (if any).
 	return render(request, 'website/admin_removelecturedoc.html', {'form': form, 'lecturedocObject': lecturedocObject})
+
+
 

@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^accounts/register/$', regbackend.MyRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
-
+    url(r'^forum/', include('pybb.urls', namespace='pybb')),
 ]

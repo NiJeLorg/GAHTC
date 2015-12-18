@@ -132,6 +132,11 @@
 	padding-left: 0px;
 }
 
+.swapem {
+	color: #444444;
+	font-size: 16px;
+}
+
 .bundleResult {
 	padding: 10px 0px;
 	cursor: pointer;
