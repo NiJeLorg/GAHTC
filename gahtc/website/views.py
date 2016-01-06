@@ -185,7 +185,7 @@ def mybundles(request):
 	"""
 
 	# placeholder keyword to return all items
-	keyword = 'Architecture'
+	keyword = ''
 	tab = 'bundle'
 	context_dict = mainSearchCode(request, keyword, tab)	
 
@@ -205,7 +205,7 @@ def myprofile(request):
 	"""
 
 	# placeholder keyword to return all items
-	keyword = 'Architecture'
+	keyword = ''
 	tab = 'profile'
 	context_dict = mainSearchCode(request, keyword, tab)	
 
@@ -225,7 +225,7 @@ def mysavedsearches(request):
 	"""
 
 	# placeholder keyword to return all items
-	keyword = 'Architecture'
+	keyword = ''
 	tab = 'searches'
 	context_dict = mainSearchCode(request, keyword, tab)	
 
@@ -858,7 +858,7 @@ def updateProfile(request):
 			user_form.save()       
 			pf = profile_form.save(commit=False)
 			try:
-				pf.pic = request.FILES['pic'] 
+				pf.avatar = request.FILES['avatar'] 
 			except KeyError:
 				nothing = {}
 			pf.user = request.user
@@ -874,7 +874,7 @@ def updateProfile(request):
 		profile_form = UserProfileForm(instance=user_profile)
 
 
-	keyword = 'Architecture'
+	keyword = ''
 	tab = 'profile'
 	context_dict = mainSearchCode(request, keyword, tab)	
 
