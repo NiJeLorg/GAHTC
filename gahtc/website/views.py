@@ -11,6 +11,7 @@ from django.conf import settings
 from django.core.files import File
 import pptx
 from pptx import Presentation
+from subprocess import call
 
 from haystack.query import SearchQuerySet
 
@@ -389,6 +390,16 @@ def showLectureSegmentModal(request, id=None):
 	context_dict = {'lecture_returned':lecture_returned, 'lecture_slides':lecture_slides}
 	return render(request, 'website/show_lecture_modal.html', context_dict)
 
+def showLectureSlideModal(request, id=None):
+	"""
+	  Response from AJAX request to show lecture slide in modal
+	"""
+	#get lecture
+	lecture_slide = lectureSlides.objects.get(pk=id)
+
+	context_dict = {'lecture_slide':lecture_slide}
+	return render(request, 'website/show_lecture_slide_modal.html', context_dict)
+
 def createNewBundle(request):
 	"""
 	  AJAX request to create new bundle and attach an item to the bundle
@@ -602,9 +613,6 @@ def showBundle(request, id=None):
 		slide = str(bundle.lectureSlide.slide)
 		slide = slide.split('/')
 		bundle.lectureSlide.slideName = slide[2]
-		slideNotes = str(bundle.lectureSlide.slide_notes_document)
-		slideNotes = slideNotes.split('/')
-		bundle.lectureSlide.slideNotesName = slideNotes[2]
 
 
 	context_dict = {'bundle_returned':bundle_returned, 'bundle_modules':bundle_modules, 'bundle_lectures': bundle_lectures, 'bundle_lecture_segments':bundle_lecture_segments , 'bundle_lecture_documents': bundle_lecture_documents, 'bundle_lecture_slides': bundle_lecture_slides}
@@ -1069,16 +1077,56 @@ def dashboard(request):
 		return HttpResponseRedirect('/')
 
 	"""
-	  Admin dashboard
+	  Admin dashboard -- get modules with their content
 	"""	
 
 	modulesObjects = modules.objects.all().order_by('title')
-	moduleDocumentsObjects = moduleDocuments.objects.all().order_by('title')
-	lecturesObjects = lectures.objects.all().order_by('title')
-	lectureSegmentsObjects = lectureSegments.objects.all().order_by('title')
-	lectureDocumentsObjects = lectureDocuments.objects.all().order_by('title')
 
-	context_dict = {'modulesObjects': modulesObjects, 'moduleDocumentsObjects': moduleDocumentsObjects, 'lecturesObjects': lecturesObjects, 'lectureSegmentsObjects': lectureSegmentsObjects, 'lectureDocumentsObjects': lectureDocumentsObjects}
+	for module_returned in modulesObjects:
+		#look up module docs 
+		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
+
+		#look up the document name split
+		for doc in moduleDocs:
+			document = str(doc.document)
+			document = document.split('/')
+			doc.documentName = document[2]
+
+		#attach the module docs to the module returned 
+		module_returned.moduleDocumentsObjects = moduleDocs
+
+		#look up the lectures
+		moduleLecs = lectures.objects.filter(module=module_returned)
+
+		# now get the lecture documents and get the lecture segments
+		for lec in moduleLecs:
+			#look up the document name split
+			lecture = str(lec.presentation)
+			lecture = lecture.split('/')
+			lec.lectureName = lecture[2]
+
+			# get lecture documents
+			lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+			#look up the document name split
+			for doc in lectureDocs:
+				document = str(doc.document)
+				document = document.split('/')
+				doc.documentName = document[2]			
+			lec.lectureDocumentsObjects = lectureDocs
+			lectureSegs = lectureSegments.objects.filter(lecture=lec)
+			#look up the document name split
+			for lecseg in lectureSegs:
+				#look up the document name split
+				lectureseg = str(lecseg.presentation)
+				lectureseg = lectureseg.split('/')
+				lecseg.lectureName = lectureseg[2]			
+			lec.lectureSegmentsObjects = lectureSegs
+
+		#attach the module docs to the module returned 
+		module_returned.lecturesObjects = moduleLecs
+
+
+	context_dict = {'modulesObjects': modulesObjects}
 	return render(request, 'website/dashboard.html', context_dict)
 
 
@@ -1424,14 +1472,19 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 			f.updated_lecture_review = False
 
 			# create a ppt file using the slide numbers
-			minslide = f.minslidenumber - 1
-			maxslide = f.maxslidenumber - 1
-
+			# slides are 0-indexed so the number the admin enters are one larger than the slide numbers used to manipulate the slides
 			prs = Presentation(f.lecture.presentation)
 
-			for index, slide in enumerate(prs.slides):
-				if index < minslide or index > maxslide:
-					prs.slides.remove_slide(index)
+			# calculate the last slide number
+			largestslidenumber = len(prs.slides)
+
+			# loop through a range from the maximum slide number plus 1 (which equals f.maxslidenumber) to the largest slide number
+			for index in xrange(f.maxslidenumber, largestslidenumber):
+				prs.slides.delete_slide(prs, f.maxslidenumber)
+
+			minslide = f.minslidenumber - 1
+			for index in xrange(0, minslide):
+				prs.slides.delete_slide(prs, 0)
 
 
 			path_to_file = MEDIA_ROOT + '/' + str(f.lecture.presentation) + "_" + str(f.minslidenumber) + "-" + str(f.maxslidenumber) + ".pptx"
@@ -1444,6 +1497,7 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 			os.remove(path_to_file)
 
 			f.save()
+
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:

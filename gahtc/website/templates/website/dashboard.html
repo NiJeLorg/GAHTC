@@ -21,224 +21,143 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-    	<h4>Modules</h4>
-    	<a class="btn btn-default" href="{% url 'admin_module' %}" role="button">Create a Module</a>
-    	<br /><br />
-    	{% if modulesObjects %}
-        <table class="table table-striped table-condensed sortable">
-		    <thead>
-		      <th>Status</th>
-		      <th>Edit</th>
-		      <th>Remove</th>
-		      <th>Title</th>
-		      <th>Authors</th>
-		      <th>Created</th>
-		    </thead>
-		    <tbody>
-		      {% for module in modulesObjects %}
-		        <tr>
-		          <td>
-		            <p class="text-success"><strong>Ready to Go</strong></p>
-		          </td>
-		          <td>
-		          	<a class="btn btn-default" href="/admin_module/{{ module.id }}" role="button">Edit</a>
-		          </td>
-		          <td>
-		          	<a class="btn btn-danger" href="/admin_removemodule/{{ module.id }}" role="button">Remove</a>
-		          </td>
-		          <td>{{ module.title }}</td>
-		          <td>{{ module.authors }}</td>
-		          <td>{{ module.created }}</td>
-		        </tr>
-		      {% endfor %}
-		    </tbody>
-		  </table>
-		  {% endif %}
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-    	<h4>Module Documents</h4>
+      <h4>Create New Content</h4>
+		<a class="btn btn-default" href="{% url 'admin_module' %}" role="button">Create a Module</a>
     	<a class="btn btn-default" href="{% url 'admin_moduledoc' %}" role="button">Create a Module Document</a>
-    	<br /><br />
-    	{% if moduleDocumentsObjects %}
-        <table class="table table-striped table-condensed sortable">
-		    <thead>
-		      <th>Status</th>
-		      <th>Edit</th>
-		      <th>Remove</th>
-		      <th>Module</th>
-		      <th>Title</th>
-		      <th>Authors</th>
-		      <th>Created</th>
-		    </thead>
-		    <tbody>
-		      {% for moduleDocument in moduleDocumentsObjects %}
-		        <tr>
-		          <td>
-		            {% if moduleDocument.extracted %}
-		              <p class="text-success"><strong>Ready to Go</strong></p>
-		            {% else %}
-		              <p class="text-info"><strong>Data Being Extracted</strong></p>
-		            {% endif %}
-		          </td>
-		          <td>
-		          	<a class="btn btn-default" href="/admin_moduledoc/{{ moduleDocument.id }}" role="button">Edit</a>
-		          </td>
-		          <td>
-		          	<a class="btn btn-danger" href="/admin_removemoduledoc/{{ moduleDocument.id }}" role="button">Remove</a>
-		          </td>
-		          <td>{{ moduleDocument.module.title }}</td>
-		          <td>{{ moduleDocument.title }}</td>
-		          <td>{{ moduleDocument.authors }}</td>
-		          <td>{{ moduleDocument.created }}</td>
-		        </tr>
-		      {% endfor %}
-		    </tbody>
-		  </table>
-		  {% endif %}
-    </div>
-  </div>  
-
-  <div class="row">
-    <div class="col-md-12">
-    	<h4>Lectures</h4>
     	<a class="btn btn-default" href="{% url 'admin_lecture' %}" role="button">Create a Lecture</a>
-    	<br /><br />
-    	{% if lecturesObjects %}
-        <table class="table table-striped table-condensed sortable">
-		    <thead>
-		      <th>Status</th>
-		      <th>Edit</th>
-		      <th>Remove</th>
-		      <th>Module</th>
-		      <th>Title</th>
-		      <th>Authors</th>
-		      <th>Created</th>
-		    </thead>
-		    <tbody>
-		      {% for lecture in lecturesObjects %}
-		        <tr>
-		          <td>
-		            {% if lecture.extracted %}
-		              <p class="text-success"><strong>Ready to Go</strong></p>
-		            {% else %}
-		              <p class="text-info"><strong>Data Being Extracted</strong></p>
-		            {% endif %}
-		          </td>
-		          <td>
-		          	<a class="btn btn-default" href="/admin_lecture/{{ lecture.id }}" role="button">Edit</a>
-		          </td>
-		          <td>
-		          	<a class="btn btn-danger" href="/admin_removelecture/{{ lecture.id }}" role="button">Remove</a>
-		          </td>
-		          <td>{{ lecture.module.title }}</td>
-		          <td>{{ lecture.title }}</td>
-		          <td>{{ lecture.authors }}</td>
-		          <td>{{ lecture.created }}</td>
-		        </tr>
-		      {% endfor %}
-		    </tbody>
-		  </table>
-		  {% endif %}
-    </div>
-  </div>  
-
-  <div class="row">
-    <div class="col-md-12">
-    	<h4>Lecture Segments</h4>
     	<a class="btn btn-default" href="{% url 'admin_lecturesegment' %}" role="button">Create a Lecture Segment</a>
-    	<br /><br />
-    	{% if lectureSegmentsObjects %}
-        <table class="table table-striped table-condensed sortable">
-		    <thead>
-		      <th>Status</th>
-		      <th>Edit</th>
-		      <th>Remove</th>
-		      <th>Module</th>
-		      <th>Lecture</th>
-		      <th>Title</th>
-		      <th>Authors</th>
-		      <th>Created</th>
-		    </thead>
-		    <tbody>
-		      {% for ls in lectureSegmentsObjects %}
-		        <tr>
-		          <td>
-		            {% if ls.updated_lecture_review %}
-		              <p class="text-warning"><strong>Updated Lecture, Please Review</strong></p>
-		            {% elif ls.extracted %}
-		              <p class="text-success"><strong>Ready to Go</strong></p>
-		            {% else %}
-		              <p class="text-info"><strong>Data Being Extracted</strong></p>
-		            {% endif %}
-		          </td>
-		          <td>
-		          	<a class="btn btn-default" href="/admin_lecturesegment/{{ ls.id }}" role="button">Edit</a>
-		          </td>
-		          <td>
-		          	<a class="btn btn-danger" href="/admin_removelecturesegment/{{ ls.id }}" role="button">Remove</a>
-		          </td>
-		          <td>{{ ls.lecture.module.title }}</td>
-		          <td>{{ ls.lecture.title }}</td>
-		          <td>{{ ls.title }}</td>
-		          <td>{{ ls.lecture.authors }}</td>
-		          <td>{{ ls.created }}</td>
-		        </tr>
-		      {% endfor %}
-		    </tbody>
-		  </table>
-		  {% endif %}
-    </div>
+    	<a class="btn btn-default" href="{% url 'admin_lecturedoc' %}" role="button">Create a Lecture Document</a>
+    </div>  
   </div>
-
+  <br />
   <div class="row">
     <div class="col-md-12">
-    	<h4>Lecture Documents</h4>
-    	<a class="btn btn-default" href="{% url 'admin_lecturedoc' %}" role="button">Create a Lecture Document</a>
-    	<br /><br />
-    	{% if lectureDocumentsObjects %}
-        <table class="table table-striped table-condensed sortable">
-		    <thead>
-		      <th>Status</th>
-		      <th>Edit</th>
-		      <th>Remove</th>
-		      <th>Module</th>
-		      <th>Lecture</th>
-		      <th>Title</th>
-		      <th>Authors</th>
-		      <th>Created</th>
-		    </thead>
-		    <tbody>
-		      {% for ld in lectureDocumentsObjects %}
-		        <tr>
-		          <td>
-		            {% if ld.extracted %}
-		              <p class="text-success"><strong>Ready to Go</strong></p>
-		            {% else %}
-		              <p class="text-info"><strong>Data Being Extracted</strong></p>
-		            {% endif %}
-		          </td>
-		          <td>
-		          	<a class="btn btn-default" href="/admin_lecturedoc/{{ ld.id }}" role="button">Edit</a>
-		          </td>
-		          <td>
-		          	<a class="btn btn-danger" href="/admin_removelecturdoc/{{ ld.id }}" role="button">Remove</a>
-		          </td>
-		          <td>{{ ld.lecture.module.title }}</td>
-		          <td>{{ ld.lecture.title }}</td>
-		          <td>{{ ld.title }}</td>
-		          <td>{{ ld.lecture.authors }}</td>
-		          <td>{{ ld.created }}</td>
-		        </tr>
-		      {% endfor %}
-		    </tbody>
-		  </table>
+    	{% if modulesObjects %}
+	    	{% for module in modulesObjects %}
+	    	<h4>{{ module.title }} <a class="btn btn-default" href="/admin_module/{{ module.id }}" role="button">Edit</a> <a class="btn btn-danger" href="/admin_removemodule/{{ module.id }}" role="button">Remove</a></h4>
+		        <table class="table table-striped table-condensed sortable">
+				    <thead>
+				      <th>Type</th>
+				      <th>Status</th>
+				      <th>Edit</th>
+				      <th>Remove</th>
+				      <th>Title</th>
+				      <th>File Name</th>
+				      <th>File Size</th>
+				      <th>Authors</th>
+				      <th>Created</th>
+				    </thead>
+				    <tbody>
+				    	{% if module.moduleDocumentsObjects %}
+					      {% for moduleDocument in module.moduleDocumentsObjects %}
+					        <tr>
+					          <td>Module Document</td>
+					          <td>
+					            {% if moduleDocument.extracted %}
+					              <p class="text-success"><strong>Ready to Go</strong></p>
+					            {% else %}
+					              <p class="text-info"><strong>Data Being Extracted</strong></p>
+					            {% endif %}
+					          </td>
+					          <td>
+					          	<a class="btn btn-default" href="/admin_moduledoc/{{ moduleDocument.id }}" role="button">Edit</a>
+					          </td>
+					          <td>
+					          	<a class="btn btn-danger" href="/admin_removemoduledoc/{{ moduleDocument.id }}" role="button">Remove</a>
+					          </td>
+					          <td>{{ moduleDocument.title }}</td>
+					          <td>{{ moduleDocument.documentName }}</td>
+					          <td>{{ moduleDocument.document.size|filesizeformat }}</td>
+					          <td>{{ moduleDocument.authors }}</td>
+					          <td>{{ moduleDocument.created }}</td>
+					        </tr>
+					      {% endfor %}
+				      	{% endif %}
+				      	{% if module.lecturesObjects %}
+					      {% for lecture in module.lecturesObjects %}
+					        <tr>
+					          <td>Lecture</td>
+					          <td>
+					            {% if lecture.extracted %}
+					              <p class="text-success"><strong>Ready to Go</strong></p>
+					            {% else %}
+					              <p class="text-info"><strong>Data Being Extracted</strong></p>
+					            {% endif %}
+					          </td>
+					          <td>
+					          	<a class="btn btn-default" href="/admin_lecture/{{ lecture.id }}" role="button">Edit</a>
+					          </td>
+					          <td>
+					          	<a class="btn btn-danger" href="/admin_removelecture/{{ lecture.id }}" role="button">Remove</a>
+					          </td>
+					          <td>{{ lecture.title }}</td>
+					          <td>{{ lecture.lectureName }}</td>
+					          <td>{{ lecture.presentation.size|filesizeformat }}</td>
+					          <td>{{ lecture.authors }}</td>
+					          <td>{{ lecture.created }}</td>					       
+					        </tr>
+								{% if lecture.lectureSegmentsObjects %}
+							      {% for ls in lecture.lectureSegmentsObjects %}
+							        <tr>
+							          <td>Lecture Segment</td>
+							          <td>
+							            {% if ls.updated_lecture_review %}
+							              <p class="text-warning"><strong>Updated Lecture, Please Review</strong></p>
+							            {% elif ls.extracted %}
+							              <p class="text-success"><strong>Ready to Go</strong></p>
+							            {% else %}
+							              <p class="text-info"><strong>Data Being Extracted</strong></p>
+							            {% endif %}
+							          </td>
+							          <td>
+							          	<a class="btn btn-default" href="/admin_lecturesegment/{{ ls.id }}" role="button">Edit</a>
+							          </td>
+							          <td>
+							          	<a class="btn btn-danger" href="/admin_removelecturesegment/{{ ls.id }}" role="button">Remove</a>
+							          </td>
+							          <td>{{ ls.title }}</td>
+							          <td>{{ ls.lectureName }}</td>
+							          <td>{{ ls.presentation.size|filesizeformat }}</td>
+							          <td>{{ ls.authors }}</td>
+							          <td>{{ ls.created }}</td>	
+							        </tr>
+							      {% endfor %}
+							    {% endif %}	
+								{% if lecture.lectureDocumentsObjects %}
+							      {% for ld in lecture.lectureDocumentsObjects %}
+							        <tr>
+							          <td>Lecture Document</td>
+							          <td>
+							            {% if ld.extracted %}
+							              <p class="text-success"><strong>Ready to Go</strong></p>
+							            {% else %}
+							              <p class="text-info"><strong>Data Being Extracted</strong></p>
+							            {% endif %}
+							          </td>
+							          <td>
+							          	<a class="btn btn-default" href="/admin_lecturedoc/{{ ld.id }}" role="button">Edit</a>
+							          </td>
+							          <td>
+							          	<a class="btn btn-danger" href="/admin_removelecturdoc/{{ ld.id }}" role="button">Remove</a>
+							          </td>
+							          <td>{{ ld.title }}</td>
+							          <td>{{ ld.documentName }}</td>
+							          <td>{{ ld.document.size|filesizeformat }}</td>
+							          <td>{{ ld.authors }}</td>
+							          <td>{{ ld.created }}</td>	
+							        </tr>
+							      {% endfor %}
+								{% endif %}
+					      {% endfor %}
+						{% endif %}
+
+
+				    </tbody>
+				  </table>
+			  {% endfor %}
 		  {% endif %}
     </div>
   </div>
-
 
 </div> <!-- /container -->
 {% endblock %}

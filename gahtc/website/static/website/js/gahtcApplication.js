@@ -93,6 +93,17 @@ gahtcApplication.getLectureSegmentModal = function (lecture_segment_id) {
 	});		
 }
 
+gahtcApplication.getLectureSlideModal = function (lecture_slide_id) {
+	$.ajax({
+		type: "GET",
+		url: "/show_lecture_slide_modal/" + lecture_slide_id + "/" ,
+		success: function(data){
+			$('#slideshow').html(data);
+			$('#slideshow').modal('show');
+        }
+	});		
+}
+
 gahtcApplication.createNewBundle = function () {
 	// get values
 	var title = $(" #newBundleName ").val();

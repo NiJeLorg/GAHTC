@@ -94,6 +94,13 @@ $( document ).ready(function() {
         gahtcApplication.getLectureSegmentModal(lecture_segment_id);
 	});
 
+	// launch modal to show lecture slides
+	$(document).on('click', '.launchSlideModal', function(e) {
+		e.preventDefault();
+        var lecture_slide_id = $( this ).data( "lectureslideid" );
+        gahtcApplication.getLectureSlideModal(lecture_slide_id);
+	});
+
 	$(document).on('click', '.bundleResult', function(e) {
 		e.preventDefault();
 		$( ".bundleResult" ).removeClass('active');

@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^show_lecture_slide/(?P<id>\d+)/$', views.showLectureSlide, name='showLectureSlide'),
     url(r'^show_lecture_modal/(?P<id>\d+)/$', views.showLectureModal, name='showLectureModal'),
     url(r'^show_lecture_segment_modal/(?P<id>\d+)/$', views.showLectureSegmentModal, name='showLectureSegmentModal'),
+    url(r'^show_lecture_slide_modal/(?P<id>\d+)/$', views.showLectureSlideModal, name='showLectureSlideModal'),
     url(r'^create_new_bundle/$', views.createNewBundle, name='createNewBundle'),
     url(r'^add_to_bundle/$', views.addToBundle, name='addToBundle'),
     url(r'^remove_from_bundle/$', views.removeFromBundle, name='removeFromBundle'),

@@ -98,14 +98,12 @@
 }
 
 .resultsScroll {
-	height: 100vh;
-	overflow: auto;
+	margin-right: -1px;
 	border-right: 1px solid #ccc; 
 }
 
 .resultsScrollBundle {
-	height: 100vh;
-	overflow: auto;
+	margin-right: -1px;
 	border-right: 1px solid #ccc; 
 }
 
@@ -160,6 +158,10 @@
 .rightSidebar {
 	padding-top: 15px;
 	border-left: 1px solid #ccc; 
+}
+
+.noTextDecoration:hover, .noTextDecoration:focus {
+	text-decoration: none;
 }
 
 .noTopMargin {

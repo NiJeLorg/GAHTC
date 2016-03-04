@@ -12,20 +12,24 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-8">
-      <h3>Lecture</h3>
-		<form enctype="multipart/form-data" method="post" action=".">
-			{% csrf_token %}
-			{{ form|as_bootstrap }}
-			<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
+	<form enctype="multipart/form-data" method="post" action=".">
+	  <div class="row">
+	    <div class="col-md-8">
+	      <h3>Lecture</h3>
+				{% csrf_token %}
+				{{ form|as_bootstrap }}
+		</div>
+	  </div>
+	  <div class="row">
+	    <div class="col-md-12">
+    		<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
 			<input type="submit" name="save" class="btn btn-primary" value="Save" />
 			<input type="submit" name="new_lecure_segment" class="btn btn-primary" value="Save and Add a Lecture Segment" />
 			<input type="submit" name="new_lecure_document" class="btn btn-primary" value="Save and Add a Lecture Document" />
 			<input type="submit" name="new_lecure" class="btn btn-primary" value="Save and Add Another Lecture" />
-		</form>
-    </div>
-  </div>
+		</div>
+	  </div>
+	</form>
 </div> <!-- /container -->
 
 

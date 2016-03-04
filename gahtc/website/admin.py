@@ -6,6 +6,8 @@ from website.models import *
 admin.site.register(modules)
 admin.site.register(moduleDocuments)
 admin.site.register(lectures)
+admin.site.register(lectureSegments)
+admin.site.register(lectureSlidesSegment)
 admin.site.register(lectureDocuments)
 admin.site.register(lectureSlides)
 admin.site.register(bundles)

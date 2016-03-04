@@ -146,6 +146,7 @@ class lectureDocuments(models.Model):
 class lectureSlides(models.Model):
 	lecture = models.ForeignKey(lectures, related_name='lectureSlidesLecture')
 	created = models.DateTimeField(auto_now_add=True)
+	presentation = models.FileField(upload_to="presentation_slides/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	slide = models.ImageField(upload_to="presentation_slides/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	slide_number = models.IntegerField(default=0, null=True, blank=True)
 	slide_main_text = models.TextField(default='', null=True, blank=True)

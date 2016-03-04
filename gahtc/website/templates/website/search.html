@@ -67,281 +67,327 @@
 							</div>
 						</div>
 						{% else %}
-						<div class="row selectedAddDropdown">
-							<p>
-								<span class="label label-primary">{{ modules_returned_count }}</span> Module{{ modules_returned_count|pluralize }} | 
-								<span class="label label-success">{{ lectures_returned_count }}</span> Lecture{{ lectures_returned_count|pluralize }} | 
-								<span class="label label-ls">{{ lecture_segments_returned_count }}</span> Lecture Segment{{ lecture_segments_returned_count|pluralize }} | 
-								<span class="label label-info">{{ lecture_documents_returned_count }}</span> Lecture Document{{ lecture_documents_returned_count|pluralize }} |  
-								<span class="label label-warning">{{ lecture_slides_returned_count }}</span> Lecture Slide{{ lecture_slides_returned_count|pluralize }}
-							</p>
+						<br />
+						<div class="panel-group" id="accordion_results" role="tablist" aria-multiselectable="true">
+						  {% if modules_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_modules_panel">
+						      <h4 class="panel-title">
+						        <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#modules_panel" aria-expanded="true" aria-controls="modules_panel">
+						          <span class="label label-primary">{{ modules_returned_count }} Module{{ modules_returned_count|pluralize }}</span>
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="modules_panel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="modules_panel">
+						      <div class="panel-body">
+								{% for module in modules_returned %}
+								<div class="row result module" data-moduleid="{{ module.id }}">
+									<div class="col-xs-3">
+										<img class="img-responsive" src="{% static 'website/css/images/module.png' %}" />
+									</div>							
+									<div class="col-xs-9">
+										<div class="row">
+											<div class="col-xs-8 resultTitle">
+												<p><strong><span class="label label-primary">Module:</span> {{ module.title }}</strong></p>
+											</div>
+											<div class="col-xs-4">
+												<!--
+												<div class="checkbox">
+												    <input type="checkbox" value="">
+												</div>
+												-->
+												<div class="dropdown">
+													<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														Add to Bundle
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module.id }}">
+														{% include "website/bundle_dropdown.html" %}
+													</ul>
+												</div>										
+											</div>								
+										</div>
+										<!--<div class="row">
+											<p class="swapem">
+												{% for text in module.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											</p>
+										</div>-->
+										<div class="row">
+											<p>
+											{% for tag in module.tags.all|slice:":6" %}
+									            <span class="label label-default">{{ tag.name }}</span>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
+						  {% if lectures_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_lecture_panel">
+						      <h4 class="panel-title">
+						        <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_panel" aria-expanded="false" aria-controls="lecture_panel">
+						        	<span class="label label-success">{{ lectures_returned_count }} Lecture{{ lectures_returned_count|pluralize }}</span> 
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="lecture_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_panel">
+						      <div class="panel-body">
+								{% for lecture in lectures_returned %}
+								<div class="row result lecture" data-lectureid="{{ lecture.object.id }}">
+									<div class="col-xs-3">
+										<img class="img-responsive" src="/media/{{ lecture.object.getSlideOne }}" />
+									</div>							
+									<div class="col-xs-9">
+										<div class="row">
+											<div class="col-xs-8 resultTitle">
+												<p><strong><span class="label label-success">Lecture:</span> {{ lecture.object.title }}</strong></p>
+											</div>
+											<div class="col-xs-4">
+												<!--
+												<div class="checkbox">
+												    <input type="checkbox" value="">
+												</div>
+												-->
+												<div class="dropdown">
+													<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														Add to Bundle
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.object.id }}">
+														{% include "website/bundle_dropdown.html" %}
+													</ul>
+												</div>										
+											</div>								
+										</div>
+										<div class="row">
+											<p class="swapem">
+											... 
+												{% for text in lecture.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											...
+											</p>
+										</div>
+										<div class="row">
+											<p>From the module: <em>{{ lecture.object.module.title }}</em></p>
+										</div>
+										<div class="row">
+											<p>
+											{% for tag in lecture.object.tags.all|slice:":6" %}
+									            <span class="label label-default">{{ tag.name }}</span>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
+						  {% if lecture_segments_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_lecture_segments_panel">
+						      <h4 class="panel-title">
+						        <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_segments_panel" aria-expanded="false" aria-controls="lecture_segments_panel">
+						          <span class="label label-ls">{{ lecture_segments_returned_count }} Lecture Segment{{ lecture_segments_returned_count|pluralize }}</span> 
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="lecture_segments_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_segments_panel">
+						      <div class="panel-body">
+								{% for lecture_segment in lecture_segments_returned %}
+								<div class="row result lecture_segment" data-lecturesegmentid="{{ lecture_segment.object.id }}">
+									<div class="col-xs-3">
+										<img class="img-responsive" src="/media/{{ lecture_segment.object.getSlideOne }}" />
+									</div>							
+									<div class="col-xs-9">
+										<div class="row">
+											<div class="col-xs-8 resultTitle">
+												<p><strong><span class="label label-ls">Lecture Segment:</span> {{ lecture_segment.object.title }}</strong></p>
+											</div>
+											<div class="col-xs-4">
+												<!--
+												<div class="checkbox">
+												    <input type="checkbox" value="">
+												</div>
+												-->
+												<div class="dropdown">
+													<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														Add to Bundle
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturesegment_{{ lecture_segment.object.id }}">
+														{% include "website/bundle_dropdown.html" %}
+													</ul>
+												</div>										
+											</div>								
+										</div>
+										<div class="row">
+											<p class="swapem">
+											... 
+												{% for text in lecture_segment.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											...
+											</p>
+										</div>
+										<div class="row">
+											<p>From the lecture: <em>{{ lecture_segment.object.lecture.title }}</em></p>
+											<p>From the module: <em>{{ lecture_segment.object.lecture.module.title }}</em></p>
+										</div>
+										<div class="row">
+											<p>
+											{% for tag in lecture_segment.object.tags.all|slice:":6" %}
+									            <span class="label label-default">{{ tag.name }}</span>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
+						  {% if lecture_documents_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_lecture_documents_panel">
+						      <h4 class="panel-title">
+						        <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_documents_panel" aria-expanded="false" aria-controls="lecture_documents_panel">
+						          <span class="label label-info">{{ lecture_documents_returned_count }} Lecture Document{{ lecture_documents_returned_count|pluralize }}</span> 
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="lecture_documents_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_documents_panel">
+						      <div class="panel-body">
+								{% for lecture_document in lecture_documents_returned %}
+								<div class="row result lecture_document" data-lecturedocumentid="{{ lecture_document.object.id }}">
+									<div class="col-xs-3">
+										<img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
+									</div>							
+									<div class="col-xs-9">
+										<div class="row">
+											<div class="col-xs-8 resultTitle">
+												<p><strong><span class="label label-info">Lecture Document:</span> {{ lecture_document.object.title }}</strong></p>
+											</div>
+											<div class="col-xs-4">
+												<!--
+												<div class="checkbox">
+												    <input type="checkbox" value="">
+												</div>
+												-->
+												<div class="dropdown">
+													<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														Add to Bundle
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.object.id }}">
+														{% include "website/bundle_dropdown.html" %}
+													</ul>
+												</div>										
+											</div>								
+										</div>
+										<div class="row">
+											<p class="swapem">
+											... 
+												{% for text in lecture_document.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											...
+											</p>
+										</div>
+										<div class="row">
+											<p>From the lecture: <em>{{ lecture_document.object.lecture.title }}</em></p>
+											<p>From the module: <em>{{ lecture_document.object.lecture.module.title }}</em></p>
+										</div>
+										<div class="row">
+											<p>
+											{% for tag in lecture_document.object.tags.all|slice:":6" %}
+									            <span class="label label-default">{{ tag.name }}</span>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
+						  {% if lecture_slides_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_lecture_slides_panel">
+						      <h4 class="panel-title">
+						        <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_slides_panel" aria-expanded="false" aria-controls="lecture_slides_panel">
+						          <span class="label label-warning">{{ lecture_slides_returned_count }} Lecture Slide{{ lecture_slides_returned_count|pluralize }}</span>
+						        </a>
+						      </h4>
+						    </div>
+						    <div id="lecture_slides_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_slides_panel">
+						      <div class="panel-body">
+								{% for lecture_slide in lecture_slides_returned %}
+								<div class="row result lecture_slide" data-lectureslideid="{{ lecture_slide.object.id }}">
+									<div class="col-xs-3">
+										<img class="img-responsive" src="/media/{{ lecture_slide.object.slide }}" />
+									</div>							
+									<div class="col-xs-9">
+										<div class="row">
+											<div class="col-xs-8 resultTitle">
+												<p><strong><span class="label label-warning">SLIDE FROM:</span> {{ lecture_slide.object.lecture.title }}</strong></p>
+											</div>
+											<div class="col-xs-4">
+												<!--
+												<div class="checkbox">
+												    <input type="checkbox" value="">
+												</div>
+												-->
+												<div class="dropdown">
+													<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														Add to Bundle
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide.object.id }}">
+														{% include "website/bundle_dropdown.html" %}
+													</ul>
+												</div>										
+											</div>								
+										</div>
+										<div class="row">
+											<p class="swapem">
+											... 
+												{% for text in lecture_slide.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											...
+											</p>
+										</div>
+										<div class="row">
+											<p>From the module: <em>{{ lecture_slide.object.lecture.module.title }}</em></p>
+										</div>
+										<div class="row">
+											<p>
+											{% for tag in lecture_slide.object.tags.all|slice:":6" %}
+									            <span class="label label-default">{{ tag.name }}</span>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
 						</div>
 						{% endif %}						
-						<!--
-						<div class="row selectedAddDropdown">
-							<div class="col-xs-8">
-								<div class="dropdown">
-									<button id="selectedAdd" class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Add All Selected to Bundle
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu bundles" aria-labelledby="selectedAdd" data-itemid="allchecked">
-										{% include "website/bundle_dropdown.html" %}
-									</ul>
-								</div>
-							</div>
-							<div class="col-xs-4">
-								<div class="checkbox pull-right">
-								  <label>
-								    <input type="checkbox" value="">
-								    Select All/None
-								  </label>
-								</div>
-							</div>
-						</div>
-						-->
-						{% for module in modules_returned %}
-						<div class="row result module" data-moduleid="{{ module.id }}">
-							<div class="col-xs-3">
-								<img class="img-responsive" src="{% static 'website/css/images/module.png' %}" />
-							</div>							
-							<div class="col-xs-9">
-								<div class="row">
-									<div class="col-xs-8 resultTitle">
-										<p><strong><span class="label label-primary">MODULE:</span> {{ module.title }}</strong></p>
-									</div>
-									<div class="col-xs-4">
-										<!--
-										<div class="checkbox">
-										    <input type="checkbox" value="">
-										</div>
-										-->
-										<div class="dropdown">
-											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												Add to Bundle
-												<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module.id }}">
-												{% include "website/bundle_dropdown.html" %}
-											</ul>
-										</div>										
-									</div>								
-								</div>
-								<!--<div class="row">
-									<p class="swapem">
-										{% for text in module.highlighted.text %}
-											{% autoescape off %}{{ text }}{% endautoescape %}
-										{% endfor %}
-									</p>
-								</div>-->
-								<div class="row">
-									<p>
-									{% for tag in module.tags.all|slice:":6" %}
-							            <span class="label label-default">{{ tag.name }}</span>
-							        {% endfor %}
-							        </p>
-								</div>
-							</div>
-						</div>
-						{% endfor %}
-						{% for lecture in lectures_returned %}
-						<div class="row result lecture" data-lectureid="{{ lecture.object.id }}">
-							<div class="col-xs-3">
-								<img class="img-responsive" src="/media/{{ lecture.object.getSlideOne }}" />
-							</div>							
-							<div class="col-xs-9">
-								<div class="row">
-									<div class="col-xs-8 resultTitle">
-										<p><strong><span class="label label-success">LECTURE:</span> {{ lecture.object.title }}</strong></p>
-									</div>
-									<div class="col-xs-4">
-										<!--
-										<div class="checkbox">
-										    <input type="checkbox" value="">
-										</div>
-										-->
-										<div class="dropdown">
-											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												Add to Bundle
-												<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.object.id }}">
-												{% include "website/bundle_dropdown.html" %}
-											</ul>
-										</div>										
-									</div>								
-								</div>
-								<div class="row">
-									<p class="swapem">
-									... 
-										{% for text in lecture.highlighted.text %}
-											{% autoescape off %}{{ text }}{% endautoescape %}
-										{% endfor %}
-									...
-									</p>
-								</div>
-								<div class="row">
-									<p>From the module: <em>{{ lecture.object.module.title }}</em></p>
-								</div>
-								<div class="row">
-									<p>
-									{% for tag in lecture.object.tags.all|slice:":6" %}
-							            <span class="label label-default">{{ tag.name }}</span>
-							        {% endfor %}
-							        </p>
-								</div>
-							</div>
-						</div>
-						{% endfor %}
-						{% for lecture_segment in lecture_segments_returned %}
-						<div class="row result lecture_segment" data-lecturesegmentid="{{ lecture_segment.object.id }}">
-							<div class="col-xs-3">
-								<img class="img-responsive" src="/media/{{ lecture_segment.object.getSlideOne }}" />
-							</div>							
-							<div class="col-xs-9">
-								<div class="row">
-									<div class="col-xs-8 resultTitle">
-										<p><strong><span class="label label-ls">LECTURE SEGMENT:</span> {{ lecture_segment.object.title }}</strong></p>
-									</div>
-									<div class="col-xs-4">
-										<!--
-										<div class="checkbox">
-										    <input type="checkbox" value="">
-										</div>
-										-->
-										<div class="dropdown">
-											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												Add to Bundle
-												<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturesegment_{{ lecture_segment.object.id }}">
-												{% include "website/bundle_dropdown.html" %}
-											</ul>
-										</div>										
-									</div>								
-								</div>
-								<div class="row">
-									<p class="swapem">
-									... 
-										{% for text in lecture_segment.highlighted.text %}
-											{% autoescape off %}{{ text }}{% endautoescape %}
-										{% endfor %}
-									...
-									</p>
-								</div>
-								<div class="row">
-									<p>From the lecture: <em>{{ lecture_segment.object.lecture.title }}</em></p>
-									<p>From the module: <em>{{ lecture_segment.object.lecture.module.title }}</em></p>
-								</div>
-								<div class="row">
-									<p>
-									{% for tag in lecture_segment.object.tags.all|slice:":6" %}
-							            <span class="label label-default">{{ tag.name }}</span>
-							        {% endfor %}
-							        </p>
-								</div>
-							</div>
-						</div>
-						{% endfor %}
-						{% for lecture_document in lecture_documents_returned %}
-						<div class="row result lecture_document" data-lecturedocumentid="{{ lecture_document.object.id }}">
-							<div class="col-xs-3">
-								<img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
-							</div>							
-							<div class="col-xs-9">
-								<div class="row">
-									<div class="col-xs-8 resultTitle">
-										<p><strong><span class="label label-info">LECTURE DOCUMENT:</span> {{ lecture_document.object.title }}</strong></p>
-									</div>
-									<div class="col-xs-4">
-										<!--
-										<div class="checkbox">
-										    <input type="checkbox" value="">
-										</div>
-										-->
-										<div class="dropdown">
-											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												Add to Bundle
-												<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.object.id }}">
-												{% include "website/bundle_dropdown.html" %}
-											</ul>
-										</div>										
-									</div>								
-								</div>
-								<div class="row">
-									<p class="swapem">
-									... 
-										{% for text in lecture_document.highlighted.text %}
-											{% autoescape off %}{{ text }}{% endautoescape %}
-										{% endfor %}
-									...
-									</p>
-								</div>
-								<div class="row">
-									<p>From the lecture: <em>{{ lecture_document.object.lecture.title }}</em></p>
-									<p>From the module: <em>{{ lecture_document.object.lecture.module.title }}</em></p>
-								</div>
-								<div class="row">
-									<p>
-									{% for tag in lecture_document.object.tags.all|slice:":6" %}
-							            <span class="label label-default">{{ tag.name }}</span>
-							        {% endfor %}
-							        </p>
-								</div>
-							</div>
-						</div>
-						{% endfor %}
-						{% for lecture_slide in lecture_slides_returned %}
-						<div class="row result lecture_slide" data-lectureslideid="{{ lecture_slide.object.id }}">
-							<div class="col-xs-3">
-								<img class="img-responsive" src="/media/{{ lecture_slide.object.slide }}" />
-							</div>							
-							<div class="col-xs-9">
-								<div class="row">
-									<div class="col-xs-8 resultTitle">
-										<p><strong><span class="label label-warning">SLIDE FROM:</span> {{ lecture_slide.object.lecture.title }}</strong></p>
-									</div>
-									<div class="col-xs-4">
-										<!--
-										<div class="checkbox">
-										    <input type="checkbox" value="">
-										</div>
-										-->
-										<div class="dropdown">
-											<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												Add to Bundle
-												<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide.object.id }}">
-												{% include "website/bundle_dropdown.html" %}
-											</ul>
-										</div>										
-									</div>								
-								</div>
-								<div class="row">
-									<p class="swapem">
-									... 
-										{% for text in lecture_slide.highlighted.text %}
-											{% autoescape off %}{{ text }}{% endautoescape %}
-										{% endfor %}
-									...
-									</p>
-								</div>
-								<div class="row">
-									<p>From the module: <em>{{ lecture_slide.object.lecture.module.title }}</em></p>
-								</div>
-								<div class="row">
-									<p>
-									{% for tag in lecture_slide.object.tags.all|slice:":6" %}
-							            <span class="label label-default">{{ tag.name }}</span>
-							        {% endfor %}
-							        </p>
-								</div>
-							</div>
-						</div>
-						{% endfor %}
 
 					</div>
 					<div class="col-md-6 rightSidebar searchSidebar"></div>

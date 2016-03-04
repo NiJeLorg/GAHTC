@@ -15,8 +15,8 @@ from textblob import TextBlob
 """
 
 from pptx.util import lazyproperty, Pt
-from pptx.parts.slide import BaseSlide, Slide, _SlideShapeTree, _SlidePlaceholders
-from pptx.shapes.shape import BaseShape
+from pptx.parts.slide import BaseSlide, Slide, SlideShapeTree, _SlidePlaceholders
+from pptx.shapes.base import BaseShape
 from pptx.opc.constants import RELATIONSHIP_TYPE as RT, CONTENT_TYPE as CT
 from pptx.enum.shapes import MSO_SHAPE_TYPE, PP_PLACEHOLDER_TYPE
 from pptx.oxml.xmlchemy import BaseOxmlElement, OneAndOnlyOne, ZeroOrOne
@@ -140,10 +140,10 @@ class NotesSlide(BaseSlide):
     @lazyproperty
     def shapes(self):
         """
-        Instance of |_SlideShapeTree| containing sequence of shape objects
+        Instance of |SlideShapeTree| containing sequence of shape objects
         appearing on this slide.
         """
-        return _SlideShapeTree(self)
+        return SlideShapeTree(self)
 
     @lazyproperty
     def placeholders(self):
@@ -253,11 +253,15 @@ class Command(BaseCommand):
 
                     notes_slide = SlideWrapper(slide).notes_page()
                     for shape in notes_slide.shapes.__iter__():
-                        for paragraph in shape.text_frame.paragraphs:
-                            for run in paragraph.runs:
-                                slide_notes_text = strip_non_ascii(run.text)
-                                notes_text_this_slide.append(slide_notes_text)
-                                notes_text.append(slide_notes_text)
+                        try:
+                            for paragraph in shape.text_frame.paragraphs:
+                                for run in paragraph.runs:
+                                    slide_notes_text = strip_non_ascii(run.text)
+                                    notes_text_this_slide.append(slide_notes_text)
+                                    notes_text.append(slide_notes_text)
+                        except Exception:
+                            pass
+
 
                     # add slide to lectureSlides
                     addslide = lectureSlides()
@@ -292,6 +296,30 @@ class Command(BaseCommand):
                     image_file = File(f)
                     addslide.slide.save("slide-"+ str(index) +".jpg", image_file)
                     os.remove(head + "/slide-"+ str(index) +".jpg")
+
+                    # for each slide create a pptx file with a single slide
+                    prs_slide = Presentation(lecturesObject.presentation)
+
+                    # calculate the last slide number
+                    largestslidenumber = len(prs_slide.slides)
+
+                    # loop through a range from the index to the largest slide number
+                    slide_number_plus_1 = index + 1
+                    for count in xrange(slide_number_plus_1, largestslidenumber):
+                        prs_slide.slides.delete_slide(prs_slide, slide_number_plus_1)                    
+
+                    for count in xrange(0, index):
+                        prs_slide.slides.delete_slide(prs_slide, 0)
+
+                    path_to_file = MEDIA_ROOT + '/' + str(croppedtail) + "_" + str(index) + ".pptx"
+                    prs_slide.save(path_to_file)
+
+                    seg = open(path_to_file)
+                    seg_file = File(seg)
+                    head_slide, tail_slide = os.path.split(path_to_file)
+                    addslide.presentation.save(tail_slide, seg_file)
+                    os.remove(path_to_file)
+                    addslide.save()
 
 
                 #for text searching
@@ -378,10 +406,14 @@ class Command(BaseCommand):
 
                     notes_slide = SlideWrapper(slide).notes_page()
                     for shape in notes_slide.shapes.__iter__():
-                        for paragraph in shape.text_frame.paragraphs:
-                            for run in paragraph.runs:
-                                slide_notes_text = strip_non_ascii(run.text)
-                                notes_text.append(slide_notes_text)
+                        try:
+                            for paragraph in shape.text_frame.paragraphs:
+                                for run in paragraph.runs:
+                                    slide_notes_text = strip_non_ascii(run.text)
+                                    notes_text_this_slide.append(slide_notes_text)
+                                    notes_text.append(slide_notes_text)
+                        except Exception:
+                            pass
 
                     # add slide to lectureSlides
                     addslide = lectureSlidesSegment()
