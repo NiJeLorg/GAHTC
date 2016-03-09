@@ -426,6 +426,11 @@ def createNewBundle(request):
 			lecture = lectures.objects.get(pk=itemid[1])
 			bl = bundleLecture(bundle=bundle, lecture=lecture)
 			bl.save()
+		elif itemid[0] == 'lecturesegment':
+			#look up lecture segment
+			lectureSegment = lectureSegments.objects.get(pk=itemid[1])
+			blseg = bundleLectureSegments(bundle=bundle, lectureSegment=lectureSegment)
+			blseg.save()
 		elif itemid[0] == 'lecturedocument':
 			#look up lectureDocument
 			lectureDocument = lectureDocuments.objects.get(pk=itemid[1])
@@ -610,7 +615,7 @@ def showBundle(request, id=None):
 
 	#for each lecture slide strip out name of file and slide notes file
 	for bundle in bundle_lecture_slides:
-		slide = str(bundle.lectureSlide.slide)
+		slide = str(bundle.lectureSlide.presentation)
 		slide = slide.split('/')
 		bundle.lectureSlide.slideName = slide[2]
 
@@ -715,14 +720,10 @@ def zipUpBundle(request, id=None):
 		#for each lecture slide strip out name of file and slide notes file
 		for bundle in bundle_lecture_slides:
 			lecTitle = ''.join(bundle.lectureSlide.lecture.title.split())	
-			document = str(bundle.lectureSlide.slide)
+			document = str(bundle.lectureSlide.presentation)
 			document = document.split('/')
 			directory = os.path.join(zipfolder+ "/lecture_slides/" + lecTitle, document[2])
-			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.slide), directory)
-			document = str(bundle.lectureSlide.slide_notes_document)
-			document = document.split('/')			
-			directory = os.path.join(zipfolder+ "/lecture_slides/" + lecTitle, document[2])
-			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.slide_notes_document), directory)
+			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.presentation), directory)
 
 	#get size of zip file
 	filesize = os.path.getsize(MEDIA_ROOT + folder + filename)
