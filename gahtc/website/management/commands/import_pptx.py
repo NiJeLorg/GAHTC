@@ -210,8 +210,8 @@ class Command(BaseCommand):
             # convert lecturesObject.presentation to a pdf file in memory for imagemagick
             #where is the presentation?
             path_to_file = MEDIA_ROOT + '/' + str(lecturesObject.presentation)
-            print path_to_file
             head, tail = os.path.split(path_to_file)
+            print tail
 
             #name of pdf
             croppedtail = tail[:-5]
@@ -238,6 +238,7 @@ class Command(BaseCommand):
                 slide_notes_text = ''
 
                 for index, slide in enumerate(prs.slides):
+                    print index
                     # array for this slides text and notes to add the lectureSlides Object
                     main_text_this_slide = []
                     notes_text_this_slide = []
@@ -317,6 +318,7 @@ class Command(BaseCommand):
                     seg = open(path_to_file)
                     seg_file = File(seg)
                     head_slide, tail_slide = os.path.split(path_to_file)
+                    print tail_slide
                     addslide.presentation.save(tail_slide, seg_file)
                     os.remove(path_to_file)
                     addslide.save()
