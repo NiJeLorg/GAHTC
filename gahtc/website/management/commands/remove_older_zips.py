@@ -15,14 +15,14 @@ MEDIA_ROOT = settings.MEDIA_ROOT
 class Command(BaseCommand):
     
     def remove_zips(self):
-        # get all bundles and loop over them, removing zip files if they're present and older than 15 minutes
+        # get all bundles and loop over them, removing zip files if they're present and older than 24 hours
         bundleObjects = bundles.objects.all()
 
         for bundle in bundleObjects:
 
             path_to_file = MEDIA_ROOT + "/zip_files/" + str(bundle.id) + "/"
             print path_to_file
-            call(["find",path_to_file,"-cmin","+15","-exec","rm","{}","+"])
+            call(["find",path_to_file,"-cmin","+1440","-exec","rm","{}","+"])
 
         # any lecture or module bundles?
         moduleObjects = modules.objects.all()
@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
             path_to_file = MEDIA_ROOT + "/zip_files/module_" + str(module.id) + "/"
             print path_to_file
-            call(["find",path_to_file,"-cmin","+15","-exec","rm","{}","+"])
+            call(["find",path_to_file,"-cmin","+1440","-exec","rm","{}","+"])
 
 
         lectureObjects = lectures.objects.all()
@@ -40,7 +40,7 @@ class Command(BaseCommand):
 
             path_to_file = MEDIA_ROOT + "/zip_files/lecture_" + str(lecture.id) + "/"
             print path_to_file
-            call(["find",path_to_file,"-cmin","+15","-exec","rm","{}","+"])
+            call(["find",path_to_file,"-cmin","+1440","-exec","rm","{}","+"])
 
 
     def handle(self, *args, **options):
