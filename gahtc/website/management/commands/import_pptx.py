@@ -463,6 +463,9 @@ class Command(BaseCommand):
                     s = ''.join(ch for ch in item if ch not in exclude)
                     lecturesObject.tags.add(s)               
 
+                # remove pdf
+                os.remove(pdfpath)
+                
 
     def handle(self, *args, **options):
         print "Extracting Lecture PPTX files...."
