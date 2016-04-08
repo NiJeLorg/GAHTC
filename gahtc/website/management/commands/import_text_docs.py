@@ -37,6 +37,7 @@ class Command(BaseCommand):
                     moduleDocumentsObject.tags.clear()
                     for item in np:
                         s = ''.join(ch for ch in item if ch not in exclude)
+                        print s
                         moduleDocumentsObject.tags.add(s)
 
                 # TODO pull dates
@@ -85,6 +86,7 @@ class Command(BaseCommand):
                     lectureDocumentsObject.tags.clear()
                     for item in np:
                         s = ''.join(ch for ch in item if ch not in exclude)
+                        print s
                         lectureDocumentsObject.tags.add(s)
 
                 # save this string
