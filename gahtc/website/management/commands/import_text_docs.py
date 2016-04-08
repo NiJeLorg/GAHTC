@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
     def extract_text_from_moduleDocuments(self):
         # pull files from database
-        moduleDocumentsObjects = moduleDocuments.objects.all()
+        moduleDocumentsObjects = moduleDocuments.objects.filter(extracted=False)
         exclude = set(string.punctuation)
 
         # loop through modules and pull all text
