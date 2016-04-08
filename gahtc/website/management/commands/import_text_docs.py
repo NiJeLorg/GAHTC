@@ -78,7 +78,7 @@ class Command(BaseCommand):
 
                 # create tags from noun_phrases
                 # only add tags if none exist
-                print lectureDocumentsObject.tags
+                print lectureDocumentsObject
                 if not lectureDocumentsObject.tags:
                     blobbed = TextBlob(document_contents)
                     np = blobbed.noun_phrases
