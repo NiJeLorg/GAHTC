@@ -29,16 +29,15 @@ class Command(BaseCommand):
 
                 # create tags from noun_phrases
                 # only add tags if none exist
-                if not moduleDocumentsObject.tags:
-                    blobbed = TextBlob(document_contents)
-                    np = blobbed.noun_phrases
-                    np = list(set(np))
-                    np = [s for s in np if s]
-                    moduleDocumentsObject.tags.clear()
-                    for item in np:
-                        s = ''.join(ch for ch in item if ch not in exclude)
-                        print s
-                        moduleDocumentsObject.tags.add(s)
+                blobbed = TextBlob(document_contents)
+                np = blobbed.noun_phrases
+                np = list(set(np))
+                np = [s for s in np if s]
+                moduleDocumentsObject.tags.clear()
+                for item in np:
+                    s = ''.join(ch for ch in item if ch not in exclude)
+                    print s
+                    moduleDocumentsObject.tags.add(s)
 
                 # TODO pull dates
                 # words = blobbed.words
@@ -78,17 +77,15 @@ class Command(BaseCommand):
 
                 # create tags from noun_phrases
                 # only add tags if none exist
-                print lectureDocumentsObject
-                if not lectureDocumentsObject.tags:
-                    blobbed = TextBlob(document_contents)
-                    np = blobbed.noun_phrases
-                    np = list(set(np))
-                    np = [s for s in np if s]
-                    lectureDocumentsObject.tags.clear()
-                    for item in np:
-                        s = ''.join(ch for ch in item if ch not in exclude)
-                        print s
-                        lectureDocumentsObject.tags.add(s)
+                blobbed = TextBlob(document_contents)
+                np = blobbed.noun_phrases
+                np = list(set(np))
+                np = [s for s in np if s]
+                lectureDocumentsObject.tags.clear()
+                for item in np:
+                    s = ''.join(ch for ch in item if ch not in exclude)
+                    print s
+                    lectureDocumentsObject.tags.add(s)
 
                 # save this string
                 lectureDocumentsObject.document_contents = document_contents
