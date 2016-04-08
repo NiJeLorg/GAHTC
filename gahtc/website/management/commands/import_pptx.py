@@ -8,6 +8,7 @@ import pptx
 from pptx import Presentation
 import string
 from textblob import TextBlob
+import gc
 
 """
   Opens pptx files and extracts all text
@@ -296,6 +297,7 @@ class Command(BaseCommand):
                     f = open(head + "/slide-"+ str(index) +".jpg")
                     image_file = File(f)
                     addslide.slide.save("slide-"+ str(index) +".jpg", image_file)
+                    f.close()
                     os.remove(head + "/slide-"+ str(index) +".jpg")
 
                     # for each slide create a pptx file with a single slide
@@ -315,11 +317,18 @@ class Command(BaseCommand):
                     path_to_file = MEDIA_ROOT + '/' + str(croppedtail) + "_" + str(index) + ".pptx"
                     prs_slide.save(path_to_file)
 
+                    # set prs_slide to None to free up memory
+                    prs_slide = None
+
+                    # run the garbage collector to free up memory
+                    gc.collect()
+
                     seg = open(path_to_file)
                     seg_file = File(seg)
                     head_slide, tail_slide = os.path.split(path_to_file)
                     print tail_slide
                     addslide.presentation.save(tail_slide, seg_file)
+                    seg.close()
                     os.remove(path_to_file)
                     addslide.save()
 
@@ -426,6 +435,7 @@ class Command(BaseCommand):
                     f = open(head + "/slide-"+ str(index) +".jpg")
                     image_file = File(f)
                     addslide.slide.save("slide-"+ str(index) +".jpg", image_file)
+                    f.close()
                     os.remove(head + "/slide-"+ str(index) +".jpg")
 
 
