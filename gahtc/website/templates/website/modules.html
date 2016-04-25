@@ -23,7 +23,7 @@
 
 	<div class="row marginBottom15">
 		<div class="col-md-9">
-			<h3 class="noTopMargin">{{ module_returned.title }}</h3>
+			<h3 class="noTopMargin"><span class="label label-primary">{{ module_returned.title }}</span></h3>
 		</div>	
 		<div class="col-md-3">
 			<button type="button" class="btn btn-default downloadModule pull-right" data-moduleid="{{ module_returned.id }}">Download Module</button>
@@ -37,8 +37,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			{% if module_returned.moduleDocs|length > 0 %}
-				<strong>Documents</strong>
-				<br />
+				<h5><span class="label label-primary">Documents</span></h5>
 				<ul>				
 				{% for doc in module_returned.moduleDocs %}
 					<li>{{ doc.title }} (<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }})</li>
@@ -50,8 +49,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			{% if module_returned.moduleLecs|length > 0 %}
-				<strong>Lectures</strong>
-				<br />
+				<h5><span class="label label-success">Lectures</span></h5>
 				<ul>				
 				{% for lec in module_returned.moduleLecs %}
 					<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> (<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }})</li>

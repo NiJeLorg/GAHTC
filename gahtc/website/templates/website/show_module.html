@@ -32,8 +32,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			{% if moduleDocs|length > 0 %}
-				<strong>Documents</strong>
-				<br />
+				<h5><span class="label label-primary">Documents</span></h5>
 				<ul>				
 				{% for doc in moduleDocs %}
 					<li>{{ doc.title }} (<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }})</li>
@@ -45,8 +44,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			{% if moduleLecs|length > 0 %}
-				<strong>Lectures</strong>
-				<br />
+				<h5><span class="label label-success">Lectures</span></h5>
 				<ul>				
 				{% for lec in moduleLecs %}
 					<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> (<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }})</li> 

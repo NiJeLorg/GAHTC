@@ -28,8 +28,7 @@
 					</div>
 					<div class="row">
 						{% if bundle.module.moduleDocs|length > 0 %}
-							<strong>Documents</strong>
-							<br />
+							<h5><span class="label label-primary">Documents</span></h5>
 							<ul>				
 							{% for doc in bundle.module.moduleDocs %}
 								<li>{{ doc.title }} (<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }})</li>
@@ -39,8 +38,7 @@
 					</div>
 					<div class="row">
 						{% if bundle.module.lectures|length > 0 %}
-							<strong>Lectures</strong>
-							<br />
+							<h5><span class="label label-success">Lectures</span></h5>
 							<ul>				
 							{% for lec in bundle.module.lectures %}
 								<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> (<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }})</li>
@@ -78,7 +76,7 @@
 						<p><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ bundle.lecture.id }}">{{ bundle.lecture.title }}</button> (<a href="/media/{{ bundle.lecture.presentation }}">download</a> | {{ bundle.lecture.presentation.size|filesizeformat }})</p>
 					</div>
 					<div class="row">
-						<p>From the module: <em>{{ bundle.lecture.module.title }}</em></p>
+						<p>From the module: <span class="label label-primary">{{ bundle.lecture.module.title }}</span></p>
 					</div>
 
 				</div>
@@ -104,8 +102,8 @@
 						<p><button type="button" class="btn btn-default btn-xs launchSegmentModal" data-lecturesegmentid="{{ bundle.lectureSegment.id }}">{{ bundle.lectureSegment.title }}</button> (<a href="/media/{{ bundle.lectureSegment.presentation }}">download</a> | {{ bundle.lectureSegment.presentation.size|filesizeformat }})</p>
 					</div>
 					<div class="row">
-						<p>From the lecture: <em>{{ bundle.lectureSegment.lecture.title }}</em></p>
-						<p>From the module: <em>{{ bundle.lectureSegment.lecture.module.title }}</em></p>
+						<p>From the lecture: <span class="label label-success">{{ bundle.lectureSegment.lecture.title }}</span></p>
+						<p>From the module: <span class="label label-primary">{{ bundle.lectureSegment.lecture.module.title }}</span></p>
 					</div>
 
 				</div>
@@ -131,8 +129,8 @@
 						<p>{{ bundle.lectureDocument.title }} (<a href="/media/{{ bundle.lectureDocument.document }}">download</a> | {{ bundle.lectureDocument.document.size|filesizeformat }})</p>
 					</div>
 					<div class="row">
-						<p>From the lecture: <em>{{ bundle.lectureDocument.lecture.title }}</em></p>
-						<p>From the module: <em>{{ bundle.lectureDocument.lecture.module.title }}</em></p>
+						<p>From the lecture: <span class="label label-success">{{ bundle.lectureDocument.lecture.title }}</span></p>
+						<p>From the module: <span class="label label-primary">{{ bundle.lectureDocument.lecture.module.title }}</span></p>
 					</div>
 				</div>
 			</div>
@@ -157,8 +155,8 @@
 						<p><button type="button" class="btn btn-default btn-xs launchSlideModal" data-lectureslideid="{{ bundle.lectureSlide.id }}">Preview</button> (<a href="/media/{{ bundle.lectureSlide.presentation }}">download</a> | {{ bundle.lectureSlide.presentation.size|filesizeformat }})</p>
 					</div>
 					<div class="row">
-						<p>From the lecture: <em>{{ bundle.lectureSlide.lecture.title }}</em></p>
-						<p>From the module: <em>{{ bundle.lectureSlide.lecture.module.title }}</em></p>
+						<p>From the lecture: <span class="label label-success">{{ bundle.lectureSlide.lecture.title }}</span></p>
+						<p>From the module: <span class="label label-primary">{{ bundle.lectureSlide.lecture.module.title }}</span></p>
 					</div>
 				</div>
 			</div>
