@@ -36,6 +36,58 @@ def index(request):
 	context_dict = {}
 	return render(request, 'website/index.html', context_dict)
 
+def about(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  About page
+	"""
+	context_dict = {}
+	return render(request, 'website/about.html', context_dict)
+
+def grantProgram(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  Grant Program page
+	"""
+	context_dict = {}
+	return render(request, 'website/grantProgram.html', context_dict)
+
+def workshop(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  Workshop page
+	"""
+	context_dict = {}
+	return render(request, 'website/workshop.html', context_dict)
+
+def workshop2013(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  Workshop 2013 page
+	"""
+	context_dict = {}
+	return render(request, 'website/workshop2013.html', context_dict)
+
 def mainSearchCode(request, keyword, tab):
 	"""
 	  Queries the database for search terms and returns list of results -- used in search and bundles

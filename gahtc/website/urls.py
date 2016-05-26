@@ -8,6 +8,10 @@ from website import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^about/$', views.about, name='about'),
+    url(r'^grant-program/$', views.grantProgram, name='grantProgram'),
+    url(r'^workshop/$', views.workshop, name='workshop'),
+    url(r'^workshop-2013/$', views.workshop2013, name='workshop2013'),
     url(r'^search/$', views.search, name='search'),
     url(r'^bundles/$', views.mybundles, name='mybundles'),
     url(r'^profile/$', views.myprofile, name='myprofile'),

@@ -56,16 +56,25 @@
                 <li><a href="{% url 'lecturesView' %}">Lectures</a></li>
               </ul>
             </li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">FAQ</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'about' %}">About GAHTC</a></li>
+                <li><a href="{% url 'grantProgram' %}">Grant Program</a></li>
+                <li><a href="{% url 'workshop' %}">Workshop</a></li>
+                <li><a href="#">Contact</a></li>
+              </ul>
+            </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">People <span class="caret"></span></a>
               <ul class="dropdown-menu">
+                <li><a href="#">Membership</a></li>
                 <li><a href="{% url 'membersView' %}">Members</a></li>
                 <li><a href="#">Affiliations</a></li>
                 <li><a href="#">Funders</a></li>
               </ul>
             </li>
+            <li><a href="#">Timescape</a></li>
             <li><a href="/forum/">Forums</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
