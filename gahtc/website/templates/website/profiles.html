@@ -31,7 +31,7 @@
 		<div class="col-md-8 col-md-offset-1">
 			<div class="row">
 				<p><strong>Name:</strong> {{ user_profile.name }}</p>
-				<p><strong>Email:</strong> {{ user_profile.user.email }} </p>
+				<p><strong>Email:</strong><a href="mailto:{{ user_profile.user.email }}"> {{ user_profile.user.email }}</a></p>
 				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
 				<p><strong>Introduction:</strong> {{ user_profile.introduction }}</p>
 			</div>
