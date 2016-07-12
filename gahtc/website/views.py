@@ -997,7 +997,7 @@ def modulesView(request):
 	  Loads all modules 
 	"""	
 
-	modules_returned = modules.objects.all()
+	modules_returned = modules.objects.all().order_by('title')
 
 	for module_returned in modules_returned:
 		#look up module docs 
@@ -1052,7 +1052,7 @@ def lecturesView(request):
 	  Loads all lectures 
 	"""	
 
-	lectures_returned = lectures.objects.all()
+	lectures_returned = lectures.objects.all().order_by('title')
 
 	for lec in lectures_returned:
 		lecture = str(lec.presentation)
