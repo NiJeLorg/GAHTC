@@ -1,0 +1,92 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Workshop{% endblock %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block head_js_block %}
+{% endblock %}
+	
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1">
+			<h1>Timescape</h1>
+			<p>
+				GAHTC partnered with <a href="https://www.timescape.io/">Timescape</a> to create several map-based stories of architecturally significant sites during certain periods of world history, as well as significant contributions from individual architect. These Timescapes are available for all to use either in their own personal study or as part of formal instruction. 
+			</p>
+			<p>
+				For the time section maps 800, 1000, 1200 and 1400, we put in buildings and sites that were built only around those times. 800 includes ca. 700 – 900; 1000 includes 900 – 1100 etc. Unless otherwise noted, all information is taken from <a href="https://www.wikipedia.org/">Wikipedia</a>. The maps show the approximate location of then current political boundaries. The information was taken from several sites including from <a href="http://www.worldhistorymaps.info/maps.html">Talessman's Atlas</a>.
+			</p>
+			<hr />
+			<div class="container-fluid">
+				<div class='row'>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/800-ce"><img class="marginBottom15" src="{% static 'website/css/images/Splash8002.jpg' %}"></a><br />
+					</div>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/1000"><img class="marginBottom15" src="{% static 'website/css/images/Splash10002.jpg' %}"></a>
+					</div>
+				</div>
+				<div class='row'>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/1200-final"><img class="marginBottom15" src="{% static 'website/css/images/Splash12002.jpg' %}"></a><br />
+					</div>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/1400-ad"><img class="marginBottom15" src="{% static 'website/css/images/Splash14002.jpg' %}"></a>
+					</div>
+				</div>
+				<div class='row'>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/1600-ad"><img class="marginBottom15" src="{% static 'website/css/images/Splash16002.jpg' %}"></a><br />
+					</div>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/colonial-forts"><img class="marginBottom15" src="{% static 'website/css/images/SplashForts1.jpg' %}"></a>
+					</div>
+				</div>
+				<div class='row'>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/le-corbusier"><img class="marginBottom15" src="{% static 'website/css/images/SplashCorb2.jpg' %}"></a><br />
+					</div>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/louis-i-kahn"><img class="marginBottom15" src="{% static 'website/css/images/SplashKahn2.jpg' %}"></a>
+					</div>
+				</div>
+				<div class='row'>
+					<div class="col-sm-6">
+						<a href="https://www.timescape.io/charles"><img class="marginBottom15" src="{% static 'website/css/images/SplashCharles2.jpg' %}"></a><br />
+					</div>
+					<div class="col-sm-6">
+					</div>
+				</div>
+			</div>
+			<hr />
+			<img class="marginBottom15 img-responsive" src="{% static 'website/css/images/OverLayInstruction-1024x587.jpg' %}" />
+			<p>
+				To navigate these Timescapes: 
+				<ul>
+					<li>Double click on the globe to zoom in and out.</li>
+					<li>Click on a circular ‘pin’ and a small info box appears above.</li>
+					<li>Click on that box and the info-screen appears to the left.</li>
+					<li>On the right hand side there are buttons for 3D (the globe) and 2D.</li>
+					<li>Click on 2D leads you to: ST (Map View) and SA (Satellite View) where you can zoon in an out with your mouse.</li>
+					<li>On the upper left above the info panel you will see: ‘Charts and Filters’ . These allow you to choose a particular tag or set of tags, like Islamic, for example. ‘Timeline’ returns you to the left hand info-screens.</li>
+				</ul>
+			</p>
+ 			<p>
+				Also note that all the sites are still under construction, and there are more sites to come, but if you or your class would would like to make a map, please let us know by emailing us at <img src="{% static 'website/css/images/email.png' %}" style="margin-bottom: 2px;">.
+			</p>			
+		</div>
+	</div>
+</div>				
+{% endblock %}
+
+{% block modal_block %}
+{% endblock %}
+
+{% block js_block %}
+{% endblock %}

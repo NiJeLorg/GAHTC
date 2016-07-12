@@ -88,6 +88,45 @@ def workshop2013(request):
 	context_dict = {}
 	return render(request, 'website/workshop2013.html', context_dict)
 
+def contact(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  contact page
+	"""
+	context_dict = {}
+	return render(request, 'website/contact.html', context_dict)
+
+def membership(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  membership page
+	"""
+	context_dict = {}
+	return render(request, 'website/membership.html', context_dict)
+
+def timescape(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  timescape page
+	"""
+	context_dict = {}
+	return render(request, 'website/timescape.html', context_dict)
+
 def mainSearchCode(request, keyword, tab):
 	"""
 	  Queries the database for search terms and returns list of results -- used in search and bundles

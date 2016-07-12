@@ -1,0 +1,137 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Workshop{% endblock %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block head_js_block %}
+{% endblock %}
+	
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1">
+			<h1>Membership</h1>
+			<p>
+				If you are thinking about becoming a member, please read <a href="{% url 'about' %}">about the GAHTC</a>. Members will be asked to contribute in one way or another to the project of creating course material that will distributed via a web-based repository starting in 2016. Members will also be asked to participate in a fall workshop and in the general conversation of how best to pursue the goals of GAHTC.
+			</p>
+			<p>
+				Members should hold a Master's degree or Ph.D. in architectural history or in related fields such as art history, history, anthropology or archaeology.
+			</p>
+			<p>
+				Becoming a member is easy. There are no dues. Simply send a short cover letter describing how you intent to contribute to the collaborative along with a resume to <img src="{% static 'website/css/images/email.png' %}" style="margin-bottom: 2px;">.
+			</p>
+			<h3>GAHTC BOARD OF DIRECTORS</h3>
+			<p>
+				Mark Jarzombek - <em>Massachusetts Institute of Technology</em><br />
+				Vikramāditya Prakāsh - <em>University of Washington</em><br />
+				Robert Cowherd - <em>Wentworth Institute of Technology</em><br />
+				Gail Fenske - <em>Roger Williams University</em><br />
+				Suzanne Marchand - <em>Louisiana State University</em><br />
+				Adnan Morshed - <em>Catholic University of America</em><br />
+			</p>
+			<h3>GAHTC MEMBERS</h3>
+			<p>
+				Mohammed Alkhabbaz - <em>Illinois Institute of Technology</em><br />
+				Christy Anderson - <em>University of Toronto</em><br />
+				Glaire Anderson - <em>University of North Carolina</em><br />
+				Ioanna Angelidou - <em>Yale University</em><br />
+				Michelle Moore - <em>Apotsos Williams College</em><br />
+				Tom Avermaete - <em>Delft University of Technology</em><br />
+				Soumyen Bandyopadhyay - <em>Liverpool School of Architecture</em><br />
+				Daniel Barber - <em>University of Pennsylvania</em><br />
+				Eleni Bastéa - <em>University of New Mexico</em><br />
+				Vandana Baweja - <em>University of Florida</em><br />
+				Gauri Bharat - <em>CEPT University</em><br />
+				Jiat-Hwee Chang - <em>National University of Singapore</em><br />
+				Peter Christensen - <em>University of Rochester</em><br />
+				Joseph L. Clarke - <em>Illinois Institute of Technology</em><br />
+				Tanja D. Conley - <em>Massachusettes College of Art</em><br />
+				Elisa Dainese - <em>Columbia University</em><br />
+				Kenny Cupers - <em>University of Illinois at Urbana-Champaign</em><br />
+				Farshid Emami - <em>Ph.D. candidate, Harvard University</em><br />
+				Jesús Escobar - <em>Northwestern University</em><br />
+				Johnathan Farris - <em>SCAD Hong Kong</em><br />
+				Gina Greene - <em>Robert Wood Johnson Foundation Health and Society Scholar, University of Pennsylvania</em><br />
+				Sandra Gutiérrez Poizat - <em>Fulbright-Humphrey Research Fellow,
+				Massachusetts Institute of Technology</em><br />
+				Patrick Haughey - <em>Savannah College of Art & Design</em><br />
+				Christian A. Hedrick - <em>Massachusetts Institute of Technology</em><br />
+				Carola Hein - <em>Delft University of Technology</em><br />
+				Sahar Hosseini - <em>University of Wisconsin-Milwaukee</em><br />
+				Ann C. Huppert - <em>University of Washington</em><br />
+				Judith Hull - <em>Emerson College</em><br />
+				Alicia Imperiale - <em>Cornell University</em><br />
+				Iain Jackson - <em>Liverpool School of Architecture</em><br />
+				Caroline Jones - <em>Massachusetts Institute of Technology</em><br />
+				Sharif Kahat - <em>Pontificia Universidad Católica del Peru</em><br />
+				Jordan Kauffman - <em>Brandeis University</em><br />
+				Carla Keyvanian - <em>Auburn University</em><br />
+				Yoonjee Koh - <em>Masters candidate, Harvard University</em><br />
+				Seng Kuan - <em>Washington University, St. Louis</em><br />
+				Michael Kubo - <em>Ph.D. candidate, Massachusetts Institute of Technology</em><br />
+				Rachel Lee - <em>Technological University, Berlin</em><br />
+				Ana María León - <em>University of Michigan</em><br />
+				Ayala Levin - <em>Columbia Univeristy</em><br />
+				Hannah le Roux - <em>University of Witwatersrand</em><br />
+				John Lopez - <em>University of Chicago</em><br />
+				Diana Martinez - <em>Pratt Institute</em><br />
+				Christina Maranci - <em>Tufts University</em><br />
+				Jonathan Massey - <em>California College of Arts</em><br />
+				Lucy M. Maulsby - <em>Northeastern University</em><br />
+				Anne McCants - <em>Massachusetts Institute of Technology</em><br />
+				Bonnie Graham McDougall - <em>Cornell University</em><br />
+				Sean H. McPherson - <em>Bridgewater State University</em><br />
+				Sandy Prita Meier - <em>University of Illinois</em><br />
+				Mrinalini Rajagopalan - <em>University of Pittsburgh</em><br />
+				Diana Martinez - <em>Pratt Institute</em><br />
+				Eric Mumford - <em>Washington University</em><br />
+				Albert Narath - <em>University of California Santa Cruz</em><br />
+				Morgan Ng - <em>PhD candidate, Harvard University</em><br />
+				Ginger Nolan - <em>Pratt Institute</em><br />
+				John Ochsendorf - <em>Massachusetts Institute of Technology</em><br />
+				Itohan Osayimwese - <em>Brown University</em><br />
+				Hyungmin Pai - <em>The University of Seoul</em><br />
+				Jorge Otero-Pailos - <em>Columbia University</em><br />
+				Tessa Paneth-Pollack - <em>Michigan State University</em><br />
+				Peter Probst - <em>Tufts University</em><br />
+				Nasser Rabbat - <em>Massachusetts Institute of Technology</em><br />
+				Enrique Ramirez - <em>Ball State University</em><br />
+				David Rifkind - <em>Florida International University</em><br />
+				Michelangelo Sabatino - <em>Illinois Institute of Technology</em><br />
+				Avigail Sachs - <em>University of Tennessee</em><br />
+				David Salomon - <em>Ithaca College</em><br />
+				Sebastian Schmidt - <em>Massachusetts Institute of Technology</em><br />
+				Anooradha Iyer Siddiqi - <em>New York University</em><br />
+				Manu Sobti - <em>University of Wisconsin-Milwaukee</em><br />
+				Narciss M. Sohrabi - <em>Université Paris-Ouest Nanterre La Défense</em><br />
+				Tyler Sprague - <em>University of Washington</em><br />
+				Łukasz Stanek - <em>Manchester Architecture Research Centre</em><br />
+				Nancy Stieber - <em>University of Massachusetts</em><br />
+				Martina Tanga - <em>University of Massachusetts</em><br />
+				Meredith TenHoor - <em>Pratt Institute</em><br />
+				Olga Touloumi - <em>Bard College
+				Norihiko Tsuneishi - <em>Columbia University</em><br />
+				Ola Uduku - <em>University of Edinburgh</em><br />
+				Tijana Vujosevic - <em>University of Western Australia</em><br />
+				Thaisa Way - <em>University of Washington</em><br />
+				Heghnar Watenpaugh - <em>University of California</em><br />
+				Mechtild Widrich - <em>ETH Zürich</em><br />
+				Mary Woods - <em>Cornell University</em><br />
+				Shuishan Yu - <em>Northeastern University</em><br />
+				Shundana Yusaf - <em>University of Utah</em><br />
+				Sibel Zandi-Sayek - <em>The College of William & Mary</em><br />
+		</div>
+	</div>
+</div>				
+{% endblock %}
+
+{% block modal_block %}
+{% endblock %}
+
+{% block js_block %}
+{% endblock %}
