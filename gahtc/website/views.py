@@ -62,7 +62,7 @@ def grantProgram(request):
 	context_dict = {}
 	return render(request, 'website/grantProgram.html', context_dict)
 
-def workshop(request):
+def conference(request):
 	"""
 	  Check if superuser and if so, redirect to the admin dashboard
 	"""
@@ -70,10 +70,36 @@ def workshop(request):
 		return HttpResponseRedirect('/dashboard/')
 
 	"""
-	  Workshop page
+	  conference page
 	"""
 	context_dict = {}
-	return render(request, 'website/workshop.html', context_dict)
+	return render(request, 'website/conference.html', context_dict)
+
+def reimbursement(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  reimbursement page
+	"""
+	context_dict = {}
+	return render(request, 'website/reimbursement.html', context_dict)
+
+def schedule(request):
+	"""
+	  Check if superuser and if so, redirect to the admin dashboard
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		return HttpResponseRedirect('/dashboard/')
+
+	"""
+	  schedule page
+	"""
+	context_dict = {}
+	return render(request, 'website/schedule.html', context_dict)
 
 def workshop2013(request):
 	"""
