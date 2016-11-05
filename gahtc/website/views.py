@@ -166,7 +166,7 @@ def mainSearchCode(request, keyword, tab):
 	lecture_slides_returned_count = 0
 
 	if keyword != "":
-		all_results = SearchQuerySet().filter(content=keyword).highlight()
+		all_results = SearchQuerySet().auto_query(keyword).highlight()
 		modules_returned = []
 		module_documents_returned = []
 		lectures_returned = []
