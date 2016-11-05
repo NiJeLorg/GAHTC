@@ -118,7 +118,9 @@
 										<div class="row">
 											<p>
 											{% for tag in module.tags.all|slice:":6" %}
+											<a href="/search/?keyword={{ tag.name }}">
 									            <span class="label label-default">{{ tag.name }}</span>
+									        </a>
 									        {% endfor %}
 									        </p>
 										</div>
@@ -182,7 +184,9 @@
 										<div class="row">
 											<p>
 											{% for tag in lecture.object.tags.all|slice:":6" %}
+											<a href="/search/?keyword={{ tag.name }}">
 									            <span class="label label-default">{{ tag.name }}</span>
+									        </a>
 									        {% endfor %}
 									        </p>
 										</div>
