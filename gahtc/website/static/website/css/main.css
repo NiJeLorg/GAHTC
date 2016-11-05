@@ -206,6 +206,11 @@ a:hover, a:focus {
     background-color: #756BB1;
 }
 
+.label-default:hover {
+	color: #f9f9f9;
+	background-color: #999;
+}
+
 
 /* Add a of bottom padding to containers */
 .container {
