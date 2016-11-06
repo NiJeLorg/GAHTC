@@ -37,7 +37,6 @@ $( document ).ready(function() {
 
 	// on click of module, run query to pull module
 	$( ".module" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var module_id = $( this ).data( "moduleid" );
