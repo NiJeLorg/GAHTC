@@ -45,7 +45,6 @@ $( document ).ready(function() {
 
 	// on click of lecture, run query to pull lecture
 	$( ".lecture" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_id = $( this ).data( "lectureid" );
@@ -54,7 +53,6 @@ $( document ).ready(function() {
 
 	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_segment" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_segment_id = $( this ).data( "lecturesegmentid" );
@@ -63,7 +61,6 @@ $( document ).ready(function() {
 
 	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_document" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_document_id = $( this ).data( "lecturedocumentid" );
@@ -72,7 +69,6 @@ $( document ).ready(function() {
 
 	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_slide" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_slide_id = $( this ).data( "lectureslideid" );
