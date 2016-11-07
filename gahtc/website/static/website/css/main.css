@@ -84,6 +84,23 @@ a:hover, a:focus {
 	}
 }
 
+/* footer */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #000;
+}
+
+.container-fluid .text-muted {
+    margin: 20px 0;
+}
+
+.text-muted {
+    color: #eee;
+}
+
 
 /* Search Bar */
 .searchbar {
