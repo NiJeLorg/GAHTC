@@ -91,9 +91,12 @@
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-
-	{% block content %}
-	{% endblock %}
+	  
+	<div class="content-wrapper">
+		{% block content %}
+		{% endblock %}
+	</div>
+	  
 	<footer class="footer">
 		<div class="container-fluid">
 			<p class="text-muted">Copyright &copy; {% now 'Y' %} | All Rights Reserved | GAHTC: Global Architectural History Teaching Collaborative</p>
