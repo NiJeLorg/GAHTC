@@ -276,6 +276,10 @@ $( document ).ready(function() {
         gahtcApplication.saveComment(comment, itemid);
 	});	
 
+	// listen for tab clicks and move footer
+	$(document).on('click', '.nav-tabs', function(e) {
+		gahtcApplication.updateFooter();
+	});
 
 
 });
