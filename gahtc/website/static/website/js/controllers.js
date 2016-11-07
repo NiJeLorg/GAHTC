@@ -285,7 +285,7 @@ $( document ).ready(function() {
 		// check which image we're on an go to the next one
 		if ($('#searchFor').hasClass('oldDispensary')) {
 			// set new image background
-			$("#background li").css({ "background": "transparent cover top center no-repeat url('/static/website/css/images/Palace_of_Sargon_II.JPG')"});
+			$("#background li").css({ "background": "transparent url('/static/website/css/images/Palace_of_Sargon_II.JPG') cover no-repeat top center"});
 			// set class and text for search for button
 			$('#searchFor').removeClass('oldDispensary');
 			$('#searchFor').addClass('sargon');
