@@ -283,14 +283,20 @@ $( document ).ready(function() {
 
 	$(document).on('click', '#next', function(e) {
 		// check which image we're on an go to the next one
+		// check which image we're on an go to the next one
 		if ($('#searchFor').hasClass('oldDispensary')) {
-			// set new image background
-			$("#background li").css({ "background": "transparent url('/static/website/css/images/Palace_of_Sargon_II.JPG') no-repeat top center"});
-			// set class and text for search for button
-			$('#searchFor').removeClass('oldDispensary');
-			$('#searchFor').addClass('sargon');
-			$('#searchFor').text('Search for Palace of Sargon II');
-			$('#searchFor').prop('href', '/search/?keyword="Palace of Sargon II"');
+			$("#background li").fadeOut("slow");
+			setTimeout(function() {
+				// set new image background
+				$("#background li").css({ "background-image": "url('/static/website/css/images/Palace_of_Sargon_II.JPG')"});
+				// set class and text for search for button
+				$('#searchFor').removeClass('oldDispensary');
+				$('#searchFor').addClass('sargon');
+				$('#searchFor').text('Search for Palace of Sargon II');
+				$('#searchFor').prop('href', '/search/?keyword="Palace of Sargon II"');
+				$("#background li").fadeIn('slow');
+			}, 1000);
+			
 		} else if ($('#searchFor').hasClass('sargon')) {
 			
 		} else {
