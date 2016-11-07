@@ -110,10 +110,10 @@
 	<!-- check every page to see if the body is smaller than the window, and if so, fix the footer to the bottom -->
 	<script type="text/javascript">
 	  $( document ).ready(function() {
-		var $body = $(body).height();
+		var $body = $('body').height();
 		var $win = $(window).height();
 
-		if ($body > $win ) {
+		if ($body <= $win ) {
 			$('.footer').css({ "position": "absolute", "bottom": "0" });
 		}
 	  });
