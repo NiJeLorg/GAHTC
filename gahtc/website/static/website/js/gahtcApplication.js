@@ -57,6 +57,7 @@ gahtcApplication.getLectureDocument = function (lecture_document_id) {
 		url: "/show_lecture_document/" + lecture_document_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
+			gahtcApplication.updateFooter();
         }
 	});		
 }
@@ -67,6 +68,7 @@ gahtcApplication.getLectureSlide = function (lecture_slide_id) {
 		url: "/show_lecture_slide/" + lecture_slide_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
+			gahtcApplication.updateFooter();
         }
 	});
 }
@@ -122,6 +124,7 @@ gahtcApplication.createNewBundle = function () {
 
 			// add response from template to bundles uls
 			$('.bundles').html(data);
+			gahtcApplication.updateFooter();
         }
 	});
 
@@ -149,6 +152,7 @@ gahtcApplication.removeFromBundle = function (bundle, itemid, type) {
 		url: "/remove_from_bundle/?bundle=" + bundle + "&itemid=" + itemid + "&type=" + type,
 		success: function(data){
 			gahtcApplication.getBundle(bundle);
+			gahtcApplication.updateFooter();
         }
 	});
 }
@@ -159,6 +163,7 @@ gahtcApplication.getBundle = function (bundle_id) {
 		url: "/show_bundle/" + bundle_id + "/" ,
 		success: function(data){
 			$('.bundleSidebar').html(data);
+			gahtcApplication.updateFooter();
         }
 	});
 }
@@ -206,6 +211,7 @@ gahtcApplication.refreshSidebarBundle = function () {
 			var bundleid = $( ".bundleResult:first" ).data( 'bundleid' );
 			if (bundleid) {
 				gahtcApplication.getBundle(bundleid);
+				gahtcApplication.updateFooter();
 			}
         }
 	});
@@ -218,6 +224,7 @@ gahtcApplication.saveSearchString = function (searchString) {
 		success: function(data){
 			$('#searchSaved').removeClass('hidden');
 			$('.savedSearchList').html(data);
+			gahtcApplication.updateFooter();
         }
 	});
 }
@@ -228,8 +235,22 @@ gahtcApplication.saveComment = function (comment, itemid) {
 		url: "/save_comment/?comment=" + comment + "&itemid=" + itemid,
 		success: function(data){
 			$('.searchSidebar').html(data);
+			gahtcApplication.updateFooter();
         }
 	});
+}
+
+/* on ajax calls, set position of footer */
+gahtcApplication.updateFooter = function () {
+	var $body = $('body').height();
+	var $win = $(window).height();
+	console.log($body, 'body');
+	console.log($win, 'win');
+	if ($body <= $win ) {
+		$('.footer').css({ "position": "absolute", "bottom": "0" });
+	} else {
+		$('.footer').css({ "position": "relative", "bottom": "auto" });
+	}
 }
 
 
