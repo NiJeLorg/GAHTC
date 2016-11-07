@@ -34,18 +34,7 @@
 	font-weight: bold;
 }
 
-
-/* html, body height */
-html, body {
-    height: 100vh;
-}
-
-.content-wrapper {
-	min-height: 100vh;
-    	height: auto !important;
-    	margin: 0 auto -40px; /* the bottom margin is the negative value of the footer's height */
-}
-
+/* bootstrap override on link highlighting */
 a:hover, a:focus {
 	text-decoration: none;
 }
