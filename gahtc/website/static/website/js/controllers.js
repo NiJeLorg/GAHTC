@@ -281,5 +281,21 @@ $( document ).ready(function() {
 		gahtcApplication.updateFooter();
 	});
 
+	$(document).on('click', '#next', function(e) {
+		// check which image we're on an go to the next one
+		if ($('#searchFor').hasClass('oldDispensary')) {
+			// set new image background
+			$("#background li").css({ "background": "url('images/Palace_of_Sargon_II.JPG')"});
+			// set class and text for search for button
+			$('#searchFor').removeClass('oldDispensary');
+			$('#searchFor').addClass('sargon');
+			$('#searchFor').text('Search for Palace of Sargon II');
+			$('#searchFor').prop('href', '/search/?keyword="Palace of Sargon II"');
+		} else if ($('#searchFor').hasClass('sargon')) {
+			
+		} else {
+		}
+	});
+
 
 });
