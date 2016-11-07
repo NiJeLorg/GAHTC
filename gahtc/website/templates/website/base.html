@@ -112,7 +112,8 @@
 	  $( document ).ready(function() {
 		var $body = $('body').height();
 		var $win = $(window).height();
-
+		console.log($body, 'body');
+		console.log($win, 'win');
 		if ($body <= $win ) {
 			$('.footer').css({ "position": "absolute", "bottom": "0" });
 		}
