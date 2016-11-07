@@ -8,15 +8,15 @@ $( document ).ready(function() {
 	// fade in main image and search bar
 	$(".fadein").fadeIn("slow");
 
-	// if user had picked my course bundles, then switch them to that tab
-	if (tab == "bundle") {
+	// check for the existence of tab
+	if (typeof tab === 'undefined' || tab == "none") {
+		// do nothing
+	} else if (tab == "bundle") {
 		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
 	} else if (tab == "profile") {
 		$('.nav-tabs a[href="#my-profile"]').tab('show');		
 	} else if (tab == "searches") {
 		$('.nav-tabs a[href="#my-saved-searches"]').tab('show');		
-	} else if (tab == "none") {
-		// do nothing
 	}
 
 	// select first in list and populate search result bar
