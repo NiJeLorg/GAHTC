@@ -288,13 +288,13 @@ $( document ).ready(function() {
 			$("#background li").fadeOut("slow");
 			setTimeout(function() {
 				// set new image background
-				$("#background li").css({ "background-image": "url('/static/website/css/images/Palace_of_Sargon_II.JPG')"});
+				$("#background").css({ "background-image": "url('/static/website/css/images/Palace_of_Sargon_II.JPG')"});
 				// set class and text for search for button
 				$('#searchFor').removeClass('oldDispensary');
 				$('#searchFor').addClass('sargon');
 				$('#searchFor').text('Search for Palace of Sargon II');
 				$('#searchFor').prop('href', '/search/?keyword="Palace of Sargon II"');
-				$("#background li").fadeIn('slow');
+				$("#background").fadeIn('slow');
 			}, 1000);
 			
 		} else if ($('#searchFor').hasClass('sargon')) {
