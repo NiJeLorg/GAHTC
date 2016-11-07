@@ -285,10 +285,10 @@ $( document ).ready(function() {
 		// check which image we're on an go to the next one
 		// check which image we're on an go to the next one
 		if ($('#searchFor').hasClass('oldDispensary')) {
-			$("#background li").fadeOut("slow");
+			$("#background").fadeOut("slow");
 			setTimeout(function() {
 				// set new image background
-				$("#background").css({ "background-image": "url('/static/website/css/images/Palace_of_Sargon_II.JPG')"});
+				$("#background li").css({ "background-image": "url('/static/website/css/images/Palace_of_Sargon_II.JPG')"});
 				// set class and text for search for button
 				$('#searchFor').removeClass('oldDispensary');
 				$('#searchFor').addClass('sargon');
