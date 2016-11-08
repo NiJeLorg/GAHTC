@@ -867,6 +867,13 @@ def zipUpModule(request, id=None):
 		#get module
 		module_returned = modules.objects.get(pk=id)
 
+		# mark as downloaded
+		d = userModuleDownload()
+		d.user = request.user
+		d.module = module_returned
+		d.downloaded = True
+		d.save()
+
 		#look up module docs 
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
 		#loop over docs and add to zip archive in the correct folder
@@ -901,8 +908,8 @@ def zipUpModule(request, id=None):
 	#get size of zip file
 	filesize = os.path.getsize(MEDIA_ROOT + folder + filename)
 
-	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize}
-	return render(request, 'website/bundle_download.html', context_dict)
+	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize, 'moduleid':id}
+	return render(request, 'website/module_download.html', context_dict)
 
 
 def zipUpLecture(request, id=None):
@@ -923,6 +930,13 @@ def zipUpLecture(request, id=None):
 		#get lecture
 		lec = lectures.objects.get(pk=id)
 
+		# mark as downloaded
+		d = userLectureDownload()
+		d.user = request.user
+		d.lecture = lec
+		d.downloaded = True
+		d.save()
+
 		lecTitle = ''.join(lec.title.split())
 		document = str(lec.presentation)
 		document = document.split('/')
@@ -942,8 +956,8 @@ def zipUpLecture(request, id=None):
 	#get size of zip file
 	filesize = os.path.getsize(MEDIA_ROOT + folder + filename)
 
-	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize}
-	return render(request, 'website/bundle_download.html', context_dict)
+	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize, 'lectureid':id}
+	return render(request, 'website/lecture_download.html', context_dict)
 
 
 
@@ -1759,7 +1773,8 @@ def admin_removelecturedoc(request, id=None):
 	# Render the form with error messages (if any).
 	return render(request, 'website/admin_removelecturedoc.html', {'form': form, 'lecturedocObject': lecturedocObject})
 
-def contactBundle(request, id=None):
+
+def contactBundle(request):
 	"""
 	  AJAX request to save if user wants to be contaced about their bundle
 	"""
@@ -1775,7 +1790,7 @@ def contactBundle(request, id=None):
 
 	return JsonResponse({'foo': 'bar'})
 
-def dontContactBundle(request, id=None):
+def dontContactBundle(request):
 	"""
 	  AJAX request to save if user wants to be contaced about their bundle
 	"""
@@ -1788,5 +1803,69 @@ def dontContactBundle(request, id=None):
 		bundle = bundles.objects.get(pk=bundleid)
 		bundle.contact = False
 		bundle.save()
+
+	return JsonResponse({'foo': 'bar'})
+
+def contactModule(request):
+	"""
+	  AJAX request to save if user wants to be contaced about their module
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		moduleid = request.GET.get("moduleid","")
+
+		#look up userModuleDownload
+		c = userModuleDownload.objects.get(module=moduleid, user=request.user)
+		c.contact = True
+		c.save()
+
+	return JsonResponse({'foo': 'bar'})
+
+def dontContactModule(request):
+	"""
+	  AJAX request to save if user wants to be contaced about their module
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		moduleid = request.GET.get("moduleid","")
+
+		#look up userModuleDownload
+		c = userModuleDownload.objects.get(module=moduleid, user=request.user)
+		c.contact = False
+		c.save()
+
+	return JsonResponse({'foo': 'bar'})
+
+def contactLecture(request):
+	"""
+	  AJAX request to save if user wants to be contaced about their lecture
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		lectureid = request.GET.get("lectureid","")
+
+		#look up userLectureDownload
+		c = userLectureDownload.objects.get(lecture=lectureid, user=request.user)
+		c.contact = True
+		c.save()
+
+	return JsonResponse({'foo': 'bar'})
+
+def dontContactModule(request):
+	"""
+	  AJAX request to save if user wants to be contaced about their lecture
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		lectureid = request.GET.get("lectureid","")
+
+		#look up userModuleDownload
+		c = userLectureDownload.objects.get(lecture=lectureid, user=request.user)
+		c.contact = False
+		c.save()
 
 	return JsonResponse({'foo': 'bar'})
