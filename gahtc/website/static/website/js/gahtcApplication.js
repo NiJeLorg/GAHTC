@@ -263,3 +263,14 @@ gahtcApplication.contactBundle = function (bundleid) {
 	});
 }
 
+gahtcApplication.dontContactBundle = function (bundleid) {
+	$.ajax({
+		type: "GET",
+		url: "/dont_contact_bundle/?bundleid=" + bundleid,
+		success: function(data){
+			// no reponse
+        }
+	});
+}
+
+
