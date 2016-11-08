@@ -264,6 +264,17 @@ $( document ).ready(function() {
 			$('#downloadHidden').addClass('hidden');
 		}
 	});
+	
+	// listening the contact for bundle checkbox
+	$(document).on('change', '#contactBundle', function(e) {
+		var bundleid = $(this).data( "bundleid" );
+		// is the box checked or unchecked
+		if($("#contactBundle").prop('checked') == true){
+			gahtcApplication.contactBundle(bundleid);
+		} else {
+			gahtcApplication.dontContactBundle(bundleid);
+		}
+	});
 
 	// return to previous html after modal is closed
 	$('#downloadModal').on('hidden.bs.modal', function (e) {
