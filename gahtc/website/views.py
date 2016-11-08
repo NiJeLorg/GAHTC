@@ -1854,7 +1854,7 @@ def contactLecture(request):
 
 	return JsonResponse({'foo': 'bar'})
 
-def dontContactModule(request):
+def dontContactLecture(request):
 	"""
 	  AJAX request to save if user wants to be contaced about their lecture
 	"""
