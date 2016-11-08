@@ -64,5 +64,6 @@ urlpatterns = [
     url(r'^admin_lecturedoc/(?P<id>\d+)/(?P<lectureid>\d+)/$', views.admin_lecturedoc, name='admin_lecturedoc'),
     url(r'^admin_removelecturdoc/(?P<id>\d+)/$', views.admin_removelecturedoc, name='admin_removelecturedoc'),
     url(r'^contact_bundle/$', views.contactBundle, name='contactBundle'),
-
+    url(r'^dont_contact_bundle/$', views.dontContactBundle, name='dontContactBundle'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
