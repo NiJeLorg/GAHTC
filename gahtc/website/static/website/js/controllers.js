@@ -276,6 +276,28 @@ $( document ).ready(function() {
 			gahtcApplication.dontContactBundle(bundleid);
 		}
 	});
+	
+	// listening the contact for module checkbox
+	$(document).on('change', '#contactModule', function(e) {
+		var moduleid = $(this).data( "moduleid" );
+		// is the box checked or unchecked
+		if($("#contactModule").prop('checked') == true){
+			gahtcApplication.contactModule(moduleid);
+		} else {
+			gahtcApplication.dontContactModule(moduleid);
+		}
+	});
+
+	// listening the contact for lecture checkbox
+	$(document).on('change', '#contactLecture', function(e) {
+		var lectureid = $(this).data( "lectureid" );
+		// is the box checked or unchecked
+		if($("#contactLecture").prop('checked') == true){
+			gahtcApplication.contactLecture(lectureid);
+		} else {
+			gahtcApplication.dontContactLecture(lectureid);
+		}
+	});
 
 	// return to previous html after modal is closed
 	$('#downloadModal').on('hidden.bs.modal', function (e) {
