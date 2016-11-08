@@ -166,7 +166,7 @@ def mainSearchCode(request, keyword, tab):
 	lecture_slides_returned_count = 0
 
 	if keyword != "":
-		all_results = SearchQuerySet().auto_query(keyword).highlight()
+		all_results = SearchQuerySet().filter(content=keyword).highlight()
 		modules_returned = []
 		module_documents_returned = []
 		lectures_returned = []
@@ -845,7 +845,7 @@ def zipUpBundle(request, id=None):
 	#get size of zip file
 	filesize = os.path.getsize(MEDIA_ROOT + folder + filename)
 
-	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize}
+	context_dict = {'folder':folder, 'filename':filename, 'filesize':filesize, 'bundleid':id}
 	return render(request, 'website/bundle_download.html', context_dict)
 
 
@@ -1760,4 +1760,18 @@ def admin_removelecturedoc(request, id=None):
 	return render(request, 'website/admin_removelecturedoc.html', {'form': form, 'lecturedocObject': lecturedocObject})
 
 
+def contactBundle(request, id=None):
+	"""
+	  AJAX request to save if user wants to be contaced about their bundle
+	"""
 
+	if request.method == 'GET':
+		#gather variables from get request
+		bundleid = request.GET.get("bundleid","")
+
+		#look up bundle
+		bundle = bundles.objects.get(pk=bundleid)
+		bundle.contact = True
+		bundle.save()
+
+	return JsonResponse({'foo': 'bar'})
