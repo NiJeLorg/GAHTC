@@ -283,7 +283,7 @@ gahtcApplication.contactModule = function (moduleid) {
 	});
 }
 
-gahtcApplication.dontContactBundle = function (moduleid) {
+gahtcApplication.dontContactModule = function (moduleid) {
 	$.ajax({
 		type: "GET",
 		url: "/dont_contact_module/?moduleid=" + moduleid,
