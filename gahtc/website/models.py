@@ -168,6 +168,8 @@ class bundles(models.Model):
 	# Links bundle to a User model instance.
 	user = models.ForeignKey(User)
 	title = models.CharField(max_length=255, null=False, blank=False)
+	contact = models.BooleanField(default=False)
+	downloaded = models.BooleanField(default=False)
 
 #modules in bundle
 class bundleModule(models.Model):
