@@ -253,5 +253,13 @@ gahtcApplication.updateFooter = function () {
 	}
 }
 
-
+gahtcApplication.contactBundle = function (bundleid) {
+	$.ajax({
+		type: "GET",
+		url: "/contact_bundle/?bundleid=" + bundleid,
+		success: function(data){
+			// no reponse
+        	}
+	});
+}
 
