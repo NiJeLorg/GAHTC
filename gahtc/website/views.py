@@ -1759,7 +1759,6 @@ def admin_removelecturedoc(request, id=None):
 	# Render the form with error messages (if any).
 	return render(request, 'website/admin_removelecturedoc.html', {'form': form, 'lecturedocObject': lecturedocObject})
 
-
 def contactBundle(request, id=None):
 	"""
 	  AJAX request to save if user wants to be contaced about their bundle
@@ -1772,6 +1771,22 @@ def contactBundle(request, id=None):
 		#look up bundle
 		bundle = bundles.objects.get(pk=bundleid)
 		bundle.contact = True
+		bundle.save()
+
+	return JsonResponse({'foo': 'bar'})
+
+def dontContactBundle(request, id=None):
+	"""
+	  AJAX request to save if user wants to be contaced about their bundle
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		bundleid = request.GET.get("bundleid","")
+
+		#look up bundle
+		bundle = bundles.objects.get(pk=bundleid)
+		bundle.contact = False
 		bundle.save()
 
 	return JsonResponse({'foo': 'bar'})
