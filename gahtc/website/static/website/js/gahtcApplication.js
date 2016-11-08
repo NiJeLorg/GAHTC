@@ -27,6 +27,7 @@ gahtcApplication.getModule = function (module_id) {
 		url: "/show_module/" + module_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
+			gahtcApplication.updateFooter();
         }
 	});
 }
@@ -37,6 +38,7 @@ gahtcApplication.getLecture = function (lecture_id) {
 		url: "/show_lecture/" + lecture_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
+			gahtcApplication.updateFooter();
         }
 	});		
 }
@@ -47,6 +49,7 @@ gahtcApplication.getLectureSegment = function (lecture_segment_id) {
 		url: "/show_lecture_segment/" + lecture_segment_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
+			gahtcApplication.updateFooter();
         }
 	});		
 }
