@@ -1816,9 +1816,10 @@ def contactModule(request):
 		moduleid = request.GET.get("moduleid","")
 
 		#look up userModuleDownload
-		c = userModuleDownload.objects.get(module=moduleid, user=request.user)
-		c.contact = True
-		c.save()
+		c = userModuleDownload.objects.filter(module__exact=moduleid, user__exact=request.user)
+		for o in c:
+			o.contact = False
+			o.save()
 
 	return JsonResponse({'foo': 'bar'})
 
@@ -1832,9 +1833,10 @@ def dontContactModule(request):
 		moduleid = request.GET.get("moduleid","")
 
 		#look up userModuleDownload
-		c = userModuleDownload.objects.get(module=moduleid, user=request.user)
-		c.contact = False
-		c.save()
+		c = userModuleDownload.objects.filter(module__exact=moduleid, user__exact=request.user)
+		for o in c:
+			o.contact = False
+			o.save()
 
 	return JsonResponse({'foo': 'bar'})
 
@@ -1848,9 +1850,10 @@ def contactLecture(request):
 		lectureid = request.GET.get("lectureid","")
 
 		#look up userLectureDownload
-		c = userLectureDownload.objects.get(lecture=lectureid, user=request.user)
-		c.contact = True
-		c.save()
+		c = userLectureDownload.objects.filter(lecture__exact=lectureid, user__exact=request.user)
+		for o in c:
+			o.contact = False
+			o.save()
 
 	return JsonResponse({'foo': 'bar'})
 
@@ -1864,8 +1867,9 @@ def dontContactLecture(request):
 		lectureid = request.GET.get("lectureid","")
 
 		#look up userModuleDownload
-		c = userLectureDownload.objects.get(lecture=lectureid, user=request.user)
-		c.contact = False
-		c.save()
+		c = userLectureDownload.objects.filter(lecture__exact=lectureid, user__exact=request.user)
+		for o in c:
+			o.contact = False
+			o.save()
 
 	return JsonResponse({'foo': 'bar'})
