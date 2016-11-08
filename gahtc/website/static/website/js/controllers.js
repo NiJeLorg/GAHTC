@@ -254,6 +254,16 @@ $( document ).ready(function() {
 		gahtcApplication.zipUpLecture(lecture);
 
 	});
+	
+	// listening the terms checkbox
+	$(document).on('change', '#terms', function(e) {
+		// is the box checked or unchecked
+		if($("#terms").prop('checked') == true){
+			$('#downloadHidden').removeClass('hidden');
+		} else {
+			$('#downloadHidden').addClass('hidden');
+		}
+	});
 
 	// return to previous html after modal is closed
 	$('#downloadModal').on('hidden.bs.modal', function (e) {
