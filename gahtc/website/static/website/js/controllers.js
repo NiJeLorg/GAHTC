@@ -269,6 +269,7 @@ $( document ).ready(function() {
 	$(document).on('change', '#contactBundle', function(e) {
 		var bundleid = $(this).data( "bundleid" );
 		// is the box checked or unchecked
+		console.log(bundleid);
 		if($("#contactBundle").prop('checked') == true){
 			gahtcApplication.contactBundle(bundleid);
 		} else {
