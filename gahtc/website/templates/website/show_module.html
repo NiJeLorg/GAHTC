@@ -35,7 +35,7 @@
 				<h5><span class="label label-primary">Documents</span></h5>
 				<ul>				
 				{% for doc in moduleDocs %}
-					<li>{{ doc.title }} (<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }})</li>
+					<li>{{ doc.title }}</li>
 				{% endfor %}
 				</ul>
 			{% endif %}
@@ -47,11 +47,11 @@
 				<h5><span class="label label-success">Lectures</span></h5>
 				<ul>				
 				{% for lec in moduleLecs %}
-					<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> (<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }})</li> 
+					<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button></li> 
 						{% if lec.lectureDocs|length > 0 %}
 							<ul>
 							{% for lecDoc in lec.lectureDocs %}
-								<li>{{ lecDoc.title }} (<a href="/media/{{ lecDoc.document }}">download</a> | {{ lecDoc.document.size|filesizeformat }})</li>
+								<li>{{ lecDoc.title }}</li>
 							{% endfor %}
 							</ul>
 						{% endif %}
