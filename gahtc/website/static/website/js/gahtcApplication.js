@@ -303,7 +303,7 @@ gahtcApplication.contactLecture = function (lectureid) {
 	});
 }
 
-gahtcApplication.dontContactLecture = function (moduleid) {
+gahtcApplication.dontContactLecture = function (lectureid) {
 	$.ajax({
 		type: "GET",
 		url: "/dont_contact_lecture/?lectureid=" + lectureid,
