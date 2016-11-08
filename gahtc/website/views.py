@@ -1818,7 +1818,7 @@ def contactModule(request):
 		#look up userModuleDownload
 		c = userModuleDownload.objects.filter(module__exact=moduleid, user__exact=request.user)
 		for o in c:
-			o.contact = False
+			o.contact = True
 			o.save()
 
 	return JsonResponse({'foo': 'bar'})
@@ -1852,7 +1852,7 @@ def contactLecture(request):
 		#look up userLectureDownload
 		c = userLectureDownload.objects.filter(lecture__exact=lectureid, user__exact=request.user)
 		for o in c:
-			o.contact = False
+			o.contact = True
 			o.save()
 
 	return JsonResponse({'foo': 'bar'})
