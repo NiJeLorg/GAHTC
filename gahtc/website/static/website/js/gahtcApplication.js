@@ -273,4 +273,43 @@ gahtcApplication.dontContactBundle = function (bundleid) {
 	});
 }
 
+gahtcApplication.contactModule = function (moduleid) {
+	$.ajax({
+		type: "GET",
+		url: "/contact_module/?moduleid=" + moduleid,
+		success: function(data){
+			// no reponse
+        }
+	});
+}
+
+gahtcApplication.dontContactBundle = function (moduleid) {
+	$.ajax({
+		type: "GET",
+		url: "/dont_contact_module/?moduleid=" + moduleid,
+		success: function(data){
+			// no reponse
+        }
+	});
+}
+
+gahtcApplication.contactLecture = function (lectureid) {
+	$.ajax({
+		type: "GET",
+		url: "/contact_lecture/?lectureid=" + lectureid,
+		success: function(data){
+			// no reponse
+        }
+	});
+}
+
+gahtcApplication.dontContactLecture = function (moduleid) {
+	$.ajax({
+		type: "GET",
+		url: "/dont_contact_lecture/?lectureid=" + lectureid,
+		success: function(data){
+			// no reponse
+        }
+	});
+}
 
