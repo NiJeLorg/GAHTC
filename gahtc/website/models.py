@@ -173,6 +173,8 @@ class bundles(models.Model):
 	# Links bundle to a User model instance.
 	user = models.ForeignKey(User)
 	title = models.CharField(max_length=255, null=False, blank=False)
+	contact = models.BooleanField(default=False)
+	downloaded = models.BooleanField(default=False)
 
 #modules in bundle
 class bundleModule(models.Model):
@@ -199,6 +201,19 @@ class bundleLectureSlides(models.Model):
 	bundle = models.ForeignKey(bundles)
 	lectureSlide = models.ForeignKey(lectureSlides)
 
+# storing download and contact data for modules and lectures
+class userModuleDownload(models.Model):
+	user = models.ForeignKey(User)
+	module = models.ForeignKey(modules)
+	contact = models.BooleanField(default=False)
+	downloaded = models.BooleanField(default=False)
+
+class userLectureDownload(models.Model):
+	user = models.ForeignKey(User)
+	lecture = models.ForeignKey(lectures)
+	contact = models.BooleanField(default=False)
+	downloaded = models.BooleanField(default=False)	
+	
 #saved Searches
 class savedSearches(models.Model):
 	# Links bundle to a User model instance.

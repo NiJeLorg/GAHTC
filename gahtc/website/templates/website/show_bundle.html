@@ -1,165 +1,165 @@
 {% load staticfiles %}
-<div class="row marginBottom15">
-    <div class="col-md-8">
-        <h4 class="noTopMargin">BUNDLE: {{ bundle_returned.title }}</h4>
-    </div>
-    <div class="col-md-4">
-        {% if request.user.userProfile.verified %}
-        <button type="button" class="btn btn-default downloadBundle" data-bundleid="{{ bundle_returned.id }}">Download Bundle</button>
-        {% else %}
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#waitingForVerification">Download Bundle</button>
-        {% endif %}
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        {% for bundle in bundle_modules %}
-        <div class="row bundleList">
-            <div class="col-xs-3">
-                <img class="img-responsive" src="{% static 'website/css/images/module.png' %}" />
-            </div>
-            <div class="col-xs-9">
-                <div class="row">
-                    <div class="col-xs-8 resultTitle">
-                        <p><strong><span class="label label-primary">Module:</span> {{ bundle.module.title }}</strong></p>
-                    </div>
-                    <div class="col-xs-4">
-                        <button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-moduleid="{{ bundle.module.id }}">
-                            Remove
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    {% if bundle.module.moduleDocs|length > 0 %}
-                    <h5><span class="label label-primary">Documents</span></h5>
-                    <ul>
-                        {% for doc in bundle.module.moduleDocs %}
-                        <li>{{ doc.title }} {% if request.user.userProfile.verified %}(<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }}){% endif %}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                </div>
-                <div class="row">
-                    {% if bundle.module.lectures|length > 0 %}
-                    <h5><span class="label label-success">Lectures</span></h5>
-                    <ul>
-                        {% for lec in bundle.module.lectures %}
-                        <li>
-                            <button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> {% if request.user.userProfile.verified %}(<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }}){% endif %}</li>
-                        {% if lec.lectureDocs|length > 0 %}
-                        <ul>
-                            {% for lecDoc in lec.lectureDocs %}
-                            <li>{{ lecDoc.title }} {% if request.user.userProfile.verified %}(<a href="/media/{{ lecDoc.document }}">download</a> | {{ lecDoc.document.size|filesizeformat }}){% endif %}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %} {% endfor %}
-                    </ul>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        {% endfor %} {% for bundle in bundle_lectures %}
-        <div class="row bundleList">
-            <div class="col-xs-3">
-                <img class="img-responsive" src="/media/{{ bundle.lecture.getSlideOne }}" />
-            </div>
-            <div class="col-xs-9">
-                <div class="row">
-                    <div class="col-xs-8 resultTitle">
-                        <p><strong><span class="label label-success">Lecture:</span> {{ bundle.lecture.title }}</strong></p>
-                    </div>
-                    <div class="col-xs-4">
-                        <button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lectureid="{{ bundle.lecture.id }}">
-                            Remove
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <p>
-                        <button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ bundle.lecture.id }}">{{ bundle.lecture.title }}</button> {% if request.user.userProfile.verified %}(<a href="/media/{{ bundle.lecture.presentation }}">download</a> | {{ bundle.lecture.presentation.size|filesizeformat }}){% endif %}</p>
-                </div>
-                <div class="row">
-                    <p>From the module: <span class="label label-primary">{{ bundle.lecture.module.title }}</span></p>
-                </div>
-            </div>
-        </div>
-        {% endfor %} {% for bundle in bundle_lecture_segments %}
-        <div class="row bundleList">
-            <div class="col-xs-3">
-                <img class="img-responsive" src="/media/{{ bundle.lectureSegment.getSlideOne }}" />
-            </div>
-            <div class="col-xs-9">
-                <div class="row">
-                    <div class="col-xs-8 resultTitle">
-                        <p><strong><span class="label label-ls">Lecture Segment:</span> {{ bundle.lectureSegment.title }}</strong></p>
-                    </div>
-                    <div class="col-xs-4">
-                        <button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lecturesegmentid="{{ bundle.lectureSegment.id }}">
-                            Remove
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <p>
-                        <button type="button" class="btn btn-default btn-xs launchSegmentModal" data-lecturesegmentid="{{ bundle.lectureSegment.id }}">{{ bundle.lectureSegment.title }}</button> {% if request.user.userProfile.verified %}(<a href="/media/{{ bundle.lectureSegment.presentation }}">download</a> | {{ bundle.lectureSegment.presentation.size|filesizeformat }}){% endif %}</p>
-                </div>
-                <div class="row">
-                    <p>From the lecture: <span class="label label-success">{{ bundle.lectureSegment.lecture.title }}</span></p>
-                    <p>From the module: <span class="label label-primary">{{ bundle.lectureSegment.lecture.module.title }}</span></p>
-                </div>
-            </div>
-        </div>
-        {% endfor %} {% for bundle in bundle_lecture_documents %}
-        <div class="row bundleList">
-            <div class="col-xs-3">
-                <img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
-            </div>
-            <div class="col-xs-9">
-                <div class="row">
-                    <div class="col-xs-8 resultTitle">
-                        <p><strong><span class="label label-info">Lecture Document:</span> {{ bundle.lectureDocument.title }}</strong></p>
-                    </div>
-                    <div class="col-xs-4">
-                        <button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lecturedocumentid="{{ bundle.lectureDocument.id }}">
-                            Remove
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <p>{{ bundle.lectureDocument.title }} {% if request.user.userProfile.verified %}(<a href="/media/{{ bundle.lectureDocument.document }}">download</a> | {{ bundle.lectureDocument.document.size|filesizeformat }}){% endif %}</p>
-                </div>
-                <div class="row">
-                    <p>From the lecture: <span class="label label-success">{{ bundle.lectureDocument.lecture.title }}</span></p>
-                    <p>From the module: <span class="label label-primary">{{ bundle.lectureDocument.lecture.module.title }}</span></p>
-                </div>
-            </div>
-        </div>
-        {% endfor %} {% for bundle in bundle_lecture_slides %}
-        <div class="row bundleList">
-            <div class="col-xs-3">
-                <img class="img-responsive" src="/media/{{ bundle.lectureSlide.slide }}" />
-            </div>
-            <div class="col-xs-9">
-                <div class="row">
-                    <div class="col-xs-8 resultTitle">
-                        <p><strong><span class="label label-warning">Slide From:</span> {{ bundle.lectureSlide.lecture.title }}</strong></p>
-                    </div>
-                    <div class="col-xs-4">
-                        <button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lectureslideid="{{ bundle.lectureSlide.id }}">
-                            Remove
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <p>
-                        <button type="button" class="btn btn-default btn-xs launchSlideModal" data-lectureslideid="{{ bundle.lectureSlide.id }}">Preview</button> {% if request.user.userProfile.verified %}(<a href="/media/{{ bundle.lectureSlide.presentation }}">download</a> | {{ bundle.lectureSlide.presentation.size|filesizeformat }}){% endif %}</p>
-                </div>
-                <div class="row">
-                    <p>From the lecture: <span class="label label-success">{{ bundle.lectureSlide.lecture.title }}</span></p>
-                    <p>From the module: <span class="label label-primary">{{ bundle.lectureSlide.lecture.module.title }}</span></p>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
+	<div class="row marginBottom15">
+		<div class="col-md-8">
+			<h4 class="noTopMargin">BUNDLE: {{ bundle_returned.title }}</h4>
+		</div>	
+		<div class="col-md-4">
+			<button type="button" class="btn btn-default downloadBundle" data-bundleid="{{ bundle_returned.id }}">Download Bundle</button>
+		</div>								
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{% for bundle in bundle_modules %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="{% static 'website/css/images/module.png' %}" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong><span class="label label-primary">Module:</span> {{ bundle.module.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-moduleid="{{ bundle.module.id }}">
+								Remove
+							</button>									
+						</div>								
+					</div>
+					<div class="row">
+						{% if bundle.module.moduleDocs|length > 0 %}
+							<h5><span class="label label-primary">Documents</span></h5>
+							<ul>				
+							{% for doc in bundle.module.moduleDocs %}
+								<li>{{ doc.title }}</li>
+							{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+					<div class="row">
+						{% if bundle.module.lectures|length > 0 %}
+							<h5><span class="label label-success">Lectures</span></h5>
+							<ul>				
+							{% for lec in bundle.module.lectures %}
+								<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button></li>
+									{% if lec.lectureDocs|length > 0 %}
+										<ul>
+										{% for lecDoc in lec.lectureDocs %}
+											<li>{{ lecDoc.title }}</li>
+										{% endfor %}
+										</ul>
+									{% endif %}
+							{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% for bundle in bundle_lectures %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="/media/{{ bundle.lecture.getSlideOne }}" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong><span class="label label-success">Lecture:</span> {{ bundle.lecture.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lectureid="{{ bundle.lecture.id }}">
+								Remove
+							</button>									
+						</div>								
+					</div>
+					<div class="row">
+						<p><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ bundle.lecture.id }}">{{ bundle.lecture.title }}</button></p>
+					</div>
+					<div class="row">
+						<p>From the module: <span class="label label-primary">{{ bundle.lecture.module.title }}</span></p>
+					</div>
+
+				</div>
+			</div>
+			{% endfor %}
+			{% for bundle in bundle_lecture_segments %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="/media/{{ bundle.lectureSegment.getSlideOne }}" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong><span class="label label-ls">Lecture Segment:</span> {{ bundle.lectureSegment.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lecturesegmentid="{{ bundle.lectureSegment.id }}">
+								Remove
+							</button>									
+						</div>								
+					</div>
+					<div class="row">
+						<p><button type="button" class="btn btn-default btn-xs launchSegmentModal" data-lecturesegmentid="{{ bundle.lectureSegment.id }}">{{ bundle.lectureSegment.title }}</button></p>
+					</div>
+					<div class="row">
+						<p>From the lecture: <span class="label label-success">{{ bundle.lectureSegment.lecture.title }}</span></p>
+						<p>From the module: <span class="label label-primary">{{ bundle.lectureSegment.lecture.module.title }}</span></p>
+					</div>
+
+				</div>
+			</div>
+			{% endfor %}
+			{% for bundle in bundle_lecture_documents %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong><span class="label label-info">Lecture Document:</span> {{ bundle.lectureDocument.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lecturedocumentid="{{ bundle.lectureDocument.id }}">
+								Remove
+							</button>
+						</div>							
+					</div>
+					<div class="row">
+						<p>{{ bundle.lectureDocument.title }}</p>
+					</div>
+					<div class="row">
+						<p>From the lecture: <span class="label label-success">{{ bundle.lectureDocument.lecture.title }}</span></p>
+						<p>From the module: <span class="label label-primary">{{ bundle.lectureDocument.lecture.module.title }}</span></p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% for bundle in bundle_lecture_slides %}
+			<div class="row bundleList">
+				<div class="col-xs-3">
+					<img class="img-responsive" src="/media/{{ bundle.lectureSlide.slide }}" />
+				</div>							
+				<div class="col-xs-9">
+					<div class="row">
+						<div class="col-xs-8 resultTitle">
+							<p><strong><span class="label label-warning">Slide From:</span> {{ bundle.lectureSlide.lecture.title }}</strong></p>
+						</div>
+						<div class="col-xs-4">
+							<button class="pull-right btn btn-default btn-xs remove-from-bundle" type="button" data-bundleid="{{ bundle.bundle.id }}" data-lectureslideid="{{ bundle.lectureSlide.id }}">
+								Remove
+							</button>
+						</div>							
+					</div>
+					<div class="row">
+						<p><button type="button" class="btn btn-default btn-xs launchSlideModal" data-lectureslideid="{{ bundle.lectureSlide.id }}">Preview</button></p>
+					</div>
+					<div class="row">
+						<p>From the lecture: <span class="label label-success">{{ bundle.lectureSlide.lecture.title }}</span></p>
+						<p>From the module: <span class="label label-primary">{{ bundle.lectureSlide.lecture.module.title }}</span></p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>

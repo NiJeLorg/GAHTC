@@ -1,66 +1,68 @@
 {% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Search Results{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
 <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <form class="form-horizontal" method="post" action="{% url 'search' %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <div class="col-xs-2">
-                        <h4 class="searchText">Search</h4>
-                    </div>
-                    <div class="col-xs-8">
-                        <input type="text" class="form-control" name="keyword" placeholder="Results for: {{ keyword }}" />
-                    </div>
-                    <div class="col-xs-1">
-                        <button type="submit" class="btn btn-default pull-right" title="Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                    </div>
-                    <div class="col-xs-1">
-                        <button id="saveSearchString" class="btn btn-default pull-right" title="Save This Search"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <button type="button" class="btn btn-default pull-right switchToBundle">
-                Download Course Bundles
-            </button>
-        </div>
-    </div>
-    <div class="row">
-        <div id="searchSaved" class="alert alert-success hidden" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            Search saved!
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#search-results" aria-controls="search" role="tab" data-toggle="tab">Search Results</a></li>
-                    <li role="presentation"><a href="#my-course-bundles" aria-controls="bundles" role="tab" data-toggle="tab">My Course Bundles</a></li>
-                    <li role="presentation"><a href="#my-saved-searches" aria-controls="savedsearches" role="tab" data-toggle="tab">My Saved Searches</a></li>
-                    <li role="presentation"><a href="#my-profile" aria-controls="profile" role="tab" data-toggle="tab">My Profile</a></li>
-                </ul>
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="search-results">
-                        <div class="col-md-6 resultsScroll">
-                            {% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 %}
-                            <div class="row selectedAddDropdown">
-                                <div class="col-xs-12">
-                                    <h4>No Search Results</h4>
-                                    <p>Your search yielded no results from our course materials. Please try another search above.</p>
-                                </div>
-                            </div>
-                            {% else %}
-                            <br />
-                            <div class="panel-group" id="accordion_results" role="tablist" aria-multiselectable="true">
-                                {% if modules_returned_count > 0 %}
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading_modules_panel">
-                                        <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#modules_panel" aria-expanded="true" aria-controls="modules_panel">
-                                            <h4 class="panel-title">
-							        
+	<div class="row">
+		<div class="col-md-6">
+			<form class="form-horizontal" method="post" action="{% url 'search' %}">
+				{% csrf_token %}
+				<div class="form-group">
+					<div class="col-xs-2">
+						<h4 class="searchText">Search</h4>
+					</div>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" name="keyword" placeholder="Results for: {{ keyword }}" />
+					</div>
+					<div class="col-xs-1">
+						<button type="submit" class="btn btn-default pull-right" title="Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+					</div>
+					<div class="col-xs-1">
+						<button id="saveSearchString" class="btn btn-default pull-right" title="Save This Search"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-6">
+			<button type="button" class="btn btn-default pull-right switchToBundle">
+			  Download Course Bundles
+			</button>
+		</div>		
+	</div>
+	<div class="row">
+		<div id="searchSaved" class="alert alert-success hidden" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			Search saved!
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#search-results" aria-controls="search" role="tab" data-toggle="tab">Search Results</a></li>
+				<li role="presentation"><a href="#my-course-bundles" aria-controls="bundles" role="tab" data-toggle="tab">My Course Bundles</a></li>
+				<li role="presentation"><a href="#my-saved-searches" aria-controls="savedsearches" role="tab" data-toggle="tab">My Saved Searches</a></li>
+				<li role="presentation"><a href="#my-profile" aria-controls="profile" role="tab" data-toggle="tab">My Profile</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+
+				<div role="tabpanel" class="tab-pane active" id="search-results">
+					<div class="col-md-6 resultsScroll">
+						{% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 %}
+						<div class="row selectedAddDropdown">
+							<div class="col-xs-12">
+								<h4>No Search Results</h4>
+								<p>Your search yielded no results from our course materials. Please try another search above.</p>
+							</div>
+						</div>
+						{% else %}
+						<br />
+						<div class="panel-group" id="accordion_results" role="tablist" aria-multiselectable="true">
+						  {% if modules_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_modules_panel">
+						      <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#modules_panel" aria-expanded="true" aria-controls="modules_panel">
+							      <h4 class="panel-title">							        
 							          <span class="label label-primary">{{ modules_returned_count }} Module{{ modules_returned_count|pluralize }}</span>
 							      </h4>
                                         </a>
@@ -101,23 +103,27 @@
 												{% endfor %}
 											</p>
 										</div>-->
-                                                    <div class="row">
-                                                        <p>
-                                                            {% for tag in module.tags.all|slice:":6" %}
-                                                            <span class="label label-default">{{ tag.name }}</span> {% endfor %}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endif %} {% if lectures_returned_count > 0 %}
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading_lecture_panel">
-                                        <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_panel" aria-expanded="false" aria-controls="lecture_panel">
-                                            <h4 class="panel-title">
+										<div class="row">
+											<p>
+											{% for tag in module.tags.all|slice:":6" %}
+											<a href="/search/?keyword={{ tag.name }}">
+									            <span class="label label-default">{{ tag.name }}</span>
+									        </a>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
+						  {% if lectures_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_lecture_panel">
+						      <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_panel" aria-expanded="false" aria-controls="lecture_panel">
+						        <h4 class="panel-title">
 						        	<span class="label label-success">{{ lectures_returned_count }} Lecture{{ lectures_returned_count|pluralize }}</span> 
 						        </h4>
                                         </a>
@@ -140,42 +146,50 @@
 												    <input type="checkbox" value="">
 												</div>
 												-->
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    Add to Bundle
-                                                                    <span class="caret"></span>
-                                                                </button>
-                                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.object.id }}">
-                                                                    {% include "website/bundle_dropdown.html" %}
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p class="swapem">
-                                                            ... {% for text in lecture.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
-                                                        </p>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p>From the module: <span class="label label-primary">{{ lecture.object.module.title }}</span></p>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p>
-                                                            {% for tag in lecture.object.tags.all|slice:":6" %}
-                                                            <span class="label label-default">{{ tag.name }}</span> {% endfor %}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endif %} {% if lecture_segments_returned_count > 0 %}
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading_lecture_segments_panel">
-                                        <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_segments_panel" aria-expanded="false" aria-controls="lecture_segments_panel">
-                                            <h4 class="panel-title">
+												<div class="dropdown">
+													<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														Add to Bundle
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.object.id }}">
+														{% include "website/bundle_dropdown.html" %}
+													</ul>
+												</div>										
+											</div>								
+										</div>
+										<div class="row">
+											<p class="swapem">
+											... 
+												{% for text in lecture.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											...
+											</p>
+										</div>
+										<div class="row">
+											<p><span class="label label-primary">From the module:</span> {{ lecture.object.module.title }}</p>
+										</div>
+										<div class="row">
+											<p>
+											{% for tag in lecture.object.tags.all|slice:":6" %}
+											<a href="/search/?keyword={{ tag.name }}">
+									            <span class="label label-default">{{ tag.name }}</span>
+									        </a>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
+						  {% if lecture_segments_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_lecture_segments_panel">
+						      <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_segments_panel" aria-expanded="false" aria-controls="lecture_segments_panel">
+						        <h4 class="panel-title">
 						          <span class="label label-ls">{{ lecture_segments_returned_count }} Lecture Segment{{ lecture_segments_returned_count|pluralize }}</span>
 						        </h4>
                                         </a>
@@ -198,43 +212,51 @@
 												    <input type="checkbox" value="">
 												</div>
 												-->
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    Add to Bundle
-                                                                    <span class="caret"></span>
-                                                                </button>
-                                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturesegment_{{ lecture_segment.object.id }}">
-                                                                    {% include "website/bundle_dropdown.html" %}
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p class="swapem">
-                                                            ... {% for text in lecture_segment.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
-                                                        </p>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p>From the lecture: <span class="label label-success">{{ lecture_segment.object.lecture.title }}</span></p>
-                                                        <p>From the module: <span class="label label-primary">{{ lecture_segment.object.lecture.module.title }}</span></p>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p>
-                                                            {% for tag in lecture_segment.object.tags.all|slice:":6" %}
-                                                            <span class="label label-default">{{ tag.name }}</span> {% endfor %}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endif %} {% if lecture_documents_returned_count > 0 %}
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading_lecture_documents_panel">
-                                        <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_documents_panel" aria-expanded="false" aria-controls="lecture_documents_panel">
-                                            <h4 class="panel-title">
+												<div class="dropdown">
+													<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														Add to Bundle
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturesegment_{{ lecture_segment.object.id }}">
+														{% include "website/bundle_dropdown.html" %}
+													</ul>
+												</div>										
+											</div>								
+										</div>
+										<div class="row">
+											<p class="swapem">
+											... 
+												{% for text in lecture_segment.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											...
+											</p>
+										</div>
+										<div class="row">
+											<p><span class="label label-success">From the lecture:</span> {{ lecture_segment.object.lecture.title }}</p>
+											<p><span class="label label-primary">From the module:</span> {{ lecture_segment.object.lecture.module.title }}</p>
+										</div>
+										<div class="row">
+											<p>
+											{% for tag in lecture_segment.object.tags.all|slice:":6" %}
+											<a href="/search/?keyword={{ tag.name }}">
+									            <span class="label label-default">{{ tag.name }}</span>
+									        </a>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
+						  {% if lecture_documents_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_lecture_documents_panel">
+						      <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_documents_panel" aria-expanded="false" aria-controls="lecture_documents_panel">
+						      	<h4 class="panel-title">
 						          <span class="label label-info">{{ lecture_documents_returned_count }} Lecture Document{{ lecture_documents_returned_count|pluralize }}</span> 
 						        </h4>
                                         </a>
@@ -257,43 +279,51 @@
 												    <input type="checkbox" value="">
 												</div>
 												-->
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    Add to Bundle
-                                                                    <span class="caret"></span>
-                                                                </button>
-                                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.object.id }}">
-                                                                    {% include "website/bundle_dropdown.html" %}
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p class="swapem">
-                                                            ... {% for text in lecture_document.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
-                                                        </p>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p>From the lecture: <span class="label label-success">{{ lecture_document.object.lecture.title }}</span></p>
-                                                        <p>From the module: <span class="label label-primary">{{ lecture_document.object.lecture.module.title }}</span></p>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p>
-                                                            {% for tag in lecture_document.object.tags.all|slice:":6" %}
-                                                            <span class="label label-default">{{ tag.name }}</span> {% endfor %}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endif %} {% if lecture_slides_returned_count > 0 %}
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading_lecture_slides_panel">
-                                        <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_slides_panel" aria-expanded="false" aria-controls="lecture_slides_panel">
-                                            <h4 class="panel-title">
+												<div class="dropdown">
+													<button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														Add to Bundle
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.object.id }}">
+														{% include "website/bundle_dropdown.html" %}
+													</ul>
+												</div>										
+											</div>								
+										</div>
+										<div class="row">
+											<p class="swapem">
+											... 
+												{% for text in lecture_document.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											...
+											</p>
+										</div>
+										<div class="row">
+											<p><span class="label label-success">From the lecture:</span> {{ lecture_document.object.lecture.title }}</p>
+											<p><span class="label label-primary">From the module:</span> {{ lecture_document.object.lecture.module.title }}</p>
+										</div>
+										<div class="row">
+											<p>
+											{% for tag in lecture_document.object.tags.all|slice:":6" %}
+											<a href="/search/?keyword={{ tag.name }}">
+									            <span class="label label-default">{{ tag.name }}</span>
+									        </a>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+						      </div>
+						    </div>
+						  </div>
+						  {% endif %}
+						  {% if lecture_slides_returned_count > 0 %}
+						  <div class="panel panel-default">
+						    <div class="panel-heading" role="tab" id="heading_lecture_slides_panel">
+						      <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_slides_panel" aria-expanded="false" aria-controls="lecture_slides_panel">
+						        <h4 class="panel-title">
 						          <span class="label label-warning">{{ lecture_slides_returned_count }} Lecture Slide{{ lecture_slides_returned_count|pluralize }}</span>
 						        </h4>
                                         </a>
@@ -338,7 +368,10 @@
                                                     <div class="row">
                                                         <p>
                                                             {% for tag in lecture_slide.object.tags.all|slice:":6" %}
-                                                            <span class="label label-default">{{ tag.name }}</span> {% endfor %}
+                                                            <a href="/search/?keyword={{ tag.name }}">
+                                                                <span class="label label-default">{{ tag.name }}</span>
+                                                            </a>
+                                                            {% endfor %}
                                                         </p>
                                                     </div>
                                                 </div>

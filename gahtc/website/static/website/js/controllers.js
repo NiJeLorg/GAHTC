@@ -8,15 +8,15 @@ $( document ).ready(function() {
 	// fade in main image and search bar
 	$(".fadein").fadeIn("slow");
 
-	// if user had picked my course bundles, then switch them to that tab
-	if (tab == "bundle") {
+	// check for the existence of tab
+	if (typeof tab === 'undefined' || tab == "none") {
+		// do nothing
+	} else if (tab == "bundle") {
 		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
 	} else if (tab == "profile") {
 		$('.nav-tabs a[href="#my-profile"]').tab('show');		
 	} else if (tab == "searches") {
 		$('.nav-tabs a[href="#my-saved-searches"]').tab('show');		
-	} else if (tab == "none") {
-		// do nothing
 	}
 
 	// select first in list and populate search result bar
@@ -37,7 +37,6 @@ $( document ).ready(function() {
 
 	// on click of module, run query to pull module
 	$( ".module" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var module_id = $( this ).data( "moduleid" );
@@ -46,7 +45,6 @@ $( document ).ready(function() {
 
 	// on click of lecture, run query to pull lecture
 	$( ".lecture" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_id = $( this ).data( "lectureid" );
@@ -55,7 +53,6 @@ $( document ).ready(function() {
 
 	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_segment" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_segment_id = $( this ).data( "lecturesegmentid" );
@@ -64,7 +61,6 @@ $( document ).ready(function() {
 
 	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_document" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_document_id = $( this ).data( "lecturedocumentid" );
@@ -73,7 +69,6 @@ $( document ).ready(function() {
 
 	// on click of lecture-document, run query to pull lecture document
 	$( ".lecture_slide" ).click(function(e) {
-		e.preventDefault();
 		$( ".result" ).removeClass('active');
 		$( this ).addClass('active');
 		var lecture_slide_id = $( this ).data( "lectureslideid" );
@@ -259,6 +254,50 @@ $( document ).ready(function() {
 		gahtcApplication.zipUpLecture(lecture);
 
 	});
+	
+	// listening the terms checkbox
+	$(document).on('change', '#terms', function(e) {
+		// is the box checked or unchecked
+		if($("#terms").prop('checked') == true){
+			$('#downloadHidden').removeClass('hidden');
+		} else {
+			$('#downloadHidden').addClass('hidden');
+		}
+	});
+	
+	// listening the contact for bundle checkbox
+	$(document).on('change', '#contactBundle', function(e) {
+		var bundleid = $(this).data( "bundleid" );
+		// is the box checked or unchecked
+		console.log(bundleid);
+		if($("#contactBundle").prop('checked') == true){
+			gahtcApplication.contactBundle(bundleid);
+		} else {
+			gahtcApplication.dontContactBundle(bundleid);
+		}
+	});
+	
+	// listening the contact for module checkbox
+	$(document).on('change', '#contactModule', function(e) {
+		var moduleid = $(this).data( "moduleid" );
+		// is the box checked or unchecked
+		if($("#contactModule").prop('checked') == true){
+			gahtcApplication.contactModule(moduleid);
+		} else {
+			gahtcApplication.dontContactModule(moduleid);
+		}
+	});
+
+	// listening the contact for lecture checkbox
+	$(document).on('change', '#contactLecture', function(e) {
+		var lectureid = $(this).data( "lectureid" );
+		// is the box checked or unchecked
+		if($("#contactLecture").prop('checked') == true){
+			gahtcApplication.contactLecture(lectureid);
+		} else {
+			gahtcApplication.dontContactLecture(lectureid);
+		}
+	});
 
 	// return to previous html after modal is closed
 	$('#downloadModal').on('hidden.bs.modal', function (e) {
@@ -281,6 +320,51 @@ $( document ).ready(function() {
         gahtcApplication.saveComment(comment, itemid);
 	});	
 
+	// listen for tab clicks and move footer
+	$(document).on('click', '.nav-tabs', function(e) {
+		gahtcApplication.updateFooter();
+	});
+
+	$(document).on('click', '#next', function(e) {
+		// check which image we're on an go to the next one
+		if ($('#searchFor').hasClass('oldDispensary')) {
+			$("#background").fadeOut("slow");
+			setTimeout(function() {
+				// set new image background
+				$("#background li").css({ "background-image": "url('/static/website/css/images/Palace_of_Sargon_II.JPG')"});
+				// set class and text for search for button
+				$('#searchFor').removeClass('oldDispensary');
+				$('#searchFor').addClass('sargon');
+				$('#searchFor').text('Search for Palace of Sargon II');
+				$('#searchFor').prop('href', '/search/?keyword="Palace of Sargon II"');
+				$("#background").fadeIn('slow');
+			}, 600);		
+		} else if ($('#searchFor').hasClass('sargon')) {
+			$("#background").fadeOut("slow");
+			setTimeout(function() {
+				// set new image background
+				$("#background li").css({ "background-image": "url('/static/website/css/images/Begumpuri_Masjid.jpg')"});
+				// set class and text for search for button
+				$('#searchFor').removeClass('sargon');
+				$('#searchFor').addClass('begumpuri');
+				$('#searchFor').text('Search for Begumpuri Masjid');
+				$('#searchFor').prop('href', '/search/?keyword="Begumpuri Masjid"');
+				$("#background").fadeIn('slow');
+			}, 600);			
+		} else {
+			$("#background").fadeOut("slow");
+			setTimeout(function() {
+				// set new image background
+				$("#background li").css({ "background-image": "url('/static/website/css/images/Old_dispensary_front.jpg')"});
+				// set class and text for search for button
+				$('#searchFor').removeClass('begumpuri');
+				$('#searchFor').addClass('oldDispensary');
+				$('#searchFor').text('Search for Old Dispensary');
+				$('#searchFor').prop('href', '/search/?keyword="Old Dispensary"');
+				$("#background").fadeIn('slow');
+			}, 600);			
+		}
+	});
 
 
 });

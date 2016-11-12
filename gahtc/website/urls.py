@@ -67,5 +67,11 @@ urlpatterns = [
     url(r'^admin_unverified/$', views.admin_unverified, name='admin_unverified'),
     url(r'^admin_update_profile/(?P<id>\d+)/$', views.admin_update_profile, name='admin_update_profile'),
     url(r'^admin_verify_user/(?P<id>\d+)/$', views.admin_verify_user, name='admin_verify_user'),
-
+    url(r'^contact_bundle/$', views.contactBundle, name='contactBundle'),
+    url(r'^dont_contact_bundle/$', views.dontContactBundle, name='dontContactBundle'),
+    url(r'^contact_module/$', views.contactModule, name='contactModule'),
+    url(r'^dont_contact_module/$', views.dontContactModule, name='dontContactModule'),
+    url(r'^contact_lecture/$', views.contactLecture, name='contactLecture'),
+    url(r'^dont_contact_lecture/$', views.dontContactLecture, name='dontContactLecture'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

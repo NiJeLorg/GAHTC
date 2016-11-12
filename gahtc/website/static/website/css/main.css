@@ -34,6 +34,10 @@
 	font-weight: bold;
 }
 
+/* bootstrap override on link highlighting */
+a:hover, a:focus {
+	text-decoration: none;
+}
 
 
 /* Background Image */
@@ -43,12 +47,15 @@
 	left: 0; 
 	right: 0; 
 	bottom: 0; 
-	background: url('images/Lalibela.jpg');
+	background: url('images/Old_dispensary_front.jpg');
 	background-color: transparent; 
 	background-size: cover; 
-	background-position: center center; 
-	background-repeat: no-repeat; 
-	
+	background-position: top center; 
+	background-repeat: no-repeat;
+	-webkit-transition: background 1s;
+	-moz-transition: background 1s;
+	-o-transition: background 1s;
+	transition: background 1s;	
 }
 
 #background { 
@@ -75,6 +82,36 @@
 @media (min-width: 1200px) { 
 	.navbar-right {
 		margin-top: -50px;
+	}
+}
+
+/* footer */
+.footer {
+    position: relative;
+    width: 100%;
+    height: auto;	
+    background-color: #000;
+}
+
+.container-fluid .text-muted {
+    margin: 8px 0;
+}
+
+.text-muted {
+    color: #eee;
+}
+
+/* button group */
+.lowerLeft {
+	position: absolute;
+	bottom: 100px;
+	right: 10px;
+}
+
+@media (min-width: 768px) { 
+	.lowerLeft {
+		bottom: 50px;
+		right: 10px;
 	}
 }
 
@@ -110,6 +147,12 @@
 .selectedAddDropdown {
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+.panel-body {
+	height: auto;
+	max-height: 100vh;
+	overflow: auto;
 }
 
 .result {
@@ -195,6 +238,11 @@
 
 .label-ls {
     background-color: #756BB1;
+}
+
+.label-default:hover {
+	color: #f9f9f9;
+	background-color: #999;
 }
 
 

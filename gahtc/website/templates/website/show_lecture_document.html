@@ -1,47 +1,48 @@
-{% load staticfiles %} {% load bootstrap_tags %}
-<div class="row marginBottom15">
-    <div class="col-md-9">
-        <h4 class="noTopMargin"><span class="label label-info">Lecture Document:</span> {{ lecture_document_returned.title }}</h4>
-    </div>
-    <div class="col-md-3">
-        <div class="dropdown">
-            <button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Add to Bundle
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document_returned.id }}">
-                {% include "website/bundle_dropdown.html" %}
-            </ul>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="alert alert-success bundle-add-alert hidden" role="alert">
-            <p><strong>Lecture Document Added!</strong> This lecture document has been added to your bundle, <span id="bundle-title"></span>.</p>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <p>{{ lecture_document_returned.title }} {% if request.user.userProfile.verified %}(<a href="/media/{{ lecture_document_returned.document }}">download</a> | {{ lecture_document_returned.document.size|filesizeformat }}){% endif %}</p>
-    </div>
-</div>
-{% if request.user.userProfile.verified %}
-<div class="row">
-    <div class="col-md-12">
-        <p><strong>Document Contents</strong></p>
-        <div class="textbox">
-            <p>{{ lecture_document_returned.document_contents|linebreaksbr }}</p>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
+{% load staticfiles %}
+{% load bootstrap_tags %}
+
+	<div class="row marginBottom15">
+		<div class="col-md-9">
+			<h4 class="noTopMargin"><span class="label label-info">Lecture Document:</span> {{ lecture_document_returned.title }}</h4>
+		</div>	
+		<div class="col-md-3">
+			<div class="dropdown">
+				<button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Add to Bundle
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document_returned.id }}">
+					{% include "website/bundle_dropdown.html" %}
+				</ul>
+			</div>
+		</div>	
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="alert alert-success bundle-add-alert hidden" role="alert">
+				<p><strong>Lecture Document Added!</strong> This lecture document has been added to your bundle, <span id="bundle-title"></span>.</p>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<p>{{ lecture_document_returned.title }}</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<p><strong>Document Contents</strong></p>
+			<div class="textbox">
+				<p>{{ lecture_document_returned.document_contents|linebreaksbr }}</p>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			  <div class="panel panel-default">
+			    <div class="panel-heading" role="tab" id="headingOne">
+			      <h4 class="panel-title">
 			        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
 			          Comments
 			        </a>
