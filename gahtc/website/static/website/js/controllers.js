@@ -235,6 +235,7 @@ $( document ).ready(function() {
 	$(document).on('click', '.downloadModule', function(e) { 
 		e.preventDefault();
 		// open modal
+		console.log(e);
 		$('#downloadModal').modal('show');
 		// pull bundle id
 		var module = $(this).data( "moduleid" );

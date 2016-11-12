@@ -1,4 +1,14 @@
-{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
+{% extends 'website/base.html' %} 
+{% load staticfiles %} 
+{% block title %}Modules{% endblock %} 
+
+{% block css_block %} 
+{% endblock %} 
+
+{% block head_js_block %} 
+{% endblock %} 
+
+{% block content %}
 <!-- Page Content -->
 <div class="container">
     <div class="row">
@@ -100,7 +110,9 @@
 <!-- Lecture Slides Modal -->
 <div class="modal fade" id="slideshow" tabindex="-1" role="dialog" aria-labelledby="mySlideshow">
 </div>
-{% endblock %} {% block js_block %}
+{% endblock %} 
+
+{% block js_block %}
 <script type="text/javascript">
 var tab = "none";
 </script>
