@@ -48,7 +48,8 @@
         </div>
     </div>
 </div>
-<br /> {% if request.user.userProfile.verified %}
+<br /> 
+{% if request.user.userProfile.verified %}
 <div class="row">
     <div class="col-md-12">
         <p><strong>Lecture Contents</strong></p>
@@ -103,3 +104,4 @@
         </div>
     </div>
 </div>
+{% endif %}

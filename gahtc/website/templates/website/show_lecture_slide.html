@@ -28,7 +28,8 @@
         <img class="img-responsive" src="/media/{{ lecture_slide_returned.slide }}" />
     </div>
 </div>
-<br /> {% if request.user.userProfile.verified %}
+<br /> 
+{% if request.user.userProfile.verified %}
 <div class="row">
     <div class="col-md-12">
         <p><strong>Slide Text and Notes</strong></p>
@@ -84,3 +85,4 @@
         </div>
     </div>
 </div>
+{% endif %}
