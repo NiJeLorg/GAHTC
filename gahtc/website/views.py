@@ -987,6 +987,10 @@ def updateProfile(request):
 				pf.avatar = request.FILES['avatar'] 
 			except KeyError:
 				nothing = {}
+			try:
+				pf.instutution_document = request.FILES['instutution_document'] 
+			except KeyError:
+				nothing = {}
 			pf.user = request.user
 			pf.save()
 
@@ -1061,7 +1065,7 @@ def modulesView(request):
 		module_returned.moduleLecs = moduleLecs
 
 
-	context_dict = {'modules_returned':modules_returned}
+	context_dict = {'modules_returned':modules_returned, 'profile':profile}
 	return render(request, 'website/modules.html', context_dict)
 
 
@@ -1760,4 +1764,126 @@ def admin_removelecturedoc(request, id=None):
 	return render(request, 'website/admin_removelecturedoc.html', {'form': form, 'lecturedocObject': lecturedocObject})
 
 
+@login_required
+def admin_accounts(request):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	# unverified
+	unverified = profile.objects.filter(verified__exact=None).order_by('name')
+
+	# accepted
+	accepted = profile.objects.filter(verified__exact=True).order_by('name')
+
+	# rejected
+	rejected = profile.objects.filter(verified__exact=False).order_by('name')
+
+	# pull all account holders 
+	return render(request, 'website/admin_accounts.html', {'unverified': unverified, 'accepted': accepted, 'rejected':rejected})
+
+@login_required
+def admin_unverified(request):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	# unverified
+	unverified = profile.objects.filter(verified__exact=None).order_by('name')
+
+	# pull all account holders 
+	return render(request, 'website/admin_unverified.html', {'unverified': unverified,})
+
+@login_required
+def admin_update_profile(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	#get user profile data and pass to view
+	thisUser = User.objects.get(pk=id)
+	try:
+		user_profile = profile.objects.get(user=thisUser)
+	except profile.DoesNotExist:
+		user_profile = None
+		
+	if request.method == 'POST':
+		user_form = UserInfoForm(data=request.POST, instance=thisUser)
+		profile_form = AdminUserProfileForm(data=request.POST, instance=user_profile)
+		if user_form.is_valid() and profile_form.is_valid():
+			user_form.save()       
+			pf = profile_form.save(commit=False)
+			try:
+				pf.avatar = request.FILES['avatar'] 
+			except KeyError:
+				nothing = {}
+			try:
+				pf.instutution_document = request.FILES['instutution_document'] 
+			except KeyError:
+				nothing = {}
+			pf.save()
+
+			return HttpResponseRedirect("/admin_accounts/")
+						
+		else:
+			print user_form.errors, profile_form.errors
+			
+	else:
+		user_form = UserInfoForm(instance=thisUser)
+		profile_form = AdminUserProfileForm(instance=user_profile)
+
+
+	context_dict = {'user_form': user_form, 'profile_form': profile_form}
+
+	return render(request, 'website/admin_update_profile.html', context_dict)
+
+@login_required
+def admin_verify_user(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	#get user profile data and pass to view
+	thisUser = User.objects.get(pk=id)
+	try:
+		user_profile = profile.objects.get(user=thisUser)
+	except profile.DoesNotExist:
+		user_profile = None
+		
+	if request.method == 'POST':
+		verify_form = AdminVerifyUserForm(data=request.POST, instance=user_profile)
+		if verify_form.is_valid():
+			verify_form.save()       
+
+			#send email if use was verified or rejected
+			
+
+			return HttpResponseRedirect("/admin_accounts/")
+						
+		else:
+			print user_form.errors, profile_form.errors
+			
+	else:
+		verify_form = AdminVerifyUserForm(instance=user_profile)
+
+
+	context_dict = {'verify_form': verify_form, 'user_profile': user_profile}
+
+	return render(request, 'website/admin_verify_user.html', context_dict)
 

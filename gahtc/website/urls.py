@@ -63,5 +63,9 @@ urlpatterns = [
     url(r'^admin_lecturedoc/(?P<id>\d+)/$', views.admin_lecturedoc, name='admin_lecturedoc'),
     url(r'^admin_lecturedoc/(?P<id>\d+)/(?P<lectureid>\d+)/$', views.admin_lecturedoc, name='admin_lecturedoc'),
     url(r'^admin_removelecturdoc/(?P<id>\d+)/$', views.admin_removelecturedoc, name='admin_removelecturedoc'),
+    url(r'^admin_accounts/$', views.admin_accounts, name='admin_accounts'),
+    url(r'^admin_unverified/$', views.admin_unverified, name='admin_unverified'),
+    url(r'^admin_update_profile/(?P<id>\d+)/$', views.admin_update_profile, name='admin_update_profile'),
+    url(r'^admin_verify_user/(?P<id>\d+)/$', views.admin_verify_user, name='admin_verify_user'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

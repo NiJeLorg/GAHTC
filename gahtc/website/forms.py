@@ -4,6 +4,13 @@ from django import forms
 from django.contrib.auth.models import User
 from website.models import *
 
+YES_NO = (('1', 'Yes',), ('0', 'No',))
+Null_Boolean_Choices = (
+            (None, 'No Action Taken'),
+            (True, 'Accepted'),
+            (False, 'Rejected'),
+        )
+
 # Form for user profile model
 class profileForm(RegistrationForm):
     """
@@ -12,6 +19,9 @@ class profileForm(RegistrationForm):
     name = forms.CharField(required=True, widget=forms.TextInput(), label="Full Name")
     institution = forms.CharField(required=True, widget=forms.TextInput(), label="Institutional Affiliation")
     teaching = forms.CharField(required=True, widget=forms.Textarea(), label="Please describe your teaching responsibilities at your institution.")
+    member = forms.BooleanField(required=True, widget=forms.Select(choices=YES_NO), label="Are you a current <a href='/membership/''>GAHTC Member</a>?")
+    website = forms.URLField(required=False, widget=forms.TextInput(attrs={'placeholder': 'http://example.com/'}), label="If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.")
+    instutution_document = forms.FileField(required=False)
     introduction = forms.CharField(required=True, widget=forms.Textarea(), label="Please introduce yourself to your GAHTC colleagues.")
     avatar = forms.ImageField(required=False, label="Please upload a bio picture for others to view on the GAHTC website.")
 
@@ -27,11 +37,14 @@ class UserInfoForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'institution', 'teaching', 'introduction', 'avatar')
+        fields = ('name', 'institution', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar',)
         labels = {
             'name': 'Full Name',
             'institution': 'Institutional Affiliation',
             'teaching': 'Please describe your teaching responsibilities at your institution.',
+            'member': 'Are you a current <a href="/membership/">GAHTC Member</a>?',
+            'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
+            'instutution_document': 'Hello',
             'introduction': 'Please introduce yourself to your GAHTC colleagues.',
             'avatar': 'Please upload a bio picture for others to view on the GAHTC website.',
         }
@@ -40,6 +53,47 @@ class UserProfileForm(forms.ModelForm):
             'institution': forms.TextInput(),
             'teaching': forms.Textarea(),
             'introduction': forms.Textarea(),
+            'member': forms.Select(choices=YES_NO),
+            'website': forms.TextInput(attrs={'placeholder': 'http://example.com/'}),
+        }
+
+# user profile edit form
+class AdminUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = profile
+        fields = ('name', 'institution', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar', 'verified')
+        labels = {
+            'name': 'Full Name',
+            'institution': 'Institutional Affiliation',
+            'teaching': 'Please describe your teaching responsibilities at your institution.',
+            'member': 'Are you a current <a href="/membership/">GAHTC Member</a>?',
+            'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
+            'instutution_document': '',
+            'introduction': 'Please introduce yourself to your GAHTC colleagues.',
+            'avatar': 'Please upload a bio picture for others to view on the GAHTC website.',
+            'verified': 'Please select the verification status for this user.',
+        }
+        widgets = {
+            'name': forms.TextInput(),
+            'institution': forms.TextInput(),
+            'teaching': forms.Textarea(),
+            'introduction': forms.Textarea(),
+            'member': forms.Select(choices=YES_NO),
+            'website': forms.TextInput(attrs={'placeholder': 'http://example.com/'}),
+            'instutution_document': forms.ClearableFileInput(),
+            'verified': forms.Select(choices=Null_Boolean_Choices),
+        }
+
+# verify users
+class AdminVerifyUserForm(forms.ModelForm):
+    class Meta:
+        model = profile
+        fields = ('verified',)
+        labels = {
+            'verified': 'Please select the verification status for this user.',
+        }
+        widgets = {
+            'verified': forms.Select(choices=Null_Boolean_Choices),
         }
 
 

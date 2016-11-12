@@ -1,0 +1,54 @@
+{% extends 'website/base_admin.html' %} {% load staticfiles %} {% load bootstrap_tags %} {% block title %}Edit a User Profile{% endblock %} {% block head_js_block %} {% endblock %} {% block css_block %} {% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Verify a User Profile</h3>
+        </div>
+    </div>
+    <div class="row marginTop30">
+        <div class="col-md-6">
+            <p>
+                <strong>Name:</strong> {{ user_profile.name }}
+                <br>
+                <strong>Email:</strong> {{ user_profile.user.email }}
+                <br>
+                <strong>Institutional affiliation:</strong> {{ user_profile.institution }}
+                <br>
+                <strong>Professional title:</strong> {{ user_profile.title }}
+                <br>
+                <strong>GAHTC member:</strong> {% if user_profile.member %}Yes{% else %}No{% endif %}
+                <br>
+            </p>
+            <p>
+                <strong>Teaching responsibilities</strong>
+                <br> {{ user_profile.teaching }}
+            </p>
+            <p>
+                <strong>Introduction to GAHTC colleagues</strong>
+                <br> {{ user_profile.introduction }}
+            </p>
+            <p>
+                <strong>Institutional Documentation</strong>
+                <br> {% if user_profile.website %}
+                <a href="{{ user_profile.website }}">{{ user_profile.website }}</a> {% endif %} {% if user_profile.instutution_document %}
+                <a href="/media/{{ user_profile.instutution_document }}">{{ user_profile.instutution_document.name }}</a> {% endif %}
+            </p>
+        </div>
+        {% if user_profile.avatar %}
+        <div class="col-md-4 col-md-offset-2">
+            <img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
+        </div>
+        {% endif %}
+    </div>
+    <div class="row marginTop30">
+        <div class="col-md-6">
+            <form method="post" action=".">
+                {% csrf_token %} {{ verify_form|as_bootstrap }}
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /container -->
+{% endblock %} {% block js_block %} {% endblock %}

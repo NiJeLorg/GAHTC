@@ -1,0 +1,19 @@
+{% extends 'website/base_admin.html' %} {% load staticfiles %} {% load bootstrap_tags %} {% block title %}Edit a User Profile{% endblock %} {% block head_js_block %} {% endblock %} {% block css_block %} {% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Edit a User Profile</h3>
+        </div>
+    </div>
+    <div class="row marginTop30">
+        <div class="col-md-6">
+            <form method="post" action="." enctype="multipart/form-data">
+                {% csrf_token %} {{ user_form|as_bootstrap }} {{ profile_form|as_bootstrap }}
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /container -->
+{% endblock %} {% block js_block %} {% endblock %}

@@ -1,103 +1,92 @@
-{% load staticfiles %}
-{% load bootstrap_tags %}
-
-	<div class="row marginBottom15">
-		<div class="col-md-9">
-			<h4 class="noTopMargin"><span class="label label-success">Lecture:</span> {{ lecture_returned.title }}</h4>
-		</div>	
-		<div class="col-md-3">
-			<div class="dropdown">
-				<button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Add to Bundle
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture_returned.id }}">
-					{% include "website/bundle_dropdown.html" %}
-				</ul>
-			</div>
-		</div>	
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="alert alert-success bundle-add-alert hidden" role="alert">
-				<p><strong>Lecture Added!</strong> This lecture has been added to your bundle, <span id="bundle-title"></span>.</p>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<p><strong>Lecture Preview</strong></p>
-			<div id="lectureSlidesCarousel" class="carousel slide" data-interval="false">
-				<!-- Wrapper for slides -->
-				<div class="carousel-inner">
-					{% for slide in lecture_slides %}
-						{% if forloop.first %}
-							<div class="item active">
-								<img src="/media/{{ slide.slide }}" />
-							</div>
-						{% else %}
-							<div class="item">
-								<img src="/media/{{ slide.slide }}" />
-							</div>
-						{% endif %}
-					{% endfor %}
-				</div>
-
-				<!-- Controls -->
-				<a class="left carousel-control" href="#lectureSlidesCarousel" data-slide="prev">
-					<span class="glyphicon glyphicon-chevron-left"></span>
-				</a>
-				<a class="right carousel-control" href="#lectureSlidesCarousel" data-slide="next">
-					<span class="glyphicon glyphicon-chevron-right"></span>
-				</a>
-			</div>
-		</div>
-	</div>
-	<br />
-	<div class="row">
-		<div class="col-md-12">
-			<p><strong>Lecture Contents</strong></p>
-			<div class="textbox">
-				<p>{{ lecture_returned.presentation_text|linebreaksbr }}</p>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-			  <div class="panel panel-default">
-			    <div class="panel-heading" role="tab" id="headingOne">
-			      <h4 class="panel-title">
+{% load staticfiles %} {% load bootstrap_tags %}
+<div class="row marginBottom15">
+    <div class="col-md-9">
+        <h4 class="noTopMargin"><span class="label label-success">Lecture:</span> {{ lecture_returned.title }}</h4>
+    </div>
+    <div class="col-md-3">
+        <div class="dropdown">
+            <button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add to Bundle
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture_returned.id }}">
+                {% include "website/bundle_dropdown.html" %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-success bundle-add-alert hidden" role="alert">
+            <p><strong>Lecture Added!</strong> This lecture has been added to your bundle, <span id="bundle-title"></span>.</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p><strong>Lecture Preview</strong></p>
+        <div id="lectureSlidesCarousel" class="carousel slide" data-interval="false">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                {% for slide in lecture_slides %} {% if forloop.first %}
+                <div class="item active">
+                    <img src="/media/{{ slide.slide }}" />
+                </div>
+                {% else %}
+                <div class="item">
+                    <img src="/media/{{ slide.slide }}" />
+                </div>
+                {% endif %} {% endfor %}
+            </div>
+            <!-- Controls -->
+            <a class="left carousel-control" href="#lectureSlidesCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#lectureSlidesCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div>
+    </div>
+</div>
+<br /> {% if request.user.userProfile.verified %}
+<div class="row">
+    <div class="col-md-12">
+        <p><strong>Lecture Contents</strong></p>
+        <div class="textbox">
+            <p>{{ lecture_returned.presentation_text|linebreaksbr }}</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
 			        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
 			          Comments
 			        </a>
 			      </h4>
-			    </div>
-			    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-			      <div class="panel-body">
-					{% if comments %}
-						{% for comment in comments %}
-							{% if comment.user == request.user %}
-								<!--<div id="removeComment" class="pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></div>-->
-							{% endif %}	
-							<p>{{ comment.comment }}</p>		
-							<p class="pull-right"><small>{{ comment.user }} ({{comment.created|timesince }} ago)</small></p>
-							<div class="clearfix"></div>
-							<hr>
-						{% endfor %}
-					{% endif %}
-					<br />
-					{% if comment_form %}
-						<form role="form" method="post" action="." >
-							{% csrf_token %}
-							{{ comment_form|as_bootstrap }}
-							<button data-itemid="lecture_{{ lecture_returned.id }}" type="submit" class="btn btn-default submitComment" name="submit" value="submit">Submit</button>
-						</form>
-					{% endif %}
-			      </div>
-			    </div>
-			  </div>
-<!-- 			  <div class="panel panel-default">
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        {% if comments %} {% for comment in comments %} {% if comment.user == request.user %}
+                        <!--<div id="removeComment" class="pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></div>-->
+                        {% endif %}
+                        <p>{{ comment.comment }}</p>
+                        <p class="pull-right"><small>{{ comment.user }} ({{comment.created|timesince }} ago)</small></p>
+                        <div class="clearfix"></div>
+                        <hr> {% endfor %} {% endif %}
+                        <br /> {% if comment_form %}
+                        <form role="form" method="post" action=".">
+                            {% csrf_token %} {{ comment_form|as_bootstrap }}
+                            <button data-itemid="lecture_{{ lecture_returned.id }}" type="submit" class="btn btn-default submitComment" name="submit" value="submit">Submit</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- 			  <div class="panel panel-default">
 			    <div class="panel-heading" role="tab" id="headingTwo">
 			      <h4 class="panel-title">
 			        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -111,7 +100,7 @@
 			      </div>
 			    </div>
 			  </div> -->
-			</div>
-		</div>
-	</div>
-			
+        </div>
+    </div>
+</div>
+{% endif %}

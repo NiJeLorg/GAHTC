@@ -1,81 +1,73 @@
-{% load staticfiles %}
-{% load bootstrap_tags %}
-
-	<div class="row marginBottom15">
-		<div class="col-md-9">
-			<h4 class="noTopMargin"><span class="label label-warning">Slide From:</span> {{ lecture_slide_returned.lecture.title }}</h4>
-		</div>	
-		<div class="col-md-3">
-			<div class="dropdown">
-				<button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Add to Bundle
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide_returned.id }}">
-					{% include "website/bundle_dropdown.html" %}
-				</ul>
-			</div>
-		</div>	
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="alert alert-success bundle-add-alert hidden" role="alert">
-				<p><strong>Lecture Slide Added!</strong> This lecture slide has been added to your bundle, <span id="bundle-title"></span>.</p>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<p><strong>Slide Preview</strong></p>
-			<img class="img-responsive" src="/media/{{ lecture_slide_returned.slide }}" />
-		</div>
-	</div>
-	<br />
-	<div class="row">
-		<div class="col-md-12">
-			<p><strong>Slide Text and Notes</strong></p>
-			<div class="textbox">
-				<p>{{ lecture_slide_returned.slide_main_text|linebreaksbr }}</p>
-				<p>{{ lecture_slide_returned.slide_notes|linebreaksbr }}</p>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-			  <div class="panel panel-default">
-			    <div class="panel-heading" role="tab" id="headingOne">
-			      <h4 class="panel-title">
+{% load staticfiles %} {% load bootstrap_tags %}
+<div class="row marginBottom15">
+    <div class="col-md-9">
+        <h4 class="noTopMargin"><span class="label label-warning">Slide From:</span> {{ lecture_slide_returned.lecture.title }}</h4>
+    </div>
+    <div class="col-md-3">
+        <div class="dropdown">
+            <button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add to Bundle
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide_returned.id }}">
+                {% include "website/bundle_dropdown.html" %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-success bundle-add-alert hidden" role="alert">
+            <p><strong>Lecture Slide Added!</strong> This lecture slide has been added to your bundle, <span id="bundle-title"></span>.</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p><strong>Slide Preview</strong></p>
+        <img class="img-responsive" src="/media/{{ lecture_slide_returned.slide }}" />
+    </div>
+</div>
+<br /> {% if request.user.userProfile.verified %}
+<div class="row">
+    <div class="col-md-12">
+        <p><strong>Slide Text and Notes</strong></p>
+        <div class="textbox">
+            <p>{{ lecture_slide_returned.slide_main_text|linebreaksbr }}</p>
+            <p>{{ lecture_slide_returned.slide_notes|linebreaksbr }}</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
 			        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
 			          Comments
 			        </a>
 			      </h4>
-			    </div>
-			    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-			      <div class="panel-body">
-					{% if comments %}
-						{% for comment in comments %}
-							{% if comment.user == request.user %}
-								<!--<div id="removeComment" class="pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></div>-->
-							{% endif %}	
-							<p>{{ comment.comment }}</p>		
-							<p class="pull-right"><small>{{ comment.user }} ({{comment.created|timesince }} ago)</small></p>
-							<div class="clearfix"></div>
-							<hr>
-						{% endfor %}
-					{% endif %}
-					<br />
-					{% if comment_form %}
-						<form role="form" method="post" action="." >
-							{% csrf_token %}
-							{{ comment_form|as_bootstrap }}
-							<button data-itemid="lectureslide_{{ lecture_slide_returned.id }}" type="submit" class="btn btn-default submitComment" name="submit" value="submit">Submit</button>
-						</form>
-					{% endif %}
-			      </div>
-			    </div>
-			  </div>
-<!-- 			  <div class="panel panel-default">
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        {% if comments %} {% for comment in comments %} {% if comment.user == request.user %}
+                        <!--<div id="removeComment" class="pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></div>-->
+                        {% endif %}
+                        <p>{{ comment.comment }}</p>
+                        <p class="pull-right"><small>{{ comment.user }} ({{comment.created|timesince }} ago)</small></p>
+                        <div class="clearfix"></div>
+                        <hr> {% endfor %} {% endif %}
+                        <br /> {% if comment_form %}
+                        <form role="form" method="post" action=".">
+                            {% csrf_token %} {{ comment_form|as_bootstrap }}
+                            <button data-itemid="lectureslide_{{ lecture_slide_returned.id }}" type="submit" class="btn btn-default submitComment" name="submit" value="submit">Submit</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- 			  <div class="panel panel-default">
 			    <div class="panel-heading" role="tab" id="headingTwo">
 			      <h4 class="panel-title">
 			        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -89,7 +81,7 @@
 			      </div>
 			    </div>
 			  </div> -->
-			</div>
-		</div>
-	</div>
-			
+        </div>
+    </div>
+</div>
+{% endif %}

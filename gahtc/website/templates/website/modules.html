@@ -1,131 +1,108 @@
-{% extends 'website/base.html' %}
-{% load staticfiles %}
-
-{% block title %}Modules{% endblock %}
-
-{% block css_block %}
-{% endblock %}
-
-{% block head_js_block %}
-{% endblock %}
-	
-
-{% block content %}
+{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
-
 <div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<h1>Modules</h1>
-		</div>
-	</div>
-	<div class="row marginBottom15">
-
-		<div class="panel-group" id="accordion_modules" role="tablist" aria-multiselectable="true">
-
-			{% for module_returned in modules_returned %}
-
-				<div class="panel panel-default">
-					<div class="panel-heading" role="tab" id="heading_{{ module_returned.id }}">
-						<a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_modules" href="#{{ module_returned.id }}" aria-expanded="true" aria-controls="{{ module_returned.id }}">
-							<h4 class="panel-title">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Modules</h1>
+        </div>
+    </div>
+    <div class="row marginBottom15">
+        <div class="panel-group" id="accordion_modules" role="tablist" aria-multiselectable="true">
+            {% for module_returned in modules_returned %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading_{{ module_returned.id }}">
+                    <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_modules" href="#{{ module_returned.id }}" aria-expanded="true" aria-controls="{{ module_returned.id }}">
+                        <h4 class="panel-title">
 								<span class="label label-primary">{{ module_returned.title }}</span>
 							</h4>
-						</a>
-					</div>
-					<div id="{{ module_returned.id }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}" role="tabpanel" aria-labelledby="{{ module_returned.id }}">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-9">
-									<h4>This module includes:</h4>
-								</div>	
-								<div class="col-md-3">
-									<button type="button" class="btn btn-default downloadModule pull-right" data-moduleid="{{ module_returned.id }}">Download Module</button>
-								</div>	
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									{% if module_returned.moduleDocs|length > 0 %}
-										<h5><span class="label label-primary">Documents</span></h5>
-										<ul>				
-										{% for doc in module_returned.moduleDocs %}
-											<li>{{ doc.title }} (<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }})</li>
-										{% endfor %}
-										</ul>
-									{% endif %}
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									{% if module_returned.moduleLecs|length > 0 %}
-										<h5><span class="label label-success">Lectures</span></h5>
-										<ul>				
-										{% for lec in module_returned.moduleLecs %}
-											<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> (<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }})</li>
-												{% if lec.lectureDocs|length > 0 %}
-													<ul>
-													{% for lecDoc in lec.lectureDocs %}
-														<li>{{ lecDoc.title }} (<a href="/media/{{ lecDoc.document }}">download</a> | {{ lecDoc.document.size|filesizeformat }})</li>
-													{% endfor %}
-													</ul>
-												{% endif %}
-										{% endfor %}
-										</ul>
-									{% endif %}
-								</div>
-							</div>							
-						</div>
-					</div>
-
-				</div>
-
-			{% endfor %}
-
-		</div>
-	</div>
-
-</div>				
-{% endblock %}
-
-{% block modal_block %}
+                    </a>
+                </div>
+                <div id="{{ module_returned.id }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}" role="tabpanel" aria-labelledby="{{ module_returned.id }}">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h4>This module includes:</h4>
+                            </div>
+                            <div class="col-md-3">
+                                {% if request.user.userProfile.verified %}
+                                <button type="button" class="btn btn-default downloadModule pull-right" data-moduleid="{{ module_returned.id }}">Download Module</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% if module_returned.moduleDocs|length > 0 %}
+                                <h5><span class="label label-primary">Documents</span></h5>
+                                <ul>
+                                    {% for doc in module_returned.moduleDocs %}
+                                    <li>{{ doc.title }} {% if request.user.userProfile.verified %}(<a href="/media/{{ doc.document }}">download</a> | {{ doc.document.size|filesizeformat }}) {% endif %}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% if module_returned.moduleLecs|length > 0 %}
+                                <h5><span class="label label-success">Lectures</span></h5>
+                                <ul>
+                                    {% for lec in module_returned.moduleLecs %}
+                                    <li>
+                                        <button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button> {% if request.user.userProfile.verified %}
+(<a href="/media/{{ lec.presentation }}">download</a> | {{ lec.presentation.size|filesizeformat }}) {% endif %} </li>
+                                    {% if lec.lectureDocs|length > 0 %}
+                                    <ul>
+                                        {% for lecDoc in lec.lectureDocs %}
+                                        <li>{{ lecDoc.title }} {% if request.user.userProfile.verified %}(<a href="/media/{{ lecDoc.document }}">download</a> | {{ lecDoc.document.size|filesizeformat }}){% endif %}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %} {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %} {% block modal_block %}
 <!-- Download Course Bundle Modal -->
 <div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Download Course Modules</h4>
-      </div>
-      <div class="modal-body">
-        <div id="downloadFileArea">
-        	<div class="containter">
-        		<div class="row">
-        			<div class="col-md-3">
-        				<img class="img-responsive pull-right" src="{% static 'website/css/images/spiffygif_114x114.gif' %}" />
-        			</div>
-        			<div class="col-md-9">
-        				<h2>Zipping Up Your Module!</h2>
-        			</div>
-        		</div>
-        	</div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Download Course Modules</h4>
+            </div>
+            <div class="modal-body">
+                <div id="downloadFileArea">
+                    <div class="containter">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img class="img-responsive pull-right" src="{% static 'website/css/images/spiffygif_114x114.gif' %}" />
+                            </div>
+                            <div class="col-md-9">
+                                <h2>Zipping Up Your Module!</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
-
 <!-- Lecture Slides Modal -->
 <div class="modal fade" id="slideshow" tabindex="-1" role="dialog" aria-labelledby="mySlideshow">
 </div>
-
-{% endblock %}
-
-{% block js_block %}
-	<script type="text/javascript">
-		var tab = "none";
-	</script>
-	<script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
-	<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
-	<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+{% endblock %} {% block js_block %}
+<script type="text/javascript">
+var tab = "none";
+</script>
+<script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
 {% endblock %}
