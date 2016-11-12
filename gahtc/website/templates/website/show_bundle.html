@@ -75,7 +75,7 @@
 						<p><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ bundle.lecture.id }}">{{ bundle.lecture.title }}</button></p>
 					</div>
 					<div class="row">
-						<p>From the module: <span class="label label-primary">{{ bundle.lecture.module.title }}</span></p>
+						<p><span class="label label-primary">From the module:</span> {{ bundle.lecture.module.title }}</p>
 					</div>
 
 				</div>
@@ -101,8 +101,8 @@
 						<p><button type="button" class="btn btn-default btn-xs launchSegmentModal" data-lecturesegmentid="{{ bundle.lectureSegment.id }}">{{ bundle.lectureSegment.title }}</button></p>
 					</div>
 					<div class="row">
-						<p>From the lecture: <span class="label label-success">{{ bundle.lectureSegment.lecture.title }}</span></p>
-						<p>From the module: <span class="label label-primary">{{ bundle.lectureSegment.lecture.module.title }}</span></p>
+						<p><span class="label label-success">From the lecture:</span> {{ bundle.lectureSegment.lecture.title }}</p>
+						<p><span class="label label-primary">From the module:</span> {{ bundle.lectureSegment.lecture.module.title }}</p>
 					</div>
 
 				</div>
@@ -128,8 +128,8 @@
 						<p>{{ bundle.lectureDocument.title }}</p>
 					</div>
 					<div class="row">
-						<p>From the lecture: <span class="label label-success">{{ bundle.lectureDocument.lecture.title }}</span></p>
-						<p>From the module: <span class="label label-primary">{{ bundle.lectureDocument.lecture.module.title }}</span></p>
+						<p><span class="label label-success">From the lecture:</span> {{ bundle.lectureDocument.lecture.title }}</p>
+						<p><span class="label label-primary">From the module:</span> {{ bundle.lectureDocument.lecture.module.title }}</p>
 					</div>
 				</div>
 			</div>
@@ -154,8 +154,8 @@
 						<p><button type="button" class="btn btn-default btn-xs launchSlideModal" data-lectureslideid="{{ bundle.lectureSlide.id }}">Preview</button></p>
 					</div>
 					<div class="row">
-						<p>From the lecture: <span class="label label-success">{{ bundle.lectureSlide.lecture.title }}</span></p>
-						<p>From the module: <span class="label label-primary">{{ bundle.lectureSlide.lecture.module.title }}</span></p>
+						<p><span class="label label-success">From the lecture:</span> {{ bundle.lectureSlide.lecture.title }}</p>
+						<p><span class="label label-primary">From the module:</span> {{ bundle.lectureSlide.lecture.module.title }}</p>
 					</div>
 				</div>
 			</div>
