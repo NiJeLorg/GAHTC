@@ -27,10 +27,10 @@
                     <tr>
                         <td>{{ a.name }}</td>
                         <td>
-                            <a class="btn btn-default" href="/admin_editUser/{{ a.id }}/" role="button">Edit</a>
+                            <a class="btn btn-default" href="/admin_update_profile/{{ a.user.id }}/" role="button">Edit</a>
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="/admin_verifyUser/{{ a.id }}/" role="button">Verify</a>
+                            <a class="btn btn-primary" href="/admin_verify_user/{{ a.user.id }}/" role="button">Verify</a>
                         </td>
                         <td>{{ a.user.email }}</td>
                         <td>{{ a.institution }}</td>

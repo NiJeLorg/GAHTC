@@ -4,7 +4,11 @@ from django import forms
 from django.contrib.auth.models import User
 from website.models import *
 
-YES_NO = (('1', 'Yes',), ('0', 'No',))
+YES_NO = (
+            (None, '--'),
+            (True, 'Yes'),
+            (False, 'No'),
+        )
 Null_Boolean_Choices = (
             (None, 'No Action Taken'),
             (True, 'Accepted'),
@@ -17,11 +21,12 @@ class profileForm(RegistrationForm):
         extends RegistrationForm for user profiles
     """
     name = forms.CharField(required=True, widget=forms.TextInput(), label="Full Name")
+    title = forms.CharField(required=True, widget=forms.TextInput(), label="Professional Title")
     institution = forms.CharField(required=True, widget=forms.TextInput(), label="Institutional Affiliation")
     teaching = forms.CharField(required=True, widget=forms.Textarea(), label="Please describe your teaching responsibilities at your institution.")
-    member = forms.BooleanField(required=True, widget=forms.Select(choices=YES_NO), label="Are you a current <a href='/membership/''>GAHTC Member</a>?")
+    member = forms.BooleanField(required=False, widget=forms.Select(choices=YES_NO), label="Are you a current <a href='/membership/''>GAHTC Member</a>?")
     website = forms.URLField(required=False, widget=forms.TextInput(attrs={'placeholder': 'http://example.com/'}), label="If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.")
-    instutution_document = forms.FileField(required=False)
+    instutution_document = forms.FileField(required=False, label="")
     introduction = forms.CharField(required=True, widget=forms.Textarea(), label="Please introduce yourself to your GAHTC colleagues.")
     avatar = forms.ImageField(required=False, label="Please upload a bio picture for others to view on the GAHTC website.")
 
@@ -37,14 +42,15 @@ class UserInfoForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'institution', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar',)
+        fields = ('name', 'title', 'institution', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar',)
         labels = {
             'name': 'Full Name',
+            'title': 'Professional Title',
             'institution': 'Institutional Affiliation',
             'teaching': 'Please describe your teaching responsibilities at your institution.',
             'member': 'Are you a current <a href="/membership/">GAHTC Member</a>?',
             'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
-            'instutution_document': 'Hello',
+            'instutution_document': '',
             'introduction': 'Please introduce yourself to your GAHTC colleagues.',
             'avatar': 'Please upload a bio picture for others to view on the GAHTC website.',
         }
@@ -61,9 +67,10 @@ class UserProfileForm(forms.ModelForm):
 class AdminUserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'institution', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar', 'verified')
+        fields = ('name', 'title', 'institution', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar', 'verified')
         labels = {
             'name': 'Full Name',
+            'title': 'Professional Title',
             'institution': 'Institutional Affiliation',
             'teaching': 'Please describe your teaching responsibilities at your institution.',
             'member': 'Are you a current <a href="/membership/">GAHTC Member</a>?',

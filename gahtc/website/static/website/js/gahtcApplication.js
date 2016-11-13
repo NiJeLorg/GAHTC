@@ -254,6 +254,9 @@ gahtcApplication.updateFooter = function () {
 	} else {
 		$('.footer').css({ "position": "relative", "bottom": "auto" });
 	}
+	if ($('.footer').hasClass('hidden')) {
+		$('.footer').removeClass('hidden');
+	}
 }
 
 gahtcApplication.contactBundle = function (bundleid) {

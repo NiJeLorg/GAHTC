@@ -22,13 +22,12 @@ MEDIA_ROOT = settings.MEDIA_ROOT
 from website.models import *
 from website.forms import *
 
+#for email
+from django.core.mail import send_mail
+
 # GAHTC Views
 def index(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Index page
@@ -37,11 +36,7 @@ def index(request):
 	return render(request, 'website/index.html', context_dict)
 
 def about(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  About page
@@ -50,11 +45,7 @@ def about(request):
 	return render(request, 'website/about.html', context_dict)
 
 def grantProgram(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Grant Program page
@@ -63,11 +54,7 @@ def grantProgram(request):
 	return render(request, 'website/grantProgram.html', context_dict)
 
 def conference(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  conference page
@@ -76,11 +63,7 @@ def conference(request):
 	return render(request, 'website/conference.html', context_dict)
 
 def reimbursement(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  reimbursement page
@@ -89,11 +72,7 @@ def reimbursement(request):
 	return render(request, 'website/reimbursement.html', context_dict)
 
 def schedule(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  schedule page
@@ -102,11 +81,7 @@ def schedule(request):
 	return render(request, 'website/schedule.html', context_dict)
 
 def workshop2013(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Workshop 2013 page
@@ -115,11 +90,7 @@ def workshop2013(request):
 	return render(request, 'website/workshop2013.html', context_dict)
 
 def contact(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  contact page
@@ -128,11 +99,7 @@ def contact(request):
 	return render(request, 'website/contact.html', context_dict)
 
 def membership(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  membership page
@@ -141,11 +108,7 @@ def membership(request):
 	return render(request, 'website/membership.html', context_dict)
 
 def timescape(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  timescape page
@@ -260,11 +223,7 @@ def mainSearchCode(request, keyword, tab):
 
 @login_required
 def search(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Queries the database for search terms and returns list of results
@@ -292,11 +251,7 @@ def search(request):
 
 @login_required
 def mybundles(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Queries the database for search terms and returns list of results; goes to bundle
@@ -312,11 +267,7 @@ def mybundles(request):
 
 @login_required
 def myprofile(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Queries the database for search terms and returns list of results; goes to bundle
@@ -332,11 +283,7 @@ def myprofile(request):
 
 @login_required
 def mysavedsearches(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Queries the database for search terms and returns list of results; goes to bundle
@@ -974,11 +921,7 @@ def refreshSidebarBundle(request):
 
 @login_required
 def updateProfile(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Loads the user profile page for editing
@@ -1031,11 +974,7 @@ def updateProfile(request):
 
 @login_required
 def modulesView(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Loads all modules 
@@ -1086,11 +1025,7 @@ def modulesView(request):
 
 @login_required
 def lecturesView(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Loads all lectures 
@@ -1117,11 +1052,7 @@ def lecturesView(request):
 
 @login_required
 def membersView(request):
-	"""
-	  Check if superuser and if so, redirect to the admin dashboard
-	"""
-	if request.user.groups.filter(name="superusers").exists():
-		return HttpResponseRedirect('/dashboard/')
+
 
 	"""
 	  Loads all user profiles
@@ -1883,15 +1814,29 @@ def admin_verify_user(request, id=None):
 	if request.method == 'POST':
 		verify_form = AdminVerifyUserForm(data=request.POST, instance=user_profile)
 		if verify_form.is_valid():
-			verify_form.save()       
+			vf = verify_form.save()       
 
 			#send email if use was verified or rejected
-			
+			if vf.verified != None:
+				if vf.verified:
+					#send email
+					subject = "[GAHTC] Your account has been verified!"
+					html_message = "Hello "+ user_profile.name +"!<br /><br />Your account has now been verified on <a href='http://gahtc.org/'>gahtc.org</a>, and you may now bundle and download course materials. Please visit <a href='http://gahtc.org/'>gahtc.org</a> to get started.<br /><br />Thank you!<br />GAHTC | Global Architectural History Teaching Collaborative"
+					message = "Hello "+ user_profile.name +"! Your account has now been verified on gahtc.org, and you may now bundle and download course materials. Please visit gahtc.org to get started. Thank you! GAHTC | Global Architectural History Teaching Collaborative"
+
+					send_mail(subject, message, 'gahtcweb@gmail.com', [user_profile.user.email], fail_silently=True, html_message=html_message)				
+				else:
+					subject = "[GAHTC] We're sorry, but your account has been rejected."
+					html_message = "Hello "+ user_profile.name +",<br /><br />We're sorry to report, but your account had been rejected by the GAHTC administrator. You may still search the GAHCT site for course materials, but you will not be able to download any of these materials until your account is approved. If you feel that this has been done in error, please contact GAHTC by visiting <a href='http://gahtc.org/contact/'>Contact GAHTC</a>.<br /><br />GAHTC | Global Architectural History Teaching Collaborative"
+					message = "Hello "+ user_profile.name +", We're sorry to report, but your account had been rejected by the GAHTC administrator. You may still search the GAHCT site for course materials, but you will not be able to download any of these materials until your account is approved. If you feel that this has been done in error, please contact GAHTC by visiting the Contact GAHTC page ( http://gahtc.org/contact/ ). GAHTC | Global Architectural History Teaching Collaborative"
+
+					send_mail(subject, message, 'gahtcweb@gmail.com', [user_profile.user.email], fail_silently=True, html_message=html_message)				
+				
 
 			return HttpResponseRedirect("/admin_accounts/")
 						
 		else:
-			print user_form.errors, profile_form.errors
+			print verify_form.errors
 			
 	else:
 		verify_form = AdminVerifyUserForm(instance=user_profile)

@@ -74,7 +74,10 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
-            <li><a href="{% url 'myprofile' %}">Hello {{ user }}!</a></li>
+            <li><a href="{% url 'myprofile' %}">Hello {{ request.user.userProfile.name }}!</a></li>
+            {% if perms.auth.can_add_user %}
+            <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
+            {% endif %}
             <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
             <li><a href="{% url 'mysavedsearches' %}">My Saved Searches</a></li>
             <li><a href="{% url 'auth_logout' %}">Logout</a></li>
@@ -90,7 +93,7 @@
 	{% block content %}
 	{% endblock %}
 	  
-	<footer class="footer">
+	<footer class="footer hidden">
 		<div class="container-fluid">
 			<p class="text-muted">Copyright &copy; {% now 'Y' %} | All Rights Reserved | GAHTC: Global Architectural History Teaching Collaborative</p>
 		</div>
@@ -108,13 +111,16 @@
 	<!-- check every page to see if the body is smaller than the window, and if so, fix the footer to the bottom -->
 	<script type="text/javascript">
 	  $( document ).ready(function() {
-		var $body = $('body').height();
-		var $win = $(window).height();
-		console.log($body, 'body');
-		console.log($win, 'win');
-		if ($body <= $win) {
-			$('.footer').css({ "position": "absolute", "bottom": "0" });
-		}
+  		var $body = $('body').height();
+  		var $win = $(window).height();
+  		console.log($body, 'body');
+  		console.log($win, 'win');
+  		if ($body <= $win) {
+  			$('.footer').css({ "position": "absolute", "bottom": "0" });
+  		}
+      if ($('.footer').hasClass('hidden')) {
+        $('.footer').removeClass('hidden');
+      }
 	  });
 	</script>
 

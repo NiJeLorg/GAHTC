@@ -1,10 +1,14 @@
 {% load staticfiles %}
 	<div class="row marginBottom15">
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<h4 class="noTopMargin">BUNDLE: {{ bundle_returned.title }}</h4>
 		</div>	
-		<div class="col-md-4">
-			<button type="button" class="btn btn-default downloadBundle" data-bundleid="{{ bundle_returned.id }}">Download Bundle</button>
+		<div class="col-md-5">
+            {% if request.user.userProfile.verified %}
+			<button type="button" class="btn btn-default downloadBundle pull-right" data-bundleid="{{ bundle_returned.id }}">Download Bundle</button>
+            {% else %}
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download Bundle</button>
+            {% endif %}
 		</div>								
 	</div>
 	<div class="row">
