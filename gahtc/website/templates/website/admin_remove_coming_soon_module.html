@@ -1,0 +1,53 @@
+{% extends 'website/base_admin.html' %}
+{% load staticfiles %}
+{% load bootstrap_tags %}
+
+{% block head_js_block %}
+{{ media }}
+{% endblock %}
+
+{% block css_block %}
+{% endblock %}	
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h3>Remove Coming Soon Module</h3>
+      <p><strong><span class="text-danger">Be careful! This operation cannot be undone!</span></strong>
+    </div>
+   </div>
+   	<div class="row">
+		<div class="col-md-12">
+			<h4>{{ modulesObject.title }}</h4>
+			<p><strong>Authors:</strong> {{ modulesObject.authors }} <br />
+			<p><strong>Description:</strong> {{ modulesObject.description }} <br />
+		</div>
+	</div>
+    <div class="row">
+    <div class="col-md-8">
+		<form method="post" action=".">
+			{% csrf_token %}
+			{{ form|as_bootstrap }}
+			<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
+			<input type="submit" name="delete" class="btn btn-danger" value="Remove Coming Soon Module" />
+		</form>
+    </div>
+  </div>
+</div> <!-- /container -->
+
+
+{% endblock %}
+
+
+{% block js_block %}
+{% endblock %}
+
+
+
+
+
+	
+	
+

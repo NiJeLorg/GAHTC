@@ -264,3 +264,26 @@ class lectureSlidesCommentsForm(forms.ModelForm):
         widgets = {
             'comment': forms.widgets.Textarea(attrs={'rows': 2}),
         }
+
+
+# module form
+class CSmodulesForm(forms.ModelForm):
+    class Meta:
+        model = comingSoonModules
+        fields = ('title', 'authors', 'description', 'tags')
+        labels = {
+            'title': 'Title (Required)',
+            'authors': 'Authors (Required)',
+            'description': 'Description',
+            'tags': 'Tags',
+        }
+        widgets = {
+            'title': forms.TextInput(),
+            'authors': forms.TextInput(),
+            'description': forms.Textarea(),
+        }
+
+class CSmodulesRemoveForm(forms.ModelForm):
+    class Meta:
+        model = comingSoonModules
+        fields = ()

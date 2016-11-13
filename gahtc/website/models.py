@@ -175,6 +175,7 @@ class bundles(models.Model):
 	title = models.CharField(max_length=255, null=False, blank=False)
 	contact = models.BooleanField(default=False)
 	downloaded = models.BooleanField(default=False)
+	created = models.DateTimeField(auto_now_add=True)
 
 #modules in bundle
 class bundleModule(models.Model):
@@ -207,12 +208,14 @@ class userModuleDownload(models.Model):
 	module = models.ForeignKey(modules)
 	contact = models.BooleanField(default=False)
 	downloaded = models.BooleanField(default=False)
+	created = models.DateTimeField(auto_now_add=True)
 
 class userLectureDownload(models.Model):
 	user = models.ForeignKey(User)
 	lecture = models.ForeignKey(lectures)
 	contact = models.BooleanField(default=False)
-	downloaded = models.BooleanField(default=False)	
+	downloaded = models.BooleanField(default=False)
+	created = models.DateTimeField(auto_now_add=True)	
 	
 #saved Searches
 class savedSearches(models.Model):
@@ -266,4 +269,16 @@ class lectureSlidesComments(models.Model):
            
     def __unicode__(self):
         return self.comment
+
+# coming soon course modules
+class comingSoonModules(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	title = models.CharField(max_length=255, default='', null=False, blank=False)
+	authors = models.CharField(max_length=255, default='', null=False, blank=False)
+	description = models.TextField(default='', null=True, blank=True)
+	tags = TaggableManager(blank=True)
+
+	def __unicode__(self):
+		return self.title
+
 

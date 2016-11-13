@@ -239,6 +239,9 @@ a:hover, a:focus {
 .label-ls {
     background-color: #756BB1;
 }
+.label-cs {
+    background-color: #7796b1;
+}
 
 .label-default:hover {
 	color: #f9f9f9;

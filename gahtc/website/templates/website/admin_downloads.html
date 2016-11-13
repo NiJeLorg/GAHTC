@@ -1,0 +1,142 @@
+{% extends 'website/base_admin.html' %} {% load staticfiles %} {% block title %}Home{% endblock %} {% block head_js_block %} {% endblock %} {% block css_block %}
+<link rel="stylesheet" type="text/css" href="{% static 'website/css/bootstrap-sortable.css' %}"> {% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Downloads</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if bundles_downloaded %}
+            <br />
+            <hr />
+            <h4>Bundles Downloaded</h4>
+            <table class="table table-striped table-condensed sortable">
+                <thead>
+                    <th>User</th>
+                    <th>Bundle</th>
+                    <th>Downloaded On</th>
+                    <th>Contact?</th>
+                    <th>Email</th>
+                    <th>Modules</th>
+                    <th>Lectures</th>
+                    <th>Lecture Segments</th>
+                    <th>Lecture Documents</th>
+                    <th>Lecture Slides</th>
+                </thead>
+                <tbody>
+                    {% for b in bundles_downloaded %}
+                    <tr>
+                        <td>{{ b.user.userProfile.name }}</td>
+                        <td>{{ b.title }}</td>
+                        <td>{{ b.created|date:"m/d/Y" }}</td>
+                        <td>{{ b.contact|yesno:"Yes,No" }}</td>
+                        <td><a href="mailto:{{ b.user.email }}">{{ b.user.email }}</a></td>
+                        <td>
+                            <ul>
+                            {% for m in b.bundleModules %}
+                                <li>{{ m.module.title }}</li>
+                            {% endfor %}
+                            </ul> 
+                        </td>
+                        <td>
+                            <ul>
+                            {% for l in b.bundleLectures %}
+                                <li>{{ l.lecture.title }}</li>
+                            {% endfor %}
+                            </ul> 
+                        </td>
+                        <td>
+                            <ul>
+                            {% for l in b.bundleLectureSegments %}
+                                <li>{{ l.lectureSegment.title }}</li>
+                            {% endfor %}
+                            </ul> 
+                        </td>
+                        <td>
+                            <ul>
+                            {% for l in b.bundleLectureDocuments %}
+                                <li>{{ l.lectureDocument.title }}</li>
+                            {% endfor %}
+                            </ul> 
+                        </td>
+                        <td>
+                            <ul>
+                            {% for l in b.bundleLectureSlides %}
+                                <li>Slide #{{ l.lectureSlide.slide_number}} from {{ l.lectureSlide.lecture.title }}</li>
+                            {% endfor %}
+                            </ul> 
+                        </td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if modules_downloaded %}
+            <br />
+            <hr />
+            <h4>Modules Directly Downloaded</h4>
+            <table class="table table-striped table-condensed sortable">
+                <thead>
+                    <th>User</th>
+                    <th>Module</th>
+                    <th>Downloaded On</th>
+                    <th>Contact?</th>
+                    <th>Email</th>
+                </thead>
+                <tbody>
+                    {% for m in modules_downloaded %}
+                    <tr>
+                        <td>{{ m.user.userProfile.name }}</td>
+                        <td>{{ m.module.title }}</td>
+                        <td>{{ m.created|date:"m/d/Y" }}</td>
+                        <td>{{ m.contact|yesno:"Yes,No" }}</td>
+                        <td><a href="mailto:{{ m.user.email }}">{{ m.user.email }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if lectures_downloaded %}
+            <br />
+            <hr />
+            <h4>Lectures Directly Downloaded</h4>
+            <table class="table table-striped table-condensed sortable">
+                <thead>
+                    <th>User</th>
+                    <th>Lecture</th>
+                    <th>Downloaded On</th>
+                    <th>Contact?</th>
+                    <th>Email</th>
+                </thead>
+                <tbody>
+                    {% for l in lectures_downloaded %}
+                    <tr>
+                        <td>{{ l.user.userProfile.name }}</td>
+                        <td>{{ l.lecture.title }}</td>
+                        <td>{{ l.created|date:"m/d/Y" }}</td>
+                        <td>{{ l.contact|yesno:"Yes,No" }}</td>
+                        <td><a href="mailto:{{ l.user.email }}">{{ l.user.email }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- /container -->
+{% endblock %} {% block js_block %}
+<script type="text/javascript" src="{% static 'website/js/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/bootstrap-sortable.js' %}"></script>
+{% endblock %}

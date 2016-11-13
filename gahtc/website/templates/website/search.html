@@ -48,7 +48,7 @@
 
 				<div role="tabpanel" class="tab-pane active" id="search-results">
 					<div class="col-md-6 resultsScroll">
-						{% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 %}
+						{% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 and coming_soon_modules_returned_count == 0 %}
 						<div class="row selectedAddDropdown">
 							<div class="col-xs-12">
 								<h4>No Search Results</h4>
@@ -58,17 +58,21 @@
 						{% else %}
 						<br />
 						<div class="panel-group" id="accordion_results" role="tablist" aria-multiselectable="true">
-						  {% if modules_returned_count > 0 %}
+						  {% if modules_returned_count > 0 or coming_soon_modules_returned_count > 0 %}
 						  <div class="panel panel-default">
 						    <div class="panel-heading" role="tab" id="heading_modules_panel">
 						      <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#modules_panel" aria-expanded="true" aria-controls="modules_panel">
 							      <h4 class="panel-title">							        
 							          <span class="label label-primary">{{ modules_returned_count }} Module{{ modules_returned_count|pluralize }}</span>
+							          {% if coming_soon_modules_returned_count > 0 %}
+										<span class="label label-cs">{{ coming_soon_modules_returned_count }} Module{{ coming_soon_modules_returned_count|pluralize }} Coming Soon</span>
+							          {% endif %}
 							      </h4>
                                         </a>
                                     </div>
                                     <div id="modules_panel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="modules_panel">
                                         <div class="panel-body">
+
                                             {% for module in modules_returned %}
                                             <div class="row result module" data-moduleid="{{ module.id }}">
                                                 <div class="col-xs-3">
@@ -115,6 +119,43 @@
 									</div>
 								</div>
 								{% endfor %}
+                                            {% for m in coming_soon_modules_returned %}
+                                            <div class="row result">
+                                                <div class="col-xs-3">
+                                                    <img class="img-responsive" src="{% static 'website/css/images/cs_module.png' %}" />
+                                                </div>
+                                                <div class="col-xs-9">
+                                                    <div class="row">
+                                                        <div class="col-xs-7 resultTitle">
+                                                            <p><strong><span class="label label-cs">Module Coming Soon:</span> {{ m.object.title }}</strong></p>
+                                                        </div>
+                                                        <div class="col-xs-5">
+                                                            <!--
+												<div class="checkbox">
+												    <input type="checkbox" value="">
+												</div>
+												-->
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="row">
+											<p class="swapem">
+												{% for text in module.highlighted.text %}
+													{% autoescape off %}{{ text }}{% endautoescape %}
+												{% endfor %}
+											</p>
+										</div>-->
+										<div class="row">
+											<p>
+											{% for tag in m.object.tags.all|slice:":6" %}
+											<a href="/search/?keyword={{ tag.name }}">
+									            <span class="label label-default">{{ tag.name }}</span>
+									        </a>
+									        {% endfor %}
+									        </p>
+										</div>
+									</div>
+								</div>
+								{% endfor %}								
 						      </div>
 						    </div>
 						  </div>
@@ -363,7 +404,7 @@
                                                         </p>
                                                     </div>
                                                     <div class="row">
-                                                        <p>From the module: <span class="label label-primary">{{ lecture_slide.object.lecture.module.title }}</span></p>
+                                                        <p><span class="label label-primary">From the module:</span> {{ lecture_slide.object.lecture.module.title }}</p>
                                                     </div>
                                                     <div class="row">
                                                         <p>

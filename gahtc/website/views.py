@@ -127,6 +127,7 @@ def mainSearchCode(request, keyword, tab):
 	lecture_segments_returned_count = 0
 	lecture_documents_returned_count = 0
 	lecture_slides_returned_count = 0
+	coming_soon_modules_returned_count = 0
 
 	if keyword != "":
 		all_results = SearchQuerySet().filter(content=keyword).highlight()
@@ -136,6 +137,7 @@ def mainSearchCode(request, keyword, tab):
 		lecture_segments_returned = []
 		lecture_documents_returned = []
 		lecture_slides_returned = []
+		coming_soon_modules_returned = []
 
 		# sort search query to bins
 		for r in all_results:
@@ -151,6 +153,8 @@ def mainSearchCode(request, keyword, tab):
 				lecture_documents_returned.append(r)
 			elif r.model_name == "lectureslides":
 				lecture_slides_returned.append(r)
+			elif r.model_name == "comingsoonmodules":
+				coming_soon_modules_returned.append(r)
 
 		modules_returned_count = len(modules_returned)
 		module_documents_returned_count = len(module_documents_returned)
@@ -158,23 +162,27 @@ def mainSearchCode(request, keyword, tab):
 		lecture_segments_returned_count = len(lecture_segments_returned)
 		lecture_documents_returned_count = len(lecture_documents_returned)
 		lecture_slides_returned_count = len(lecture_slides_returned)
+		coming_soon_modules_returned_count = len(coming_soon_modules_returned)
 
-
-	if modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0:
+	if modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 and coming_soon_modules_returned_count == 0:
 		modules_returned = modules.objects.none()
 		moduleDocsCount = moduleDocuments.objects.none()
 		lectures_returned = lectures.objects.none()
 		lecture_segments_returned = lectureSegments.objects.none()
 		lecture_documents_returned = lectureDocuments.objects.none()
 		lecture_slides_returned = lectureSlides.objects.none()
-
+		coming_soon_modules_returned = comingSoonModules.objects.none()
+		
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
 
 		# pull user profile
 		user_profile = profile.objects.get(user=request.user)
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile}
+		# pull saved searches
+		saved_searches = savedSearches.objects.filter(user=request.user)
+
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
 
 	else:
 		# concatonate module querysets
@@ -216,7 +224,7 @@ def mainSearchCode(request, keyword, tab):
 		# pull saved searches
 		saved_searches = savedSearches.objects.filter(user=request.user)
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
 
 	return context_dict
 
@@ -703,8 +711,12 @@ def zipUpBundle(request, id=None):
 	#create zip file
 	with zipfile.ZipFile(MEDIA_ROOT + folder + filename, "w", allowZip64=True) as myzip:
 
-		#get lecture slide
+		#get bundle
 		bundle_returned = bundles.objects.get(pk=id, user=request.user)
+
+		# set downloaded to be true
+		bundle_returned.downloaded = True
+		bundle_returned.save()
 
 		#get return all other content
 		bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
@@ -1017,8 +1029,9 @@ def modulesView(request):
 		#attach the module docs to the module returned 
 		module_returned.moduleLecs = moduleLecs
 
+	coming_soon_modules_returned = comingSoonModules.objects.all().order_by('title')
 
-	context_dict = {'modules_returned':modules_returned, 'profile':profile}
+	context_dict = {'modules_returned':modules_returned, 'profile':profile, 'coming_soon_modules_returned':coming_soon_modules_returned}
 	return render(request, 'website/modules.html', context_dict)
 
 
@@ -1845,6 +1858,120 @@ def admin_verify_user(request, id=None):
 	context_dict = {'verify_form': verify_form, 'user_profile': user_profile}
 
 	return render(request, 'website/admin_verify_user.html', context_dict)
+
+@login_required
+def admin_downloads(request):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	bundles_downloaded = bundles.objects.filter(downloaded=True).order_by('-created')
+	for b in bundles_downloaded:
+		# look up the materials in each bundle
+		b.bundleModules = bundleModule.objects.filter(bundle__exact=b)
+		b.bundleLectures = bundleLecture.objects.filter(bundle__exact=b)
+		b.bundleLectureSegments = bundleLectureSegments.objects.filter(bundle__exact=b)
+		b.bundleLectureDocuments = bundleLectureDocument.objects.filter(bundle__exact=b)
+		b.bundleLectureSlides = bundleLectureSlides.objects.filter(bundle__exact=b)
+
+	modules_downloaded = userModuleDownload.objects.filter(downloaded=True).order_by('-created')
+	lectures_downloaded = userLectureDownload.objects.filter(downloaded=True).order_by('-created')
+
+	context_dict = {'bundles_downloaded':bundles_downloaded,'modules_downloaded':modules_downloaded,'lectures_downloaded':lectures_downloaded}
+
+	return render(request, 'website/admin_downloads.html', context_dict)
+
+@login_required
+def admin_coming_soon_module(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id:
+		modulesObject = comingSoonModules.objects.get(id=id)
+	else:
+		modulesObject = comingSoonModules()
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = CSmodulesForm(request.POST, instance=modulesObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# Save the new data to the database.
+			f = form.save()
+
+			# send back to dashboard
+			return HttpResponseRedirect('/dashboard/')
+			
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = CSmodulesForm(instance=modulesObject)
+
+	return render(request, 'website/admin_coming_soon_module.html', {'form': form, 'media': form.media})
+
+
+@login_required
+def admin_remove_coming_soon_modules(request):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	csModules = comingSoonModules.objects.all()
+	return render(request, 'website/admin_remove_coming_soon_modules.html', {'csModules': csModules,})
+
+@login_required
+def admin_remove_coming_soon_module(request, id=None):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	if id:
+		modulesObject = comingSoonModules.objects.get(id=id)
+	else:
+		modulesObject = comingSoonModules()
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = CSmodulesRemoveForm(request.POST, instance=modulesObject)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# if form submitted, delete module
+			if 'delete' in request.POST:
+				modulesObject.delete()
+				return HttpResponseRedirect('/dashboard/')
+	
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = CSmodulesRemoveForm(instance=modulesObject)
+
+	# Bad form (or form details), no form supplied...
+	# Render the form with error messages (if any).
+	return render(request, 'website/admin_remove_coming_soon_module.html', {'form': form, 'modulesObject': modulesObject,})
+
 
 def contactBundle(request):
 	"""

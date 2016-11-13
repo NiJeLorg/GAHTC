@@ -32,6 +32,14 @@
   <br />
   <div class="row">
     <div class="col-md-12">
+      <h4>Coming Soon Modules</h4>
+		<a class="btn btn-default" href="{% url 'admin_coming_soon_module' %}" role="button">Create a Coming Soon Module</a>
+		<a class="btn btn-default" href="{% url 'admin_remove_coming_soon_modules' %}" role="button">Remove Coming Soon Modules</a>
+    </div>  
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-12">
     	{% if modulesObjects %}
 	    	{% for module in modulesObjects %}
 	    	{% if not forloop.first %}
