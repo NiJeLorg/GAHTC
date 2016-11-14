@@ -130,7 +130,7 @@ def mainSearchCode(request, keyword, tab):
 	coming_soon_modules_returned_count = 0
 
 	if keyword != "":
-		all_results = SearchQuerySet().filter(content=keyword).highlight()
+		all_results = SearchQuerySet().auto_query(content=keyword).highlight()
 		modules_returned = []
 		module_documents_returned = []
 		lectures_returned = []
