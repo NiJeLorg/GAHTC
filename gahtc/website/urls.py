@@ -9,6 +9,7 @@ from website import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^about/$', views.about, name='about'),
+    url(r'^how-to-use/$', views.howToUse, name='howToUse'),
     url(r'^grant-program/$', views.grantProgram, name='grantProgram'),
     url(r'^conference/$', views.conference, name='conference'),
     url(r'^reimbursement/$', views.reimbursement, name='reimbursement'),

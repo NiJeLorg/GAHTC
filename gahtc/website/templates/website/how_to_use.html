@@ -1,0 +1,51 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block title %}About GAHTC{% endblock %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block head_js_block %}
+{% endblock %}
+	
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1">
+			<h1>How to Use GAHTC.org</h1>
+			<p>
+				Thank you for using GAHTC.org! The four videos below are designed to give you a brief introduction on how to use this website. If you need help using the site, please <a href="{% url 'contact' %}">contact us</a>! 
+			</p>
+			<h3>How to Search for Course Materials</h3>
+			<div class="embed-responsive embed-responsive-16by9">
+			  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/BM7HuERDUcU" allowfullscreen></iframe>
+			</div>
+			<h3>Understanding Your Course Explorer Search Results</h3>
+			<div class="embed-responsive embed-responsive-16by9">
+			  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/q7q70Tx3Ca0" allowfullscreen></iframe>
+			</div>
+			<h3>Previewing Lectures and Slides</h3>
+			<div class="embed-responsive embed-responsive-16by9">
+			  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/waORYDHDfQU" allowfullscreen></iframe>
+			</div>
+			<h3>Creating a Bundle of Course Materials for Download</h3>
+			<div class="embed-responsive embed-responsive-16by9">
+			  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ANwCtJJQlp0" allowfullscreen></iframe>
+			</div>
+			<br />
+			<br />			
+
+
+		</div>
+	</div>
+</div>				
+{% endblock %}
+
+{% block modal_block %}
+{% endblock %}
+
+{% block js_block %}
+{% endblock %}
