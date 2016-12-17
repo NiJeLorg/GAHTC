@@ -385,9 +385,13 @@ class Command(BaseCommand):
             croppedtail = tail[:-5]
             pdffilename = croppedtail + ".pdf"
 
+            print 'convert to pdf'
+
             # run the command and put the output in "head"
             # libreoffice --headless --convert-to pdf --outdir head path_to_file
             call(["libreoffice","--headless","--convert-to","pdf","--outdir",head,path_to_file])
+
+            print 'done converting'
 
             #extract all slides in pdf in imagemagic 
             # convert head/pdffilename[index] head/slide.png

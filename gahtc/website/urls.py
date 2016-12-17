@@ -2,7 +2,6 @@
 """
 from django.conf.urls import include, url
 from django.conf import settings
-from django.conf.urls.static import static
 from website import views
 
 
@@ -79,4 +78,4 @@ urlpatterns = [
     url(r'^contact_lecture/$', views.contactLecture, name='contactLecture'),
     url(r'^dont_contact_lecture/$', views.dontContactLecture, name='dontContactLecture'),
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
