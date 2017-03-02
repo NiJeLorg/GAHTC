@@ -23,6 +23,10 @@ class profileForm(RegistrationForm):
     name = forms.CharField(required=True, widget=forms.TextInput(), label="Full Name")
     title = forms.CharField(required=True, widget=forms.TextInput(), label="Professional Title")
     institution = forms.CharField(required=True, widget=forms.TextInput(), label="Institutional Affiliation")
+    institution_address = forms.CharField(required=False, widget=forms.TextInput(), label="Institution's Street Address")
+    institution_city = forms.CharField(required=False, widget=forms.TextInput(), label="City")
+    institution_country = forms.CharField(required=False, widget=forms.TextInput(), label="Country")
+    institution_postal_code = forms.CharField(required=False, widget=forms.TextInput(), label="Postal Code")
     teaching = forms.CharField(required=True, widget=forms.Textarea(), label="Please describe your teaching responsibilities at your institution.")
     member = forms.BooleanField(required=False, widget=forms.Select(choices=YES_NO), label="Are you a current <a href='/membership/''>GAHTC Member</a>?")
     website = forms.URLField(required=False, widget=forms.TextInput(attrs={'placeholder': 'http://example.com/'}), label="If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.")
@@ -42,11 +46,15 @@ class UserInfoForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'title', 'institution', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar',)
+        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar',)
         labels = {
             'name': 'Full Name',
             'title': 'Professional Title',
             'institution': 'Institutional Affiliation',
+            'institution_address': 'Institution\'s Street Address',
+            'institution_city': 'City',
+            'institution_country': 'Country',
+            'institution_postal_code': 'Postal Code',
             'teaching': 'Please describe your teaching responsibilities at your institution.',
             'member': 'Are you a current <a href="/membership/">GAHTC Member</a>?',
             'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
@@ -57,6 +65,10 @@ class UserProfileForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(),
             'institution': forms.TextInput(),
+            'institution_address': forms.TextInput(),
+            'institution_city': forms.TextInput(),
+            'institution_country': forms.TextInput(),
+            'institution_postal_code': forms.TextInput(),
             'teaching': forms.Textarea(),
             'introduction': forms.Textarea(),
             'member': forms.Select(choices=YES_NO),
@@ -67,11 +79,15 @@ class UserProfileForm(forms.ModelForm):
 class AdminUserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'title', 'institution', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar', 'verified')
+        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar', 'verified')
         labels = {
             'name': 'Full Name',
             'title': 'Professional Title',
             'institution': 'Institutional Affiliation',
+            'institution_address': 'Institution\'s Street Address',
+            'institution_city': 'City',
+            'institution_country': 'Country',
+            'institution_postal_code': 'Postal Code',
             'teaching': 'Please describe your teaching responsibilities at your institution.',
             'member': 'Are you a current <a href="/membership/">GAHTC Member</a>?',
             'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
@@ -83,6 +99,10 @@ class AdminUserProfileForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(),
             'institution': forms.TextInput(),
+            'institution_address': forms.TextInput(),
+            'institution_city': forms.TextInput(),
+            'institution_country': forms.TextInput(),
+            'institution_postal_code': forms.TextInput(),
             'teaching': forms.Textarea(),
             'introduction': forms.Textarea(),
             'member': forms.Select(choices=YES_NO),
