@@ -1074,13 +1074,11 @@ def lecturesView(request):
 
 @login_required
 def membersView(request):
-
-
 	"""
 	  Loads all user profiles
 	"""	
 
-	profiles_returned = profile.objects.exclude(name='').order_by('name')
+	profiles_returned = profile.objects.filter(verified=True).exclude(name='').order_by('name')
 
 	context_dict = {'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)
