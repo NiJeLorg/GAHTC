@@ -273,26 +273,26 @@ class Command(BaseCommand):
                     addslide.slide_notes = '\n'.join(notes_text_this_slide)
                     addslide.save()
                     # add in tags for this slide
-                    # create tags from noun_phrases for main slide text
-                    mt = '. '.join(main_text_this_slide)
-                    blobbed = TextBlob(mt)
-                    np = blobbed.noun_phrases
-                    np = list(set(np))
-                    np = [s for s in np if s]
-                    addslide.tags.clear()
-                    for item in np:
-                        s = ''.join(ch for ch in item if ch not in exclude)
-                        addslide.tags.add(s)
+                    # # create tags from noun_phrases for main slide text
+                    # mt = '. '.join(main_text_this_slide)
+                    # blobbed = TextBlob(mt)
+                    # np = blobbed.noun_phrases
+                    # np = list(set(np))
+                    # np = [s for s in np if s]
+                    # addslide.tags.clear()
+                    # for item in np:
+                    #     s = ''.join(ch for ch in item if ch not in exclude)
+                    #     addslide.tags.add(s)
 
-                    # create tags from noun_phrases for slide notes
-                    nt = '. '.join(notes_text_this_slide)
-                    blobbed = TextBlob(nt)
-                    np = blobbed.noun_phrases
-                    np = list(set(np))
-                    np = [s for s in np if s]
-                    for item in np:
-                        s = ''.join(ch for ch in item if ch not in exclude)
-                        addslide.tags.add(s)
+                    # # create tags from noun_phrases for slide notes
+                    # nt = '. '.join(notes_text_this_slide)
+                    # blobbed = TextBlob(nt)
+                    # np = blobbed.noun_phrases
+                    # np = list(set(np))
+                    # np = [s for s in np if s]
+                    # for item in np:
+                    #     s = ''.join(ch for ch in item if ch not in exclude)
+                    #     addslide.tags.add(s)
 
                     f = open(head + "/slide-"+ str(index) +".jpg")
                     image_file = File(f)
@@ -347,25 +347,25 @@ class Command(BaseCommand):
 
                 #add tags for entire presentation
                 # create tags from noun_phrases for main slide text
-                mt = '. '.join(main_text)
-                blobbed = TextBlob(mt)
-                np = blobbed.noun_phrases
-                np = list(set(np))
-                np = [s for s in np if s]
-                lecturesObject.tags.clear()
-                for item in np:
-                    s = ''.join(ch for ch in item if ch not in exclude)
-                    lecturesObject.tags.add(s)
+                # mt = '. '.join(main_text)
+                # blobbed = TextBlob(mt)
+                # np = blobbed.noun_phrases
+                # np = list(set(np))
+                # np = [s for s in np if s]
+                # lecturesObject.tags.clear()
+                # for item in np:
+                #     s = ''.join(ch for ch in item if ch not in exclude)
+                #     lecturesObject.tags.add(s)
 
-                # create tags from noun_phrases for slide notes
-                nt = '. '.join(notes_text)
-                blobbed = TextBlob(nt)
-                np = blobbed.noun_phrases
-                np = list(set(np))
-                np = [s for s in np if s]
-                for item in np:
-                    s = ''.join(ch for ch in item if ch not in exclude)
-                    lecturesObject.tags.add(s)               
+                # # create tags from noun_phrases for slide notes
+                # nt = '. '.join(notes_text)
+                # blobbed = TextBlob(nt)
+                # np = blobbed.noun_phrases
+                # np = list(set(np))
+                # np = [s for s in np if s]
+                # for item in np:
+                #     s = ''.join(ch for ch in item if ch not in exclude)
+                #     lecturesObject.tags.add(s)               
 
     def extract_text_from_pptx_segments(self):
         # pull PPTX from database where content hasn't yet been extracted
@@ -455,27 +455,27 @@ class Command(BaseCommand):
                 lecturesObject.extracted = True
                 lecturesObject.save()
 
-                #add tags for entire presentation
-                # create tags from noun_phrases for main slide text
-                mt = '. '.join(main_text)
-                blobbed = TextBlob(mt)
-                np = blobbed.noun_phrases
-                np = list(set(np))
-                np = [s for s in np if s]
-                lecturesObject.tags.clear()
-                for item in np:
-                    s = ''.join(ch for ch in item if ch not in exclude)
-                    lecturesObject.tags.add(s)
+                # #add tags for entire presentation
+                # # create tags from noun_phrases for main slide text
+                # mt = '. '.join(main_text)
+                # blobbed = TextBlob(mt)
+                # np = blobbed.noun_phrases
+                # np = list(set(np))
+                # np = [s for s in np if s]
+                # lecturesObject.tags.clear()
+                # for item in np:
+                #     s = ''.join(ch for ch in item if ch not in exclude)
+                #     lecturesObject.tags.add(s)
 
-                # create tags from noun_phrases for slide notes
-                nt = '. '.join(notes_text)
-                blobbed = TextBlob(nt)
-                np = blobbed.noun_phrases
-                np = list(set(np))
-                np = [s for s in np if s]
-                for item in np:
-                    s = ''.join(ch for ch in item if ch not in exclude)
-                    lecturesObject.tags.add(s)               
+                # # create tags from noun_phrases for slide notes
+                # nt = '. '.join(notes_text)
+                # blobbed = TextBlob(nt)
+                # np = blobbed.noun_phrases
+                # np = list(set(np))
+                # np = [s for s in np if s]
+                # for item in np:
+                #     s = ''.join(ch for ch in item if ch not in exclude)
+                #     lecturesObject.tags.add(s)               
 
                 # remove pdf
                 os.remove(pdfpath)
