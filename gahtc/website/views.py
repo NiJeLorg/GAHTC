@@ -25,6 +25,9 @@ from website.forms import *
 #for email
 from django.core.mail import send_mail
 
+#for csv export
+import csv
+
 # GAHTC Views
 def index(request):
 
@@ -1865,6 +1868,31 @@ def admin_verify_user(request, id=None):
 	context_dict = {'verify_form': verify_form, 'user_profile': user_profile}
 
 	return render(request, 'website/admin_verify_user.html', context_dict)
+
+
+@login_required
+def admin_download_user_profiles(request):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	folder = "/csv_profiles/"
+	filename = "GAHTC_profiles.csv"
+
+	if not os.path.exists(MEDIA_ROOT + folder):
+		os.makedirs(MEDIA_ROOT + folder)
+
+	## Stopped here ##
+
+	context_dict = {'': verify_form}
+
+	return render(request, 'website/admin_download_user_profiles.html', context_dict)
+
+
 
 @login_required
 def admin_downloads(request):

@@ -67,6 +67,7 @@ urlpatterns = [
     url(r'^admin_unverified/$', views.admin_unverified, name='admin_unverified'),
     url(r'^admin_update_profile/(?P<id>\d+)/$', views.admin_update_profile, name='admin_update_profile'),
     url(r'^admin_verify_user/(?P<id>\d+)/$', views.admin_verify_user, name='admin_verify_user'),
+    url(r'^admin_download_user_profiles/$', views.admin_download_user_profiles, name='admin_download_user_profiles'),
     url(r'^admin_downloads/$', views.admin_downloads, name='admin_downloads'),
     url(r'^admin_coming_soon_module/$', views.admin_coming_soon_module, name='admin_coming_soon_module'),
     url(r'^admin_remove_coming_soon_modules/$', views.admin_remove_coming_soon_modules, name='admin_remove_coming_soon_modules'),
