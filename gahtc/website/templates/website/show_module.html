@@ -2,9 +2,14 @@
 {% load bootstrap_tags %}
 
 	<div class="row marginBottom15">
+		{% if user.is_authenticated %}
 		<div class="col-md-8">
+		{% else %}
+		<div class="col-md-12">
+		{% endif %}
 			<h4 class="noTopMargin"><span class="label label-primary">Module:</span> {{ module_returned.title }}</h4>
-		</div>	
+		</div>
+		{% if user.is_authenticated %}
 		<div class="col-md-4">
 			<div class="dropdown pull-right">
 				<button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -16,23 +21,31 @@
 				</ul>
 			</div>
 		</div>	
+		{% endif %}
 	</div>
 	<div class="row">
 		<div class="col-md-12">
+			{% if user.is_authenticated %}
 			<div class="alert alert-success bundle-add-alert hidden" role="alert">
 				<p><strong>Module Added!</strong> This module has been added to your bundle, <span id="bundle-title"></span>.</p>
 			</div>
+	        {% else %}
+	        <div class="alert alert-info" role="alert">
+	            <p><a href="{% url 'registration_register' %}">Sign up for a GAHTC account to access this content!</a></p>
+	        </div>
+	        {% endif %}			
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<h4>This module includes:</h4>
+			<p><strong>Authors:</strong> {{ module_returned.authors }}<br />
+			<strong>Description: </strong> {{ module_returned.description }}</p>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
 			{% if moduleDocs|length > 0 %}
-				<h5><span class="label label-primary">Documents</span></h5>
+				<h5><span class="label label-primary">Documents for this module</span></h5>
 				<ul>				
 				{% for doc in moduleDocs %}
 					<li>{{ doc.title }}</li>
@@ -45,28 +58,26 @@
 		<div class="col-md-12">
 			{% if moduleLecs|length > 0 %}
 				<h5><span class="label label-success">Lectures</span></h5>
-				<ul>				
 				{% for lec in moduleLecs %}
-					<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button></li> 
+					<h4>{{ lec.title }}</h4>
+						{% if user.is_authenticated %}
+							<button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">Preview lecture</button>
+						{% endif %}
 						{% if lec.lectureDocs|length > 0 %}
+							<h5><span class="label label-info">Documents for this lecture</span></h5>
 							<ul>
 							{% for lecDoc in lec.lectureDocs %}
 								<li>{{ lecDoc.title }}</li>
 							{% endfor %}
 							</ul>
 						{% endif %}
+					{% if not forloop.last %}
+						<hr />
+					{% endif %}
 				{% endfor %}
-				</ul>
 			{% endif %}
 		</div>
 	</div>
-	<!--<div class="row">
-		<div class="col-md-12">
-			<div class="textbox">
-				<p>{{ module_returned.document_contents|linebreaksbr }}</p>
-			</div>
-		</div>
-	</div>-->
 	{% if request.user.userProfile.verified %}
 	<div class="row">
 		<div class="col-md-12">
@@ -83,9 +94,6 @@
                     <div class="panel-body">
                         {% if comments %} 
                         {% for comment in comments %} 
-                        {% if comment.user == request.user %}
-                        <!--<div id="removeComment" class="pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></div>-->
-                        {% endif %}
                         <p>{{ comment.comment }}</p>
                         <p class="pull-right"><small>{{ comment.user }} ({{comment.created|timesince }} ago)</small></p>
                         <div class="clearfix"></div>
@@ -101,20 +109,6 @@
                     </div>
                 </div>
             </div>
-            <!-- 			  <div class="panel panel-default">
-			    <div class="panel-heading" role="tab" id="headingTwo">
-			      <h4 class="panel-title">
-			        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-			          Suggested Similar Content
-			        </a>
-			      </h4>
-			    </div>
-			    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-			      <div class="panel-body">
-			      	<p>Suggested similar content here.</p>
-			      </div>
-			    </div>
-			  </div> -->
         </div>
     </div>
 </div>

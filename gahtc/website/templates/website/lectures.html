@@ -24,39 +24,39 @@
 							<div class="row">
 								<div class="col-md-9">
 									<h4><span class="label label-primary">From the module:</span> {{ lecture_returned.module.title }}</h4>
+									<p><strong>Authors:</strong> {{ lecture_returned.authors }}<br />
+									<strong>Description: </strong> {{ lecture_returned.description }}</p>
 								</div>	
 								<div class="col-md-3">
+								{% if user.is_authenticated %}
 					                {% if request.user.userProfile.verified %}
-					                <button type="button" class="btn btn-default downloadLecture pull-right" data-lectureid="{{ lecture_returned.id }}">Download Lecture & Documents</button>
+					                	<button type="button" class="btn btn-default downloadLecture pull-right" data-lectureid="{{ lecture_returned.id }}">Download this lecture &amp; documents</button>
 					                {% else %}
-					                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download Lecture & Documents</button>
+					                	<button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download this lecture &amp; documents</button>
 					                {% endif %}
+					            {% endif %}
 								</div>	
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<h4>This lecture includes:</h4>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<span class="label label-success">Lecture:</span> 
-									<button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lecture_returned.id }}">{{ lecture_returned.title }}</button>
-								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12">
 									{% if lecture_returned.lectureDocs|length > 0 %}
-										<h5><span class="label label-info">Documents</span></h5>
+										<h5><span class="label label-info">Documents for this lecture:</span></h5>
 										<ul>				
 										{% for lecDoc in lecture_returned.lectureDocs %}
 											<li>{{ lecDoc.title }}</li>
 										{% endfor %}
 										</ul>
 									{% endif %}
+									{% if user.is_authenticated %}
+										<button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lecture_returned.id }}">Preview lecture</button>
+						                {% if request.user.userProfile.verified %}
+						                	<button type="button" class="btn btn-default btn-xs downloadLecture" data-lectureid="{{ lecture_returned.id }}">Download this lecture &amp; documents</button>
+						                {% else %}
+						                	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#waitingForVerification">Download this lecture &amp; documents</button>
+						                {% endif %}
+						            {% endif %}
 								</div>
 							</div>
-							
 						</div>
 					</div>
 

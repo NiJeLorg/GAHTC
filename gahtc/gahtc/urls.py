@@ -17,6 +17,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from website import urls as website_urls
 from website import regbackend
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
 	url(r'^', include(website_urls)),
@@ -26,3 +28,7 @@ urlpatterns = [
     url(r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
     url(r'^forum/', include('pybb.urls', namespace='pybb')),
 ]
+
+if settings.DEBUG:
+    # static files (images, css, javascript, etc.)
+    urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
