@@ -31,21 +31,23 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-md-9">
-									<h4>This module includes:</h4>
-								</div>	
+									<p><strong>Authors:</strong> {{ module_returned.authors }}<br />
+									<strong>Description: </strong> {{ module_returned.description }}</p>
+								</div>
 								<div class="col-md-3">
+								{% if user.is_authenticated %}
 					                {% if request.user.userProfile.verified %}
-					                <button type="button" class="btn btn-default downloadModule pull-right" data-moduleid="{{ module_returned.id }}">Download Module</button>
+					                	<button type="button" class="btn btn-default downloadModule pull-right" data-moduleid="{{ module_returned.id }}">Download module</button>
 					                {% else %}
-					                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download Module</button>
+					                	<button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download module</button>
 					                {% endif %}
-									
-								</div>	
+								{% endif %}
+								</div>		
 							</div>
 							<div class="row">
 								<div class="col-md-12">
 									{% if module_returned.moduleDocs|length > 0 %}
-										<h5><span class="label label-primary">Documents</span></h5>
+										<h5><span class="label label-primary">Documents for this module</span></h5>
 										<ul>				
 										{% for doc in module_returned.moduleDocs %}
 											<li>{{ doc.title }}</li>
@@ -58,18 +60,28 @@
 								<div class="col-md-12">
 									{% if module_returned.moduleLecs|length > 0 %}
 										<h5><span class="label label-success">Lectures</span></h5>
-										<ul>				
 										{% for lec in module_returned.moduleLecs %}
-											<li><button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">{{ lec.title }}</button></li>
+											<h4>{{ lec.title }}</h4>
+												{% if user.is_authenticated %}
+													<button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">Preview lecture</button>
+													{% if request.user.userProfile.verified %}
+					                					<button type="button" class="btn btn-default btn-xs downloadLecture" data-lectureid="{{ lec.id }}">Download this lecture &amp; documents</button>
+					                				{% else %}
+					                					<button type="button" class="btn btn-default btn-xs " data-toggle="modal" data-target="#waitingForVerification">Download this lecture &amp; documents</button>
+					                				{% endif %}
+												{% endif %}
 												{% if lec.lectureDocs|length > 0 %}
+													<h5><span class="label label-info">Documents for this lecture</span></h5>
 													<ul>
 													{% for lecDoc in lec.lectureDocs %}
 														<li>{{ lecDoc.title }}</li>
 													{% endfor %}
 													</ul>
 												{% endif %}
+											{% if not forloop.last %}
+												<hr />
+											{% endif %}
 										{% endfor %}
-										</ul>
 									{% endif %}
 								</div>
 							</div>							
@@ -92,9 +104,8 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-md-9">
-									<p><strong>Authors:</strong> {{ module_returned.authors }}</p>
-									<p><strong>Description: </strong> {{ module_returned.description }}</p>
-
+									<p><strong>Authors:</strong> {{ module_returned.authors }}<br />
+									<strong>Description: </strong> {{ module_returned.description }}</p>
 								</div>	
 							</div>
 						</div>
@@ -117,7 +128,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Download Course Modules</h4>
+                <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
             </div>
             <div class="modal-body">
                 <div id="downloadFileArea">
@@ -127,7 +138,7 @@
                                 <img class="img-responsive pull-right" src="{% static 'website/css/images/spiffygif_114x114.gif' %}" />
                             </div>
                             <div class="col-md-9">
-                                <h2>Zipping Up Your Module!</h2>
+                                <h2>Zipping Up Your Materials!</h2>
                             </div>
                         </div>
                     </div>

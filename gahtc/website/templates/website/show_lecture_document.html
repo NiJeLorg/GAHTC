@@ -1,10 +1,15 @@
 {% load staticfiles %}
 {% load bootstrap_tags %}
 
-	<div class="row marginBottom15">
-		<div class="col-md-8">
+		<div class="row marginBottom15">
+	    {% if user.is_authenticated %}
+	    <div class="col-md-8">
+	    {% else %}
+	    <div class="col-md-12">
+	    {% endif %}
 			<h4 class="noTopMargin"><span class="label label-info">Lecture Document:</span> {{ lecture_document_returned.title }}</h4>
 		</div>	
+		{% if user.is_authenticated %}
 		<div class="col-md-4">
 			<div class="dropdown pull-right">
 				<button class="btn btn-default btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -15,18 +20,25 @@
 					{% include "website/bundle_dropdown.html" %}
 				</ul>
 			</div>
-		</div>	
+		</div>
+		{% else %}
 	</div>
 	<div class="row">
 		<div class="col-md-12">
+			{% if user.is_authenticated %}
 			<div class="alert alert-success bundle-add-alert hidden" role="alert">
 				<p><strong>Lecture Document Added!</strong> This lecture document has been added to your bundle, <span id="bundle-title"></span>.</p>
 			</div>
+			{% else %}
+	        <div class="alert alert-info" role="alert">
+	            <p><a href="{% url 'registration_register' %}">Sign up for a GAHTC account to access this content!</a></p>
+	        </div>
+	        {% endif %}
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<p>{{ lecture_document_returned.title }}</p>
+			<p><strong>Description: </strong> {{ lecture_document_returned.description }}</p>
 		</div>
 	</div>
 	{% if request.user.userProfile.verified %}
@@ -67,20 +79,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="panel panel-default">
-			    <div class="panel-heading" role="tab" id="headingTwo">
-			      <h4 class="panel-title">
-			        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-			          Suggested Similar Content
-			        </a>
-			      </h4>
-			    </div>
-			    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-			      <div class="panel-body">
-			      	<p>Suggested similar content here.</p>
-			      </div>
-			    </div>
-			  </div> -->
         </div>
     </div>
 </div>

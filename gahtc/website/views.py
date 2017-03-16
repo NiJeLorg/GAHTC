@@ -1,7 +1,6 @@
 import os,zipfile
 from django.shortcuts import render
-from django.http import JsonResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
 import operator
 from django.db.models import TextField, CharField, Q, Count
@@ -24,6 +23,9 @@ from website.forms import *
 
 #for email
 from django.core.mail import send_mail
+
+#for csv export
+from djqscsv import render_to_csv_response
 
 # GAHTC Views
 def index(request):
@@ -182,14 +184,20 @@ def mainSearchCode(request, keyword, tab):
 		lecture_slides_returned = lectureSlides.objects.none()
 		coming_soon_modules_returned = comingSoonModules.objects.none()
 		
-		# pull bundles
-		bundles_returned = bundles.objects.filter(user=request.user)
+		if request.user.is_authenticated():
+			# pull bundles
+			bundles_returned = bundles.objects.filter(user=request.user)
 
-		# pull user profile
-		user_profile = profile.objects.get(user=request.user)
+			# pull user profile
+			user_profile = profile.objects.get(user=request.user)
 
-		# pull saved searches
-		saved_searches = savedSearches.objects.filter(user=request.user)
+			# pull saved searches
+			saved_searches = savedSearches.objects.filter(user=request.user)
+
+		else: 
+			bundles_returned = bundles.objects.none()
+			user_profile = profile.objects.none()
+			saved_searches = savedSearches.objects.none()
 
 		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
 
@@ -224,21 +232,27 @@ def mainSearchCode(request, keyword, tab):
 		modules_returned_unique_count = unique_module_list_count
 
 		
-		# pull bundles
-		bundles_returned = bundles.objects.filter(user=request.user)
+		
+		if request.user.is_authenticated():
+			# pull bundles
+			bundles_returned = bundles.objects.filter(user=request.user)
 
-		# pull user profile
-		user_profile = profile.objects.get(user=request.user)
+			# pull user profile
+			user_profile = profile.objects.get(user=request.user)
 
-		# pull saved searches
-		saved_searches = savedSearches.objects.filter(user=request.user)
+			# pull saved searches
+			saved_searches = savedSearches.objects.filter(user=request.user)
+
+		else: 
+			bundles_returned = bundles.objects.none()
+			user_profile = profile.objects.none()
+			saved_searches = savedSearches.objects.none()
 
 		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
 
 	return context_dict
 
 
-@login_required
 def search(request):
 
 
@@ -359,8 +373,11 @@ def showModule(request, id=None):
 	#get first lecture uploaded
 	earliest_lecture = lectures.objects.filter(module=module_returned).earliest('created')
 
-	# pull bundles
-	bundles_returned = bundles.objects.filter(user=request.user)
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+	else: 
+		bundles_returned = bundles.objects.none()
 
 	# get comments
 	comments = modulesComments.objects.filter(module=module_returned)
@@ -379,8 +396,11 @@ def showLecture(request, id=None):
 	lecture_returned = lectures.objects.get(pk=id)
 	lecture_slides = lectureSlides.objects.filter(lecture=lecture_returned).order_by("slide_number")
 
-	# pull bundles
-	bundles_returned = bundles.objects.filter(user=request.user)
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+	else: 
+		bundles_returned = bundles.objects.none()
 
 	# get comments
 	comments = lecturesComments.objects.filter(lecture=lecture_returned)
@@ -399,8 +419,11 @@ def showLectureSegment(request, id=None):
 	lecture_segment_returned = lectureSegments.objects.get(pk=id)
 	lecture_slides = lectureSlidesSegment.objects.filter(lecture_segment=lecture_segment_returned).order_by("slide_number")
 
-	# pull bundles
-	bundles_returned = bundles.objects.filter(user=request.user)
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+	else: 
+		bundles_returned = bundles.objects.none()
 
 	# get comments
 	comments = lectureSegmentsComments.objects.filter(lectureSegment=lecture_segment_returned)
@@ -418,8 +441,11 @@ def showLectureDocument(request, id=None):
 	#get lecture document
 	lecture_document_returned = lectureDocuments.objects.get(pk=id)
 
-	# pull bundles
-	bundles_returned = bundles.objects.filter(user=request.user)
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+	else: 
+		bundles_returned = bundles.objects.none()
 
 	# get comments
 	comments = lectureDocumentsComments.objects.filter(lectureDocument=lecture_document_returned)
@@ -437,8 +463,11 @@ def showLectureSlide(request, id=None):
 	#get lecture slide
 	lecture_slide_returned = lectureSlides.objects.get(pk=id)
 
-	# pull bundles
-	bundles_returned = bundles.objects.filter(user=request.user)
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+	else: 
+		bundles_returned = bundles.objects.none()
 
 	# get comments
 	comments = lectureSlidesComments.objects.filter(lectureSlide=lecture_slide_returned)
@@ -993,7 +1022,6 @@ def updateProfile(request):
 	return render(request, 'website/update_profile.html', context_dict)
 
 
-@login_required
 def modulesView(request):
 
 
@@ -1045,7 +1073,6 @@ def modulesView(request):
 
 
 
-@login_required
 def lecturesView(request):
 
 
@@ -1865,6 +1892,24 @@ def admin_verify_user(request, id=None):
 	context_dict = {'verify_form': verify_form, 'user_profile': user_profile}
 
 	return render(request, 'website/admin_verify_user.html', context_dict)
+
+
+
+@login_required
+def admin_download_user_profiles(request):
+	"""
+	  Check if superuser 
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	#loop thorough users to create all other rows
+	profiles = profile.objects.values('user__username', 'name', 'user__email', 'user__last_login', 'user__date_joined', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'introduction', 'avatar', 'title', 'member', 'website', 'instutution_document', 'verified')
+
+	return render_to_csv_response(profiles)
+
 
 @login_required
 def admin_downloads(request):
