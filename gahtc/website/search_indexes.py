@@ -23,7 +23,7 @@ class moduleDocumentsIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.filter(created__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(created__lte=datetime.datetime.now(), extracted__exact=True)
 
 class lecturesIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -34,7 +34,7 @@ class lecturesIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.filter(created__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(created__lte=datetime.datetime.now(), extracted__exact=True)
 
 class lectureSegmentsIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -45,7 +45,7 @@ class lectureSegmentsIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.filter(created__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(created__lte=datetime.datetime.now(), extracted__exact=True)
 
 class lectureDocumentsIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -56,7 +56,7 @@ class lectureDocumentsIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.filter(created__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(created__lte=datetime.datetime.now(), extracted__exact=True)
 
 class lectureSlidesIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -67,7 +67,7 @@ class lectureSlidesIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.filter(created__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(created__lte=datetime.datetime.now(), extracted__exact=True)
 
 class comingSoonModulesIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
