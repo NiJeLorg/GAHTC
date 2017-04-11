@@ -65,6 +65,10 @@ a:focus {
     width: 40%;
 }
 
+.main-input form button {
+    margin-top: -39px;
+}
+
 
 /* Background Image */
 

@@ -8,6 +8,7 @@
         <form method="post" action="/search/">
             {% csrf_token %}
             <input type="text" class="form-control" name="keyword" placeholder="Your search begins here..." />
+            <button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
         </form>
     </div>
 </div>
