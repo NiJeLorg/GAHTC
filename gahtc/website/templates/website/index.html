@@ -1,96 +1,67 @@
-{% extends 'website/base.html' %}
-{% load staticfiles %}
-
-{% block title %}Home{% endblock %}
-
-{% block css_block %}
-{% endblock %}
-
-{% block head_js_block %}
-{% endblock %}
-
-
-{% block content %}
+{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Home{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
-<ul id="background" class="fadein">
-	<li></li>
-</ul>
-
-<div class="container fadein whitetext">
-	<div class="row">
-		<div class="col-md-8 col-md-offset-1 searchbar">
-			<h1 class="greybackground">Browse or Search for Course Materials</h1>
-			<form class="form-horizontal" method="post" action="/search/">
-				{% csrf_token %}
-				<div class="form-group">
-					<div class="col-xs-6">
-						<a class="btn btn-default btn-block marginBottom15" href="{% url 'modulesView' %}" role="button">Browse by Module</a>
-					</div>
-					<div class="col-xs-6">
-						<a class="btn btn-default btn-block marginBottom15" href="{% url 'lecturesView' %}" role="button">Browse by Lecture</a>
-					</div>
-					<div class="col-xs-11">
-						<input type="text" class="form-control" name="keyword" placeholder="Enter search terms here to search course materials." />
-					</div>
-					<div class="col-xs-1">
-						<button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
+<!-- <ul id="background" class="fadein">
+    <li></li>
+</ul> -->
+<div class="background-holder">
+    <div class="main-input">
+        <form method="post" action="/search/">
+            {% csrf_token %}
+            <input type="text" class="form-control" name="keyword" placeholder="Your search begins here..." />
+        </form>
+    </div>
 </div>
-
-{% endblock %}
-
-{% block modal_block %}
+{% endblock %} {% block modal_block %}
 <!-- introductory modal -->
 <div class="modal fade" id="introduction" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-        <h3 class="text-center text-uppercase">Welcome to the Global Architectural History Teaching Collaborative!</h3>
-        <p class="text-center">
-          The Global Architectural History Teaching Collaborative (GAHTC) is a worldwide group of architectural scholars with a mission to produce teaching materials of non-Western subjects for teachers of architectural survey courses at the graduate and undergraduate level. Feel free to browse and download this lecture preparation material for free. This material was produced by scholars belonging to the GAHTC community, and funded through the <a href="https://mellon.org/">Andrew W. Mellon Foundation</a>.
-        </p>
-        <div class="clearfix"></div>
-          <p><button id="closeIntroModal" class="btn btn-default btn-lg center-block" type="submit">ENTER SITE</button></p>
-          <div class="checkbox text-center text-uppercase">
-          <label>
-            <input type="checkbox" id="toggleIntroCookie" value="NoShow">
-             Don't show this message again
-          </label>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text-center text-uppercase">Welcome to the Global Architectural History Teaching Collaborative!</h3>
+                <p class="text-center">
+                    The Global Architectural History Teaching Collaborative (GAHTC) is a worldwide group of architectural scholars with a mission to produce teaching materials of non-Western subjects for teachers of architectural survey courses at the graduate and undergraduate level. Feel free to browse and download this lecture preparation material for free. This material was produced by scholars belonging to the GAHTC community, and funded through the <a href="https://mellon.org/">Andrew W. Mellon Foundation</a>.
+                </p>
+                <div class="clearfix"></div>
+                <p>
+                    <button id="closeIntroModal" class="btn btn-default btn-lg center-block" type="submit">ENTER SITE</button>
+                </p>
+                <div class="checkbox text-center text-uppercase">
+                    <label>
+                        <input type="checkbox" id="toggleIntroCookie" value="NoShow"> Don't show this message again
+                    </label>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
-{% endblock %}
-
-{% block js_block %}
-    <script type="text/javascript" src="{% static 'website/js/jquery.cookie.js' %}"></script>
-    <!-- open introductory modal on page load -->
-    <script type="text/javascript">
-      $( document ).ready(function() {
-        if (!$.cookie('noIntro')) {
-          $('#introduction').modal('show');
-          // close if button clicked
-          $('#closeIntroModal').click(function() {
+{% endblock %} {% block js_block %}
+<script type="text/javascript" src="{% static 'website/js/jquery.cookie.js' %}"></script>
+<!-- open introductory modal on page load -->
+<script type="text/javascript">
+$(document).ready(function() {
+    if (!$.cookie('noIntro')) {
+        $('#introduction').modal('show');
+        // close if button clicked
+        $('#closeIntroModal').click(function() {
             $('#introduction').modal('hide');
-          });
-          // set cookie if don't show this message is checked
-          $('#toggleIntroCookie').change(function() {
-            if($(this).is(":checked")) {
-              $.cookie('noIntro', 'noIntro', { expires: 365, path: '/' });
+        });
+        // set cookie if don't show this message is checked
+        $('#toggleIntroCookie').change(function() {
+            if ($(this).is(":checked")) {
+                $.cookie('noIntro', 'noIntro', {
+                    expires: 365,
+                    path: '/'
+                });
             } else {
-              $.removeCookie('noIntro', { path: '/' });
+                $.removeCookie('noIntro', {
+                    path: '/'
+                });
             }
-          });
-        }
-      });
-    </script>
-	<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
-	<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
-	<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
-
+        });
+    }
+});
+</script>
+<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
 {% endblock %}
