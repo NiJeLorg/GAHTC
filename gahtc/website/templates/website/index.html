@@ -1,5 +1,4 @@
 {% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Home{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
-
 <div class="background-holder">
     <div class="main-input">
         <form method="post" action="/search/">
@@ -37,6 +36,21 @@
 <!-- open introductory modal on page load -->
 <script type="text/javascript">
 $(document).ready(function() {
+
+    function selectRandomBackgroundImage() {
+        var imagesArr = ['sachi-temple.png', 'img-min.jpg', 'lalibela.jpg'],
+            randomIndex = Math.floor(Math.random() * imagesArr.length),
+            imageUrl = '../../static/website/css/images/' + imagesArr[randomIndex];
+        $('.background-holder').css({
+            'background': "url(" + imageUrl + ")",
+            'background-repeat': 'no-repeat',
+            'background-size': 'cover'
+        }).fadeIn(4000);
+    }
+
+    selectRandomBackgroundImage();
+
+
     if (!$.cookie('noIntro')) {
         $('#introduction').modal('show');
         // close if button clicked

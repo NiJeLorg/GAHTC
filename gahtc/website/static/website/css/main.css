@@ -58,7 +58,6 @@ a:focus {
 }
 
 .background-holder {
-    background: url('./images/img-min.jpg');
     flex-grow: 100;
     display: flex;
     justify-content: center;
