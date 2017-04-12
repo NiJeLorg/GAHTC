@@ -12,9 +12,7 @@
     <link rel="icon" href="{% static 'website/css/images/favicon.png' %}" sizes="32x32" />
     <!-- fonts -->
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="{% static 'website/css/bootstrap.min.css' %}"> 
-    {% block css_block %} 
-    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'website/css/bootstrap.min.css' %}"> {% block css_block %} {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'website/css/main.css' %}">
     <!--  javascript
     ================================================== -->
@@ -26,9 +24,11 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    {% block head_js_block %} 
-    {% endblock %}
+    {% block head_js_block %} {% endblock %}
 </head>
+<!--      <li><a href="{% url 'grantProgram' %}">Grant Program</a></li>
+     <li><a href="{% url 'conference' %}">Conference</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li> -->
 
 <body>
     <nav class="navbar navbar-default">
@@ -43,88 +43,101 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="gahtc-navbar-collapse">
-          <ul class="nav navbar-nav navbar-left">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Materials <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'modulesView' %}">By Module</a></li>
-                <li><a href="{% url 'lecturesView' %}">By Lecture</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'about' %}">About GAHTC</a></li>
-                <li><a href="{% url 'howToUse' %}">How to Use GAHTC.org</a></li>
-                <li><a href="{% url 'grantProgram' %}">Grant Program</a></li>
-                <li><a href="{% url 'conference' %}">Conference</a></li>
-                <li><a href="{% url 'contact' %}">Contact</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">People <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'membership' %}">Membership</a></li>
-                <li><a href="{% url 'membersView' %}">Members</a></li>
-              </ul>
-            </li>
-            <li><a href="{% url 'timescape' %}">Timescape</a></li>
-            <li><a href="/forum/">Forums</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-          {% if user.is_authenticated %}
-            <li><a href="{% url 'myprofile' %}">Hello {{ request.user.userProfile.name }}!</a></li>
-            {% if perms.auth.add_user %}
-            <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
-            {% endif %}
-            <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
-            <li><a href="{% url 'mysavedsearches' %}">My Saved Searches</a></li>
-            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
-          {% else %}
-            <li><a href="{% url 'auth_login' %}">Log In</a></li>
-            <li><a href="{% url 'registration_register' %}">Create Account</a></li>
-          {% endif %}               
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="gahtc-navbar-collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'about' %}">About GAHTC</a></li>
+                            <li><a href="{% url 'howToUse' %}">How to Use GAHTC</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore Content<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'timescape' %}">Timescape</a></li>
+                            <li><a href="{% url 'modulesView' %}">By Module</a></li>
+                            <li><a href="{% url 'lecturesView' %}">By Lecture</a></li>
+                        </ul>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Membership <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url}">How to Become a Member</a></li>
+                                <li><a href="{% url}">Browse Current Mmembers</a></li>
+                                <li><a href="{% url}">Bi-Annual Member Conference</a></li>
+                                <li><a href="{% url}">Testimonials</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Apply for a Grant <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url}">Targeted Acquisition Grants</a></li>
+                                <li><a href="{% url}">Untargeted Field-initiated Grants</a></li>
+                                <li><a href="{% url}">Emerging Scholar Grants</a></li>
+                                <li><a href="{% url}">Global Connections Fellowship</a></li>
+                                <li><a href="{% url}">Research-to-Teaching Grants in affiliation with SAH</a></li>
+                                <li><a href="{% url}">Field Seminar Travel Grants in affiliation with SAH</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url}">Contact Box</a></li>
+                                <li><a href="{% url}">Message Board</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/forum/">Forums</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'myprofile' %}">Hello {{ request.user.userProfile.name }}!</a></li>
+                    {% if perms.auth.add_user %}
+                    <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
+                    <li><a href="{% url 'mysavedsearches' %}">My Saved Searches</a></li>
+                    <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'auth_login' %}">Log In</a></li>
+                    <li><a href="{% url 'registration_register' %}">Create Account</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
     </nav>
-	  
-	{% block content %}
-	{% endblock %}
-	  
-	<footer class="footer hidden">
-		<div class="container-fluid">
-			<p class="text-muted">Copyright &copy; {% now 'Y' %} | All Rights Reserved | GAHTC: Global Architectural History Teaching Collaborative</p>
-		</div>
-	</footer>
-
-    {% block modal_block %}
-    {% endblock %}
-	
+    {% block content %} {% endblock %}
+    <footer class="footer hidden">
+        <div class="container-fluid">
+            <p class="text-muted">Copyright &copy; {% now 'Y' %} | All Rights Reserved | GAHTC: Global Architectural History Teaching Collaborative</p>
+        </div>
+    </footer>
+    {% block modal_block %} {% endblock %}
     <!--  javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-	<script type="text/javascript" src="{% static 'website/js/bootstrap.min.js' %}"></script>
-	{% block js_block %}
-	{% endblock %}
-	<!-- check every page to see if the body is smaller than the window, and if so, fix the footer to the bottom -->
-	<script type="text/javascript">
-	  $( document ).ready(function() {
-  		var $body = $('body').height();
-  		var $win = $(window).height();
-  		console.log($body, 'body');
-  		console.log($win, 'win');
-  		if ($body <= $win) {
-  			$('.footer').css({ "position": "absolute", "bottom": "0" });
-  		}
-      if ($('.footer').hasClass('hidden')) {
-        $('.footer').removeClass('hidden');
-      }
-	  });
-	</script>
-
+    <script type="text/javascript" src="{% static 'website/js/bootstrap.min.js' %}"></script>
+    {% block js_block %} {% endblock %}
+    <!-- check every page to see if the body is smaller than the window, and if so, fix the footer to the bottom -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var $body = $('body').height();
+        var $win = $(window).height();
+        console.log($body, 'body');
+        console.log($win, 'win');
+        if ($body <= $win) {
+            $('.footer').css({
+                "position": "absolute",
+                "bottom": "0"
+            });
+        }
+        if ($('.footer').hasClass('hidden')) {
+            $('.footer').removeClass('hidden');
+        }
+    });
+    </script>
 </body>
 
 </html>

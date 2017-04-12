@@ -8,9 +8,9 @@
 			{% if user_profile.avatar %}
 				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
 			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/icon-profile.png' %}" />
+				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
 			{% endif %}
-		</div>	
+		</div>
 		<div class="col-md-7 col-md-offset-1">
 			<div class="row marginBottom15 marginRight15">
 				<a class="btn btn-default pull-right" href="{% url 'updateProfile' %}" role="button">Update My Profile</a>
@@ -22,8 +22,8 @@
 				<p><strong>My Introduction:</strong> {{ user_profile.introduction }}</p>
 			</div>
 
-		</div>								
+		</div>
 	</div>
 </div>
-{% endblock %}	
-			
+{% endblock %}
+
