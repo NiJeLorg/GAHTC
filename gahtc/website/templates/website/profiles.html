@@ -8,7 +8,7 @@
 
 {% block head_js_block %}
 {% endblock %}
-	
+
 
 {% block content %}
 <!-- Page Content -->
@@ -25,9 +25,9 @@
 			{% if user_profile.avatar %}
 				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
 			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/icon-profile.png' %}" />
+				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
 			{% endif %}
-		</div>	
+		</div>
 		<div class="col-md-6 col-md-offset-1">
 			<div class="row">
 				<p><strong>Name:</strong> {{ user_profile.name }}</p>
@@ -37,7 +37,7 @@
 				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
 			</div>
 		</div>
-		<div class="col-md-2"></div>							
+		<div class="col-md-2"></div>
 	</div>
 	<hr />
 	{% endfor %}
@@ -45,5 +45,5 @@
 {% endblock %}
 
 {% block js_block %}
-{% endblock %}	
-			
+{% endblock %}
+
