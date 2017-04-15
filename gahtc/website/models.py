@@ -2,17 +2,12 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from pybb import defaults, util
-from pybb.compat import get_image_field_class, get_username_field
 
 # import User model
 from django.contrib.auth.models import User
 
 # django taggit import
 from taggit_autosuggest.managers import TaggableManager
-
-# import ApproximateDateField
-from django_date_extensions.fields import ApproximateDateField
 
 
 TZ_CHOICES = [(float(x[0]), x[1]) for x in (
@@ -40,29 +35,12 @@ class profile(models.Model):
 	introduction = models.TextField(default='', null=False, blank=False)
 	avatar = models.ImageField(upload_to="bio_pics/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
-	member = models.BooleanField(blank=True, default=False)
 	website = models.URLField(max_length=255, default='', null=True, blank=True)
 	instutution_document = models.FileField(upload_to="insitution_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	verified = models.NullBooleanField(default=None)
-	language = models.CharField(max_length=255, default='', null=True, blank=True)
-	signature = models.TextField(_('Signature'), blank=True, max_length=255)
-	signature_html = models.TextField(_('Signature HTML Version'), blank=True, max_length=255)
-	time_zone = models.FloatField(_('Time zone'), choices=TZ_CHOICES, default=float(defaults.PYBB_DEFAULT_TIME_ZONE))
-	show_signatures = models.BooleanField(_('Show signatures'), blank=True, default=True)
-	post_count = models.IntegerField(_('Post count'), blank=True, default=0)
-	autosubscribe = models.BooleanField(_('Automatically subscribe'), help_text=_('Automatically subscribe to topics that you answer'), default=True)
 
 	def __unicode__(self):
 		return self.name
-
-	def get_display_name(self):
-		try:
-			if hasattr(self, 'user'):  # we have OneToOne foreign key to user model
-				return self.user.get_username()
-			if not defaults.PYBB_PROFILE_RELATED_NAME:  # we now in user custom model itself
-				return self.get_username()
-		except Exception:
-			return unicode(self)
 
 
 # course modules
@@ -71,7 +49,7 @@ class modules(models.Model):
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	authors = models.CharField(max_length=255, default='', null=False, blank=False)
 	description = models.TextField(default='', null=True, blank=True)
-	tags = TaggableManager(blank=True)
+	keywords = TaggableManager(blank=True)
 
 	def __unicode__(self):
 		return self.title
@@ -86,7 +64,7 @@ class moduleDocuments(models.Model):
 	document = models.FileField(upload_to="module_docs/%Y_%m_%d_%h_%M_%s", default='', null=False, blank=False)
 	document_contents = models.TextField(default='', null=True, blank=True)
 	extracted = models.BooleanField(default=False)
-	tags = TaggableManager(blank=True)
+	keywords = TaggableManager(blank=True)
 
 # lectures
 class lectures(models.Model):
@@ -95,12 +73,10 @@ class lectures(models.Model):
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	authors = models.CharField(max_length=255, default='', null=False, blank=False)
 	description = models.TextField(default='', null=True, blank=True)
-	mindate = ApproximateDateField(null=True, blank=True)
-	maxdate = ApproximateDateField(null=True, blank=True)
 	presentation = models.FileField(upload_to="presentations/%Y_%m_%d_%h_%M_%s", default='', null=False, blank=False)
 	presentation_text = models.TextField(default='', null=True, blank=True)
 	extracted = models.BooleanField(default=False)
-	tags = TaggableManager(blank=True)
+	keywords = TaggableManager(blank=True)
 
 	def getSlideOne(self):
 		"""
@@ -120,15 +96,13 @@ class lectureSegments(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	description = models.TextField(default='', null=True, blank=True)
-	mindate = ApproximateDateField(null=True, blank=True)
-	maxdate = ApproximateDateField(null=True, blank=True)
 	minslidenumber = models.IntegerField(default=0, null=False, blank=False)
 	maxslidenumber = models.IntegerField(default=0, null=False, blank=False)
 	presentation = models.FileField(upload_to="presentations/%Y_%m_%d_%h_%M_%s", default='', null=False, blank=False)
 	presentation_text = models.TextField(default='', null=True, blank=True)
 	extracted = models.BooleanField(default=False)
 	updated_lecture_review = models.BooleanField(default=False)
-	tags = TaggableManager(blank=True)
+	keywords = TaggableManager(blank=True)
 
 	def getSlideOne(self):
 		"""
@@ -148,7 +122,7 @@ class lectureDocuments(models.Model):
 	document = models.FileField(upload_to="presentation_docs/%Y_%m_%d_%h_%M_%s", default='', null=False, blank=False)
 	document_contents = models.TextField(default='', null=True, blank=True)
 	extracted = models.BooleanField(default=False)
-	tags = TaggableManager(blank=True)
+	keywords = TaggableManager(blank=True)
 
 
 # lecture slides
@@ -162,7 +136,7 @@ class lectureSlides(models.Model):
 	slide_notes = models.TextField(default='', null=True, blank=True)
 	slide_notes_document = models.FileField(upload_to="slide_notes_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	extracted = models.BooleanField(default=False)
-	tags = TaggableManager(blank=True)
+	keywords = TaggableManager(blank=True)
 
 # lecture slides
 class lectureSlidesSegment(models.Model):
@@ -280,7 +254,7 @@ class comingSoonModules(models.Model):
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	authors = models.CharField(max_length=255, default='', null=False, blank=False)
 	description = models.TextField(default='', null=True, blank=True)
-	tags = TaggableManager(blank=True)
+	keywords = TaggableManager(blank=True)
 
 	def __unicode__(self):
 		return self.title

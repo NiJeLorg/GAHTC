@@ -51,6 +51,7 @@ a:focus {
 
 .navbar {
     margin-bottom: 0;
+    min-height: auto;
 }
 
 .container {
@@ -70,6 +71,10 @@ a:focus {
 
 .main-input form button {
     margin-top: -39px;
+}
+
+blockquote p {
+    font-size: 18px;
 }
 
 
@@ -220,6 +225,7 @@ a:focus {
 .swapem {
     color: #444444;
     font-size: 16px;
+    margin-right: 10px;
 }
 
 .bundleResult {
@@ -264,6 +270,10 @@ a:focus {
     margin-right: 15px;
 }
 
+.marginTop10 {
+    margin-top: 10px;
+}
+
 .marginTop30 {
     margin-top: 30px;
 }
@@ -293,12 +303,22 @@ a:focus {
     background-color: #999;
 }
 
+.backToTopLink {
+    margin-top: -12px;
+}
 
-/* Add a of bottom padding to containers */
+
+/* Add bottom padding to all containers */
 
 .container {
     padding-bottom: 30px;
 }
+
+/* Add some padding to the top of the search template container */
+.container.search-body {
+    padding-top: 30px;
+}
+
 
 
 /* Feedback Form */

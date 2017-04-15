@@ -1,6 +1,6 @@
 {% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Search Results{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
-<div class="container">
+<div class="container search-body">
     <div class="row">
         <div class="col-md-6">
             <form class="form-horizontal" method="post" action="{% url 'search' %}">
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         {% else %}
-                        <br />
+                        <p class="text-center marginTop10">Your search for <strong>{{ keyword }}</strong> yielded <strong>{{ all_results_count }}</strong> result{%if all_results_count > 1 %}s{% endif %}.</p>
                         <div class="panel-group" id="accordion_results" role="tablist" aria-multiselectable="true">
                             {% if modules_returned_count > 0 or coming_soon_modules_returned_count > 0 %}
                             <div class="panel panel-default">
@@ -102,9 +102,9 @@
                                                 </div>
                                                 <div class="row">
                                                     <p>
-                                                        {% for tag in module.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in module.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -126,9 +126,9 @@
                                                 </div>
                                                 <div class="row">
                                                     <p>
-                                                        {% for tag in m.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in m.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -151,6 +151,7 @@
                                 <div id="lecture_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_panel">
                                     <div class="panel-body">
                                         {% for lecture in lectures_returned %}
+                                        {{ lecture.score }}
                                         <div class="row result lecture" data-lectureid="{{ lecture.object.id }}">
                                         	{% if user.is_authenticated %}
                                             <div class="col-xs-3">
@@ -188,7 +189,10 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p class="swapem">
-                                                        ... {% for text in lecture.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
+                                                        {% for text in lecture.highlighted %} 
+                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                                            {% if forloop.last %} ... {% endif %}
+                                                        {% endfor %}
                                                     </p>
                                                 </div>
                                                 {% if user.is_authenticated %}
@@ -204,9 +208,9 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p>
-                                                        {% for tag in lecture.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in lecture.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -266,7 +270,10 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p class="swapem">
-                                                        ... {% for text in lecture_segment.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
+                                                        {% for text in lecture_segment.highlighted %} 
+                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                                            {% if forloop.last %} ... {% endif %}
+                                                        {% endfor %}
                                                     </p>
                                                 </div>
                                                 {% if user.is_authenticated %}
@@ -283,9 +290,9 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p>
-                                                        {% for tag in lecture_segment.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in lecture_segment.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -345,7 +352,10 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p class="swapem">
-                                                        ... {% for text in lecture_document.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
+                                                        {% for text in lecture_document.highlighted %} 
+                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                                            {% if forloop.last %} ... {% endif %}
+                                                        {% endfor %}
                                                     </p>
                                                 </div>
                                                 {% if user.is_authenticated %}
@@ -362,9 +372,9 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p>
-                                                        {% for tag in lecture_document.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in lecture_document.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -424,7 +434,10 @@
 	                                            <div>
 	                                            {% endif %}
 	                                            	<p class="swapem">
-                                                        ... {% for text in lecture_slide.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
+                                                        {% for text in lecture_slide.highlighted %} 
+                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                                            {% if forloop.last %} ... {% endif %}
+                                                        {% endfor %}
                                                     </p>
                                                 </div>
                                                 {% if user.is_authenticated %}
@@ -440,9 +453,9 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p>
-                                                        {% for tag in lecture_slide.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in lecture_slide.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>

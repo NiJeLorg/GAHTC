@@ -55,50 +55,30 @@ def howToUse(request):
 	context_dict = {}
 	return render(request, 'website/how_to_use.html', context_dict)
 
-def grantProgram(request):
+def timescape(request):
 
 
 	"""
-	  Grant Program page
-	"""
-	context_dict = {}
-	return render(request, 'website/grantProgram.html', context_dict)
-
-def conference(request):
-
-
-	"""
-	  conference page
+	  timescape page
 	"""
 	context_dict = {}
-	return render(request, 'website/conference.html', context_dict)
+	return render(request, 'website/timescape.html', context_dict)
 
-def reimbursement(request):
-
-
-	"""
-	  reimbursement page
-	"""
+def howtobecomeamember(request):
 	context_dict = {}
-	return render(request, 'website/reimbursement.html', context_dict)
+	return render(request, 'website/howtobecomeamember.html', context_dict)
 
-def schedule(request):
-
-
-	"""
-	  schedule page
-	"""
+def membersconference(request):
 	context_dict = {}
-	return render(request, 'website/schedule.html', context_dict)
+	return render(request, 'website/membersconference.html', context_dict)
 
-def workshop2013(request):
-
-
-	"""
-	  Workshop 2013 page
-	"""
+def testimonials(request):
 	context_dict = {}
-	return render(request, 'website/workshop2013.html', context_dict)
+	return render(request, 'website/testimonials.html', context_dict)
+
+def grants(request):
+	context_dict = {}
+	return render(request, 'website/grants.html', context_dict)
 
 def contact(request):
 
@@ -109,29 +89,17 @@ def contact(request):
 	context_dict = {}
 	return render(request, 'website/contact.html', context_dict)
 
-def membership(request):
 
 
-	"""
-	  membership page
-	"""
-	context_dict = {}
-	return render(request, 'website/membership.html', context_dict)
-
-def timescape(request):
 
 
-	"""
-	  timescape page
-	"""
-	context_dict = {}
-	return render(request, 'website/timescape.html', context_dict)
 
 def mainSearchCode(request, keyword, tab):
 	"""
 	  Queries the database for search terms and returns list of results -- used in search and bundles
 	"""
-	
+
+	all_results_count = 0
 	modules_returned_count = 0
 	module_documents_returned_count = 0
 	lectures_returned_count = 0
@@ -174,8 +142,9 @@ def mainSearchCode(request, keyword, tab):
 		lecture_documents_returned_count = len(lecture_documents_returned)
 		lecture_slides_returned_count = len(lecture_slides_returned)
 		coming_soon_modules_returned_count = len(coming_soon_modules_returned)
+		all_results_count = modules_returned_count + module_documents_returned_count + lectures_returned_count + lecture_segments_returned_count + lecture_documents_returned_count + lecture_slides_returned_count + coming_soon_modules_returned_count
 
-	if modules_returned_count == 0 and module_documents_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 and coming_soon_modules_returned_count == 0:
+	if all_results_count == 0:
 		modules_returned = modules.objects.none()
 		moduleDocsCount = moduleDocuments.objects.none()
 		lectures_returned = lectures.objects.none()
@@ -199,7 +168,7 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count}
 
 	else:
 		# concatonate module querysets
@@ -231,7 +200,8 @@ def mainSearchCode(request, keyword, tab):
 		modules_returned_unique = unique_module_list
 		modules_returned_unique_count = unique_module_list_count
 
-		
+		# sum up all results count again
+		all_results_count = modules_returned_unique_count + module_documents_returned_count + lectures_returned_count + lecture_segments_returned_count + lecture_documents_returned_count + lecture_slides_returned_count + coming_soon_modules_returned_count
 		
 		if request.user.is_authenticated():
 			# pull bundles
@@ -248,7 +218,7 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count}
 
 	return context_dict
 
@@ -1080,7 +1050,7 @@ def lecturesView(request):
 	  Loads all lectures 
 	"""	
 
-	lectures_returned = lectures.objects.all().order_by('title')
+	lectures_returned = lectures.objects.all().order_by('module__title','title')
 
 	for lec in lectures_returned:
 		lecture = str(lec.presentation)
@@ -1105,7 +1075,7 @@ def membersView(request):
 	  Loads all user profiles
 	"""	
 
-	profiles_returned = profile.objects.filter(verified=True, member=True).exclude(name='').order_by('name')
+	profiles_returned = profile.objects.filter(verified=True).exclude(name='').order_by('name')
 
 	context_dict = {'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)

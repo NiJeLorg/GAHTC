@@ -39,6 +39,8 @@
 		if (lectureid != 'None' && lectureid != '0') {
 			$('#id_lecture').val(lectureid);
 		}
+		// hide #id_keywords
+		$('#id_keywords').attr('type', 'hidden');
 	});
 </script>
 {% endblock %}

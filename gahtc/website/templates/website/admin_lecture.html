@@ -24,7 +24,6 @@
 	    <div class="col-md-12">
     		<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
 			<input type="submit" name="save" class="btn btn-primary" value="Save" />
-			<input type="submit" name="new_lecure_segment" class="btn btn-primary" value="Save and Add a Lecture Segment" />
 			<input type="submit" name="new_lecure_document" class="btn btn-primary" value="Save and Add a Lecture Document" />
 			<input type="submit" name="new_lecure" class="btn btn-primary" value="Save and Add Another Lecture" />
 		</div>
@@ -45,6 +44,8 @@
 		if (moduleid != 'None' && moduleid != '0') {
 			$('#id_module').val(moduleid);
 		}
+		// hide #id_keywords
+		$('#id_keywords').attr('type', 'hidden');
 	});
 </script>
 {% endblock %}

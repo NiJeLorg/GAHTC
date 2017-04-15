@@ -26,11 +26,8 @@
     <![endif]-->
     {% block head_js_block %} {% endblock %}
 </head>
-<!--      <li><a href="{% url 'grantProgram' %}">Grant Program</a></li>
-     <li><a href="{% url 'conference' %}">Conference</a></li>
-      <li><a href="{% url 'contact' %}">Contact</a></li> -->
 
-<body>
+<body id="top">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -63,41 +60,45 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Membership <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{% url}">How to Become a Member</a></li>
-                                <li><a href="{% url}">Browse Current Mmembers</a></li>
-                                <li><a href="{% url}">Bi-Annual Member Conference</a></li>
-                                <li><a href="{% url}">Testimonials</a></li>
+                                <li><a href="{% url 'howtobecomeamember' %}">How to Become a Member</a></li>
+                                <li><a href="{% url 'membersView' %}">Browse Current Members</a></li>
+                                <li><a href="{% url 'membersconference' %}">Bi-Annual Member Conference</a></li>
+                                <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Apply for a Grant <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{% url}">Targeted Acquisition Grants</a></li>
-                                <li><a href="{% url}">Untargeted Field-initiated Grants</a></li>
-                                <li><a href="{% url}">Emerging Scholar Grants</a></li>
-                                <li><a href="{% url}">Global Connections Fellowship</a></li>
-                                <li><a href="{% url}">Research-to-Teaching Grants in affiliation with SAH</a></li>
-                                <li><a href="{% url}">Field Seminar Travel Grants in affiliation with SAH</a></li>
+                                <li><a href="{% url 'grants' %}">All Grant Opportunities</a></li>
+                                <li><a href="{% url 'grants' %}#targeted-acquisition-grants">Targeted Acquisition Grants</a></li>
+                                <li><a href="{% url 'grants' %}#untargeted-field-initiated-grants">Untargeted Field-initiated Grants</a></li>
+                                <li><a href="{% url 'grants' %}#emerging-scholar-grants">Emerging Scholar Grants</a></li>
+                                <li><a href="{% url 'grants' %}#global-connections-fellowship">Global Connections Fellowship</a></li>
+                                <li><a href="{% url 'grants' %}#research-to-teaching-grants">Research-to-Teaching Grants in affiliation with SAH</a></li>
+                                <li><a href="{% url 'grants' %}#travel-grants">Field Seminar Travel Grants in affiliation with SAH</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{% url}">Contact Box</a></li>
-                                <li><a href="{% url}">Message Board</a></li>
+                                <li><a href="{% url 'contact' %}">Contact Us</a></li>
                             </ul>
                         </li>
-                        <li><a href="/forum/">Forums</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'myprofile' %}">Hello {{ request.user.userProfile.name }}!</a></li>
-                    {% if perms.auth.add_user %}
-                    <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
-                    {% endif %}
-                    <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
-                    <li><a href="{% url 'mysavedsearches' %}">My Saved Searches</a></li>
-                    <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ request.user.userProfile.name }}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% if perms.auth.add_user %}
+                                <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'myprofile' %}">My Profile</a></li>
+                            <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
+                            <li><a href="{% url 'mysavedsearches' %}">My Saved Searches</a></li>
+                            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
                     {% else %}
                     <li><a href="{% url 'auth_login' %}">Log In</a></li>
                     <li><a href="{% url 'registration_register' %}">Create Account</a></li>
@@ -109,7 +110,7 @@
         <!-- /.container-fluid -->
     </nav>
     {% block content %} {% endblock %}
-    <footer class="footer hidden">
+    <footer class="footer">
         <div class="container-fluid">
             <p class="text-muted">Copyright &copy; {% now 'Y' %} | All Rights Reserved | GAHTC: Global Architectural History Teaching Collaborative</p>
         </div>
@@ -120,24 +121,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript" src="{% static 'website/js/bootstrap.min.js' %}"></script>
     {% block js_block %} {% endblock %}
-    <!-- check every page to see if the body is smaller than the window, and if so, fix the footer to the bottom -->
-    <script type="text/javascript">
-    $(document).ready(function() {
-        var $body = $('body').height();
-        var $win = $(window).height();
-        console.log($body, 'body');
-        console.log($win, 'win');
-        if ($body <= $win) {
-            $('.footer').css({
-                "position": "absolute",
-                "bottom": "0"
-            });
-        }
-        if ($('.footer').hasClass('hidden')) {
-            $('.footer').removeClass('hidden');
-        }
-    });
-    </script>
 </body>
 
 </html>

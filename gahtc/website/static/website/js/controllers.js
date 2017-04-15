@@ -20,8 +20,8 @@ $( document ).ready(function() {
 	}
 
 	// select first in list and populate search result bar
-	$( ".result:first" ).addClass('active');
-	gahtcApplication.whichToGet($( ".result:first" ));
+	// $( ".result:first" ).addClass('active');
+	// gahtcApplication.whichToGet($( ".result:first" ));
 
 	// select first in bundle list and pull bundle for right sidebar
 	$( ".bundleResult:first" ).addClass('active');
