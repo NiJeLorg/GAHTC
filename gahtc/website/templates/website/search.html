@@ -151,7 +151,6 @@
                                 <div id="lecture_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_panel">
                                     <div class="panel-body">
                                         {% for lecture in lectures_returned %}
-                                        {{ lecture.score }}
                                         <div class="row result lecture" data-lectureid="{{ lecture.object.id }}">
                                         	{% if user.is_authenticated %}
                                             <div class="col-xs-3">
