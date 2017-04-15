@@ -42,9 +42,7 @@ INSTALLED_APPS = (
     'django_forms_bootstrap',
     'taggit',
     'taggit_autosuggest',
-    'django_date_extensions',
     'haystack',
-    'pybb',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,7 +54,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'pybb.middleware.PybbMiddleware',
 )
 
 ROOT_URLCONF = 'gahtc.urls'
@@ -72,20 +69,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.core.context_processors.static',
-                'pybb.context_processors.processor',
+                'django.template.context_processors.static',
             ],
         },
     },
 ]
-
-PYBB_PROFILE_RELATED_NAME = 'userProfile'
-
-PYBB_TEMPLATE = 'website/base.html'
-
-PYBB_MARKUP = 'markdown'
-
-PYBB_PERMISSION_HANDLER = 'website.permissions.Perms'
 
 
 WSGI_APPLICATION = 'gahtc.wsgi.application'
@@ -101,13 +89,15 @@ DATABASES = {
     }
 }
 
-# search engine connectons for Haystack using Whoosh
+# search engine connectons for Haystack using ElasticSearch
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
     },
 }
+
 
 # include spelling for haystack
 INCLUDE_SPELLING = True

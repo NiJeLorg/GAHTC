@@ -52,7 +52,7 @@
 						                {% if request.user.userProfile.verified %}
 						                	<button type="button" class="btn btn-default btn-xs downloadLecture" data-lectureid="{{ lecture_returned.id }}">Download this lecture &amp; documents</button>
 						                {% else %}
-						                	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#waitingForVerification">Download this lecture &amp; documents</button>
+						                	<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#waitingForVerification">Download this lecture &amp; documents</button>
 						                {% endif %}
 						            {% endif %}
 								</div>

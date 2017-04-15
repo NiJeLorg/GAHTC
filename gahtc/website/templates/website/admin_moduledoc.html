@@ -39,6 +39,8 @@
 		if (moduleid != 'None' && moduleid != '0') {
 			$('#id_module').val(moduleid);
 		}
+		// hide #id_keywords
+		$('#id_keywords').attr('type', 'hidden');
 	});
 </script>
 {% endblock %}

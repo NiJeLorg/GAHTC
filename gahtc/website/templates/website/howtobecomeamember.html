@@ -1,0 +1,43 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block title %}About GAHTC{% endblock %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block head_js_block %}
+{% endblock %}
+	
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1">
+			<h1>How to Become a Member</h1>
+			<p>
+				Becoming a member of the GAHTC allows full access to our library of teaching materials. This includes PowerPoint slides, notes, quizzes and reading lists. In addition, you will be eligible to apply for grants that support the creation of new material and you will be funded to attend our annual or biannual conferences. GAHTC’s members play a central role in content creation and defining what it means to teach global architectural history. As such, we ask that all members are committed to contributing in one way or another. Members are expected to participate online in the general conversation of how best to pursue the goals of the collaborative.
+			</p>
+			<p>
+				The GAHTC is dedicated to fostering a collaborative effort amongst its members, encouraging all to participate in content creation, pedagogical exchange, sharing of resources and information, as well as attendance to the member's conference.
+			</p>
+			<p>
+				Please take care to submit a complete profile. You should include your professional title, a short paragraph about your interests and be ready to supply proof that you are a teacher through web link or a letter from your institution. Members should hold a Master's degree or Ph.D. in architectural history or in related fields such as art history, history, anthropology or archaeology and should have an interest in teaching at the undergraduate, survey level. Your application, once submitted, will be reviewed and you will be notified of your status within ten days.
+			</p>
+			<p>
+				Incomplete applications will not be accepted.
+			</p>
+			<p>
+				<a href="{% url 'registration_register' %}">Apply to be a member here.</a>
+			</p>
+		</div>
+	</div>
+</div>				
+{% endblock %}
+
+{% block modal_block %}
+{% endblock %}
+
+{% block js_block %}
+{% endblock %}

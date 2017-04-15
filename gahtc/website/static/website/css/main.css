@@ -2,94 +2,138 @@
  * Main CSS for GAHTC Website
  */
 
+
 /*
 * Font-faces for custom serifed font
 */
 
 @font-face {
-	font-family: 'LinuxLibertine';
-	src: url('../fonts/LinLibertine_DR.woff');
-	font-weight: normal;
-	font-style: normal;
+    font-family: 'LinuxLibertine';
+    src: url('../fonts/LinLibertine_DR.woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-	font-family: 'LinuxLibertine';
-	src: url('../fonts/LinLibertine_I.woff');
-	font-weight: normal;
-	font-style: italic;
+    font-family: 'LinuxLibertine';
+    src: url('../fonts/LinLibertine_I.woff');
+    font-weight: normal;
+    font-style: italic;
 }
 
 @font-face {
-	font-family: 'LinuxLibertine';
-	src: url('../fonts/LinLibertine_RI.woff');
-	font-weight: normal;
-	font-style: italic;
+    font-family: 'LinuxLibertine';
+    src: url('../fonts/LinLibertine_RI.woff');
+    font-weight: normal;
+    font-style: italic;
 }
 
 @font-face {
-	font-family: 'LinuxLibertine';
-	src: url('../fonts/LinLibertine_RB.woff');
-	font-weight: normal;
-	font-weight: bold;
+    font-family: 'LinuxLibertine';
+    src: url('../fonts/LinLibertine_RB.woff');
+    font-weight: normal;
+    font-weight: bold;
 }
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 
 /* bootstrap override on link highlighting */
-a:hover, a:focus {
-	text-decoration: none;
+
+a:hover,
+a:focus {
+    text-decoration: none;
+}
+
+.navbar {
+    margin-bottom: 0;
+    min-height: auto;
+}
+
+.container {
+    flex-grow: 100;
+}
+
+.background-holder {
+    flex-grow: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background-holder .main-input {
+    width: 40%;
+}
+
+.main-input form button {
+    margin-top: -39px;
+}
+
+blockquote p {
+    font-size: 18px;
 }
 
 
 /* Background Image */
-#background, #background li { 
-	position: absolute; 
-	top: 0; 
-	left: 0; 
-	right: 0; 
-	bottom: 0; 
-	background: url('images/Old_dispensary_front.jpg');
-	background-color: transparent; 
-	background-size: cover; 
-	background-position: top center; 
-	background-repeat: no-repeat;
-	-webkit-transition: background 1s;
-	-moz-transition: background 1s;
-	-o-transition: background 1s;
-	transition: background 1s;	
+
+#background,
+#background li {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('images/Old_dispensary_front.jpg');
+    background-color: transparent;
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    -webkit-transition: background 1s;
+    -moz-transition: background 1s;
+    -o-transition: background 1s;
+    transition: background 1s;
 }
 
-#background { 
-	z-index: -1;
-	margin: 50px 0 0 0; 
-	padding: 0; 
+#background {
+    z-index: -1;
+    margin: 50px 0 0 0;
+    padding: 0;
 }
 
-@media (min-width: 768px) { 
-	#background { 
-		margin: 100px 0 0 0; 
-	}
+@media (min-width: 768px) {
+    #background {
+        margin: 100px 0 0 0;
+    }
 }
 
 .fadein {
-	display: none;
+    display: none;
 }
+
 
 /* Navbar */
+
 .navbar-header {
-	float: none;
+    float: none;
 }
 
-@media (min-width: 1200px) { 
-	.navbar-right {
-		margin-top: -50px;
-	}
+@media (min-width: 1200px) {
+    .navbar-right {
+        margin-top: -50px;
+    }
 }
+
 
 /* footer */
+
 .footer {
-    position: relative;
+    position: static !important;
     width: 100%;
-    height: auto;	
+    height: auto;
     background-color: #000;
 }
 
@@ -101,135 +145,145 @@ a:hover, a:focus {
     color: #eee;
 }
 
+
 /* button group */
+
 .lowerLeft {
-	position: absolute;
-	bottom: 100px;
-	right: 10px;
+    position: absolute;
+    bottom: 100px;
+    right: 10px;
 }
 
-@media (min-width: 768px) { 
-	.lowerLeft {
-		bottom: 50px;
-		right: 10px;
-	}
+@media (min-width: 768px) {
+    .lowerLeft {
+        bottom: 50px;
+        right: 10px;
+    }
 }
 
 
 /* Search Bar */
+
 .searchbar {
-	margin-top: 10%;
+    margin-top: 10%;
 }
 
 .whitetext {
-	color: #fff;
+    color: #fff;
 }
 
 .greybackground {
-	background-color:rgba(204, 204, 204, 0.5);
+    background-color: rgba(204, 204, 204, 0.5);
 }
 
+
 /* Search results page */
+
 .searchText {
-	margin-top: 6px;
+    margin-top: 6px;
 }
 
 .resultsScroll {
-	margin-right: -1px;
-	border-right: 1px solid #ccc; 
+    margin-right: -1px;
+    border-right: 1px solid #ccc;
 }
 
 .resultsScrollBundle {
-	margin-right: -1px;
-	border-right: 1px solid #ccc; 
+    margin-right: -1px;
+    border-right: 1px solid #ccc;
 }
 
 .selectedAddDropdown {
-	margin-top: 10px;
-	margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .panel-body {
-	height: auto;
-	max-height: 100vh;
-	overflow: auto;
+    height: auto;
+    max-height: 100vh;
+    overflow: auto;
 }
 
 .result {
-	padding: 10px 0px;
-	cursor: pointer;
-	border-bottom: 1px solid #ccc; 
+    padding: 10px 0px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
 }
 
 .result:hover {
-	background-color: #ddd;
+    background-color: #ddd;
 }
 
 .result.active {
-	background-color: #ddd;
+    background-color: #ddd;
 }
 
 .resultTitle {
-	padding-left: 0px;
+    padding-left: 0px;
 }
 
 .swapem {
-	color: #444444;
-	font-size: 16px;
+    color: #444444;
+    font-size: 16px;
+    margin-right: 10px;
 }
 
 .bundleResult {
-	padding: 10px 0px;
-	cursor: pointer;
-	border-bottom: 1px solid #ccc; 
+    padding: 10px 0px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
 }
 
 .bundleResult:hover {
-	background-color: #ddd;
+    background-color: #ddd;
 }
 
 .bundleResult.active {
-	background-color: #ddd;
+    background-color: #ddd;
 }
 
 .bundleList {
-	padding: 10px 0px;
-	border-bottom: 1px solid #ccc; 
+    padding: 10px 0px;
+    border-bottom: 1px solid #ccc;
 }
-
 
 .rightSidebar {
-	padding-top: 15px;
-	border-left: 1px solid #ccc; 
+    padding-top: 15px;
+    border-left: 1px solid #ccc;
 }
 
-.noTextDecoration:hover, .noTextDecoration:focus {
-	text-decoration: none;
+.noTextDecoration:hover,
+.noTextDecoration:focus {
+    text-decoration: none;
 }
 
 .noTopMargin {
-	margin-top: 0px;
-	line-height: 1.4;
+    margin-top: 0px;
+    line-height: 1.4;
 }
 
 .marginBottom15 {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .marginRight15 {
-	margin-right: 15px;
+    margin-right: 15px;
+}
+
+.marginTop10 {
+    margin-top: 10px;
 }
 
 .marginTop30 {
-	margin-top: 30px;
+    margin-top: 30px;
 }
 
 .textbox {
-	height: 20vh;
-	overflow: auto;
-	border: 1px solid #ccc; 
-	margin: 10px 0px;
-	padding: 10px 10px 0px 10px;
+    height: 20vh;
+    overflow: auto;
+    border: 1px solid #ccc;
+    margin: 10px 0px;
+    padding: 10px 10px 0px 10px;
 }
 
 .dropdown-menu .divider {
@@ -239,23 +293,36 @@ a:hover, a:focus {
 .label-ls {
     background-color: #756BB1;
 }
+
 .label-cs {
     background-color: #7796b1;
 }
 
 .label-default:hover {
-	color: #f9f9f9;
-	background-color: #999;
+    color: #f9f9f9;
+    background-color: #999;
+}
+
+.backToTopLink {
+    margin-top: -12px;
 }
 
 
-/* Add a of bottom padding to containers */
+/* Add bottom padding to all containers */
+
 .container {
-	padding-bottom:30px;
+    padding-bottom: 30px;
 }
+
+/* Add some padding to the top of the search template container */
+.container.search-body {
+    padding-top: 30px;
+}
+
 
 
 /* Feedback Form */
+
 .feedback {
     display: block;
     padding: 15px 20px;
@@ -265,9 +332,9 @@ a:hover, a:focus {
 }
 
 .feedback:hover {
-  color: #fff;
-  text-decoration: none;
-  background-color: #0269c2;
+    color: #fff;
+    text-decoration: none;
+    background-color: #0269c2;
 }
 
 .updating {
@@ -279,14 +346,14 @@ a:hover, a:focus {
 }
 
 .updating:hover {
-  color: #fff;
-  text-decoration: none;
-  background-color: #d9534f;
+    color: #fff;
+    text-decoration: none;
+    background-color: #d9534f;
 }
 
 
-
 /* Admin Forms */
+
 ul.as-selections li.as-original input {
     height: 39px !important;
 }

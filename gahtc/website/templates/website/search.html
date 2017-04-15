@@ -1,6 +1,6 @@
 {% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Search Results{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
-<div class="container">
+<div class="container search-body">
     <div class="row">
         <div class="col-md-6">
             <form class="form-horizontal" method="post" action="{% url 'search' %}">
@@ -60,13 +60,13 @@
                             </div>
                         </div>
                         {% else %}
-                        <br />
+                        <p class="text-center marginTop10">Your search for <strong>{{ keyword }}</strong> yielded <strong>{{ all_results_count }}</strong> result{%if all_results_count > 1 %}s{% endif %}.</p>
                         <div class="panel-group" id="accordion_results" role="tablist" aria-multiselectable="true">
                             {% if modules_returned_count > 0 or coming_soon_modules_returned_count > 0 %}
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading_modules_panel">
                                     <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#modules_panel" aria-expanded="true" aria-controls="modules_panel">
-                                        <h4 class="panel-title">							        
+                                        <h4 class="panel-title">
 							          <span class="label label-primary">{{ modules_returned_count }} Module{{ modules_returned_count|pluralize }}</span>
 							          {% if coming_soon_modules_returned_count > 0 %}
 										<span class="label label-cs">{{ coming_soon_modules_returned_count }} Module{{ coming_soon_modules_returned_count|pluralize }} Coming Soon</span>
@@ -74,12 +74,12 @@
 							      </h4>
                                     </a>
                                 </div>
-                                <div id="modules_panel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="modules_panel">
+                                <div id="modules_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="modules_panel">
                                     <div class="panel-body">
                                         {% for module in modules_returned %}
                                         <div class="row result module" data-moduleid="{{ module.id }}">
                                             <div class="col-xs-3">
-                                                <img class="img-responsive" src="{% static 'website/css/images/module.png' %}" />
+                                                <img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
                                             </div>
                                             <div class="col-xs-9">
                                                 <div class="row">
@@ -102,9 +102,9 @@
                                                 </div>
                                                 <div class="row">
                                                     <p>
-                                                        {% for tag in module.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in module.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -114,7 +114,7 @@
                                         {% endfor %} {% for m in coming_soon_modules_returned %}
                                         <div class="row result">
                                             <div class="col-xs-3">
-                                                <img class="img-responsive" src="{% static 'website/css/images/cs_module.png' %}" />
+                                                <img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
                                             </div>
                                             <div class="col-xs-9">
                                                 <div class="row">
@@ -126,9 +126,9 @@
                                                 </div>
                                                 <div class="row">
                                                     <p>
-                                                        {% for tag in m.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in m.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -144,13 +144,14 @@
                                 <div class="panel-heading" role="tab" id="heading_lecture_panel">
                                     <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_panel" aria-expanded="false" aria-controls="lecture_panel">
                                         <h4 class="panel-title">
-						        	<span class="label label-success">{{ lectures_returned_count }} Lecture{{ lectures_returned_count|pluralize }}</span> 
+						        	<span class="label label-success">{{ lectures_returned_count }} Lecture{{ lectures_returned_count|pluralize }}</span>
 						        </h4>
                                     </a>
                                 </div>
                                 <div id="lecture_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_panel">
                                     <div class="panel-body">
                                         {% for lecture in lectures_returned %}
+                                        {{ lecture.score }}
                                         <div class="row result lecture" data-lectureid="{{ lecture.object.id }}">
                                         	{% if user.is_authenticated %}
                                             <div class="col-xs-3">
@@ -188,7 +189,10 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p class="swapem">
-                                                        ... {% for text in lecture.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
+                                                        {% for text in lecture.highlighted %} 
+                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                                            {% if forloop.last %} ... {% endif %}
+                                                        {% endfor %}
                                                     </p>
                                                 </div>
                                                 {% if user.is_authenticated %}
@@ -204,9 +208,9 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p>
-                                                        {% for tag in lecture.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in lecture.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -266,7 +270,10 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p class="swapem">
-                                                        ... {% for text in lecture_segment.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
+                                                        {% for text in lecture_segment.highlighted %} 
+                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                                            {% if forloop.last %} ... {% endif %}
+                                                        {% endfor %}
                                                     </p>
                                                 </div>
                                                 {% if user.is_authenticated %}
@@ -283,9 +290,9 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p>
-                                                        {% for tag in lecture_segment.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in lecture_segment.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -301,7 +308,7 @@
                                 <div class="panel-heading" role="tab" id="heading_lecture_documents_panel">
                                     <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_documents_panel" aria-expanded="false" aria-controls="lecture_documents_panel">
                                         <h4 class="panel-title">
-						          <span class="label label-info">{{ lecture_documents_returned_count }} Lecture Document{{ lecture_documents_returned_count|pluralize }}</span> 
+						          <span class="label label-info">{{ lecture_documents_returned_count }} Lecture Document{{ lecture_documents_returned_count|pluralize }}</span>
 						        </h4>
                                     </a>
                                 </div>
@@ -345,7 +352,10 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p class="swapem">
-                                                        ... {% for text in lecture_document.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
+                                                        {% for text in lecture_document.highlighted %} 
+                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                                            {% if forloop.last %} ... {% endif %}
+                                                        {% endfor %}
                                                     </p>
                                                 </div>
                                                 {% if user.is_authenticated %}
@@ -362,9 +372,9 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p>
-                                                        {% for tag in lecture_document.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in lecture_document.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>
@@ -424,7 +434,10 @@
 	                                            <div>
 	                                            {% endif %}
 	                                            	<p class="swapem">
-                                                        ... {% for text in lecture_slide.highlighted.text %} {% autoescape off %}{{ text }}{% endautoescape %} {% endfor %} ...
+                                                        {% for text in lecture_slide.highlighted %} 
+                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                                            {% if forloop.last %} ... {% endif %}
+                                                        {% endfor %}
                                                     </p>
                                                 </div>
                                                 {% if user.is_authenticated %}
@@ -440,9 +453,9 @@
 	                                            <div>
 	                                            {% endif %}
                                                     <p>
-                                                        {% for tag in lecture_slide.object.tags.all|slice:":6" %}
-                                                        <a href="/search/?keyword={{ tag.name }}">
-                                                            <span class="label label-default">{{ tag.name }}</span>
+                                                        {% for keyword in lecture_slide.object.keywords.all %}
+                                                        <a href="/search/?keyword={{ keyword.name }}">
+                                                            <span class="label label-default">{{ keyword.name }}</span>
                                                         </a>
                                                         {% endfor %}
                                                     </p>

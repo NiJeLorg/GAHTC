@@ -28,7 +28,6 @@ class profileForm(RegistrationForm):
     institution_country = forms.CharField(required=False, widget=forms.TextInput(), label="Country")
     institution_postal_code = forms.CharField(required=False, widget=forms.TextInput(), label="Postal Code")
     teaching = forms.CharField(required=True, widget=forms.Textarea(), label="Please describe your teaching responsibilities at your institution.")
-    member = forms.BooleanField(required=False, widget=forms.Select(choices=YES_NO), label="Are you a current <a href='/membership/''>GAHTC Member</a>?")
     website = forms.URLField(required=False, widget=forms.TextInput(attrs={'placeholder': 'http://example.com/'}), label="If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.")
     instutution_document = forms.FileField(required=False, label="")
     introduction = forms.CharField(required=True, widget=forms.Textarea(), label="Please introduce yourself to your GAHTC colleagues.")
@@ -46,7 +45,7 @@ class UserInfoForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar',)
+        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar',)
         labels = {
             'name': 'Full Name',
             'title': 'Professional Title',
@@ -56,7 +55,6 @@ class UserProfileForm(forms.ModelForm):
             'institution_country': 'Country',
             'institution_postal_code': 'Postal Code',
             'teaching': 'Please describe your teaching responsibilities at your institution.',
-            'member': 'Are you a current <a href="/membership/">GAHTC Member</a>?',
             'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
             'instutution_document': '',
             'introduction': 'Please introduce yourself to your GAHTC colleagues.',
@@ -71,7 +69,6 @@ class UserProfileForm(forms.ModelForm):
             'institution_postal_code': forms.TextInput(),
             'teaching': forms.Textarea(),
             'introduction': forms.Textarea(),
-            'member': forms.Select(choices=YES_NO),
             'website': forms.TextInput(attrs={'placeholder': 'http://example.com/'}),
         }
 
@@ -79,7 +76,7 @@ class UserProfileForm(forms.ModelForm):
 class AdminUserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'member', 'website', 'instutution_document', 'introduction', 'avatar', 'verified')
+        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar', 'verified')
         labels = {
             'name': 'Full Name',
             'title': 'Professional Title',
@@ -89,7 +86,6 @@ class AdminUserProfileForm(forms.ModelForm):
             'institution_country': 'Country',
             'institution_postal_code': 'Postal Code',
             'teaching': 'Please describe your teaching responsibilities at your institution.',
-            'member': 'Are you a current <a href="/membership/">GAHTC Member</a>?',
             'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
             'instutution_document': '',
             'introduction': 'Please introduce yourself to your GAHTC colleagues.',
@@ -105,7 +101,6 @@ class AdminUserProfileForm(forms.ModelForm):
             'institution_postal_code': forms.TextInput(),
             'teaching': forms.Textarea(),
             'introduction': forms.Textarea(),
-            'member': forms.Select(choices=YES_NO),
             'website': forms.TextInput(attrs={'placeholder': 'http://example.com/'}),
             'instutution_document': forms.ClearableFileInput(),
             'verified': forms.Select(choices=Null_Boolean_Choices),
@@ -128,12 +123,12 @@ class AdminVerifyUserForm(forms.ModelForm):
 class modulesForm(forms.ModelForm):
     class Meta:
         model = modules
-        fields = ('title', 'authors', 'description', 'tags')
+        fields = ('title', 'authors', 'description', 'keywords')
         labels = {
             'title': 'Title (Required)',
             'authors': 'Authors (Required)',
             'description': 'Description',
-            'tags': 'Tags',
+            'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
@@ -150,14 +145,14 @@ class modulesRemoveForm(forms.ModelForm):
 class moduleDocumentsForm(forms.ModelForm):
     class Meta:
         model = moduleDocuments
-        fields = ('document', 'module', 'title', 'authors', 'description', 'tags')
+        fields = ('document', 'module', 'title', 'authors', 'description', 'keywords')
         labels = {
             'document': 'File (Required)',
             'module': 'Related Module (Required)',
             'title': 'Title (Required)',
             'authors': 'Authors (Required)',
             'description': 'Description',
-            'tags': 'Tags',
+            'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
@@ -174,16 +169,14 @@ class moduleDocumentsRemoveForm(forms.ModelForm):
 class lectureForm(forms.ModelForm):
     class Meta:
         model = lectures
-        fields = ('presentation', 'module', 'title', 'authors', 'description', 'mindate', 'maxdate', 'tags')
+        fields = ('presentation', 'module', 'title', 'authors', 'description', 'keywords')
         labels = {
             'presentation': 'File (Required)',
             'module': 'Related Module (Required)',
             'title': 'Title (Required)',
             'authors': 'Authors (Required)',
             'description': 'Description',
-            'mindate': 'Earliest Date',
-            'maxdate': 'Latest Date',
-            'tags': 'Tags',
+            'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
@@ -200,16 +193,14 @@ class lectureRemoveForm(forms.ModelForm):
 class lecturesegmentForm(forms.ModelForm):
     class Meta:
         model = lectureSegments
-        fields = ('lecture', 'minslidenumber', 'maxslidenumber', 'title', 'description', 'mindate', 'maxdate', 'tags')
+        fields = ('lecture', 'minslidenumber', 'maxslidenumber', 'title', 'description', 'keywords')
         labels = {
             'lecture': 'Related Lecture (Required)',
             'title': 'Title (Required)',
             'minslidenumber': 'First Slide (Required)',
             'maxslidenumber': 'Last Slide (Required)',
             'description': 'Description',
-            'mindate': 'Earliest Date',
-            'maxdate': 'Latest Date',
-            'tags': 'Tags',
+            'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
@@ -225,13 +216,13 @@ class lecturesegmentRemoveForm(forms.ModelForm):
 class lecturedocForm(forms.ModelForm):
     class Meta:
         model = lectureDocuments
-        fields = ('document', 'lecture', 'title', 'description', 'tags')
+        fields = ('document', 'lecture', 'title', 'description', 'keywords')
         labels = {
             'document': 'File (Required)',
             'lecture': 'Related Lecture (Required)',
             'title': 'Title (Required)',
             'description': 'Description',
-            'tags': 'Tags',
+            'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
@@ -290,12 +281,12 @@ class lectureSlidesCommentsForm(forms.ModelForm):
 class CSmodulesForm(forms.ModelForm):
     class Meta:
         model = comingSoonModules
-        fields = ('title', 'authors', 'description', 'tags')
+        fields = ('title', 'authors', 'description', 'keywords')
         labels = {
             'title': 'Title (Required)',
             'authors': 'Authors (Required)',
             'description': 'Description',
-            'tags': 'Tags',
+            'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),

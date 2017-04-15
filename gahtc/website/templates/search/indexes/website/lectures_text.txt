@@ -2,4 +2,4 @@
 {{ object.authors }}
 {{ object.description }}
 {{ object.presentation_text }}
-{{ object.tags.all }}
+{{ object.keywords.all }}

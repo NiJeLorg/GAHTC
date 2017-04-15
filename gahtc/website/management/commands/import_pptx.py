@@ -323,6 +323,10 @@ class Command(BaseCommand):
 			self.lecturesObject.extracted = True
 			self.lecturesObject.save()
 
+			# remove the large pdf to preserve server space
+			os.remove(pdfpath)
+
+
 	
 	def extract_pptx_lectures(self):
 		# pull PPTX from database where content hasn't yet been extracted

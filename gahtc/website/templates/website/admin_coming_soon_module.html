@@ -30,6 +30,13 @@
 
 
 {% block js_block %}
+<script type="text/javascript">
+	// select the module we came from on page load
+	$( document ).ready(function() {
+		// hide #id_keywords
+		$('#id_keywords').attr('type', 'hidden');
+	});
+</script>
 {% endblock %}
 
 
