@@ -1876,7 +1876,7 @@ def admin_download_user_profiles(request):
 		return HttpResponseRedirect('/')
 
 	#loop thorough users to create all other rows
-	profiles = profile.objects.values('user__username', 'name', 'user__email', 'user__last_login', 'user__date_joined', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'introduction', 'avatar', 'title', 'member', 'website', 'instutution_document', 'verified')
+	profiles = profile.objects.values('user__username', 'name', 'user__email', 'user__last_login', 'user__date_joined', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'introduction', 'avatar', 'title', 'website', 'instutution_document', 'verified')
 
 	return render_to_csv_response(profiles)
 
