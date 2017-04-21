@@ -19,6 +19,38 @@ brew install imagemagick
 brew install ghostscript
 ```
 
+### ElasticSearch
+[ElasticSearch](https://www.elastic.co/downloads/elasticsearch) is required for search on GAHTC. Install with homebrew:
+```shell
+brew install elasticsearch
+```
+Then start ElasticSearch via:
+```shell
+elasticsearch --config=<path to YAML config>
+```
+Example from my local install:
+```shell
+elasticsearch --config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
+```
+
+You may have to alter the configuration to run on `localhost` when developing locally. Modifications should be done in a YAML file, the stock one being `config/elasticsearch.yml`:
+```shell
+# Unicast Discovery (disable multicast)
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: ["127.0.0.1"]
+
+# Name your cluster here to whatever.
+cluster:
+  name: gahtc
+
+network:
+  host: 127.0.0.1
+
+path:
+  logs: /usr/local/var/log
+  data: /usr/local/var/data
+```
+
 ## Local Development Installation
 Note: Do not use this workflow for deploying this tool to production, as this may introduce a number of security concerns. For more information on deploying Django in a production environment, please see the [Django deployment checklist](https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/)
 
@@ -54,6 +86,32 @@ python manage.py runserver
 * When daily development is complete, terminate the local web server by typing ```CONTROL + C```. Also deactivate the virtual environment:
 ```shell
 deactivate
+```
+
+## Upgrading to Django 1.11
+`django-forms-bootstrap` has an unfixed bug in Django 1.1+. In `/env/lib/python2.7/site-packages/django_forms_bootstrap/templatetags/` find `bootstrap_tags.py`. In `bootstrap_tags.py` change:
+```shell
+@register.filter
+def as_bootstrap(form):
+    template = get_template("bootstrap/form.html")
+    form = _preprocess_fields(form)
+
+    c = Context({
+        "form": form,
+    })
+    return template.render(c)
+```
+to 
+```shell
+@register.filter
+def as_bootstrap(form):
+    template = get_template("bootstrap/form.html")
+    form = _preprocess_fields(form)
+
+    c = {
+        "form": form,
+    }
+    return template.render(c)
 ```
 
 ## Django project in a local web server
