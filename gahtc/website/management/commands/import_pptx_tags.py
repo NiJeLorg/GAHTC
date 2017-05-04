@@ -16,7 +16,7 @@ from textblob import TextBlob
 
 from pptx.util import lazyproperty, Pt
 from pptx.parts.slide import BaseSlide, Slide, _SlideShapeTree, _SlidePlaceholders
-from pptx.shapes.base import BaseShape
+from pptx.shapes.shape import BaseShape
 from pptx.opc.constants import RELATIONSHIP_TYPE as RT, CONTENT_TYPE as CT
 from pptx.enum.shapes import MSO_SHAPE_TYPE, PP_PLACEHOLDER_TYPE
 from pptx.oxml.xmlchemy import BaseOxmlElement, OneAndOnlyOne, ZeroOrOne
