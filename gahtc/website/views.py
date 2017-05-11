@@ -852,7 +852,7 @@ def zipUpModule(request, id=None):
 			document = unicode(doc.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", doc_name)
+			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 		#look up the lectures
@@ -864,7 +864,7 @@ def zipUpModule(request, id=None):
 			document = unicode(lec.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name)
+			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 			# look up lecture documents
@@ -873,7 +873,7 @@ def zipUpModule(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name)
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
