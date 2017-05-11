@@ -15,6 +15,8 @@ urlpatterns = [
     url(r'^testimonials/$', views.testimonials, name='testimonials'),
     url(r'^grants/$', views.grants, name='grants'),
     url(r'^contact/$', views.contact, name='contact'),
+    url(r'^architecture-talk/$', views.architectureTalk, name='architectureTalk'),
+
 
     url(r'^search/$', views.search, name='search'),
     url(r'^bundles/$', views.mybundles, name='mybundles'),
