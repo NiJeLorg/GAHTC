@@ -849,9 +849,9 @@ def zipUpModule(request, id=None):
 		#loop over docs and add to zip archive in the correct folder
 		for doc in moduleDocs:
 			modTitle = ''.join(module_returned.title.split())
-			document = unicode(doc.document, 'utf8').encode('utf8', 'replace')
+			document = unicode(doc.document, 'utf8')
 			document = document.split('/')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", document[2])
+			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", document[2].encode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 		#look up the lectures
@@ -860,17 +860,17 @@ def zipUpModule(request, id=None):
 		for lec in moduleLecs:
 			modTitle = ''.join(module_returned.title.split())
 			lecTitle = ''.join(lec.title.split())
-			document = unicode(lec.presentation, 'utf8').encode('utf8', 'replace')
+			document = unicode(lec.presentation, 'utf8')
 			document = document.split('/')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, document[2])
+			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, document[2].encode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 			# look up lecture documents
 			moduleLecDocs = lectureDocuments.objects.filter(lecture=lec)
 			for lecDoc in moduleLecDocs:
-				document = unicode(lecDoc.document, 'utf8').encode('utf8', 'replace')
+				document = unicode(lecDoc.document, 'utf8')
 				document = document.split('/')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, document[2])
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, document[2].encode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
