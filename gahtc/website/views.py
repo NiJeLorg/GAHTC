@@ -89,6 +89,9 @@ def contact(request):
 	context_dict = {}
 	return render(request, 'website/contact.html', context_dict)
 
+def architectureTalk(request):
+	context_dict = {}
+	return render(request, 'website/architectureTalk.html', context_dict)
 
 
 

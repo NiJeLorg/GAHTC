@@ -15,8 +15,8 @@ from textblob import TextBlob
 """
 
 from pptx.util import lazyproperty, Pt
-from pptx.parts.slide import BaseSlide, Slide, SlideShapeTree, _SlidePlaceholders
-from pptx.shapes.base import BaseShape
+from pptx.parts.slide import BaseSlide, Slide, _SlideShapeTree, _SlidePlaceholders
+from pptx.shapes.shape import BaseShape
 from pptx.opc.constants import RELATIONSHIP_TYPE as RT, CONTENT_TYPE as CT
 from pptx.enum.shapes import MSO_SHAPE_TYPE, PP_PLACEHOLDER_TYPE
 from pptx.oxml.xmlchemy import BaseOxmlElement, OneAndOnlyOne, ZeroOrOne
@@ -143,7 +143,7 @@ class NotesSlide(BaseSlide):
         Instance of |SlideShapeTree| containing sequence of shape objects
         appearing on this slide.
         """
-        return SlideShapeTree(self)
+        return _SlideShapeTree(self)
 
     @lazyproperty
     def placeholders(self):

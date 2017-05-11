@@ -289,6 +289,11 @@ blockquote p {
     margin-top: 30px;
 }
 
+.marginLeftBottom20 {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
 .textbox {
     height: 20vh;
     overflow: auto;

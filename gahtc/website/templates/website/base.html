@@ -53,16 +53,18 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore Content<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'timescape' %}">Timescape</a></li>
                             <li><a href="{% url 'modulesView' %}">By Module</a></li>
                             <li><a href="{% url 'lecturesView' %}">By Lecture</a></li>
+                            <li><a href="{% url 'architectureTalk' %}">Architecture Talk</a></li>
+                            <li><a href="{% url 'timescape' %}">Timescape</a></li>
+
                         </ul>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Membership <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{% url 'howtobecomeamember' %}">How to Become a Member</a></li>
                                 <li><a href="{% url 'membersView' %}">Browse Current Members</a></li>
-                                <li><a href="{% url 'membersconference' %}">Bi-Annual Member Conference</a></li>
+                                <li><a href="{% url 'membersconference' %}">Bi-Annual Members' Conference</a></li>
                                 <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
                             </ul>
                         </li>
