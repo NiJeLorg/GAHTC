@@ -49,9 +49,50 @@ a:focus {
     text-decoration: none;
 }
 
+body nav {
+    background: url('images/oceancurrents.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 20%;
+}
+
 .navbar {
     margin-bottom: 0;
     min-height: auto;
+}
+
+.navbar-header-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.navbar-header-holder .nav a {
+    padding: 0;
+    margin-left: 15px;
+}
+
+.navbar-header a img {
+    width: 300px;
+    height: auto;
+}
+
+.navbar .navigation-links {
+    border-top: 2px solid #6A696B;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 -15px;
+}
+
+.navigation-links .navbar-collapse .nav li {
+    border-right: 2px solid #6A696B;
+}
+
+.navigation-links > a {
+    color: #fff;
+    margin-right: 20px;
 }
 
 .container {
@@ -70,9 +111,9 @@ a:focus {
 }
 
 @media (min-width: 768px) {
-	.background-holder .main-input {
-	    width: 40%;
-	}
+    .background-holder .main-input {
+        width: 40%;
+    }
 }
 
 .main-input form button {
@@ -83,8 +124,9 @@ blockquote p {
     font-size: 18px;
 }
 
-.carousel-inner>.item>img, .carousel-inner>.item>a>img {
-	margin-left: auto;
+.carousel-inner>.item>img,
+.carousel-inner>.item>a>img {
+    margin-left: auto;
     margin-right: auto;
 }
 
@@ -330,11 +372,12 @@ blockquote p {
     padding-bottom: 30px;
 }
 
+
 /* Add some padding to the top of the search template container */
+
 .container.search-body {
     padding-top: 30px;
 }
-
 
 
 /* Feedback Form */

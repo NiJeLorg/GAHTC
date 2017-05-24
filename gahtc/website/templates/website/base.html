@@ -31,69 +31,23 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">GAHTC | Global Architectural History Teaching Collaborative</a>
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gahtc-navbar-collapse" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="gahtc-navbar-collapse">
-                <ul class="nav navbar-nav navbar-left">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'about' %}">About GAHTC</a></li>
-                            <li><a href="{% url 'howToUse' %}">How to Use GAHTC</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore Content<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'modulesView' %}">By Module</a></li>
-                            <li><a href="{% url 'lecturesView' %}">By Lecture</a></li>
-                            <li><a href="{% url 'architectureTalk' %}">Architecture Talk</a></li>
-                            <li><a href="{% url 'timescape' %}">Timescape</a></li>
-
-                        </ul>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Membership <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{% url 'howtobecomeamember' %}">How to Become a Member</a></li>
-                                <li><a href="{% url 'membersView' %}">Browse Current Members</a></li>
-                                <li><a href="{% url 'membersconference' %}">Bi-Annual Members' Conference</a></li>
-                                <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Apply for a Grant <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{% url 'grants' %}">All Grant Opportunities</a></li>
-                                <li><a href="{% url 'grants' %}#targeted-acquisition-grants">Targeted Acquisition Grants</a></li>
-                                <li><a href="{% url 'grants' %}#untargeted-field-initiated-grants">Untargeted Field-initiated Grants</a></li>
-                                <li><a href="{% url 'grants' %}#emerging-scholar-grants">Emerging Scholar Grants</a></li>
-                                <li><a href="{% url 'grants' %}#global-connections-fellowship">Global Connections Fellowship</a></li>
-                                <li><a href="{% url 'grants' %}#research-to-teaching-grants">Research-to-Teaching Grants in affiliation with SAH</a></li>
-                                <li><a href="{% url 'grants' %}#travel-grants">Field Seminar Travel Grants in affiliation with SAH</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{% url 'contact' %}">Contact Us</a></li>
-                            </ul>
-                        </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
+            <div class="navbar-header-holder">
+                <div class="navbar-header">
+                    <a href="/"><img src="{% static 'website/css/images/gahtc.logo.png' %}"></a>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gahtc-navbar-collapse" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <ul class="nav navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ request.user.userProfile.name }}<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             {% if perms.auth.add_user %}
-                                <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
+                            <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
                             {% endif %}
                             <li><a href="{% url 'myprofile' %}">My Profile</a></li>
                             <li><a href="{% url 'mybundles' %}">My Course Bundles</a></li>
@@ -106,6 +60,50 @@
                     <li><a href="{% url 'registration_register' %}">Create Account</a></li>
                     {% endif %}
                 </ul>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="navigation-links">
+                <div class="collapse navbar-collapse" id="gahtc-navbar-collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'about' %}">About GAHTC</a></li>
+                                <li><a href="{% url 'howToUse' %}">How to Use GAHTC</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Explore Content<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'modulesView' %}">By Module</a></li>
+                                <li><a href="{% url 'lecturesView' %}">By Lecture</a></li>
+                                <li><a href="{% url 'architectureTalk' %}">Architecture Talk</a></li>
+                                <li><a href="{% url 'timescape' %}">Timescape</a></li>
+                            </ul>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Membership <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'howtobecomeamember' %}">How to Become a Member</a></li>
+                                    <li><a href="{% url 'membersView' %}">Browse Current Members</a></li>
+                                    <li><a href="{% url 'membersconference' %}">Bi-Annual Members' Conference</a></li>
+                                    <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Apply for a Grant <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'grants' %}">All Grant Opportunities</a></li>
+                                    <li><a href="{% url 'grants' %}#targeted-acquisition-grants">Targeted Acquisition Grants</a></li>
+                                    <li><a href="{% url 'grants' %}#untargeted-field-initiated-grants">Untargeted Field-initiated Grants</a></li>
+                                    <li><a href="{% url 'grants' %}#emerging-scholar-grants">Emerging Scholar Grants</a></li>
+                                    <li><a href="{% url 'grants' %}#global-connections-fellowship">Global Connections Fellowship</a></li>
+                                    <li><a href="{% url 'grants' %}#research-to-teaching-grants">Research-to-Teaching Grants in affiliation with SAH</a></li>
+                                    <li><a href="{% url 'grants' %}#travel-grants">Field Seminar Travel Grants in affiliation with SAH</a></li>
+                                </ul>
+                            </li>
+                    </ul>
+                </div>
+                <a href="{% url 'contact' %}">Contact Us</a>
             </div>
             <!-- /.navbar-collapse -->
         </div>
