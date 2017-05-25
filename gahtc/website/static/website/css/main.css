@@ -44,6 +44,28 @@ body {
 
 /* bootstrap override on link highlighting */
 
+
+/* justify all conent */
+
+p {
+    text-align: justify;
+    font-family: 'LinuxLibertine';
+}
+
+li {
+    font-family: 'LinuxLibertine';
+}
+
+h1 {
+    font-weight: bold;
+}
+
+h3 {
+    font-family: 'LinuxLibertine';
+    font-size: 28px;
+    font-style: italic;
+}
+
 a:hover,
 a:focus {
     text-decoration: none;
@@ -53,7 +75,7 @@ body nav {
     background: url('images/oceancurrents.png');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: 20%;
+    background-position: 20% 40%;
 }
 
 .navbar {
@@ -74,7 +96,7 @@ body nav {
 }
 
 .navbar-header a img {
-    width: 300px;
+    width: 250px;
     height: auto;
 }
 
@@ -83,7 +105,6 @@ body nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 -15px;
 }
 
 .navigation-links .navbar-collapse .nav li {
@@ -93,6 +114,30 @@ body nav {
 .navigation-links > a {
     color: #fff;
     margin-right: 20px;
+}
+
+.navbar-header-holder .navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-header-holder .nav p {
+    color: #fff;
+    margin: 0;
+}
+
+.navbar-header-holder .nav .user-profile {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background: #000;
+}
+
+.navbar-header-holder .nav .dropdown .dropdown-menu {
+    left: -84px;
 }
 
 .container {
@@ -110,9 +155,101 @@ body nav {
     width: 90%;
 }
 
+.member-view {
+    width: 100%;
+    padding: 0 5%;
+}
+
+.member-view .heading {
+    margin: 60px 0 40px 0;
+    font-weight: bold;
+}
+
+.members-section .members-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 60px;
+}
+
+.members-group .member {
+    flex-basis: 45%;
+}
+
+.member .member-heading {
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.member-heading .name {
+    margin: 0;
+    font-family: 'LinuxLibertine';
+    font-weight: bold;
+}
+
+.member-heading span {
+    font-size: 20px;
+    font-family: 'LinuxLibertine';
+    font-weight: normal;
+    font-style: italic;
+}
+
+.member .member-main {
+    height: 240px;
+    border: 1px solid #878787;
+    display: flex;
+    flex-direction: row;
+}
+
+.member-main .photo {
+    flex-basis: 25%;
+}
+
+.member-main .description {
+    flex-basis: 75%;
+    border-left: 1px solid #878787;
+    padding: 4%;
+    font-family: 'LinuxLibertine';
+}
+
+.member-main .description .contacts p {
+    margin-bottom: 0;
+}
+
 @media (min-width: 768px) {
     .background-holder .main-input {
         width: 40%;
+    }
+}
+
+@media (max-width: 768px) {
+    .members-group .member {
+        margin-bottom: 40px;
+    }
+    .members-section .members-group {
+        flex-wrap: wrap;
+    }
+    .members-group .member {
+        flex-basis: 100%;
+    }
+    h1 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 425px) {
+    .member .member-main {
+        flex-direction: column;
+        height: auto;
+    }
+    .navbar-header a img {
+        width: 150px;
+        height: auto;
+    }
+    h1 {
+        font-size: 32px;
+    }
+    h3 {
+        font-size: 24px;
     }
 }
 
@@ -169,10 +306,6 @@ blockquote p {
 
 
 /* Navbar */
-
-.navbar-header {
-    float: none;
-}
 
 @media (min-width: 1200px) {
     .navbar-right {
