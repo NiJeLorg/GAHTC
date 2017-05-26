@@ -52,10 +52,9 @@ p {
     font-family: 'LinuxLibertine';
 }
 
-li {
-    font-family: 'LinuxLibertine';
-}
-
+// li {
+//     font-family: 'LinuxLibertine';
+// }
 h1 {
     font-weight: bold;
 }
@@ -80,7 +79,10 @@ body nav {
 
 .navbar {
     margin-bottom: 0;
+    border: none;
     min-height: auto;
+    background-color: #3A3A3C;
+    box-shadow: 2px 3px 10px #525252;
 }
 
 .navbar-header-holder {
@@ -93,6 +95,22 @@ body nav {
 .navbar-header-holder .nav a {
     padding: 0;
     margin-left: 15px;
+}
+
+.user-nav p {
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+    color: #A1A0A1;
+    margin: 0;
+}
+
+.user-nav .user-profile {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background: #000;
 }
 
 .navbar-header a img {
@@ -116,24 +134,21 @@ body nav {
     margin-right: 20px;
 }
 
-.navbar-header-holder .navbar-nav {
+.navigation-links #dropdown-toggle:focus {
+    background-color: rgba(33, 33, 33, 0.6);
+}
+
+.navigation-links .dropdown-menu {
+    border: none;
+}
+
+.navigation-links .dropdown-toggle .caret {
+    margin-left: 10px;
+}
+
+.navbar-header-holder .user-nav {
     display: flex;
     align-items: center;
-}
-
-.navbar-header-holder .nav p {
-    color: #fff;
-    margin: 0;
-}
-
-.navbar-header-holder .nav .user-profile {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    background: #000;
 }
 
 .navbar-header-holder .nav .dropdown .dropdown-menu {
@@ -173,6 +188,9 @@ body nav {
 
 .members-group .member {
     flex-basis: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .member .member-heading {
@@ -201,11 +219,11 @@ body nav {
 }
 
 .member-main .photo {
-    flex-basis: 25%;
+    flex-basis: 30%;
 }
 
 .member-main .description {
-    flex-basis: 75%;
+    flex-basis: 70%;
     border-left: 1px solid #878787;
     padding: 4%;
     font-family: 'LinuxLibertine';
@@ -213,6 +231,15 @@ body nav {
 
 .member-main .description .contacts p {
     margin-bottom: 0;
+}
+
+@media (max-width: 1024px) {
+    .member-view {
+        padding: 0 3%;
+    }
+    .members-group .member {
+        flex-basis: 49%;
+    }
 }
 
 @media (min-width: 768px) {
@@ -250,6 +277,15 @@ body nav {
     }
     h3 {
         font-size: 24px;
+    }
+    .navbar-header-holder {
+        display: block;
+    }
+    .navbar-header-holder .user-nav {
+        display: none;
+    }
+    .navigation-links > a {
+        display: none;
     }
 }
 
@@ -321,6 +357,10 @@ blockquote p {
     width: 100%;
     height: auto;
     background-color: #000;
+}
+
+.footer p {
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
 }
 
 .container-fluid .text-muted {
