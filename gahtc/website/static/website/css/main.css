@@ -131,7 +131,7 @@ body nav {
 
 .navigation-links > a {
     color: #fff;
-    margin-right: 20px;
+    margin-right: 40px;
 }
 
 .navigation-links #dropdown-toggle:focus {
@@ -153,6 +153,10 @@ body nav {
 
 .navbar-header-holder .nav .dropdown .dropdown-menu {
     left: -84px;
+}
+
+.navbar-nav .contact-us {
+    display: none;
 }
 
 .container {
@@ -286,6 +290,9 @@ body nav {
     }
     .navigation-links > a {
         display: none;
+    }
+    .navbar-nav .contact-us {
+        display: block;
     }
 }
 
