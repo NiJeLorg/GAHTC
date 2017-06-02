@@ -1086,7 +1086,7 @@ def modulesView(request):
 			# remove articles from titles for reordering
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'a' or first_word == 'the' or first_word == 'and':
-				lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1)
+				lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
 			else:
 				lec.no_article_title = lec.title.strip().lower()
 
@@ -1127,7 +1127,7 @@ def lecturesView(request):
 		# remove articles from titles for reordering
 		first_word = lec.title.strip().lower().split(' ', 1)[0]
 		if first_word == 'a' or first_word == 'the' or first_word == 'and':
-			lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1)
+			lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
 		else:
 			lec.no_article_title = lec.title.strip().lower()
 
