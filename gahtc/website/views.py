@@ -1054,7 +1054,7 @@ def modulesView(request):
 	for module_returned in modules_returned:
 		first_word = module_returned.title.strip().lower().split(' ', 1)[0]
 		if first_word == 'a' or first_word == 'the' or first_word == 'and':
-			module_returned.no_article_title = module_returned.title.strip().lower().replace(first_word,"",1)
+			module_returned.no_article_title = module_returned.title.strip().lower().replace(first_word,"",1).strip()
 		else:
 			module_returned.no_article_title = module_returned.title.strip().lower()
 
