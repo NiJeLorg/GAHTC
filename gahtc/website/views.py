@@ -199,6 +199,39 @@ def mainSearchCode(request, keyword, tab):
 		unique_module_list = list(module_set)
 		unique_module_list_count = len(unique_module_list)
 
+		#reorder modules if title or author is in the keyword
+		for module in unique_module_list:
+			if module.title.lower().find(keyword.lower()) != -1 or module.authors.lower().find(keyword.lower()) != -1:
+				#remove item
+				unique_module_list.remove(module)
+				#readd item in the front of the list
+				unique_module_list.insert(0, module)
+
+		#reorder lectures if title or author is in the keyword
+		for lec in lectures_returned:
+			if lec.object.title.lower().find(keyword.lower()) != -1 or lec.object.authors.lower().find(keyword.lower()) != -1:
+				#remove item
+				lectures_returned.remove(lec)
+				#readd item in the front of the list
+				lectures_returned.insert(0, lec)
+
+		#reorder lectures if title or author is in the keyword
+		for lecdoc in lecture_documents_returned:
+			if lecdoc.object.title.lower().find(keyword.lower()) != -1 or lecdoc.object.lecture.authors.lower().find(keyword.lower()) != -1:
+				#remove item
+				lecture_documents_returned.remove(lecdoc)
+				#readd item in the front of the list
+				lecture_documents_returned.insert(0, lecdoc)
+
+		#reorder lectures if title or author is in the keyword
+		for lecslide in lecture_slides_returned:
+			if lecslide.object.lecture.title.lower().find(keyword.lower()) != -1 or lecslide.object.lecture.authors.lower().find(keyword.lower()) != -1:
+				#remove item
+				lecture_slides_returned.remove(lecslide)
+				#readd item in the front of the list
+				lecture_slides_returned.insert(0, lecslide)
+
+
 		#set for template
 		modules_returned_unique = unique_module_list
 		modules_returned_unique_count = unique_module_list_count
@@ -1035,7 +1068,7 @@ def modulesView(request):
 		module_returned.moduleDocs = moduleDocs
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=module_returned)
+		moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('module__title','title')
 		# get the file name
 		for lec in moduleLecs:
 			lecture = str(lec.presentation)
@@ -1066,7 +1099,7 @@ def lecturesView(request):
 	  Loads all lectures 
 	"""	
 
-	lectures_returned = lectures.objects.all().order_by('module__title','title')
+	lectures_returned = lectures.objects.exclude(extracted=False).order_by('module__title','title')
 
 	for lec in lectures_returned:
 		lecture = str(lec.presentation)
