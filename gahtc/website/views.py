@@ -79,6 +79,7 @@ def testimonials(request):
 def grants(request):
 	context_dict = {}
 	return render(request, 'website/grants.html', context_dict)
+	
 
 def contact(request):
 
