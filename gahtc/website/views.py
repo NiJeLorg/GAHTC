@@ -352,7 +352,7 @@ def showModule(request, id=None):
 		doc.documentName = document[2]
 
 	#look up the lectures
-	moduleLecs = lectures.objects.filter(module=module_returned)
+	moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
 	# get the file name
 	for lec in moduleLecs:
 		lecture = str(lec.presentation)
@@ -1319,7 +1319,11 @@ def admin_module(request, id=None):
 		# Have we been provided with a valid form?
 		if form.is_valid():
 			# Save the new data to the database.
-			f = form.save()
+			f = form.save(commit=False)
+			f.save()
+			# Without this next line the tags won't be saved.
+			form.save_m2m()
+
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
@@ -1428,7 +1432,10 @@ def admin_moduledoc(request, id=None, moduleid=None):
 		# Have we been provided with a valid form?
 		if form.is_valid():
 			# Save the new data to the database.
-			f = form.save()
+			f = form.save(commit=False)
+			f.save()
+			# Without this next line the tags won't be saved.
+			form.save_m2m()
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
@@ -1514,9 +1521,16 @@ def admin_lecture(request, id=None, moduleid=None):
 			# Save the new data to the database.
 			f = form.save(commit=False)
 
-			#ensure extracted is False -- important for updates to files
-			f.extracted = False
+			# check to see if the field "presentation" has not changed and if so set extracted to True, otherwise set to false
+			if 'presentation' in form.changed_data:
+				f.extracted = False
+			else:
+				f.extracted = True
+
 			f.save()
+			
+			# Without this next line the tags won't be saved.
+			form.save_m2m()
 
 			# flag any associated lecture segments for review
 			lectureSegs = lectureSegments.objects.filter(lecture=lectureObject)
@@ -1747,7 +1761,10 @@ def admin_lecturedoc(request, id=None, lectureid=None):
 		# Have we been provided with a valid form?
 		if form.is_valid():
 			# Save the new data to the database.
-			f = form.save()
+			f = form.save(commit=False)
+			f.save()
+			# Without this next line the tags won't be saved.
+			form.save_m2m()
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
