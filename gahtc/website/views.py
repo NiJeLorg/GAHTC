@@ -826,7 +826,7 @@ def zipUpBundle(request, id=None):
 			#look up the lectures
 			moduleLecs = lectures.objects.filter(module=bundle.module).order_by('title')
 			#loop over lectures and add to zip archive in the correct folder
-			for i, lec in enumerate(moduleLecs):
+			for i, lec in enumerate(moduleLecs,1):
 				modTitle = ''.join(bundle.module.title.split())
 				document = unicode(lec.presentation)
 				document = document.split('/')
@@ -845,7 +845,7 @@ def zipUpBundle(request, id=None):
 
 
 		# for each lecture write to zip archive 
-		for i, bundle in enumerate(bundle_lectures):
+		for i, bundle in enumerate(bundle_lectures,1):
 			document = unicode(bundle.lecture.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
@@ -863,7 +863,7 @@ def zipUpBundle(request, id=None):
 
 
 		# for each lecture segment write to zip archive 
-		for i, bundle in enumerate(bundle_lecture_segments):
+		for i, bundle in enumerate(bundle_lecture_segments,1):
 			document = unicode(bundle.lectureSegment.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
@@ -872,7 +872,7 @@ def zipUpBundle(request, id=None):
 
 
 		#for each lecture document strip out name of file
-		for i, bundle in enumerate(bundle_lecture_documents):	
+		for i, bundle in enumerate(bundle_lecture_documents,1):	
 			document = unicode(bundle.lectureDocument.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
@@ -880,7 +880,7 @@ def zipUpBundle(request, id=None):
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureDocument.document), directory)
 
 		#for each lecture slide strip out name of file and slide notes file
-		for i, bundle in enumerate(bundle_lecture_slides):
+		for i, bundle in enumerate(bundle_lecture_slides,1):
 			document = unicode(bundle.lectureSlide.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
@@ -931,15 +931,14 @@ def zipUpModule(request, id=None):
 			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=module_returned)
+		moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
 		#loop over lectures and add to zip archive in the correct folder
-		for lec in moduleLecs:
+		for i, lec in enumerate(moduleLecs,1):
 			modTitle = ''.join(module_returned.title.split())
-			lecTitle = ''.join(lec.title.split())
 			document = unicode(lec.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 			# look up lecture documents
@@ -989,7 +988,7 @@ def zipUpLecture(request, id=None):
 		document = unicode(lec.presentation)
 		document = document.split('/')
 		doc_name = document[2].encode('utf8', 'replace')
-		directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+		directory = os.path.join(zipfolder, doc_name.decode('utf8', 'replace'))
 		myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 		# look up lecture documents
@@ -998,7 +997,7 @@ def zipUpLecture(request, id=None):
 			document = unicode(lecDoc.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
