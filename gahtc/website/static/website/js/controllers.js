@@ -148,11 +148,23 @@ $( document ).ready(function() {
 		var itemid = $(this).parents( "ul" ).data( "itemid" );
 		// add data value to hidden field in modal form
 		$("#newBundleName").data( "itemid", itemid );
+
 	});
 
-	// run ajax to create new bundle when save is clicked
+	// run ajax to create new bundle when save is clicked or keydown on enter key is pressed
 	$(" #createNewBundle ").click(function(e) {
 		e.preventDefault();
+		createNewBundle();
+	});
+
+	$('#newBundleName').keypress(function(e) {
+		if (e.which == 13) {
+			e.preventDefault();
+			createNewBundle();
+		}
+	});
+
+	function createNewBundle() {
 		// check to see if a title was added
 		if ($(" #newBundleName ").val().length == 0) {
 			$(" #noBundleTitleAlert ").removeClass('hidden');
@@ -163,11 +175,8 @@ $( document ).ready(function() {
 			// close the modal
 			$('#newBundleModal').modal('hide');
 
-			// update bundle page
-			gahtcApplication.refreshSidebarBundle();
-
-		}
-	});
+		}		
+	}	
 
 	// add to a bundle
 	$(document).on('click', '.add-to-bundle', function(e) { 
@@ -181,8 +190,6 @@ $( document ).ready(function() {
 		// run function
 		gahtcApplication.addToBundle(bundle, itemid, title);
 
-		// refresh bundle page
-		gahtcApplication.refreshSidebarBundle();
 	});
 
 	// remove from a bundle
@@ -209,6 +216,26 @@ $( document ).ready(function() {
 		}
 		// run function
 		gahtcApplication.removeFromBundle(bundle, itemid, type);
+
+	});
+
+	// remove bundle
+	$(document).on('click', '.removeBundle', function(e) { 
+		e.preventDefault();
+		// pull bundle id
+		var bundle = $(this).data( "bundleid" );
+		// run function
+		gahtcApplication.removeBundle(bundle);
+
+	});
+
+	// remove search
+	$(document).on('click', '.removeSearch', function(e) { 
+		e.preventDefault();
+		// pull bundle id
+		var search = $(this).data( "searchid" );
+		// run function
+		gahtcApplication.removeSearch(search);
 
 	});
 

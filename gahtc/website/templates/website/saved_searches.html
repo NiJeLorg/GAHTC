@@ -7,9 +7,13 @@
 			<h4>Saved Searches</h4>
 			<ul>
 			{% for search in saved_searches %}
-				<li><a href="/search/?keyword={{ search.searchString }}">{{ search.searchString }}</a></li>
+				<li>
+					<p><a href="/search/?keyword={{ search.searchString }}">{{ search.searchString }}</a> 
+						<button class="btn btn-link btn-xs removeSearch" data-searchid="{{ search.id }}"><span class="glyphicon glyphicon-remove-circle text-danger" aria-hidden="true"></span></button>
+					</p>
+				</li>
 			{% endfor %}
-			</ul>
+			</ul> 
 		{% else %}
 			<div class="col-md-6">
 				<h4>No Searches Yet Saved!</h4>

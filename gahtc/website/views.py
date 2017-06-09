@@ -669,7 +669,7 @@ def removeFromBundle(request):
 			lectureSlide = lectureSlides.objects.get(pk=itemid)
 			bls = bundleLectureSlides.objects.filter(bundle=bundle, lectureSlide=lectureSlide)
 			for rec in bls:
-				bls.delete()
+				rec.delete()
 
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
@@ -677,6 +677,44 @@ def removeFromBundle(request):
 
 	context_dict = {'bundles_returned':bundles_returned}
 	return render(request, 'website/bundle_dropdown.html', context_dict)
+
+def removeBundle(request):
+	"""
+	  AJAX request to remove a bundle
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		bundleid = request.GET.get("bundle","")
+
+		# get bundle and remove it
+		bundle = bundles.objects.get(pk=bundleid).delete()
+
+
+	# pull remaining bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+	context_dict = {'bundles_returned':bundles_returned}
+	return render(request, 'website/bundle_dropdown.html', context_dict)
+
+
+def removeSearch(request):
+
+	"""
+	  AJAX request to save search string
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		searchid = request.GET.get("search","")
+
+		# create saved search unless one already exists
+		search = savedSearches.objects.get(user=request.user, pk=searchid).delete()
+
+	saved_searches = savedSearches.objects.filter(user=request.user)
+
+	context_dict = {'saved_searches':saved_searches}
+	return render(request, 'website/saved_searches.html', context_dict)
 
 
 def showBundle(request, id=None):
@@ -786,15 +824,14 @@ def zipUpBundle(request, id=None):
 				myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 			#look up the lectures
-			moduleLecs = lectures.objects.filter(module=bundle.module)
+			moduleLecs = lectures.objects.filter(module=bundle.module).order_by('title')
 			#loop over lectures and add to zip archive in the correct folder
-			for lec in moduleLecs:
+			for i, lec in enumerate(moduleLecs):
 				modTitle = ''.join(bundle.module.title.split())
-				lecTitle = ''.join(lec.title.split())
 				document = unicode(lec.presentation)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 				# look up lecture documents
@@ -803,17 +840,16 @@ def zipUpBundle(request, id=None):
 					document = unicode(lecDoc.document)
 					document = document.split('/')
 					doc_name = document[2].encode('utf8', 'replace')
-					directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+					directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 					myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
 		# for each lecture write to zip archive 
-		for bundle in bundle_lectures:
-			lecTitle = ''.join(bundle.lecture.title.split())
+		for i, bundle in enumerate(bundle_lectures):
 			document = unicode(bundle.lecture.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lecture.presentation), directory)
 
 			# look up lecture documents and add these to zip archive
@@ -822,36 +858,33 @@ def zipUpBundle(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
 		# for each lecture segment write to zip archive 
-		for bundle in bundle_lecture_segments:
-			lecTitle = ''.join(bundle.lectureSegment.title.split())
+		for i, bundle in enumerate(bundle_lecture_segments):
 			document = unicode(bundle.lectureSegment.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_segments/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_segments/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSegment.presentation), directory)
 
 
 		#for each lecture document strip out name of file
-		for bundle in bundle_lecture_documents:
-			lecTitle = ''.join(bundle.lectureDocument.lecture.title.split())	
+		for i, bundle in enumerate(bundle_lecture_documents):	
 			document = unicode(bundle.lectureDocument.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_documents/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_documents/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureDocument.document), directory)
 
 		#for each lecture slide strip out name of file and slide notes file
-		for bundle in bundle_lecture_slides:
-			lecTitle = ''.join(bundle.lectureSlide.lecture.title.split())	
+		for i, bundle in enumerate(bundle_lecture_slides):
 			document = unicode(bundle.lectureSlide.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_slides/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_slides/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.presentation), directory)
 
 	#get size of zip file
