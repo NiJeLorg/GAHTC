@@ -947,7 +947,7 @@ def zipUpModule(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -984,7 +984,6 @@ def zipUpLecture(request, id=None):
 		d.downloaded = True
 		d.save()
 
-		lecTitle = ''.join(lec.title.split())
 		document = unicode(lec.presentation)
 		document = document.split('/')
 		doc_name = document[2].encode('utf8', 'replace')
