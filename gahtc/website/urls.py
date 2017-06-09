@@ -17,7 +17,6 @@ urlpatterns = [
     url(r'^contact/$', views.contact, name='contact'),
     url(r'^architecture-talk/$', views.architectureTalk, name='architectureTalk'),
 
-
     url(r'^search/$', views.search, name='search'),
     url(r'^bundles/$', views.mybundles, name='mybundles'),
     url(r'^profile/$', views.myprofile, name='myprofile'),
@@ -33,6 +32,8 @@ urlpatterns = [
     url(r'^create_new_bundle/$', views.createNewBundle, name='createNewBundle'),
     url(r'^add_to_bundle/$', views.addToBundle, name='addToBundle'),
     url(r'^remove_from_bundle/$', views.removeFromBundle, name='removeFromBundle'),
+    url(r'^remove_bundle/$', views.removeBundle, name='removeBundle'),
+    url(r'^remove_search/$', views.removeSearch, name='removeSearch'),
     url(r'^show_bundle/(?P<id>\d+)/$', views.showBundle, name='showBundle'),
     url(r'^zip_up_bundle/(?P<id>\d+)/$', views.zipUpBundle, name='zipUpBundle'),
     url(r'^zip_up_module/(?P<id>\d+)/$', views.zipUpModule, name='zipUpModule'),
