@@ -80,5 +80,7 @@ urlpatterns = [
     url(r'^dont_contact_module/$', views.dontContactModule, name='dontContactModule'),
     url(r'^contact_lecture/$', views.contactLecture, name='contactLecture'),
     url(r'^dont_contact_lecture/$', views.dontContactLecture, name='dontContactLecture'),
-    
+
+    url(r'^inline_edit_update_title/$', views.inlineEditUpdateTitle, name='inlineEditUpdateTitle'),
+
 ]
