@@ -2224,3 +2224,34 @@ def dontContactLecture(request):
 			o.save()
 
 	return JsonResponse({'foo': 'bar'})
+
+
+
+def inlineEditUpdateTitle(request):
+	"""
+	  AJAX request to save new title for an item from the admin dashboard
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		#/inline_edit_update_title/?new_text=" + new_text + "&type=" + type + "&itemid=" + itemid,
+		new_text = request.GET.get("new_text","")
+		model_type = request.GET.get("type","")
+		itemid = request.GET.get("itemid","")
+
+		# check type
+		if model_type == "moduledoc":
+			obj = moduleDocuments.objects.get(pk=itemid)
+		elif model_type == "lecture":
+			obj = lectures.objects.get(pk=itemid)
+		elif model_type == "lecturesegment":
+			obj = lectureSegments.objects.get(pk=itemid)
+		elif model_type == "lecturedocument":
+			obj = lectureDocuments.objects.get(pk=itemid)
+
+		obj.title = new_text
+		obj.save()
+
+	return JsonResponse({'foo': 'bar'})
+
+
