@@ -52,9 +52,9 @@ $( document ).ready(function() {
 
 				// for document file names, do a bit of validation
 				var valid = true;
-				if (type == 'moduledoc' || type == 'lecturedocument') {
+				if (field == 'doc' && (type == 'moduledoc' || type == 'lecturedocument')) {
 					valid = validate(new_text, 'doc');
-				} else {
+				} else if (field == 'doc' && (type == 'lecture' || type == 'lecturesegment')) {
 					valid = validate(new_text, 'pptx');
 				}
 
