@@ -82,5 +82,6 @@ urlpatterns = [
     url(r'^dont_contact_lecture/$', views.dontContactLecture, name='dontContactLecture'),
 
     url(r'^inline_edit_update_title/$', views.inlineEditUpdateTitle, name='inlineEditUpdateTitle'),
+    url(r'^inline_edit_update_doc/$', views.inlineEditUpdateDoc, name='inlineEditUpdateDoc'),
 
 ]

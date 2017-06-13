@@ -2255,3 +2255,46 @@ def inlineEditUpdateTitle(request):
 	return JsonResponse({'foo': 'bar'})
 
 
+
+def inlineEditUpdateDoc(request):
+	"""
+	  AJAX request to save new title for an item from the admin dashboard
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		#/inline_edit_update_title/?new_text=" + new_text + "&type=" + type + "&itemid=" + itemid,
+		new_text = request.GET.get("new_text","")
+		model_type = request.GET.get("type","")
+		itemid = request.GET.get("itemid","")
+
+		# check type
+		if model_type == "moduledoc":
+			obj = moduleDocuments.objects.get(pk=itemid)
+			doc = obj.document
+		elif model_type == "lecture":
+			obj = lectures.objects.get(pk=itemid)
+			doc = obj.presentation
+		elif model_type == "lecturesegment":
+			obj = lectureSegments.objects.get(pk=itemid)
+			doc = obj.presentation
+		elif model_type == "lecturedocument":
+			obj = lectureDocuments.objects.get(pk=itemid)
+			doc = obj.document
+
+		# rename document on file server
+		head, tail = os.path.split(doc.path)
+		new_path = head + '/' + new_text
+
+		#change name
+		doc_name = doc.name.split('/')
+		
+		#update fileserver name
+		os.rename(doc.path, new_path)
+
+		#save to database
+		doc.name = doc_name[0] + '/' + doc_name[1] + '/' + new_text
+		obj.save()
+
+
+	return JsonResponse({'foo': 'bar'})
