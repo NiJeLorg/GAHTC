@@ -20,7 +20,6 @@
                     <th>Email Address</th>
                     <th>Institution</th>
                     <th>Professional Title</th>
-                    <th>GAHTC Member</th>
                 </thead>
                 <tbody>
                     {% for a in unverified %}
@@ -35,7 +34,6 @@
                         <td>{{ a.user.email }}</td>
                         <td>{{ a.institution }}</td>
                         <td>{{ a.title }}</td>
-                        <td>{% if a.member %}Yes{% else %}No{% endif %}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
