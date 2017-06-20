@@ -308,6 +308,7 @@ class Command(BaseCommand):
 				addslide.presentation.save(tail_slide, seg_file)
 				seg.close()
 				os.remove(path_to_file)
+				addslide.extracted = True
 				addslide.save()
 
 

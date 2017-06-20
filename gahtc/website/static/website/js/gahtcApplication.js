@@ -128,6 +128,10 @@ gahtcApplication.createNewBundle = function () {
 			// add response from template to bundles uls
 			$('.bundles').html(data);
 			gahtcApplication.updateFooter();
+
+			// update bundle page
+			gahtcApplication.refreshSidebarBundle();
+
         }
 	});
 
@@ -145,6 +149,9 @@ gahtcApplication.addToBundle = function (bundle, itemid, title) {
 				$('#bundle-title').text(title);
 			}
 
+			// refresh bundle page
+			gahtcApplication.refreshSidebarBundle();
+
         }
 	});
 }
@@ -155,6 +162,49 @@ gahtcApplication.removeFromBundle = function (bundle, itemid, type) {
 		url: "/remove_from_bundle/?bundle=" + bundle + "&itemid=" + itemid + "&type=" + type,
 		success: function(data){
 			gahtcApplication.getBundle(bundle);
+			gahtcApplication.updateFooter();
+        }
+	});
+}
+
+gahtcApplication.removeBundle = function (bundle) {
+	$.ajax({
+		type: "GET",
+		url: "/remove_bundle/?bundle=" + bundle,
+		success: function(data){			
+			// set next in list to active and remove the active bundle in the list
+			var nextBundle = $(".bundleResult.active").next();
+			var prevBundle = $(".bundleResult.active").prev();
+			var nextBundleID = nextBundle.data( "bundleid" );
+			var prevBundleID = prevBundle.data( "bundleid" );
+
+			if (nextBundleID) {
+				$(".bundleResult.active").remove();
+				nextBundle.addClass('active');
+				gahtcApplication.getBundle(nextBundleID);
+			} else if (prevBundleID) {
+				$(".bundleResult.active").remove();
+				prevBundle.addClass('active');
+				gahtcApplication.getBundle(prevBundleID);				
+			} else {
+				$(".bundleResult.active").remove();
+				$('.bundleSidebar').html('');
+			}
+
+			// add response from template to bundles uls
+			$('.bundles').html(data);
+			gahtcApplication.updateFooter();
+        }
+	});
+}
+
+gahtcApplication.removeSearch = function (search) {
+	$.ajax({
+		type: "GET",
+		url: "/remove_search/?search=" + search,
+		success: function(data){			
+			// update search list
+			$('.savedSearchList').html(data);
 			gahtcApplication.updateFooter();
         }
 	});

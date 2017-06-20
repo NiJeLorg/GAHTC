@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from website.models import *
 
 YES_NO = (
-            (None, '--'),
             (True, 'Yes'),
             (False, 'No'),
         )
@@ -76,7 +75,7 @@ class UserProfileForm(forms.ModelForm):
 class AdminUserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar', 'verified')
+        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar', 'verified', 'public')
         labels = {
             'name': 'Full Name',
             'title': 'Professional Title',
@@ -91,6 +90,7 @@ class AdminUserProfileForm(forms.ModelForm):
             'introduction': 'Please introduce yourself to your GAHTC colleagues.',
             'avatar': 'Please upload a bio picture for others to view on the GAHTC website.',
             'verified': 'Please select the verification status for this user.',
+            'public': 'Should this user have a public profile?',
         }
         widgets = {
             'name': forms.TextInput(),
@@ -104,6 +104,7 @@ class AdminUserProfileForm(forms.ModelForm):
             'website': forms.TextInput(attrs={'placeholder': 'http://example.com/'}),
             'instutution_document': forms.ClearableFileInput(),
             'verified': forms.Select(choices=Null_Boolean_Choices),
+            'public': forms.Select(choices=YES_NO),
         }
 
 # verify users
