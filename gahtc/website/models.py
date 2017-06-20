@@ -38,6 +38,7 @@ class profile(models.Model):
 	website = models.URLField(max_length=255, default='', null=True, blank=True)
 	instutution_document = models.FileField(upload_to="insitution_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	verified = models.NullBooleanField(default=None)
+	public = models.BooleanField(default=True)
 
 	def __unicode__(self):
 		return self.name

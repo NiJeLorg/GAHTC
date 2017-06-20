@@ -87,8 +87,18 @@
 							          <td>
 							          	<a class="btn btn-danger" href="/admin_removemoduledoc/{{ moduleDocument.id }}" role="button">Remove</a>
 							          </td>
-							          <td>{{ moduleDocument.title }}</td>
-							          <td>{{ moduleDocument.documentName }}</td>
+							          <td class="editable-title" data-moduledocid="{{ moduleDocument.id }}">
+							          	<span class="static">{{ moduleDocument.title }}</span>
+							          	<span class="edit hidden">
+							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ moduleDocument.title }}" style="width:255px">
+							          	</span>
+							          </td>
+							          <td class="editable-doc" data-moduledocid="{{ moduleDocument.id }}">
+							          	<span class="static">{{ moduleDocument.documentName }}</span>
+							          	<span class="edit hidden">
+							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ moduleDocument.documentName }}" style="width:255px">
+							          	</span>
+							          </td>
 							          <td>{{ moduleDocument.document.size|filesizeformat }}</td>
 							          <td>{{ moduleDocument.authors }}</td>
 							          <td>{{ moduleDocument.created }}</td>
@@ -112,8 +122,18 @@
 							          <td>
 							          	<a class="btn btn-danger" href="/admin_removelecture/{{ lecture.id }}" role="button">Remove</a>
 							          </td>
-							          <td>{{ lecture.title }}</td>
-							          <td>{{ lecture.lectureName }}</td>
+							          <td class="editable-title" data-lectureid="{{ lecture.id }}">
+							          	<span class="static">{{ lecture.title }}</span>
+							          	<span class="edit hidden">
+							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ lecture.title }}" style="width:255px">
+							          	</span>
+							          </td>
+							          <td class="editable-doc" data-lectureid="{{ lecture.id }}">
+							          	<span class="static">{{ lecture.lectureName }}</span>
+							          	<span class="edit hidden">
+							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ lecture.lectureName }}" style="width:255px">
+							          	</span>
+							          </td>							          
 							          <td>{{ lecture.presentation.size|filesizeformat }}</td>
 							          <td>{{ lecture.authors }}</td>
 							          <td>{{ lecture.created }}</td>					       
@@ -137,7 +157,18 @@
 									          <td>
 									          	<a class="btn btn-danger" href="/admin_removelecturesegment/{{ ls.id }}" role="button">Remove</a>
 									          </td>
-									          <td>{{ ls.title }}</td>
+									          <td class="editable-title" data-lecturesegmentid="{{ ls.id }}">
+									          	<span class="static">{{ ls.title }}</span>
+									          	<span class="edit hidden">
+									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ls.title }}" style="width:255px">
+									          	</span>
+									          </td>
+									          <td class="editable-doc" data-lecturesegmentid="{{ ls.id }}">
+									          	<span class="static">{{ ls.lectureName }}</span>
+									          	<span class="edit hidden">
+									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ls.lectureName }}" style="width:255px">
+									          	</span>
+									          </td>										          
 									          <td>{{ ls.lectureName }}</td>
 									          <td>{{ ls.presentation.size|filesizeformat }}</td>
 									          <td>{{ ls.authors }}</td>
@@ -162,8 +193,18 @@
 									          <td>
 									          	<a class="btn btn-danger" href="/admin_removelecturdoc/{{ ld.id }}" role="button">Remove</a>
 									          </td>
-									          <td>{{ ld.title }}</td>
-									          <td>{{ ld.documentName }}</td>
+									          <td class="editable-title" data-lecturedocumentid="{{ ld.id }}">
+									          	<span class="static">{{ ld.title }}</span>
+									          	<span class="edit hidden">
+									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ld.title }}" style="width:255px">
+									          	</span>
+									          </td>
+									          <td class="editable-doc" data-lecturedocumentid="{{ ld.id }}">
+									          	<span class="static">{{ ld.documentName }}</span>
+									          	<span class="edit hidden">
+									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ld.documentName }}" style="width:255px">
+									          	</span>
+									          </td>
 									          <td>{{ ld.document.size|filesizeformat }}</td>
 									          <td>{{ ld.authors }}</td>
 									          <td>{{ ld.created }}</td>	
@@ -192,6 +233,7 @@
 {% block js_block %}
 <script type="text/javascript" src="{% static 'website/js/moment.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'website/js/bootstrap-sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/inline-editing.js' %}"></script>
 {% endblock %}
 
 

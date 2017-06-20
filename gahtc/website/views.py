@@ -79,6 +79,7 @@ def testimonials(request):
 def grants(request):
 	context_dict = {}
 	return render(request, 'website/grants.html', context_dict)
+	
 
 def contact(request):
 
@@ -199,6 +200,39 @@ def mainSearchCode(request, keyword, tab):
 		unique_module_list = list(module_set)
 		unique_module_list_count = len(unique_module_list)
 
+		#reorder modules if title or author is in the keyword
+		for module in unique_module_list:
+			if module.title.lower().find(keyword.lower()) != -1 or module.authors.lower().find(keyword.lower()) != -1:
+				#remove item
+				unique_module_list.remove(module)
+				#readd item in the front of the list
+				unique_module_list.insert(0, module)
+
+		#reorder lectures if title or author is in the keyword
+		for lec in lectures_returned:
+			if lec.object.title.lower().find(keyword.lower()) != -1 or lec.object.authors.lower().find(keyword.lower()) != -1:
+				#remove item
+				lectures_returned.remove(lec)
+				#readd item in the front of the list
+				lectures_returned.insert(0, lec)
+
+		#reorder lectures if title or author is in the keyword
+		for lecdoc in lecture_documents_returned:
+			if lecdoc.object.title.lower().find(keyword.lower()) != -1 or lecdoc.object.lecture.authors.lower().find(keyword.lower()) != -1:
+				#remove item
+				lecture_documents_returned.remove(lecdoc)
+				#readd item in the front of the list
+				lecture_documents_returned.insert(0, lecdoc)
+
+		#reorder lectures if title or author is in the keyword
+		for lecslide in lecture_slides_returned:
+			if lecslide.object.lecture.title.lower().find(keyword.lower()) != -1 or lecslide.object.lecture.authors.lower().find(keyword.lower()) != -1:
+				#remove item
+				lecture_slides_returned.remove(lecslide)
+				#readd item in the front of the list
+				lecture_slides_returned.insert(0, lecslide)
+
+
 		#set for template
 		modules_returned_unique = unique_module_list
 		modules_returned_unique_count = unique_module_list_count
@@ -318,7 +352,7 @@ def showModule(request, id=None):
 		doc.documentName = document[2]
 
 	#look up the lectures
-	moduleLecs = lectures.objects.filter(module=module_returned)
+	moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
 	# get the file name
 	for lec in moduleLecs:
 		lecture = str(lec.presentation)
@@ -635,7 +669,7 @@ def removeFromBundle(request):
 			lectureSlide = lectureSlides.objects.get(pk=itemid)
 			bls = bundleLectureSlides.objects.filter(bundle=bundle, lectureSlide=lectureSlide)
 			for rec in bls:
-				bls.delete()
+				rec.delete()
 
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
@@ -643,6 +677,44 @@ def removeFromBundle(request):
 
 	context_dict = {'bundles_returned':bundles_returned}
 	return render(request, 'website/bundle_dropdown.html', context_dict)
+
+def removeBundle(request):
+	"""
+	  AJAX request to remove a bundle
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		bundleid = request.GET.get("bundle","")
+
+		# get bundle and remove it
+		bundle = bundles.objects.get(pk=bundleid).delete()
+
+
+	# pull remaining bundles
+	bundles_returned = bundles.objects.filter(user=request.user)
+
+	context_dict = {'bundles_returned':bundles_returned}
+	return render(request, 'website/bundle_dropdown.html', context_dict)
+
+
+def removeSearch(request):
+
+	"""
+	  AJAX request to save search string
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		searchid = request.GET.get("search","")
+
+		# create saved search unless one already exists
+		search = savedSearches.objects.get(user=request.user, pk=searchid).delete()
+
+	saved_searches = savedSearches.objects.filter(user=request.user)
+
+	context_dict = {'saved_searches':saved_searches}
+	return render(request, 'website/saved_searches.html', context_dict)
 
 
 def showBundle(request, id=None):
@@ -752,15 +824,14 @@ def zipUpBundle(request, id=None):
 				myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 			#look up the lectures
-			moduleLecs = lectures.objects.filter(module=bundle.module)
+			moduleLecs = lectures.objects.filter(module=bundle.module).order_by('title')
 			#loop over lectures and add to zip archive in the correct folder
-			for lec in moduleLecs:
+			for i, lec in enumerate(moduleLecs,1):
 				modTitle = ''.join(bundle.module.title.split())
-				lecTitle = ''.join(lec.title.split())
 				document = unicode(lec.presentation)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 				# look up lecture documents
@@ -769,17 +840,16 @@ def zipUpBundle(request, id=None):
 					document = unicode(lecDoc.document)
 					document = document.split('/')
 					doc_name = document[2].encode('utf8', 'replace')
-					directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+					directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 					myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
 		# for each lecture write to zip archive 
-		for bundle in bundle_lectures:
-			lecTitle = ''.join(bundle.lecture.title.split())
+		for i, bundle in enumerate(bundle_lectures,1):
 			document = unicode(bundle.lecture.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lecture.presentation), directory)
 
 			# look up lecture documents and add these to zip archive
@@ -788,36 +858,33 @@ def zipUpBundle(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
 		# for each lecture segment write to zip archive 
-		for bundle in bundle_lecture_segments:
-			lecTitle = ''.join(bundle.lectureSegment.title.split())
+		for i, bundle in enumerate(bundle_lecture_segments,1):
 			document = unicode(bundle.lectureSegment.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_segments/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_segments/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSegment.presentation), directory)
 
 
 		#for each lecture document strip out name of file
-		for bundle in bundle_lecture_documents:
-			lecTitle = ''.join(bundle.lectureDocument.lecture.title.split())	
+		for i, bundle in enumerate(bundle_lecture_documents,1):	
 			document = unicode(bundle.lectureDocument.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_documents/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_documents/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureDocument.document), directory)
 
 		#for each lecture slide strip out name of file and slide notes file
-		for bundle in bundle_lecture_slides:
-			lecTitle = ''.join(bundle.lectureSlide.lecture.title.split())	
+		for i, bundle in enumerate(bundle_lecture_slides,1):
 			document = unicode(bundle.lectureSlide.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_slides/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_slides/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.presentation), directory)
 
 	#get size of zip file
@@ -864,15 +931,14 @@ def zipUpModule(request, id=None):
 			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=module_returned)
+		moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
 		#loop over lectures and add to zip archive in the correct folder
-		for lec in moduleLecs:
+		for i, lec in enumerate(moduleLecs,1):
 			modTitle = ''.join(module_returned.title.split())
-			lecTitle = ''.join(lec.title.split())
 			document = unicode(lec.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 			# look up lecture documents
@@ -881,7 +947,7 @@ def zipUpModule(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -918,11 +984,10 @@ def zipUpLecture(request, id=None):
 		d.downloaded = True
 		d.save()
 
-		lecTitle = ''.join(lec.title.split())
 		document = unicode(lec.presentation)
 		document = document.split('/')
 		doc_name = document[2].encode('utf8', 'replace')
-		directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+		directory = os.path.join(zipfolder, doc_name.decode('utf8', 'replace'))
 		myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 		# look up lecture documents
@@ -931,7 +996,7 @@ def zipUpLecture(request, id=None):
 			document = unicode(lecDoc.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -1017,9 +1082,21 @@ def modulesView(request):
 
 	modules_returned = modules.objects.all().order_by('title')
 
+	#remove articles from title for sorting
 	for module_returned in modules_returned:
+		first_word = module_returned.title.strip().lower().split(' ', 1)[0]
+		if first_word == 'a' or first_word == 'the' or first_word == 'and':
+			module_returned.no_article_title = module_returned.title.strip().lower().replace(first_word,"",1).strip()
+		else:
+			module_returned.no_article_title = module_returned.title.strip().lower()
+
+	# order titles minus articles
+	modules_returned_ordered = sorted(modules_returned, key=operator.attrgetter('no_article_title'))
+
+	print modules_returned_ordered
+	for module_returned in modules_returned_ordered:
 		#look up module docs 
-		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
+		moduleDocs = moduleDocuments.objects.filter(module=module_returned).order_by('title')
 		# just get the file name
 		contents = []
 		for doc in moduleDocs:
@@ -1035,9 +1112,16 @@ def modulesView(request):
 		module_returned.moduleDocs = moduleDocs
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=module_returned)
+		moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('module__title','title')
 		# get the file name
 		for lec in moduleLecs:
+			# remove articles from titles for reordering
+			first_word = lec.title.strip().lower().split(' ', 1)[0]
+			if first_word == 'a' or first_word == 'the' or first_word == 'and':
+				lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
+			else:
+				lec.no_article_title = lec.title.strip().lower()
+
 			lecture = str(lec.presentation)
 			lecture = lecture.split('/')
 			lec.lectureName = lecture[2]
@@ -1049,12 +1133,15 @@ def modulesView(request):
 				document = document.split('/')
 				lecDoc.documentName = document[2]
 
+		# order titles minus articles
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('no_article_title'))
+
 		#attach the module docs to the module returned 
-		module_returned.moduleLecs = moduleLecs
+		module_returned.moduleLecs = moduleLecs_ordered
 
 	coming_soon_modules_returned = comingSoonModules.objects.all().order_by('title')
 
-	context_dict = {'modules_returned':modules_returned, 'profile':profile, 'coming_soon_modules_returned':coming_soon_modules_returned}
+	context_dict = {'modules_returned':modules_returned_ordered, 'profile':profile, 'coming_soon_modules_returned':coming_soon_modules_returned}
 	return render(request, 'website/modules.html', context_dict)
 
 
@@ -1066,22 +1153,32 @@ def lecturesView(request):
 	  Loads all lectures 
 	"""	
 
-	lectures_returned = lectures.objects.all().order_by('module__title','title')
+	lectures_returned = lectures.objects.exclude(extracted=False).order_by('module__title','title')
 
 	for lec in lectures_returned:
+		# remove articles from titles for reordering
+		first_word = lec.title.strip().lower().split(' ', 1)[0]
+		if first_word == 'a' or first_word == 'the' or first_word == 'and':
+			lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
+		else:
+			lec.no_article_title = lec.title.strip().lower()
+
 		lecture = str(lec.presentation)
 		lecture = lecture.split('/')
 		lec.lectureName = lecture[2]
 		# get lecture documents
-		lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+		lectureDocs = lectureDocuments.objects.filter(lecture=lec).order_by('title')
 		lec.lectureDocs = lectureDocs
 		for lecDoc in lec.lectureDocs:
 			document = str(lecDoc.document)
 			document = document.split('/')
 			lecDoc.documentName = document[2]
 
+	# order titles minus articles
+	lectures_returned_ordered = sorted(lectures_returned, key=operator.attrgetter('no_article_title'))
 
-	context_dict = {'lectures_returned':lectures_returned}
+
+	context_dict = {'lectures_returned':lectures_returned_ordered}
 	return render(request, 'website/lectures.html', context_dict)
 
 
@@ -1091,7 +1188,7 @@ def membersView(request):
 	  Loads all user profiles
 	"""	
 
-	profiles_returned = profile.objects.filter(verified=True).exclude(name='').order_by('name')
+	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(name='').order_by('name')
 
 	context_dict = {'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)
@@ -1253,7 +1350,11 @@ def admin_module(request, id=None):
 		# Have we been provided with a valid form?
 		if form.is_valid():
 			# Save the new data to the database.
-			f = form.save()
+			f = form.save(commit=False)
+			f.save()
+			# Without this next line the tags won't be saved.
+			form.save_m2m()
+
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
@@ -1362,7 +1463,10 @@ def admin_moduledoc(request, id=None, moduleid=None):
 		# Have we been provided with a valid form?
 		if form.is_valid():
 			# Save the new data to the database.
-			f = form.save()
+			f = form.save(commit=False)
+			f.save()
+			# Without this next line the tags won't be saved.
+			form.save_m2m()
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
@@ -1448,9 +1552,16 @@ def admin_lecture(request, id=None, moduleid=None):
 			# Save the new data to the database.
 			f = form.save(commit=False)
 
-			#ensure extracted is False -- important for updates to files
-			f.extracted = False
+			# check to see if the field "presentation" has not changed and if so set extracted to True, otherwise set to false
+			if 'presentation' in form.changed_data:
+				f.extracted = False
+			else:
+				f.extracted = True
+
 			f.save()
+			
+			# Without this next line the tags won't be saved.
+			form.save_m2m()
 
 			# flag any associated lecture segments for review
 			lectureSegs = lectureSegments.objects.filter(lecture=lectureObject)
@@ -1681,7 +1792,10 @@ def admin_lecturedoc(request, id=None, lectureid=None):
 		# Have we been provided with a valid form?
 		if form.is_valid():
 			# Save the new data to the database.
-			f = form.save()
+			f = form.save(commit=False)
+			f.save()
+			# Without this next line the tags won't be saved.
+			form.save_m2m()
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
@@ -2108,5 +2222,79 @@ def dontContactLecture(request):
 		for o in c:
 			o.contact = False
 			o.save()
+
+	return JsonResponse({'foo': 'bar'})
+
+
+
+def inlineEditUpdateTitle(request):
+	"""
+	  AJAX request to save new title for an item from the admin dashboard
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		#/inline_edit_update_title/?new_text=" + new_text + "&type=" + type + "&itemid=" + itemid,
+		new_text = request.GET.get("new_text","")
+		model_type = request.GET.get("type","")
+		itemid = request.GET.get("itemid","")
+
+		# check type
+		if model_type == "moduledoc":
+			obj = moduleDocuments.objects.get(pk=itemid)
+		elif model_type == "lecture":
+			obj = lectures.objects.get(pk=itemid)
+		elif model_type == "lecturesegment":
+			obj = lectureSegments.objects.get(pk=itemid)
+		elif model_type == "lecturedocument":
+			obj = lectureDocuments.objects.get(pk=itemid)
+
+		obj.title = new_text
+		obj.save()
+
+	return JsonResponse({'foo': 'bar'})
+
+
+
+def inlineEditUpdateDoc(request):
+	"""
+	  AJAX request to save new title for an item from the admin dashboard
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		#/inline_edit_update_title/?new_text=" + new_text + "&type=" + type + "&itemid=" + itemid,
+		new_text = request.GET.get("new_text","")
+		model_type = request.GET.get("type","")
+		itemid = request.GET.get("itemid","")
+
+		# check type
+		if model_type == "moduledoc":
+			obj = moduleDocuments.objects.get(pk=itemid)
+			doc = obj.document
+		elif model_type == "lecture":
+			obj = lectures.objects.get(pk=itemid)
+			doc = obj.presentation
+		elif model_type == "lecturesegment":
+			obj = lectureSegments.objects.get(pk=itemid)
+			doc = obj.presentation
+		elif model_type == "lecturedocument":
+			obj = lectureDocuments.objects.get(pk=itemid)
+			doc = obj.document
+
+		# rename document on file server
+		head, tail = os.path.split(doc.path)
+		new_path = head + '/' + new_text
+
+		#change name
+		doc_name = doc.name.split('/')
+		
+		#update fileserver name
+		os.rename(doc.path, new_path)
+
+		#save to database
+		doc.name = doc_name[0] + '/' + doc_name[1] + '/' + new_text
+		obj.save()
+
 
 	return JsonResponse({'foo': 'bar'})
