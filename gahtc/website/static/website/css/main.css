@@ -91,7 +91,7 @@ body nav {
     border: none;
     min-height: auto;
     background-color: #3A3A3C;
-    box-shadow: 2px 3px 10px #525252;
+    box-shadow: 2px 3px 30px #969696;
 }
 
 .navbar-header-holder {
@@ -132,6 +132,7 @@ body nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 0 -15px;
 }
 
 .navigation-links > a {
