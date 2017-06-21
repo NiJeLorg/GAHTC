@@ -1,85 +1,86 @@
-{% extends 'website/base.html' %}
-{% load staticfiles %}
-
-{% block title %}Modules{% endblock %}
-
-{% block css_block %}
-{% endblock %}
-
-{% block head_js_block %}
-{% endblock %}
-
-
-{% block content %}
+{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
-
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<h1>Members</h1>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-8">
-			<p>
-				GAHTC is managed by a project manager and a core team of board members. Together they endeavor to extend the reach of architectural survey and research that supports global knowledge. 
-			</p>
-			<h4>
-				<em>Current board members:</em>
-			</h4>
-			<ul>
-				<li>Robert Cowherd</li>
-				<li>Mark Jarzombek</li>
-				<li>Carla Keyvanian</li>
-				<li>Gail Fenske</li>
-				<li>Suzanne Marchand</li>
-				<li>Adnan Morshed</li>
-				<li>Vikram Prakash</li>
-			</ul>
-			<h4>
-				<em>Project Manager:</em>
-			</h4>
-			<ul>
-				<li>Eliana Hamdi Murchie</li>
-			</ul>
-			<h4>
-				<em>Team Assistant:</em>
-			</h4>
-			<ul>
-				<li>Andre Malan</li>
-			</ul>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<h3>All Members</h3>
-		</div>
-	</div>	
-	{% for user_profile in profiles_returned %}
-	<div class="row marginBottom15 marginTop30">
-		<div class="col-md-3">
-			{% if user_profile.avatar %}
-				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
-			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-			{% endif %}
-		</div>
-		<div class="col-md-6 col-md-offset-1">
-			<div class="row">
-				<p><strong>Name:</strong> {{ user_profile.name }}</p>
-				<p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
-				<p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
-				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
-				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
-			</div>
-		</div>
-		<div class="col-md-2"></div>
-	</div>
-	<hr />
-	{% endfor %}
+<div class="container member-view">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading">Members</h1>
+        </div>
+    </div>
+    <div class="members-section">
+        <div class="members-group">
+            <div class="member">
+                <div class="member-heading">
+                    <h4 class="name">Rachel Lee  <span>(Cornell University)</span></h4>
+                </div>
+                <div class="member-main">
+                    <div class="photo">
+                    </div>
+                    <div class="description">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                        <div class="contacts">
+                            <p>Assistant Proferssor</p>
+                            <p>University of Michigan</p>
+                            <p>anamarialeon@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="member">
+                <div class="member-heading">
+                    <h4 class="name">Anna Goodman  <span>(Portland State University)</span></h4>
+                </div>
+                <div class="member-main">
+                    <div class="photo">
+                    </div>
+                    <div class="description">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="members-group">
+            <div class="member">
+                <div class="member-heading">
+                    <h4 class="name">Ana Maria Leon  <span>(University of Michigan)</span></h4>
+                </div>
+                <div class="member-main">
+                    <div class="photo">
+                    </div>
+                    <div class="description">
+                    </div>
+                </div>
+            </div>
+            <div class="member">
+                <div class="member-heading">
+                    <h4 class="name">Bernd R O Nicolai <span>(Chair for Architecturial History and Cultural Heritage, University of Bern/Switzerland)</span></h4>
+                </div>
+                <div class="member-main">
+                    <div class="photo">
+                    </div>
+                    <div class="description">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for user_profile in profiles_returned %}
+    <div class="row marginBottom15 marginTop30">
+        <div class="col-md-3">
+            {% if user_profile.avatar %}
+            <img class="img-responsive" src="/media/{{ user_profile.avatar }}" /> {% else %}
+            <img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" /> {% endif %}
+        </div>
+        <div class="col-md-6 col-md-offset-1">
+            <div class="row">
+                <p><strong>Name:</strong> {{ user_profile.name }}</p>
+                <p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
+                <p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
+                <p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
+                <p><strong>Introduction:</strong>
+                    <br />{{ user_profile.introduction }}</p>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <hr /> {% endfor %}
 </div>
-{% endblock %}
-
-{% block js_block %}
-{% endblock %}
-
+{% endblock %} {% block js_block %} {% endblock %}
