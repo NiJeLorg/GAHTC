@@ -77,12 +77,21 @@ body nav {
     background-position: 20% 40%;
 }
 
+.navbar-nav .dropdown a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.navbar-nav .dropdown {
+    border-right: 1px solid #636264;
+}
+
 .navbar {
     margin-bottom: 0;
     border: none;
     min-height: auto;
     background-color: #3A3A3C;
-    box-shadow: 2px 3px 10px #525252;
+    box-shadow: 2px 3px 30px #969696;
 }
 
 .navbar-header-holder {
@@ -119,14 +128,11 @@ body nav {
 }
 
 .navbar .navigation-links {
-    border-top: 2px solid #6A696B;
+    border-top: 1px solid #6A696B;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.navigation-links .navbar-collapse .nav li {
-    border-right: 2px solid #6A696B;
+    margin: 0 -15px;
 }
 
 .navigation-links > a {
@@ -368,6 +374,8 @@ blockquote p {
 
 .footer p {
     font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: right;
 }
 
 .container-fluid .text-muted {
