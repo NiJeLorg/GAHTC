@@ -915,9 +915,11 @@ def zipUpModule(request, id=None):
 	"""
 	# get module 
 	module_returned = modules.objects.get(pk=id)
-	modTitle = module_returned.title
-	"".join(c for c in modTitle if re.match(r'\w', c) or c==' ').rstrip()
+	modTitle = module_returned.title.replace(":", "")
+	"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
 	modTitle = '_'.join(modTitle.split())[:100]
+
+	print modTitle
 
 	#folder for zip file
 	folder = "/zip_files/module_"+ id +"/"
@@ -944,20 +946,20 @@ def zipUpModule(request, id=None):
 			document = unicode(doc.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/documents", doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 		#look up the lectures
 		moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
 		#loop over lectures and add to zip archive in the correct folder
 		for i, lec in enumerate(moduleLecs,1):
-			lecTitle = lec.title
-			"".join(c for c in lecTitle if re.match(r'\w', c) or c==' ').rstrip()
+			lecTitle = lec.title.replace(":", "")
+			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
 			lecTitle = '_'.join(lecTitle.split())[:100]
 			document = unicode(lec.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 			# look up lecture documents
@@ -966,7 +968,7 @@ def zipUpModule(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -984,8 +986,8 @@ def zipUpLecture(request, id=None):
 	"""
 
 	lec = lectures.objects.get(pk=id)
-	lecTitle = lec.title
-	"".join(c for c in lecTitle if re.match(r'\w', c) or c==' ').rstrip()
+	lecTitle = lec.title.replace(":", "")
+	"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
 	lecTitle = '_'.join(lecTitle.split())[:100]	
 
 	#folder for zip file
