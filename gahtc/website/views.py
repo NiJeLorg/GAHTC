@@ -913,19 +913,22 @@ def zipUpModule(request, id=None):
 	"""
 	  Response from AJAX request to zip up module and create download
 	"""
+	# get module 
+	module_returned = modules.objects.get(pk=id)
+	modTitle = module_returned.title
+	"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
+	modTitle = '_'.join(modTitle.split())[:100]
+
 	#folder for zip file
 	folder = "/zip_files/module_"+ id +"/"
-	filename = "GAHTC_module_"+ id +".zip"
-	zipfolder = "GAHTC_module_"+ id
+	filename = "GAHTC_"+ modTitle +".zip"
+	zipfolder = "GAHTC_"+ modTitle
 
 	if not os.path.exists(MEDIA_ROOT + folder):
 		os.makedirs(MEDIA_ROOT + folder)
 
 	#create zip file
 	with zipfile.ZipFile(MEDIA_ROOT + folder + filename, "w", allowZip64=True) as myzip:
-
-		#get module
-		module_returned = modules.objects.get(pk=id)
 
 		# mark as downloaded
 		d = userModuleDownload()
@@ -938,7 +941,6 @@ def zipUpModule(request, id=None):
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
 		#loop over docs and add to zip archive in the correct folder
 		for doc in moduleDocs:
-			modTitle = '_'.join(module_returned.title.split())
 			document = unicode(doc.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
@@ -949,7 +951,6 @@ def zipUpModule(request, id=None):
 		moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
 		#loop over lectures and add to zip archive in the correct folder
 		for i, lec in enumerate(moduleLecs,1):
-			modTitle = '_'.join(module_returned.title.split())
 			lecTitle = lec.title
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
 			lecTitle = '_'.join(lecTitle.split())[:100]
@@ -981,19 +982,22 @@ def zipUpLecture(request, id=None):
 	"""
 	  Response from AJAX request to zip up lectures and create download
 	"""
+
+	lec = lectures.objects.get(pk=id)
+	lecTitle = lec.title
+	"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+	lecTitle = '_'.join(lecTitle.split())[:100]	
+
 	#folder for zip file
 	folder = "/zip_files/lecture_"+ id +"/"
-	filename = "GAHTC_lecture_"+ id +".zip"
-	zipfolder = "GAHTC_lecture_"+ id
+	filename = "GAHTC_"+ lecTitle +".zip"
+	zipfolder = "GAHTC_"+ lecTitle
 
 	if not os.path.exists(MEDIA_ROOT + folder):
 		os.makedirs(MEDIA_ROOT + folder)
 
 	#create zip file
 	with zipfile.ZipFile(MEDIA_ROOT + folder + filename, "w", allowZip64=True) as myzip:
-
-		#get lecture
-		lec = lectures.objects.get(pk=id)
 
 		# mark as downloaded
 		d = userLectureDownload()
