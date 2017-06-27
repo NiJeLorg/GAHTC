@@ -916,7 +916,7 @@ def zipUpModule(request, id=None):
 	# get module 
 	module_returned = modules.objects.get(pk=id)
 	modTitle = module_returned.title
-	"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
+	"".join(c for c in modTitle if re.match(r'\w', c) or c==' ').rstrip()
 	modTitle = '_'.join(modTitle.split())[:100]
 
 	#folder for zip file
@@ -952,7 +952,7 @@ def zipUpModule(request, id=None):
 		#loop over lectures and add to zip archive in the correct folder
 		for i, lec in enumerate(moduleLecs,1):
 			lecTitle = lec.title
-			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+			"".join(c for c in lecTitle if re.match(r'\w', c) or c==' ').rstrip()
 			lecTitle = '_'.join(lecTitle.split())[:100]
 			document = unicode(lec.presentation)
 			document = document.split('/')
@@ -985,7 +985,7 @@ def zipUpLecture(request, id=None):
 
 	lec = lectures.objects.get(pk=id)
 	lecTitle = lec.title
-	"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+	"".join(c for c in lecTitle if re.match(r'\w', c) or c==' ').rstrip()
 	lecTitle = '_'.join(lecTitle.split())[:100]	
 
 	#folder for zip file
