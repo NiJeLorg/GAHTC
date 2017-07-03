@@ -109,11 +109,11 @@ def mainSearchCode(request, keyword, tab):
 	lecture_documents_returned_count = 0
 	lecture_slides_returned_count = 0
 	coming_soon_modules_returned_count = 0
-
-	print keyword
+	spelling_suggestion = ''
 
 	if keyword != "":
 		all_results = SearchQuerySet().auto_query(keyword).highlight()
+		spelling_suggestion = all_results.spelling_suggestion()
 		modules_returned = []
 		module_documents_returned = []
 		lectures_returned = []
@@ -172,7 +172,7 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count, 'spelling_suggestion': spelling_suggestion}
 
 	else:
 		# concatonate module querysets
@@ -255,7 +255,7 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count, 'spelling_suggestion': spelling_suggestion}
 
 	return context_dict
 
@@ -1108,11 +1108,12 @@ def updateProfile(request):
 
 def modulesView(request):
 
-
 	"""
 	  Loads all modules 
 	"""	
 
+	#gather variables from get request
+	print request.build_absolute_uri()
 	modules_returned = modules.objects.all().order_by('title')
 
 	#remove articles from title for sorting
@@ -1126,7 +1127,7 @@ def modulesView(request):
 	# order titles minus articles
 	modules_returned_ordered = sorted(modules_returned, key=operator.attrgetter('no_article_title'))
 
-	print modules_returned_ordered
+
 	for module_returned in modules_returned_ordered:
 		#look up module docs 
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned).order_by('title')
@@ -1221,9 +1222,18 @@ def membersView(request):
 	  Loads all user profiles
 	"""	
 
-	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(name='').order_by('name')
+	contributing_profiles_returned = profile.objects.filter(verified=True, public=True, contributing=True).exclude(last_name='', first_name='').order_by('first_name', 'last_name')
 
-	context_dict = {'profiles_returned':profiles_returned}
+	#attach modules and lectures to profiles
+	for cp in contributing_profiles_returned:
+		cp_modules = modules.objects.filter(authors_m2m=cp)
+		cp.modules = cp_modules
+		cp_lectures = lectures.objects.filter(authors_m2m=cp)
+		cp.lectures = cp_lectures
+
+	profiles_returned = profile.objects.filter(verified=True, public=True, contributing=False).exclude(last_name='', first_name='').order_by('first_name', 'last_name')
+
+	context_dict = {'contributing_profiles_returned': contributing_profiles_returned, 'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)
 
 
@@ -1312,7 +1322,19 @@ def dashboard(request):
 
 	modulesObjects = modules.objects.all().order_by('title')
 
+	#remove articles from title for sorting
 	for module_returned in modulesObjects:
+		first_word = module_returned.title.strip().lower().split(' ', 1)[0]
+		if first_word == 'a' or first_word == 'the' or first_word == 'and':
+			module_returned.no_article_title = module_returned.title.strip().lower().replace(first_word,"",1).strip()
+		else:
+			module_returned.no_article_title = module_returned.title.strip().lower()
+
+	# order titles minus articles
+	modules_returned_ordered = sorted(modulesObjects, key=operator.attrgetter('no_article_title'))
+
+
+	for module_returned in modules_returned_ordered:
 		#look up module docs 
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
 
@@ -1330,6 +1352,13 @@ def dashboard(request):
 
 		# now get the lecture documents and get the lecture segments
 		for lec in moduleLecs:
+			# remove articles from titles for reordering
+			first_word = lec.title.strip().lower().split(' ', 1)[0]
+			if first_word == 'a' or first_word == 'the' or first_word == 'and':
+				lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
+			else:
+				lec.no_article_title = lec.title.strip().lower()
+
 			#look up the document name split
 			lecture = str(lec.presentation)
 			lecture = lecture.split('/')
@@ -1352,8 +1381,11 @@ def dashboard(request):
 				lecseg.lectureName = lectureseg[2]			
 			lec.lectureSegmentsObjects = lectureSegs
 
+		# order titles minus articles
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('no_article_title'))		
+
 		#attach the module docs to the module returned 
-		module_returned.lecturesObjects = moduleLecs
+		module_returned.lecturesObjects = moduleLecs_ordered
 
 
 	context_dict = {'modulesObjects': modulesObjects}
