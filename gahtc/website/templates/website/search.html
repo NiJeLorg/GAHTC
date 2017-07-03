@@ -55,12 +55,21 @@
                         {% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 and coming_soon_modules_returned_count == 0 %}
                         <div class="row selectedAddDropdown">
                             <div class="col-xs-12">
-                                <h4>No Search Results</h4>
-                                <p>Your search yielded no results from our course materials. Please try another search above.</p>
+                                <p class="text-center marginTop10">
+                                    Your search for <strong>{{ keyword }}</strong> yielded <strong>no</strong> results.
+                                    {% if spelling_suggestion and spelling_suggestion != keyword %}
+                                        <br />Did you mean <a href="/search/?keyword={{ spelling_suggestion }}">{{ spelling_suggestion }}</a>?
+                                    {% endif %}
+                                </p>
                             </div>
                         </div>
                         {% else %}
-                        <p class="text-center marginTop10">Your search for <strong>{{ keyword }}</strong> yielded <strong>{{ all_results_count }}</strong> result{%if all_results_count > 1 %}s{% endif %}.</p>
+                        <p class="text-center marginTop10">
+                            Your search for <strong>{{ keyword }}</strong> yielded <strong>{{ all_results_count }}</strong> result{%if all_results_count > 1 %}s{% endif %}.
+                            {% if spelling_suggestion and spelling_suggestion != keyword %}
+                                <br />Did you mean <a href="/search/?keyword={{ spelling_suggestion }}">{{ spelling_suggestion }}</a>?
+                            {% endif %}
+                        </p>
                         <div class="panel-group" id="accordion_results" role="tablist" aria-multiselectable="true">
                             {% if modules_returned_count > 0 or coming_soon_modules_returned_count > 0 %}
                             <div class="panel panel-default">

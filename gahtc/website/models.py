@@ -25,6 +25,8 @@ TZ_CHOICES = [(float(x[0]), x[1]) for x in (
 class profile(models.Model):
 
 	user = models.OneToOneField(User, related_name='userProfile')
+	first_name = models.CharField(max_length=255, default='', null=False, blank=False)
+	last_name = models.CharField(max_length=255, default='', null=False, blank=False)
 	name = models.CharField(max_length=255, default='', null=False, blank=False)
 	institution = models.CharField(max_length=255, default='', null=False, blank=False)
 	institution_address = models.CharField(max_length=255, default='', null=True, blank=True)
@@ -39,9 +41,10 @@ class profile(models.Model):
 	instutution_document = models.FileField(upload_to="insitution_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	verified = models.NullBooleanField(default=None)
 	public = models.BooleanField(default=True)
+	contributing = models.BooleanField(default=False)
 
 	def __unicode__(self):
-		return self.name
+		return "{0} {1}".format(self.first_name, self.last_name)
 
 
 # course modules
@@ -49,6 +52,7 @@ class modules(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	authors = models.CharField(max_length=255, default='', null=False, blank=False)
+	authors_m2m = models.ManyToManyField(profile)
 	description = models.TextField(default='', null=True, blank=True)
 	keywords = TaggableManager(blank=True)
 
@@ -60,7 +64,6 @@ class moduleDocuments(models.Model):
 	module = models.ForeignKey(modules, related_name='moduleDocsModule')
 	created = models.DateTimeField(auto_now_add=True)
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
-	authors = models.CharField(max_length=255, default='', null=False, blank=False)
 	description = models.TextField(default='', null=True, blank=True)
 	document = models.FileField(upload_to="module_docs/%Y_%m_%d_%h_%M_%s", default='', null=False, blank=False)
 	document_contents = models.TextField(default='', null=True, blank=True)
@@ -73,6 +76,7 @@ class lectures(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	authors = models.CharField(max_length=255, default='', null=False, blank=False)
+	authors_m2m = models.ManyToManyField(profile)
 	description = models.TextField(default='', null=True, blank=True)
 	presentation = models.FileField(upload_to="presentations/%Y_%m_%d_%h_%M_%s", default='', null=False, blank=False)
 	presentation_text = models.TextField(default='', null=True, blank=True)
@@ -254,6 +258,7 @@ class comingSoonModules(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	title = models.CharField(max_length=255, default='', null=False, blank=False)
 	authors = models.CharField(max_length=255, default='', null=False, blank=False)
+	authors_m2m = models.ManyToManyField(profile)
 	description = models.TextField(default='', null=True, blank=True)
 	keywords = TaggableManager(blank=True)
 
