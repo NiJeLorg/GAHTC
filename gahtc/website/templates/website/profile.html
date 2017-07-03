@@ -19,6 +19,24 @@
 				<p><strong>My Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
 				<p><strong>My Email:</strong> {{ user.email }} </p>
 				<p><strong>My Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
+				<p><strong>My Contributions:</strong><br />
+					{% if user_profile.modules %}
+					<em>Modules</em>
+					<ul>
+					{% for m in user_profile.modules %}
+						<li><a href="/modules/#heading_{{ m.id }}">{{ m.title }}</a></li>
+					{% endfor %}
+					</ul>
+					{% endif %}
+					{% if user_profile.lectures %}
+					<em>Lectures</em>
+					<ul>
+					{% for l in user_profile.lectures %}
+						<li><a href="/lectures/#heading_{{ l.id }}">{{ l.title }}</a></li>
+					{% endfor %}
+					</ul>
+					{% endif %}
+				</p>
 				<p><strong>My Introduction:</strong> {{ user_profile.introduction }}</p>
 			</div>
 
