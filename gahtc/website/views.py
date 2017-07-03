@@ -1232,7 +1232,7 @@ def membersView(request):
 	  Loads all user profiles
 	"""	
 
-	contributing_profiles_returned = profile.objects.filter(verified=True, public=True, contributing=True).exclude(last_name='', first_name='').order_by('first_name', 'last_name')
+	contributing_profiles_returned = profile.objects.filter(verified=True, public=True, contributing=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	#attach modules and lectures to profiles
 	for cp in contributing_profiles_returned:
@@ -1241,7 +1241,7 @@ def membersView(request):
 		cp_lectures = lectures.objects.filter(authors_m2m=cp)
 		cp.lectures = cp_lectures
 
-	profiles_returned = profile.objects.filter(verified=True, public=True, contributing=False).exclude(last_name='', first_name='').order_by('first_name', 'last_name')
+	profiles_returned = profile.objects.filter(verified=True, public=True, contributing=False).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	context_dict = {'contributing_profiles_returned': contributing_profiles_returned, 'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)
