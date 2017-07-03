@@ -8,16 +8,16 @@ class Command(BaseCommand):
         profiles = profile.objects.all()
 
         for p in profiles:
-        	s = p.name.split()
-        	s_len = len(s)
-        	last_name = s[-1]
-        	first_name = s[:-1]
-        	first_name = ' '.join(first_name)
-        	p.first_name = first_name
-        	p.last_name = last_name
-        	p.save()
-
-
+        	try:
+        		s = p.name.split()
+				last_name = s[-1]
+				first_name = s[:-1]
+				first_name = ' '.join(first_name)
+				p.first_name = first_name
+				p.last_name = last_name
+				p.save()
+        	except Exception as e:
+        		print e
 
 
     def handle(self, *args, **options):
