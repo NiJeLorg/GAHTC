@@ -33,7 +33,7 @@
 								<div class="col-md-9">
 									<p><strong>Authors:</strong> 
 									{% for authors in module_returned.authors_m2m.all %}
-										<a href="/members/#{{ authors.last_name }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
+										<a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
 									{% endfor %}
 									<br />
 									<strong>Description: </strong> {{ module_returned.description }}</p>
@@ -108,7 +108,11 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-md-9">
-									<p><strong>Authors:</strong> {{ module_returned.authors }}<br />
+									<p><strong>Authors:</strong> 
+									{% for authors in module_returned.authors_m2m.all %}
+										<a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
+									{% endfor %}
+									<br />
 									<strong>Description: </strong> {{ module_returned.description }}</p>
 								</div>	
 							</div>

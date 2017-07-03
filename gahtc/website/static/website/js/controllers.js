@@ -353,46 +353,15 @@ $( document ).ready(function() {
 		gahtcApplication.updateFooter();
 	});
 
-	$(document).on('click', '#next', function(e) {
-		// check which image we're on an go to the next one
-		if ($('#searchFor').hasClass('oldDispensary')) {
-			$("#background").fadeOut("slow");
-			setTimeout(function() {
-				// set new image background
-				$("#background li").css({ "background-image": "url('/static/website/css/images/Palace_of_Sargon_II.JPG')"});
-				// set class and text for search for button
-				$('#searchFor').removeClass('oldDispensary');
-				$('#searchFor').addClass('sargon');
-				$('#searchFor').text('Search for Palace of Sargon II');
-				$('#searchFor').prop('href', '/search/?keyword="Palace of Sargon II"');
-				$("#background").fadeIn('slow');
-			}, 600);		
-		} else if ($('#searchFor').hasClass('sargon')) {
-			$("#background").fadeOut("slow");
-			setTimeout(function() {
-				// set new image background
-				$("#background li").css({ "background-image": "url('/static/website/css/images/Begumpuri_Masjid.jpg')"});
-				// set class and text for search for button
-				$('#searchFor').removeClass('sargon');
-				$('#searchFor').addClass('begumpuri');
-				$('#searchFor').text('Search for Begumpuri Masjid');
-				$('#searchFor').prop('href', '/search/?keyword="Begumpuri Masjid"');
-				$("#background").fadeIn('slow');
-			}, 600);			
-		} else {
-			$("#background").fadeOut("slow");
-			setTimeout(function() {
-				// set new image background
-				$("#background li").css({ "background-image": "url('/static/website/css/images/Old_dispensary_front.jpg')"});
-				// set class and text for search for button
-				$('#searchFor').removeClass('begumpuri');
-				$('#searchFor').addClass('oldDispensary');
-				$('#searchFor').text('Search for Old Dispensary');
-				$('#searchFor').prop('href', '/search/?keyword="Old Dispensary"');
-				$("#background").fadeIn('slow');
-			}, 600);			
-		}
-	});
+
+	// pull number for # out of url and open accordian on modules and lectures pages
+	var url_after_hash = window.location.hash.substr(1);
+	if (url_after_hash.search('heading') != -1) {
+		var split = url_after_hash.split("_");
+		var url_num = split[1];
+		// open accordian 
+		$('#'+url_num).addClass('in');
+	}
 
 
 });

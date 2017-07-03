@@ -1112,8 +1112,6 @@ def modulesView(request):
 	  Loads all modules 
 	"""	
 
-	#gather variables from get request
-	print request.build_absolute_uri()
 	modules_returned = modules.objects.all().order_by('title')
 
 	#remove articles from title for sorting
