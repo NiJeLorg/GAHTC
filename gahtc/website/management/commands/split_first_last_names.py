@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
         for p in profiles:
         	try:
-        		s = p.name.split()
+				s = p.name.split()
 				last_name = s[-1]
 				first_name = s[:-1]
 				first_name = ' '.join(first_name)
