@@ -164,6 +164,12 @@ def mainSearchCode(request, keyword, tab):
 			# pull user profile
 			user_profile = profile.objects.get(user=request.user)
 
+			#attach modules and lectures to profile
+			cp_modules = modules.objects.filter(authors_m2m=user_profile)
+			user_profile.modules = cp_modules
+			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
+			user_profile.lectures = cp_lectures
+
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
 
@@ -246,6 +252,12 @@ def mainSearchCode(request, keyword, tab):
 
 			# pull user profile
 			user_profile = profile.objects.get(user=request.user)
+
+			#attach modules and lectures to profiles
+			cp_modules = modules.objects.filter(authors_m2m=user_profile)
+			user_profile.modules = cp_modules
+			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
+			user_profile.lectures = cp_lectures
 
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
