@@ -70,7 +70,8 @@
 				<p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
 				<p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
 				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
-				<p><strong>Contributions:</strong><br />
+				<p><strong>Contributions:</strong></p>
+				<p>
 					{% if user_profile.modules %}
 					<em>Modules</em>
 					<ul>
