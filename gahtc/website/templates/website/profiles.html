@@ -56,7 +56,7 @@
 		</div>
 	</div>	
 	{% for user_profile in contributing_profiles_returned %}
-	<div class="row marginBottom15 marginTop30" id="{{ user_profile.last_name }}">
+	<div class="row marginBottom15 marginTop30" id="{{ user_profile.id }}">
 		<div class="col-md-3">
 			{% if user_profile.avatar %}
 				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
@@ -75,7 +75,7 @@
 					<em>Modules</em>
 					<ul>
 					{% for m in user_profile.modules %}
-						<li><a href="/modules/#{{ m.id }}">{{ m.title }}</a></li>
+						<li><a href="/modules/#heading_{{ m.id }}">{{ m.title }}</a></li>
 					{% endfor %}
 					</ul>
 					{% endif %}
@@ -83,7 +83,7 @@
 					<em>Lectures</em>
 					<ul>
 					{% for l in user_profile.lectures %}
-						<li><a href="/lectures/#{{ l.id }}">{{ l.title }}</a></li>
+						<li><a href="/lectures/#heading_{{ l.id }}">{{ l.title }}</a></li>
 					{% endfor %}
 					</ul>
 					{% endif %}
