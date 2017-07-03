@@ -19,7 +19,8 @@
 				<p><strong>My Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
 				<p><strong>My Email:</strong> {{ user.email }} </p>
 				<p><strong>My Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
-				<p><strong>My Contributions:</strong><br />
+				<p><strong>My Contributions:</strong></p>
+				<p>
 					{% if user_profile.modules %}
 					<em>Modules</em>
 					<ul>
