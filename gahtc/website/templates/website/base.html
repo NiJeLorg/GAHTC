@@ -118,13 +118,17 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
+    <span style='display: flex; flex-direction: column; flex-grow: 100'>
     {% block content %} {% endblock %}
-    <footer class="footer">
-        <div class="container-fluid">
+
+        <footer class="footer">
+
             <p class="text-muted">Copyright &copy; {% now 'Y' %} | All Rights Reserved | GAHTC: Global Architectural History Teaching Collaborative</p>
-        </div>
+
     </footer>
-    {% block modal_block %} {% endblock %}
+
+
+    </span> {% block modal_block %} {% endblock %}
     <!--  javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
