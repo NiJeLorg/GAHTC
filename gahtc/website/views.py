@@ -169,6 +169,9 @@ def mainSearchCode(request, keyword, tab):
 			user_profile.modules = cp_modules
 			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
 			user_profile.lectures = cp_lectures
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile)
+			user_profile.csmodules = cp_csmodules
+
 
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
@@ -258,6 +261,8 @@ def mainSearchCode(request, keyword, tab):
 			user_profile.modules = cp_modules
 			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
 			user_profile.lectures = cp_lectures
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile)
+			user_profile.csmodules = cp_csmodules
 
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
@@ -1240,6 +1245,8 @@ def membersView(request):
 		cp.modules = cp_modules
 		cp_lectures = lectures.objects.filter(authors_m2m=cp)
 		cp.lectures = cp_lectures
+		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp)
+		cp.csmodules = cp_csmodules
 
 	profiles_returned = profile.objects.filter(verified=True, public=True, contributing=False).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
