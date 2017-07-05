@@ -72,9 +72,8 @@ a:focus {
 
 body nav {
     background: url('images/oceancurrents.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 20% 40%;
+    // background-size: cover;
+    background-position-y: -100px;
 }
 
 .navbar-nav .dropdown a {
@@ -104,6 +103,13 @@ body nav {
 .navbar-header-holder .nav a {
     padding: 0;
     margin-left: 15px;
+    background-color: transparent;
+}
+
+.navbar-header-holder .navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.open>a:focus {
+    background: transparent;
 }
 
 .user-nav p {
@@ -132,7 +138,6 @@ body nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 -15px;
 }
 
 .navigation-links > a {
@@ -148,6 +153,10 @@ body nav {
     border: none;
 }
 
+.dropdown-menu>li>a:hover {
+    background-color: rgba(33, 33, 33, 0.6);
+}
+
 .navigation-links .dropdown-toggle .caret {
     margin-left: 10px;
 }
@@ -159,6 +168,11 @@ body nav {
 
 .navbar-header-holder .nav .dropdown .dropdown-menu {
     left: -84px;
+}
+
+.navbar-nav .dropdown-menu {
+    background: url('images/oceancurrents.png') fixed;
+    background-position-y: -100px;
 }
 
 .navbar-nav .contact-us {
