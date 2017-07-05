@@ -1434,7 +1434,7 @@ def admin_module(request, id=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			elif 'new_module_document' in request.POST:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.id)))
@@ -1501,7 +1501,7 @@ def admin_removemodule(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				modulesObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1546,7 +1546,7 @@ def admin_moduledoc(request, id=None, moduleid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.module.id,)))
@@ -1588,7 +1588,7 @@ def admin_removemoduledoc(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				moduleDocumentsObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1652,7 +1652,7 @@ def admin_lecture(request, id=None, moduleid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			elif 'new_lecure_document' in request.POST:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.id)))
@@ -1715,7 +1715,7 @@ def admin_removelecture(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				lectureObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1788,7 +1788,7 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_lecturesegment', args=(0,f.lecture.id,)))
@@ -1830,7 +1830,7 @@ def admin_removelecturesegment(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				lecturesegmentObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1875,7 +1875,7 @@ def admin_lecturedoc(request, id=None, lectureid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			else:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.lecture.id,)))
@@ -1917,7 +1917,7 @@ def admin_removelecturedoc(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				lecturedocObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -2002,7 +2002,7 @@ def admin_update_profile(request, id=None):
 				nothing = {}
 			pf.save()
 
-			return HttpResponseRedirect("/admin_accounts/")
+			return HttpResponseRedirect(request.POST['referer'])
 						
 		else:
 			print user_form.errors, profile_form.errors
@@ -2055,7 +2055,7 @@ def admin_verify_user(request, id=None):
 					send_mail(subject, message, 'gahtcweb@gmail.com', [user_profile.user.email], fail_silently=True, html_message=html_message)				
 				
 
-			return HttpResponseRedirect("/admin_accounts/")
+			return HttpResponseRedirect(request.POST['referer'])
 						
 		else:
 			print verify_form.errors
@@ -2137,7 +2137,7 @@ def admin_coming_soon_module(request, id=None):
 			f = form.save()
 
 			# send back to dashboard
-			return HttpResponseRedirect('/dashboard/')
+			return HttpResponseRedirect(request.POST['referer'])
 			
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -2186,7 +2186,7 @@ def admin_remove_coming_soon_module(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				modulesObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
