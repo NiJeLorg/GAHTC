@@ -1455,6 +1455,7 @@ def admin_module(request, id=None):
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = modulesForm(instance=modulesObject)
+		form.fields["authors_m2m"].queryset = profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	# Bad form (or form details), no form supplied...
 	# Render the form with error messages (if any).

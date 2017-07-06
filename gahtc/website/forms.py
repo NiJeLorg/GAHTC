@@ -146,7 +146,6 @@ class modulesForm(forms.ModelForm):
             'description': forms.Textarea(),
         }
 
-
 class modulesRemoveForm(forms.ModelForm):
     class Meta:
         model = modules
