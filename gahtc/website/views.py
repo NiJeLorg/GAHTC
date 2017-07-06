@@ -1,14 +1,12 @@
-import os,zipfile
+import os,zipfile,re,operator,pptx
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
-import operator
 from django.db.models import TextField, CharField, Q, Count
 from django.contrib.auth.decorators import login_required
 from itertools import chain
 from django.conf import settings
 from django.core.files import File
-import pptx
 from pptx import Presentation
 from subprocess import call
 
@@ -111,9 +109,11 @@ def mainSearchCode(request, keyword, tab):
 	lecture_documents_returned_count = 0
 	lecture_slides_returned_count = 0
 	coming_soon_modules_returned_count = 0
+	spelling_suggestion = ''
 
 	if keyword != "":
 		all_results = SearchQuerySet().auto_query(keyword).highlight()
+		spelling_suggestion = all_results.spelling_suggestion()
 		modules_returned = []
 		module_documents_returned = []
 		lectures_returned = []
@@ -164,6 +164,15 @@ def mainSearchCode(request, keyword, tab):
 			# pull user profile
 			user_profile = profile.objects.get(user=request.user)
 
+			#attach modules and lectures to profile
+			cp_modules = modules.objects.filter(authors_m2m=user_profile)
+			user_profile.modules = cp_modules
+			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
+			user_profile.lectures = cp_lectures
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile)
+			user_profile.csmodules = cp_csmodules
+
+
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
 
@@ -172,7 +181,7 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count, 'spelling_suggestion': spelling_suggestion}
 
 	else:
 		# concatonate module querysets
@@ -247,6 +256,14 @@ def mainSearchCode(request, keyword, tab):
 			# pull user profile
 			user_profile = profile.objects.get(user=request.user)
 
+			#attach modules and lectures to profiles
+			cp_modules = modules.objects.filter(authors_m2m=user_profile)
+			user_profile.modules = cp_modules
+			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
+			user_profile.lectures = cp_lectures
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile)
+			user_profile.csmodules = cp_csmodules
+
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
 
@@ -255,7 +272,7 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count, 'spelling_suggestion': spelling_suggestion}
 
 	return context_dict
 
@@ -816,7 +833,10 @@ def zipUpBundle(request, id=None):
 			moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
 			#loop over docs and add to zip archive in the correct folder
 			for doc in moduleDocs:
-				modTitle = ''.join(bundle.module.title.split())
+				modTitle = bundle.module.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+				"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
+				modTitle = '_'.join(modTitle.split())[:100]
+
 				document = unicode(doc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
@@ -827,11 +847,18 @@ def zipUpBundle(request, id=None):
 			moduleLecs = lectures.objects.filter(module=bundle.module).order_by('title')
 			#loop over lectures and add to zip archive in the correct folder
 			for i, lec in enumerate(moduleLecs,1):
-				modTitle = ''.join(bundle.module.title.split())
+				modTitle = bundle.module.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+				"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
+				modTitle = '_'.join(modTitle.split())[:100]
+
+				lecTitle = lec.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+				"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+				lecTitle = '_'.join(lecTitle.split())[:100]
+
 				document = unicode(lec.presentation)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 				# look up lecture documents
@@ -840,16 +867,20 @@ def zipUpBundle(request, id=None):
 					document = unicode(lecDoc.document)
 					document = document.split('/')
 					doc_name = document[2].encode('utf8', 'replace')
-					directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
+					directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 					myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
 		# for each lecture write to zip archive 
 		for i, bundle in enumerate(bundle_lectures,1):
+			lecTitle = bundle.lecture.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+			lecTitle = '_'.join(lecTitle.split())[:100]			
+
 			document = unicode(bundle.lecture.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lecture.presentation), directory)
 
 			# look up lecture documents and add these to zip archive
@@ -858,33 +889,45 @@ def zipUpBundle(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
 		# for each lecture segment write to zip archive 
 		for i, bundle in enumerate(bundle_lecture_segments,1):
+			lecTitle = bundle.lectureSegment.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+			lecTitle = '_'.join(lecTitle.split())[:100]	
+
 			document = unicode(bundle.lectureSegment.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_segments/" + str(i), doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_segments/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSegment.presentation), directory)
 
 
 		#for each lecture document strip out name of file
 		for i, bundle in enumerate(bundle_lecture_documents,1):	
+			lecTitle = bundle.lectureDocument.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+			lecTitle = '_'.join(lecTitle.split())[:100]	
+
 			document = unicode(bundle.lectureDocument.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_documents/" + str(i), doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_documents/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureDocument.document), directory)
 
 		#for each lecture slide strip out name of file and slide notes file
 		for i, bundle in enumerate(bundle_lecture_slides,1):
+			lecTitle = bundle.lectureSlide.lecture.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+			lecTitle = '_'.join(lecTitle.split())[:100]	
+
 			document = unicode(bundle.lectureSlide.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_slides/" + str(i), doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lecture_slides/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.presentation), directory)
 
 	#get size of zip file
@@ -898,19 +941,22 @@ def zipUpModule(request, id=None):
 	"""
 	  Response from AJAX request to zip up module and create download
 	"""
+	# get module 
+	module_returned = modules.objects.get(pk=id)
+	modTitle = module_returned.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+	"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
+	modTitle = '_'.join(modTitle.split())[:100]
+
 	#folder for zip file
 	folder = "/zip_files/module_"+ id +"/"
-	filename = "GAHTC_module_"+ id +".zip"
-	zipfolder = "GAHTC_module_"+ id
+	filename = "GAHTC_"+ modTitle +".zip"
+	zipfolder = "GAHTC_"+ modTitle
 
 	if not os.path.exists(MEDIA_ROOT + folder):
 		os.makedirs(MEDIA_ROOT + folder)
 
 	#create zip file
 	with zipfile.ZipFile(MEDIA_ROOT + folder + filename, "w", allowZip64=True) as myzip:
-
-		#get module
-		module_returned = modules.objects.get(pk=id)
 
 		# mark as downloaded
 		d = userModuleDownload()
@@ -923,22 +969,23 @@ def zipUpModule(request, id=None):
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
 		#loop over docs and add to zip archive in the correct folder
 		for doc in moduleDocs:
-			modTitle = ''.join(module_returned.title.split())
 			document = unicode(doc.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/documents", doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 		#look up the lectures
 		moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
 		#loop over lectures and add to zip archive in the correct folder
 		for i, lec in enumerate(moduleLecs,1):
-			modTitle = ''.join(module_returned.title.split())
+			lecTitle = lec.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+			lecTitle = '_'.join(lecTitle.split())[:100]
 			document = unicode(lec.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 			# look up lecture documents
@@ -947,7 +994,7 @@ def zipUpModule(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + str(i), doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -963,19 +1010,22 @@ def zipUpLecture(request, id=None):
 	"""
 	  Response from AJAX request to zip up lectures and create download
 	"""
+
+	lec = lectures.objects.get(pk=id)
+	lecTitle = lec.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+	"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+	lecTitle = '_'.join(lecTitle.split())[:100]	
+
 	#folder for zip file
 	folder = "/zip_files/lecture_"+ id +"/"
-	filename = "GAHTC_lecture_"+ id +".zip"
-	zipfolder = "GAHTC_lecture_"+ id
+	filename = "GAHTC_"+ lecTitle +".zip"
+	zipfolder = "GAHTC_"+ lecTitle
 
 	if not os.path.exists(MEDIA_ROOT + folder):
 		os.makedirs(MEDIA_ROOT + folder)
 
 	#create zip file
 	with zipfile.ZipFile(MEDIA_ROOT + folder + filename, "w", allowZip64=True) as myzip:
-
-		#get lecture
-		lec = lectures.objects.get(pk=id)
 
 		# mark as downloaded
 		d = userLectureDownload()
@@ -1075,7 +1125,6 @@ def updateProfile(request):
 
 def modulesView(request):
 
-
 	"""
 	  Loads all modules 
 	"""	
@@ -1093,7 +1142,7 @@ def modulesView(request):
 	# order titles minus articles
 	modules_returned_ordered = sorted(modules_returned, key=operator.attrgetter('no_article_title'))
 
-	print modules_returned_ordered
+
 	for module_returned in modules_returned_ordered:
 		#look up module docs 
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned).order_by('title')
@@ -1188,9 +1237,20 @@ def membersView(request):
 	  Loads all user profiles
 	"""	
 
-	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(name='').order_by('name')
+	contributing_profiles_returned = profile.objects.filter(verified=True, public=True, contributing=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
-	context_dict = {'profiles_returned':profiles_returned}
+	#attach modules and lectures to profiles
+	for cp in contributing_profiles_returned:
+		cp_modules = modules.objects.filter(authors_m2m=cp)
+		cp.modules = cp_modules
+		cp_lectures = lectures.objects.filter(authors_m2m=cp)
+		cp.lectures = cp_lectures
+		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp)
+		cp.csmodules = cp_csmodules
+
+	profiles_returned = profile.objects.filter(verified=True, public=True, contributing=False).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
+
+	context_dict = {'contributing_profiles_returned': contributing_profiles_returned, 'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)
 
 
@@ -1279,7 +1339,19 @@ def dashboard(request):
 
 	modulesObjects = modules.objects.all().order_by('title')
 
+	#remove articles from title for sorting
 	for module_returned in modulesObjects:
+		first_word = module_returned.title.strip().lower().split(' ', 1)[0]
+		if first_word == 'a' or first_word == 'the' or first_word == 'and':
+			module_returned.no_article_title = module_returned.title.strip().lower().replace(first_word,"",1).strip()
+		else:
+			module_returned.no_article_title = module_returned.title.strip().lower()
+
+	# order titles minus articles
+	modules_returned_ordered = sorted(modulesObjects, key=operator.attrgetter('no_article_title'))
+
+
+	for module_returned in modules_returned_ordered:
 		#look up module docs 
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
 
@@ -1297,6 +1369,13 @@ def dashboard(request):
 
 		# now get the lecture documents and get the lecture segments
 		for lec in moduleLecs:
+			# remove articles from titles for reordering
+			first_word = lec.title.strip().lower().split(' ', 1)[0]
+			if first_word == 'a' or first_word == 'the' or first_word == 'and':
+				lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
+			else:
+				lec.no_article_title = lec.title.strip().lower()
+
 			#look up the document name split
 			lecture = str(lec.presentation)
 			lecture = lecture.split('/')
@@ -1319,8 +1398,11 @@ def dashboard(request):
 				lecseg.lectureName = lectureseg[2]			
 			lec.lectureSegmentsObjects = lectureSegs
 
+		# order titles minus articles
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('no_article_title'))		
+
 		#attach the module docs to the module returned 
-		module_returned.lecturesObjects = moduleLecs
+		module_returned.lecturesObjects = moduleLecs_ordered
 
 
 	context_dict = {'modulesObjects': modulesObjects}
@@ -1359,7 +1441,7 @@ def admin_module(request, id=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			elif 'new_module_document' in request.POST:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.id)))
@@ -1373,6 +1455,7 @@ def admin_module(request, id=None):
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = modulesForm(instance=modulesObject)
+		form.fields["authors_m2m"].queryset = profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	# Bad form (or form details), no form supplied...
 	# Render the form with error messages (if any).
@@ -1426,7 +1509,7 @@ def admin_removemodule(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				modulesObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1471,7 +1554,7 @@ def admin_moduledoc(request, id=None, moduleid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.module.id,)))
@@ -1513,7 +1596,7 @@ def admin_removemoduledoc(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				moduleDocumentsObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1577,7 +1660,7 @@ def admin_lecture(request, id=None, moduleid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			elif 'new_lecure_document' in request.POST:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.id)))
@@ -1640,7 +1723,7 @@ def admin_removelecture(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				lectureObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1713,7 +1796,7 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_lecturesegment', args=(0,f.lecture.id,)))
@@ -1755,7 +1838,7 @@ def admin_removelecturesegment(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				lecturesegmentObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1800,7 +1883,7 @@ def admin_lecturedoc(request, id=None, lectureid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 			else:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.lecture.id,)))
@@ -1842,7 +1925,7 @@ def admin_removelecturedoc(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				lecturedocObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -1927,7 +2010,7 @@ def admin_update_profile(request, id=None):
 				nothing = {}
 			pf.save()
 
-			return HttpResponseRedirect("/admin_accounts/")
+			return HttpResponseRedirect(request.POST['referer'])
 						
 		else:
 			print user_form.errors, profile_form.errors
@@ -1980,7 +2063,7 @@ def admin_verify_user(request, id=None):
 					send_mail(subject, message, 'gahtcweb@gmail.com', [user_profile.user.email], fail_silently=True, html_message=html_message)				
 				
 
-			return HttpResponseRedirect("/admin_accounts/")
+			return HttpResponseRedirect(request.POST['referer'])
 						
 		else:
 			print verify_form.errors
@@ -2062,7 +2145,7 @@ def admin_coming_soon_module(request, id=None):
 			f = form.save()
 
 			# send back to dashboard
-			return HttpResponseRedirect('/dashboard/')
+			return HttpResponseRedirect(request.POST['referer'])
 			
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -2111,7 +2194,7 @@ def admin_remove_coming_soon_module(request, id=None):
 			# if form submitted, delete module
 			if 'delete' in request.POST:
 				modulesObject.delete()
-				return HttpResponseRedirect('/dashboard/')
+				return HttpResponseRedirect(request.POST['referer'])
 	
 		else:
 			# The supplied form contained errors - just print them to the terminal.

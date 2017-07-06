@@ -1,8 +1,12 @@
 from registration.forms import RegistrationForm
 from django import forms
+
 # user and profile models
 from django.contrib.auth.models import User
 from website.models import *
+
+# using the filter select multiple admin widget for author names
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 YES_NO = (
             (True, 'Yes'),
@@ -19,7 +23,8 @@ class profileForm(RegistrationForm):
     """
         extends RegistrationForm for user profiles
     """
-    name = forms.CharField(required=True, widget=forms.TextInput(), label="Full Name")
+    first_name = forms.CharField(required=True, widget=forms.TextInput(), label="First Name")
+    last_name = forms.CharField(required=True, widget=forms.TextInput(), label="Last Name")
     title = forms.CharField(required=True, widget=forms.TextInput(), label="Professional Title")
     institution = forms.CharField(required=True, widget=forms.TextInput(), label="Institutional Affiliation")
     institution_address = forms.CharField(required=False, widget=forms.TextInput(), label="Institution's Street Address")
@@ -44,9 +49,10 @@ class UserInfoForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar',)
+        fields = ('first_name', 'last_name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar',)
         labels = {
-            'name': 'Full Name',
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
             'title': 'Professional Title',
             'institution': 'Institutional Affiliation',
             'institution_address': 'Institution\'s Street Address',
@@ -60,7 +66,8 @@ class UserProfileForm(forms.ModelForm):
             'avatar': 'Please upload a bio picture for others to view on the GAHTC website.',
         }
         widgets = {
-            'name': forms.TextInput(),
+            'first_name': forms.TextInput(),
+            'last_name': forms.TextInput(),
             'institution': forms.TextInput(),
             'institution_address': forms.TextInput(),
             'institution_city': forms.TextInput(),
@@ -75,9 +82,10 @@ class UserProfileForm(forms.ModelForm):
 class AdminUserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar', 'verified', 'public')
+        fields = ('first_name', 'last_name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar', 'verified', 'public')
         labels = {
-            'name': 'Full Name',
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
             'title': 'Professional Title',
             'institution': 'Institutional Affiliation',
             'institution_address': 'Institution\'s Street Address',
@@ -93,7 +101,8 @@ class AdminUserProfileForm(forms.ModelForm):
             'public': 'Should this user have a public profile?',
         }
         widgets = {
-            'name': forms.TextInput(),
+            'first_name': forms.TextInput(),
+            'last_name': forms.TextInput(),
             'institution': forms.TextInput(),
             'institution_address': forms.TextInput(),
             'institution_city': forms.TextInput(),
@@ -124,16 +133,16 @@ class AdminVerifyUserForm(forms.ModelForm):
 class modulesForm(forms.ModelForm):
     class Meta:
         model = modules
-        fields = ('title', 'authors', 'description', 'keywords')
+        fields = ('title', 'authors_m2m', 'description', 'keywords')
         labels = {
             'title': 'Title (Required)',
-            'authors': 'Authors (Required)',
+            'authors_m2m': 'Authors (Required)',
             'description': 'Description',
             'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
-            'authors': forms.TextInput(),
+            'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
         }
 
@@ -146,18 +155,16 @@ class modulesRemoveForm(forms.ModelForm):
 class moduleDocumentsForm(forms.ModelForm):
     class Meta:
         model = moduleDocuments
-        fields = ('document', 'module', 'title', 'authors', 'description', 'keywords')
+        fields = ('document', 'module', 'title', 'description', 'keywords')
         labels = {
             'document': 'File (Required)',
             'module': 'Related Module (Required)',
             'title': 'Title (Required)',
-            'authors': 'Authors (Required)',
             'description': 'Description',
             'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
-            'authors': forms.TextInput(),
             'description': forms.Textarea(),
         }
 
@@ -170,20 +177,24 @@ class moduleDocumentsRemoveForm(forms.ModelForm):
 class lectureForm(forms.ModelForm):
     class Meta:
         model = lectures
-        fields = ('presentation', 'module', 'title', 'authors', 'description', 'keywords')
+        fields = ('presentation', 'module', 'title', 'authors_m2m', 'description', 'keywords')
         labels = {
             'presentation': 'File (Required)',
             'module': 'Related Module (Required)',
             'title': 'Title (Required)',
-            'authors': 'Authors (Required)',
+            'authors_m2m': 'Authors (Required)',
             'description': 'Description',
             'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
-            'authors': forms.TextInput(),
+            'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
         }
+        queryset = {
+            'authors_m2m': profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name'),
+        }
+
 
 class lectureRemoveForm(forms.ModelForm):
     class Meta:
@@ -282,20 +293,27 @@ class lectureSlidesCommentsForm(forms.ModelForm):
 class CSmodulesForm(forms.ModelForm):
     class Meta:
         model = comingSoonModules
-        fields = ('title', 'authors', 'description', 'keywords')
+        fields = ('title', 'authors_m2m', 'description', 'keywords')
         labels = {
             'title': 'Title (Required)',
-            'authors': 'Authors (Required)',
+            'authors_m2m': 'Authors (Required)',
             'description': 'Description',
             'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
-            'authors': forms.TextInput(),
+            'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
+        }
+        queryset = {
+            'authors_m2m': profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name'),
         }
 
 class CSmodulesRemoveForm(forms.ModelForm):
     class Meta:
         model = comingSoonModules
         fields = ()
+
+
+
+

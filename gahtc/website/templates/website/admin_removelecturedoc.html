@@ -34,6 +34,7 @@
 		<form method="post" action=".">
 			{% csrf_token %}
 			{{ form|as_bootstrap }}
+			<input type="hidden" name="referer" readonly value="{{ request.META.HTTP_REFERER }}">
 			<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
 			<input type="submit" name="delete" class="btn btn-danger" value="Remove Lecture Document" />
 		</form>

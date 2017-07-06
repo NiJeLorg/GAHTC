@@ -18,6 +18,7 @@
 		<form enctype="multipart/form-data" method="post" action=".">
 			{% csrf_token %}
 			{{ form|as_bootstrap }}
+			<input type="hidden" name="referer" readonly value="{{ request.META.HTTP_REFERER }}">
 			<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
 			<input type="submit" name="save" class="btn btn-primary" value="Save" />
 			<input type="submit" name="new_module_document" class="btn btn-primary" value="Save and Add a Another Module Document" />

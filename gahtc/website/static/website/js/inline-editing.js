@@ -44,7 +44,12 @@ $( document ).ready(function() {
 		} 
 
 		// listen for keypresses and save when enter is pressed.
-		var edittextinput = edittext.children('input');
+		var edittextinput;
+		if (field == 'title') {
+			edittextinput = edittext.children('textarea');
+		} else {
+			edittextinput = edittext.children('input');
+		}
 		edittextinput.unbind().bind("keypress", function(e) {
 			if (e.which == 13) {
 				//get contents of input

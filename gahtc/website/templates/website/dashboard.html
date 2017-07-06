@@ -90,17 +90,17 @@
 							          <td class="editable-title" data-moduledocid="{{ moduleDocument.id }}">
 							          	<span class="static">{{ moduleDocument.title }}</span>
 							          	<span class="edit hidden">
-							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ moduleDocument.title }}" style="width:255px">
+							          		<textarea name="title" class="form-control" maxlength="255" rows="5" style="width:255px;">{{ moduleDocument.title }}</textarea>
 							          	</span>
 							          </td>
 							          <td class="editable-doc" data-moduledocid="{{ moduleDocument.id }}">
 							          	<span class="static">{{ moduleDocument.documentName }}</span>
 							          	<span class="edit hidden">
-							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ moduleDocument.documentName }}" style="width:255px">
+							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ moduleDocument.documentName }}" style="width:400px;">
 							          	</span>
 							          </td>
 							          <td>{{ moduleDocument.document.size|filesizeformat }}</td>
-							          <td>{{ moduleDocument.authors }}</td>
+							          <td></td>
 							          <td>{{ moduleDocument.created }}</td>
 							        </tr>
 							      {% endfor %}
@@ -125,17 +125,21 @@
 							          <td class="editable-title" data-lectureid="{{ lecture.id }}">
 							          	<span class="static">{{ lecture.title }}</span>
 							          	<span class="edit hidden">
-							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ lecture.title }}" style="width:255px">
+							          		<textarea name="title" class="form-control" maxlength="255" rows="5" style="width:255px;">{{ lecture.title }}</textarea>	
 							          	</span>
 							          </td>
 							          <td class="editable-doc" data-lectureid="{{ lecture.id }}">
 							          	<span class="static">{{ lecture.lectureName }}</span>
 							          	<span class="edit hidden">
-							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ lecture.lectureName }}" style="width:255px">
+							          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ lecture.lectureName }}" style="width:400px;">
 							          	</span>
 							          </td>							          
 							          <td>{{ lecture.presentation.size|filesizeformat }}</td>
-							          <td>{{ lecture.authors }}</td>
+							          <td>
+										{% for authors in lecture.authors_m2m.all %}
+											{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
+										{% endfor %}
+							          </td>
 							          <td>{{ lecture.created }}</td>					       
 							        </tr>
 										{% if lecture.lectureSegmentsObjects %}
@@ -160,18 +164,18 @@
 									          <td class="editable-title" data-lecturesegmentid="{{ ls.id }}">
 									          	<span class="static">{{ ls.title }}</span>
 									          	<span class="edit hidden">
-									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ls.title }}" style="width:255px">
+									          		<textarea name="title" class="form-control" maxlength="255" rows="5" style="width:255px;">{{ ls.title }}</textarea>	
 									          	</span>
 									          </td>
 									          <td class="editable-doc" data-lecturesegmentid="{{ ls.id }}">
 									          	<span class="static">{{ ls.lectureName }}</span>
 									          	<span class="edit hidden">
-									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ls.lectureName }}" style="width:255px">
+									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ls.lectureName }}" style="width:400px;">
 									          	</span>
 									          </td>										          
 									          <td>{{ ls.lectureName }}</td>
 									          <td>{{ ls.presentation.size|filesizeformat }}</td>
-									          <td>{{ ls.authors }}</td>
+									          <td></td>
 									          <td>{{ ls.created }}</td>	
 									        </tr>
 									      {% endfor %}
@@ -196,17 +200,17 @@
 									          <td class="editable-title" data-lecturedocumentid="{{ ld.id }}">
 									          	<span class="static">{{ ld.title }}</span>
 									          	<span class="edit hidden">
-									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ld.title }}" style="width:255px">
+									          		<textarea name="title" class="form-control" maxlength="255" rows="5" style="width:255px;">{{ ld.title }}</textarea>	
 									          	</span>
 									          </td>
 									          <td class="editable-doc" data-lecturedocumentid="{{ ld.id }}">
 									          	<span class="static">{{ ld.documentName }}</span>
 									          	<span class="edit hidden">
-									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ld.documentName }}" style="width:255px">
+									          		<input type="text" name="title" class="form-control" maxlength="255" value="{{ ld.documentName }}" style="width:400px;">
 									          	</span>
 									          </td>
 									          <td>{{ ld.document.size|filesizeformat }}</td>
-									          <td>{{ ld.authors }}</td>
+									          <td></td>
 									          <td>{{ ld.created }}</td>	
 									        </tr>
 									      {% endfor %}

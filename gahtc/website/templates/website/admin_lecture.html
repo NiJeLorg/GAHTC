@@ -3,11 +3,45 @@
 {% load bootstrap_tags %}
 
 {% block head_js_block %}
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
 {{ media }}
 {% endblock %}
 
 {% block css_block %}
+<link rel="stylesheet" type="text/css" href="/static/admin/css/widgets.css">
+<style type="text/css">
+	.selector {
+		width: 100%;
+	}
+	.selector-available, .selector-chosen {
+		width: 47.7%;
+	}
+	.selector select {
+		width: 100%;
+	}
+	.selector h2 {
+		font-size: 20px;
+	}
+	.selector .selector-filter {
+	    font-size: 14px;
+	}
+	.selector .selector-available input {
+		width: 87%;
+	}
+	.selector-available select {
+		height: 100px;
+	}
+	.selector-chosen select {
+		height: 142px;
+	}
+	.selector ul.selector-chooser {
+	    margin: 5em 5px 0 5px;
+	}
+</style>
 {% endblock %}	
+
 
 {% block content %}
 
@@ -23,6 +57,7 @@
 	  <div class="row">
 	    <div class="col-md-12">
     		<a class="btn btn-default" href="/dashboard/" role="button">Cancel</a>
+    		<input type="hidden" name="referer" readonly value="{{ request.META.HTTP_REFERER }}">
 			<input type="submit" name="save" class="btn btn-primary" value="Save" />
 			<input type="submit" name="new_lecure_document" class="btn btn-primary" value="Save and Add a Lecture Document" />
 			<input type="submit" name="new_lecure" class="btn btn-primary" value="Save and Add Another Lecture" />
