@@ -145,9 +145,7 @@ class modulesForm(forms.ModelForm):
             'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
         }
-        queryset = {
-            'authors_m2m': profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name'),
-        }
+
 
 class modulesRemoveForm(forms.ModelForm):
     class Meta:
