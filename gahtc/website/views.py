@@ -1677,6 +1677,7 @@ def admin_lecture(request, id=None, moduleid=None):
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = lectureForm(instance=lectureObject)
+		form.fields["authors_m2m"].queryset = profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	# Bad form (or form details), no form supplied...
 	# Render the form with error messages (if any).
@@ -2153,6 +2154,7 @@ def admin_coming_soon_module(request, id=None):
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = CSmodulesForm(instance=modulesObject)
+		form.fields["authors_m2m"].queryset = profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	return render(request, 'website/admin_coming_soon_module.html', {'form': form, 'media': form.media})
 
