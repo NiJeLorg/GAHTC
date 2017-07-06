@@ -44,7 +44,7 @@ class profile(models.Model):
 	contributing = models.BooleanField(default=False)
 
 	def __unicode__(self):
-		return "{0} {1}".format(self.first_name, self.last_name)
+		return self.first_name + ' ' + self.last_name
 
 
 # course modules
