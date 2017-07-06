@@ -103,8 +103,12 @@ body nav {
 }
 
 .navbar-header-holder .nav a {
+<<<<<<< HEAD
+    padding: 0;
+=======
 /*    padding: 0;
     margin-left: 15px;*/
+>>>>>>> 3d0e9ac73eb5efdd01be60ebbcb7cf6b527eb4ee
     background-color: transparent;
 }
 
@@ -124,10 +128,15 @@ body nav {
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    margin-left: 15px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     background: #000;
+}
+
+.user-profile-dropdown-menu {
+    padding: 15px;
 }
 
 .navbar-header a img {
