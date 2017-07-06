@@ -52,7 +52,7 @@
                           <div class="user-profile" style="background: url('{% static 'website/css/images/gahtc-logo.png' %}'); background-repeat: no-repeat; background-size: cover"></div>
                           {% endif %}
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu user-profile-dropdown-menu">
                             {% if perms.auth.add_user %}
                             <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
                             {% endif %}

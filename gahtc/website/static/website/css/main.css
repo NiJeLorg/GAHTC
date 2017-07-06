@@ -103,7 +103,6 @@ body nav {
 
 .navbar-header-holder .nav a {
     padding: 0;
-    margin-left: 15px;
     background-color: transparent;
 }
 
@@ -123,10 +122,15 @@ body nav {
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    margin-left: 15px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     background: #000;
+}
+
+.user-profile-dropdown-menu {
+    padding: 15px;
 }
 
 .navbar-header a img {
