@@ -165,11 +165,11 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.get(user=request.user)
 
 			#attach modules and lectures to profile
-			cp_modules = modules.objects.filter(authors_m2m=user_profile)
+			cp_modules = modules.objects.filter(authors_m2m=user_profile).order_by('title')
 			user_profile.modules = cp_modules
-			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
+			cp_lectures = lectures.objects.filter(authors_m2m=user_profile).order_by('title')
 			user_profile.lectures = cp_lectures
-			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile)
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile).order_by('title')
 			user_profile.csmodules = cp_csmodules
 
 
@@ -257,11 +257,11 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.get(user=request.user)
 
 			#attach modules and lectures to profiles
-			cp_modules = modules.objects.filter(authors_m2m=user_profile)
+			cp_modules = modules.objects.filter(authors_m2m=user_profile).order_by('title')
 			user_profile.modules = cp_modules
-			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
+			cp_lectures = lectures.objects.filter(authors_m2m=user_profile).order_by('title')
 			user_profile.lectures = cp_lectures
-			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile)
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile).order_by('title')
 			user_profile.csmodules = cp_csmodules
 
 			# pull saved searches
@@ -762,7 +762,7 @@ def showBundle(request, id=None):
 		bundle.module.moduleDocs = moduleDocs
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=bundle.module)
+		moduleLecs = lectures.objects.filter(module=bundle.module).order_by('title')
 		# get the file name
 		for lec in moduleLecs:
 			lecture = str(lec.presentation)
@@ -1241,11 +1241,11 @@ def membersView(request):
 
 	#attach modules and lectures to profiles
 	for cp in contributing_profiles_returned:
-		cp_modules = modules.objects.filter(authors_m2m=cp)
+		cp_modules = modules.objects.filter(authors_m2m=cp).order_by('title')
 		cp.modules = cp_modules
-		cp_lectures = lectures.objects.filter(authors_m2m=cp)
+		cp_lectures = lectures.objects.filter(authors_m2m=cp).order_by('title')
 		cp.lectures = cp_lectures
-		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp)
+		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp).order_by('title')
 		cp.csmodules = cp_csmodules
 
 	profiles_returned = profile.objects.filter(verified=True, public=True, contributing=False).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
@@ -1483,7 +1483,7 @@ def admin_removemodule(request, id=None):
 			doc.documentName = document[2]
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=modulesObject)
+		moduleLecs = lectures.objects.filter(module=modulesObject).order_by('title')
 		# get the file name
 		for lec in moduleLecs:
 			lecture = str(lec.presentation)
