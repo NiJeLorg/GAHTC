@@ -97,7 +97,7 @@
 			{% endfor %}
             {% for module_returned in coming_soon_modules_returned %}
             <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="heading_{{ module_returned.id }}">
+                <div class="panel-heading" role="tab" id="heading_cs{{ module_returned.id }}">
                     <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_modules" href="#cs_{{ module_returned.id }}" aria-expanded="true" aria-controls="cs_{{ module_returned.id }}">
                         <h4 class="panel-title">
 								<span class="label label-cs">Coming Soon: {{ module_returned.title }}</span>

@@ -165,10 +165,13 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.get(user=request.user)
 
 			#attach modules and lectures to profile
-			cp_modules = modules.objects.filter(authors_m2m=user_profile)
+			cp_modules = modules.objects.filter(authors_m2m=user_profile).order_by('title')
 			user_profile.modules = cp_modules
-			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
+			cp_lectures = lectures.objects.filter(authors_m2m=user_profile).exclude(extracted=False).order_by('module__title','title')
 			user_profile.lectures = cp_lectures
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile).order_by('title')
+			user_profile.csmodules = cp_csmodules
+
 
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
@@ -254,10 +257,12 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.get(user=request.user)
 
 			#attach modules and lectures to profiles
-			cp_modules = modules.objects.filter(authors_m2m=user_profile)
+			cp_modules = modules.objects.filter(authors_m2m=user_profile).order_by('title')
 			user_profile.modules = cp_modules
-			cp_lectures = lectures.objects.filter(authors_m2m=user_profile)
+			cp_lectures = lectures.objects.filter(authors_m2m=user_profile).exclude(extracted=False).order_by('module__title','title')
 			user_profile.lectures = cp_lectures
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile).order_by('title')
+			user_profile.csmodules = cp_csmodules
 
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
@@ -364,7 +369,7 @@ def showModule(request, id=None):
 		doc.documentName = document[2]
 
 	#look up the lectures
-	moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
+	moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('title')
 	# get the file name
 	for lec in moduleLecs:
 		lecture = str(lec.presentation)
@@ -390,7 +395,7 @@ def showModule(request, id=None):
 	module_returned.document_contents = '\n'.join(contents)	
 
 	#get first lecture uploaded
-	earliest_lecture = lectures.objects.filter(module=module_returned).earliest('created')
+	earliest_lecture = lectures.objects.filter(module=module_returned).exclude(extracted=False).earliest('created')
 
 	if request.user.is_authenticated():
 		# pull bundles
@@ -757,7 +762,7 @@ def showBundle(request, id=None):
 		bundle.module.moduleDocs = moduleDocs
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=bundle.module)
+		moduleLecs = lectures.objects.filter(module=bundle.module).exclude(extracted=False).order_by('title')
 		# get the file name
 		for lec in moduleLecs:
 			lecture = str(lec.presentation)
@@ -839,7 +844,7 @@ def zipUpBundle(request, id=None):
 				myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 			#look up the lectures
-			moduleLecs = lectures.objects.filter(module=bundle.module).order_by('title')
+			moduleLecs = lectures.objects.filter(module=bundle.module).exclude(extracted=False).order_by('title')
 			#loop over lectures and add to zip archive in the correct folder
 			for i, lec in enumerate(moduleLecs,1):
 				modTitle = bundle.module.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
@@ -971,7 +976,7 @@ def zipUpModule(request, id=None):
 			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=module_returned).order_by('title')
+		moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('title')
 		#loop over lectures and add to zip archive in the correct folder
 		for i, lec in enumerate(moduleLecs,1):
 			lecTitle = lec.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
@@ -1201,11 +1206,11 @@ def lecturesView(request):
 
 	for lec in lectures_returned:
 		# remove articles from titles for reordering
-		first_word = lec.title.strip().lower().split(' ', 1)[0]
-		if first_word == 'a' or first_word == 'the' or first_word == 'and':
-			lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
-		else:
-			lec.no_article_title = lec.title.strip().lower()
+		# first_word = lec.title.strip().lower().split(' ', 1)[0]
+		# if first_word == 'a' or first_word == 'the' or first_word == 'and':
+		# 	lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
+		# else:
+		# 	lec.no_article_title = lec.title.strip().lower()
 
 		lecture = str(lec.presentation)
 		lecture = lecture.split('/')
@@ -1219,10 +1224,10 @@ def lecturesView(request):
 			lecDoc.documentName = document[2]
 
 	# order titles minus articles
-	lectures_returned_ordered = sorted(lectures_returned, key=operator.attrgetter('no_article_title'))
+	# lectures_returned_ordered = sorted(lectures_returned, key=operator.attrgetter('no_article_title'))
 
 
-	context_dict = {'lectures_returned':lectures_returned_ordered}
+	context_dict = {'lectures_returned':lectures_returned}
 	return render(request, 'website/lectures.html', context_dict)
 
 
@@ -1236,10 +1241,12 @@ def membersView(request):
 
 	#attach modules and lectures to profiles
 	for cp in contributing_profiles_returned:
-		cp_modules = modules.objects.filter(authors_m2m=cp)
+		cp_modules = modules.objects.filter(authors_m2m=cp).order_by('title')
 		cp.modules = cp_modules
-		cp_lectures = lectures.objects.filter(authors_m2m=cp)
+		cp_lectures = lectures.objects.filter(authors_m2m=cp).exclude(extracted=False).order_by('module__title','title')
 		cp.lectures = cp_lectures
+		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp).order_by('title')
+		cp.csmodules = cp_csmodules
 
 	profiles_returned = profile.objects.filter(verified=True, public=True, contributing=False).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
@@ -1448,6 +1455,7 @@ def admin_module(request, id=None):
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = modulesForm(instance=modulesObject)
+		form.fields["authors_m2m"].queryset = profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	# Bad form (or form details), no form supplied...
 	# Render the form with error messages (if any).
@@ -1475,7 +1483,7 @@ def admin_removemodule(request, id=None):
 			doc.documentName = document[2]
 
 		#look up the lectures
-		moduleLecs = lectures.objects.filter(module=modulesObject)
+		moduleLecs = lectures.objects.filter(module=modulesObject).order_by('title')
 		# get the file name
 		for lec in moduleLecs:
 			lecture = str(lec.presentation)
@@ -1669,6 +1677,7 @@ def admin_lecture(request, id=None, moduleid=None):
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = lectureForm(instance=lectureObject)
+		form.fields["authors_m2m"].queryset = profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	# Bad form (or form details), no form supplied...
 	# Render the form with error messages (if any).
@@ -2145,6 +2154,7 @@ def admin_coming_soon_module(request, id=None):
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = CSmodulesForm(instance=modulesObject)
+		form.fields["authors_m2m"].queryset = profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	return render(request, 'website/admin_coming_soon_module.html', {'form': form, 'media': form.media})
 

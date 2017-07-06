@@ -1,8 +1,12 @@
 from registration.forms import RegistrationForm
 from django import forms
+
 # user and profile models
 from django.contrib.auth.models import User
 from website.models import *
+
+# using the filter select multiple admin widget for author names
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 YES_NO = (
             (True, 'Yes'),
@@ -138,6 +142,7 @@ class modulesForm(forms.ModelForm):
         }
         widgets = {
             'title': forms.TextInput(),
+            'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
         }
 
@@ -172,20 +177,24 @@ class moduleDocumentsRemoveForm(forms.ModelForm):
 class lectureForm(forms.ModelForm):
     class Meta:
         model = lectures
-        fields = ('presentation', 'module', 'title', 'authors', 'description', 'keywords')
+        fields = ('presentation', 'module', 'title', 'authors_m2m', 'description', 'keywords')
         labels = {
             'presentation': 'File (Required)',
             'module': 'Related Module (Required)',
             'title': 'Title (Required)',
-            'authors': 'Authors (Required)',
+            'authors_m2m': 'Authors (Required)',
             'description': 'Description',
             'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
-            'authors': forms.TextInput(),
+            'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
         }
+        queryset = {
+            'authors_m2m': profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name'),
+        }
+
 
 class lectureRemoveForm(forms.ModelForm):
     class Meta:
@@ -284,20 +293,27 @@ class lectureSlidesCommentsForm(forms.ModelForm):
 class CSmodulesForm(forms.ModelForm):
     class Meta:
         model = comingSoonModules
-        fields = ('title', 'authors', 'description', 'keywords')
+        fields = ('title', 'authors_m2m', 'description', 'keywords')
         labels = {
             'title': 'Title (Required)',
-            'authors': 'Authors (Required)',
+            'authors_m2m': 'Authors (Required)',
             'description': 'Description',
             'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
-            'authors': forms.TextInput(),
+            'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
+        }
+        queryset = {
+            'authors_m2m': profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name'),
         }
 
 class CSmodulesRemoveForm(forms.ModelForm):
     class Meta:
         model = comingSoonModules
         fields = ()
+
+
+
+

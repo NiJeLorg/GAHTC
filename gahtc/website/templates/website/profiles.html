@@ -134,6 +134,16 @@
 					{% endif %}
 				</p>
 				<p>
+					{% if user_profile.csmodules %}
+						<em>Modules Coming Soon</em>
+						<ul>
+						{% for m in user_profile.csmodules %}
+							<li><a href="/modules/#heading_cs{{ m.id }}">{{ m.title }}</a></li>
+						{% endfor %}
+						</ul>
+					{% endif %}
+				</p>
+				<p>
 					{% if user_profile.lectures %}
 						<em>Lectures</em>
 						<ul>
