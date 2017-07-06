@@ -1206,11 +1206,11 @@ def lecturesView(request):
 
 	for lec in lectures_returned:
 		# remove articles from titles for reordering
-		first_word = lec.title.strip().lower().split(' ', 1)[0]
-		if first_word == 'a' or first_word == 'the' or first_word == 'and':
-			lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
-		else:
-			lec.no_article_title = lec.title.strip().lower()
+		# first_word = lec.title.strip().lower().split(' ', 1)[0]
+		# if first_word == 'a' or first_word == 'the' or first_word == 'and':
+		# 	lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
+		# else:
+		# 	lec.no_article_title = lec.title.strip().lower()
 
 		lecture = str(lec.presentation)
 		lecture = lecture.split('/')
@@ -1224,10 +1224,10 @@ def lecturesView(request):
 			lecDoc.documentName = document[2]
 
 	# order titles minus articles
-	lectures_returned_ordered = sorted(lectures_returned, key=operator.attrgetter('no_article_title'))
+	# lectures_returned_ordered = sorted(lectures_returned, key=operator.attrgetter('no_article_title'))
 
 
-	context_dict = {'lectures_returned':lectures_returned_ordered}
+	context_dict = {'lectures_returned':lectures_returned}
 	return render(request, 'website/lectures.html', context_dict)
 
 
