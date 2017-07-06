@@ -1371,7 +1371,7 @@ def dashboard(request):
 		for lec in moduleLecs:
 			# remove articles from titles for reordering
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
-			if first_word == 'Lecture' or first_word == 'the' or first_word == 'and':
+			if first_word == 'Lecture':
 				lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
 			else:
 				lec.numeric_order = 0
