@@ -372,6 +372,14 @@ def showModule(request, id=None):
 	moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('title')
 	# get the file name
 	for lec in moduleLecs:
+
+		# order by lecture number
+		first_word = lec.title.strip().lower().split(' ', 1)[0]
+		if first_word == 'Lecture':
+			lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
+		else:
+			lec.numeric_order = 0
+
 		lecture = str(lec.presentation)
 		lecture = lecture.split('/')
 		lec.lectureName = lecture[2]
@@ -383,7 +391,8 @@ def showModule(request, id=None):
 			document = document.split('/')
 			lecDoc.documentName = document[2]
 
-
+	# order titles minus articles
+	moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))	
 
 	moduleDocsCount = moduleDocuments.objects.filter(module=module_returned)
 	contents = []
@@ -409,7 +418,7 @@ def showModule(request, id=None):
 	# comment form
 	comment_form = modulesCommentsForm()
 
-	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture, 'bundles_returned':bundles_returned, 'moduleDocs':moduleDocs, 'moduleLecs':moduleLecs, 'comments':comments , 'comment_form':comment_form}
+	context_dict = {'module_returned':module_returned, 'earliest_lecture':earliest_lecture, 'bundles_returned':bundles_returned, 'moduleDocs':moduleDocs, 'moduleLecs':moduleLecs_ordered, 'comments':comments , 'comment_form':comment_form}
 	return render(request, 'website/show_module.html', context_dict)
 
 def showLecture(request, id=None):
@@ -765,6 +774,14 @@ def showBundle(request, id=None):
 		moduleLecs = lectures.objects.filter(module=bundle.module).exclude(extracted=False).order_by('title')
 		# get the file name
 		for lec in moduleLecs:
+
+			# order by lecture number
+			first_word = lec.title.strip().lower().split(' ', 1)[0]
+			if first_word == 'Lecture':
+				lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
+			else:
+				lec.numeric_order = 0
+
 			lecture = str(lec.presentation)
 			lecture = lecture.split('/')
 			lec.lectureName = lecture[2]
@@ -776,7 +793,10 @@ def showBundle(request, id=None):
 				document = document.split('/')
 				lecDoc.documentName = document[2]
 
-		bundle.module.lectures = moduleLecs
+		# order titles minus articles
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))	
+
+		bundle.module.lectures = moduleLecs_ordered
 
 
 	#for each lecture document strip out name of file
@@ -840,7 +860,7 @@ def zipUpBundle(request, id=None):
 				document = unicode(doc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/documents", doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/Modules/" + modTitle + "/Documents", doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 			#look up the lectures
@@ -858,7 +878,7 @@ def zipUpBundle(request, id=None):
 				document = unicode(lec.presentation)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/Modules/" + modTitle + "/Lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 				# look up lecture documents
@@ -867,7 +887,7 @@ def zipUpBundle(request, id=None):
 					document = unicode(lecDoc.document)
 					document = document.split('/')
 					doc_name = document[2].encode('utf8', 'replace')
-					directory = os.path.join(zipfolder+ "/modules/" + modTitle + "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+					directory = os.path.join(zipfolder+ "/Modules/" + modTitle + "/Lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 					myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -880,7 +900,7 @@ def zipUpBundle(request, id=None):
 			document = unicode(bundle.lecture.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/Lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lecture.presentation), directory)
 
 			# look up lecture documents and add these to zip archive
@@ -889,7 +909,7 @@ def zipUpBundle(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/Lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -902,7 +922,7 @@ def zipUpBundle(request, id=None):
 			document = unicode(bundle.lectureSegment.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_segments/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/Lecture_segments/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSegment.presentation), directory)
 
 
@@ -915,7 +935,7 @@ def zipUpBundle(request, id=None):
 			document = unicode(bundle.lectureDocument.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_documents/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/Lecture_documents/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureDocument.document), directory)
 
 		#for each lecture slide strip out name of file and slide notes file
@@ -927,7 +947,7 @@ def zipUpBundle(request, id=None):
 			document = unicode(bundle.lectureSlide.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lecture_slides/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/Lecture_slides/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(bundle.lectureSlide.presentation), directory)
 
 	#get size of zip file
@@ -972,7 +992,7 @@ def zipUpModule(request, id=None):
 			document = unicode(doc.document)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/documents", doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/Documents", doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(doc.document), directory)
 
 		#look up the lectures
@@ -985,7 +1005,7 @@ def zipUpModule(request, id=None):
 			document = unicode(lec.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
-			directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+			directory = os.path.join(zipfolder+ "/Lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 			myzip.write(MEDIA_ROOT + '/' + str(lec.presentation), directory)
 
 			# look up lecture documents
@@ -994,7 +1014,7 @@ def zipUpModule(request, id=None):
 				document = unicode(lecDoc.document)
 				document = document.split('/')
 				doc_name = document[2].encode('utf8', 'replace')
-				directory = os.path.join(zipfolder+ "/lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
+				directory = os.path.join(zipfolder+ "/Lectures/" + lecTitle, doc_name.decode('utf8', 'replace'))
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
@@ -1164,12 +1184,12 @@ def modulesView(request):
 		moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('module__title','title')
 		# get the file name
 		for lec in moduleLecs:
-			# remove articles from titles for reordering
+			# order by lecture number
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
-			if first_word == 'a' or first_word == 'the' or first_word == 'and':
-				lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
+			if first_word == 'Lecture':
+				lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
 			else:
-				lec.no_article_title = lec.title.strip().lower()
+				lec.numeric_order = 0
 
 			lecture = str(lec.presentation)
 			lecture = lecture.split('/')
@@ -1183,7 +1203,7 @@ def modulesView(request):
 				lecDoc.documentName = document[2]
 
 		# order titles minus articles
-		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('no_article_title'))
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
 
 		#attach the module docs to the module returned 
 		module_returned.moduleLecs = moduleLecs_ordered
@@ -1369,7 +1389,7 @@ def dashboard(request):
 
 		# now get the lecture documents and get the lecture segments
 		for lec in moduleLecs:
-			# remove articles from titles for reordering
+			# order by lecture number
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'Lecture':
 				lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
