@@ -9,28 +9,28 @@
 
 @font-face {
     font-family: 'LinuxLibertine';
-    src: url('../fonts/LinLibertine_DR.woff');
+    src: url('../fonts/LinLibertine_DR.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'LinuxLibertine';
-    src: url('../fonts/LinLibertine_I.woff');
+    src: url('../fonts/LinLibertine_I.woff') format('woff');
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'LinuxLibertine';
-    src: url('../fonts/LinLibertine_RI.woff');
+    src: url('../fonts/LinLibertine_RI.woff') format('woff');
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'LinuxLibertine';
-    src: url('../fonts/LinLibertine_RB.woff');
+    src: url('../fonts/LinLibertine_RB.woff') format('woff');
     font-weight: normal;
     font-weight: bold;
 }
@@ -72,7 +72,8 @@ a:focus {
 
 body nav {
     background: url('images/oceancurrents.png');
-    // background-size: cover;
+    background-attachment: fixed;
+    background-size: cover;
     background-position-y: -100px;
 }
 
@@ -172,6 +173,7 @@ body nav {
 
 .navbar-nav .dropdown-menu {
     background: url('images/oceancurrents.png') fixed;
+    background-size: cover;
     background-position-y: -100px;
 }
 
@@ -382,6 +384,7 @@ blockquote p {
 .footer {
     position: static;
     bottom: 20px;
+    right: 20px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -396,6 +399,7 @@ blockquote p {
     color: #000;
     font-weight: bold;
     margin: 0;
+    margin-right: 20px;
     padding: 8px 0;
 }
 
