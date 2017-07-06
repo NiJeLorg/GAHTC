@@ -376,7 +376,8 @@ def showModule(request, id=None):
 		# order by lecture number
 		first_word = lec.title.strip().lower().split(' ', 1)[0]
 		if first_word == 'lecture':
-			lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
+			first_number = lec.title.strip().lower().split(' ', 1)[1].replace('.','')
+			lec.numeric_order = int(first_number)
 		else:
 			lec.numeric_order = 0
 
@@ -778,7 +779,8 @@ def showBundle(request, id=None):
 			# order by lecture number
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'lecture':
-				lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
+				first_number = lec.title.strip().lower().split(' ', 1)[1].replace('.','')
+				lec.numeric_order = int(first_number)
 			else:
 				lec.numeric_order = 0
 
@@ -1187,7 +1189,8 @@ def modulesView(request):
 			# order by lecture number
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'lecture':
-				lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
+				first_number = lec.title.strip().lower().split(' ', 1)[1].replace('.','')
+				lec.numeric_order = int(first_number)
 			else:
 				lec.numeric_order = 0
 
@@ -1392,7 +1395,8 @@ def dashboard(request):
 			# order by lecture number
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'lecture':
-				lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
+				first_number = lec.title.strip().lower().split(' ', 1)[1].replace('.','')
+				lec.numeric_order = int(first_number)
 			else:
 				lec.numeric_order = 0
 
