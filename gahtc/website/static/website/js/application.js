@@ -8,11 +8,11 @@ $(document).ready(function() {
 
     var gahtcApp = new gahtcApplication();
 
-
-    console.log(window.location.pathname, 'PATHNAME ');
-
     if (window.location.pathname === '/') {
         $('footer').css('position', 'fixed');
+        $('footer').css('bottom', '0');
+        $('footer').css('right', '0');
+        $('footer p').css('color', '#fff');
     } else {
         $('footer').css('position', 'static');
     }

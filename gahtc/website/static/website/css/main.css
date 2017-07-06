@@ -103,9 +103,13 @@ body nav {
 }
 
 .navbar-header-holder .nav a {
+
     padding: 0;
 /*    padding: 0;
     margin-left: 15px;*/
+
+
+/*    padding: 0;*/
 
     background-color: transparent;
 }
@@ -126,7 +130,7 @@ body nav {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    margin-left: 15px;
+/*    margin-left: 15px;*/
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -134,7 +138,7 @@ body nav {
 }
 
 .user-profile-dropdown-menu {
-    padding: 15px;
+/*    padding: 15px;*/
 }
 
 .navbar-header a img {
@@ -176,7 +180,7 @@ body nav {
 }
 
 .navbar-header-holder .nav .dropdown .dropdown-menu {
-    left: -84px;
+    left: -109px;
 }
 
 .navbar-nav .dropdown-menu {
@@ -397,14 +401,14 @@ blockquote p {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    // background: transparent;
+    /*background: transparent;*/
 }
 
 .footer p {
     font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
     font-size: 12px;
     text-align: right;
-    color: #000;
+    color: #333;
     font-weight: bold;
     margin: 0;
     margin-right: 20px;
