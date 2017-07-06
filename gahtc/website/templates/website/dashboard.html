@@ -100,7 +100,7 @@
 							          	</span>
 							          </td>
 							          <td>{{ moduleDocument.document.size|filesizeformat }}</td>
-							          <td>{{ moduleDocument.authors }}</td>
+							          <td></td>
 							          <td>{{ moduleDocument.created }}</td>
 							        </tr>
 							      {% endfor %}
@@ -135,7 +135,11 @@
 							          	</span>
 							          </td>							          
 							          <td>{{ lecture.presentation.size|filesizeformat }}</td>
-							          <td>{{ lecture.authors }}</td>
+							          <td>
+										{% for authors in lecture.authors_m2m.all %}
+											{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
+										{% endfor %}
+							          </td>
 							          <td>{{ lecture.created }}</td>					       
 							        </tr>
 										{% if lecture.lectureSegmentsObjects %}
@@ -171,7 +175,7 @@
 									          </td>										          
 									          <td>{{ ls.lectureName }}</td>
 									          <td>{{ ls.presentation.size|filesizeformat }}</td>
-									          <td>{{ ls.authors }}</td>
+									          <td></td>
 									          <td>{{ ls.created }}</td>	
 									        </tr>
 									      {% endfor %}
@@ -206,7 +210,7 @@
 									          	</span>
 									          </td>
 									          <td>{{ ld.document.size|filesizeformat }}</td>
-									          <td>{{ ld.authors }}</td>
+									          <td></td>
 									          <td>{{ ld.created }}</td>	
 									        </tr>
 									      {% endfor %}
