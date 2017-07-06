@@ -1371,10 +1371,10 @@ def dashboard(request):
 		for lec in moduleLecs:
 			# remove articles from titles for reordering
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
-			if first_word == 'a' or first_word == 'the' or first_word == 'and':
-				lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
+			if first_word == 'Lecture' or first_word == 'the' or first_word == 'and':
+				lec.numeric_order = int(lec.title.strip().lower().split(' ', 1)[1])
 			else:
-				lec.no_article_title = lec.title.strip().lower()
+				lec.numeric_order = 0
 
 			#look up the document name split
 			lecture = str(lec.presentation)
@@ -1399,13 +1399,13 @@ def dashboard(request):
 			lec.lectureSegmentsObjects = lectureSegs
 
 		# order titles minus articles
-		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('no_article_title'))		
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))		
 
 		#attach the module docs to the module returned 
 		module_returned.lecturesObjects = moduleLecs_ordered
 
 
-	context_dict = {'modulesObjects': modulesObjects}
+	context_dict = {'modulesObjects': modules_returned_ordered}
 	return render(request, 'website/dashboard.html', context_dict)
 
 
