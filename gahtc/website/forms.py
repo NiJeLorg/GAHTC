@@ -146,7 +146,7 @@ class modulesForm(forms.ModelForm):
             'description': forms.Textarea(),
         }
         queryset = {
-            'authors_m2m': profile.objects.all().order_by('last_name', 'first_name'),
+            'authors_m2m': profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name'),
         }
 
 class modulesRemoveForm(forms.ModelForm):
@@ -195,7 +195,7 @@ class lectureForm(forms.ModelForm):
             'description': forms.Textarea(),
         }
         queryset = {
-            'authors_m2m': profile.objects.all().order_by('last_name', 'first_name'),
+            'authors_m2m': profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name'),
         }
 
 
@@ -309,7 +309,7 @@ class CSmodulesForm(forms.ModelForm):
             'description': forms.Textarea(),
         }
         queryset = {
-            'authors_m2m': profile.objects.all().order_by('last_name', 'first_name'),
+            'authors_m2m': profile.objects.filter(verified=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name'),
         }
 
 class CSmodulesRemoveForm(forms.ModelForm):
