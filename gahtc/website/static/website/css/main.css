@@ -103,12 +103,10 @@ body nav {
 }
 
 .navbar-header-holder .nav a {
-<<<<<<< HEAD
     padding: 0;
-=======
 /*    padding: 0;
     margin-left: 15px;*/
->>>>>>> 3d0e9ac73eb5efdd01be60ebbcb7cf6b527eb4ee
+
     background-color: transparent;
 }
 
