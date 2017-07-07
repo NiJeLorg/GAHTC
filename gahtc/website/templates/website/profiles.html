@@ -124,6 +124,7 @@
 				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
 				<p><strong>Contributions:</strong></p>
 				<p>
+				{{ user_profile.modules }}
 					{% if user_profile.modules %}
 						<em>Modules</em>
 						<ul>
@@ -134,6 +135,7 @@
 					{% endif %}
 				</p>
 				<p>
+				{{ user_profile.csmodules }}
 					{% if user_profile.csmodules %}
 						<em>Modules Coming Soon</em>
 						<ul>
@@ -144,6 +146,7 @@
 					{% endif %}
 				</p>
 				<p>
+				{{ user_profile.lectures }}
 					{% if user_profile.lectures %}
 						<em>Lectures</em>
 						<ul>
