@@ -41,7 +41,6 @@ class profile(models.Model):
 	instutution_document = models.FileField(upload_to="insitution_docs/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	verified = models.NullBooleanField(default=None)
 	public = models.BooleanField(default=True)
-	contributing = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return self.first_name + ' ' + self.last_name
