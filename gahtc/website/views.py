@@ -1462,7 +1462,8 @@ def admin_module(request, id=None):
 			form.save_m2m()
 
 			# ensure each author is tagged as contributing
-			for profile_object in modulesObject.authors_m2m:
+			profile_objects = profile.objects.filter(pk=modulesObject.authors_m2m)
+			for profile_object in profile_objects:
 				profile_object.contributing = True
 				profile_object.save()			
 
