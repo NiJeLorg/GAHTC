@@ -1260,7 +1260,7 @@ def membersView(request):
 	  Loads all user profiles
 	"""	
 
-	contributing_profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='', modules__isnull=True, lectures__isnull=True, comingsoonmodules__isnull=True).order_by('last_name', 'first_name')
+	contributing_profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').exclude(modules__isnull=True).exclude(lectures__isnull=True).exclude(comingsoonmodules__isnull=True).order_by('last_name', 'first_name')
 
 	#attach modules and lectures to profiles
 	for cp in contributing_profiles_returned:
