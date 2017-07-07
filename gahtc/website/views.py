@@ -1662,6 +1662,10 @@ def admin_lecture(request, id=None, moduleid=None):
 			# check to see if the field "presentation" has not changed and if so set extracted to True, otherwise set to false
 			if 'presentation' in form.changed_data:
 				f.extracted = False
+				# remove any associated lecture slides
+				slides = lectureSlides.objects.filter(lecture=lectureObject)
+				for slide in slides:
+					slide.delete()
 			else:
 				f.extracted = True
 
@@ -1675,11 +1679,6 @@ def admin_lecture(request, id=None, moduleid=None):
 			for seg in lectureSegs:
 				seg.updated_lecture_review = True
 				seg.save()
-
-			# remove any associated lecture slides
-			slides = lectureSlides.objects.filter(lecture=lectureObject)
-			for slide in slides:
-				slide.delete()
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
