@@ -1260,7 +1260,7 @@ def membersView(request):
 	  Loads all user profiles
 	"""	
 
-	contributing_profiles_returned = profile.objects.filter(verified=True, public=True, contributing=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
+	contributing_profiles_returned = profile.objects.filter(verified=True, public=True).filter(Q(modules__isnull=False) | Q(lectures__isnull=False) | Q(comingsoonmodules__isnull=False)).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
 
 	#attach modules and lectures to profiles
 	for cp in contributing_profiles_returned:
@@ -1271,7 +1271,7 @@ def membersView(request):
 		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp).order_by('title')
 		cp.csmodules = cp_csmodules
 
-	profiles_returned = profile.objects.filter(verified=True, public=True, contributing=False).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
+	profiles_returned = profile.objects.filter(verified=True, public=True, modules__isnull=True, lectures__isnull=True, comingsoonmodules__isnull=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
 
 	context_dict = {'contributing_profiles_returned': contributing_profiles_returned, 'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)
@@ -1460,6 +1460,12 @@ def admin_module(request, id=None):
 			f.save()
 			# Without this next line the tags won't be saved.
 			form.save_m2m()
+
+			# ensure each author is tagged as contributing
+			profile_objects = profile.objects.filter(pk=modulesObject.authors_m2m)
+			for profile_object in profile_objects:
+				profile_object.contributing = True
+				profile_object.save()			
 
 
 			# route user depending on what button they clicked
