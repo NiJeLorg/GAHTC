@@ -1461,6 +1461,11 @@ def admin_module(request, id=None):
 			# Without this next line the tags won't be saved.
 			form.save_m2m()
 
+			# ensure each author is tagged as contributing
+			for profile_object in modulesObject.authors_m2m:
+				profile_object.contributing = True
+				profile_object.save()			
+
 
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
