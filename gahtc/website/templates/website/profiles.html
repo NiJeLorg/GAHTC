@@ -183,6 +183,9 @@
 				<p><strong>Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
 				<p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
 				<p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
+				{{ user_profile.modules }}
+				{{ user_profile.csmodules }}
+				{{ user_profile.lectures }}
 				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
 				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
 			</div>
