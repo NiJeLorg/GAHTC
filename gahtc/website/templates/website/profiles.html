@@ -72,7 +72,6 @@
 				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
 				<p><strong>Contributions:</strong></p>
 				<p>
-				{{ user_profile.modules }}
 					{% if user_profile.modules %}
 						<em>Modules</em>
 						<ul>
@@ -83,7 +82,6 @@
 					{% endif %}
 				</p>
 				<p>
-				{{ user_profile.csmodules }}
 					{% if user_profile.csmodules %}
 						<em>Modules Coming Soon</em>
 						<ul>
@@ -94,7 +92,6 @@
 					{% endif %}
 				</p>
 				<p>
-				{{ user_profile.lectures }}
 					{% if user_profile.lectures %}
 						<em>Lectures</em>
 						<ul>
@@ -131,9 +128,6 @@
 				<p><strong>Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
 				<p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
 				<p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
-				{{ user_profile.modules }}
-				{{ user_profile.csmodules }}
-				{{ user_profile.lectures }}
 				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
 				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
 			</div>
