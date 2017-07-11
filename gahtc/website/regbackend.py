@@ -9,7 +9,8 @@ class MyRegistrationView(RegistrationView):
     def register(self, form_class):
         new_user = super(MyRegistrationView, self).register(form_class)
         user_profile = profile.objects.create(user=new_user)
-        user_profile.name = form_class.cleaned_data['name']
+        user_profile.first_name = form_class.cleaned_data['first_name']
+        user_profile.last_name = form_class.cleaned_data['last_name']
         user_profile.title = form_class.cleaned_data['title']
         user_profile.institution = form_class.cleaned_data['institution']
         user_profile.institution_address = form_class.cleaned_data['institution_address']
