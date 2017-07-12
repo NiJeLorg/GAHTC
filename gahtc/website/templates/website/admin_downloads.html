@@ -28,7 +28,7 @@
                 <tbody>
                     {% for b in bundles_downloaded %}
                     <tr>
-                        <td>{{ b.user.userProfile.name }}</td>
+                        <td>{{ b.user.userProfile.first_name }} {{ b.user.userProfile.last_name }}</td>
                         <td>{{ b.title }}</td>
                         <td>{{ b.created|date:"m/d/Y" }}</td>
                         <td>{{ b.contact|yesno:"Yes,No" }}</td>
@@ -93,7 +93,7 @@
                 <tbody>
                     {% for m in modules_downloaded %}
                     <tr>
-                        <td>{{ m.user.userProfile.name }}</td>
+                        <td>{{ m.user.userProfile.first_name }} {{ m.user.userProfile.last_name }}</td>
                         <td>{{ m.module.title }}</td>
                         <td>{{ m.created|date:"m/d/Y" }}</td>
                         <td>{{ m.contact|yesno:"Yes,No" }}</td>
@@ -122,7 +122,7 @@
                 <tbody>
                     {% for l in lectures_downloaded %}
                     <tr>
-                        <td>{{ l.user.userProfile.name }}</td>
+                        <td>{{ l.user.userProfile.first_name }} {{ l.user.userProfile.last_name }}</td>
                         <td>{{ l.lecture.title }}</td>
                         <td>{{ l.created|date:"m/d/Y" }}</td>
                         <td>{{ l.contact|yesno:"Yes,No" }}</td>
