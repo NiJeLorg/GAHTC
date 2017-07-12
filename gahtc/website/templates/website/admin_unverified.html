@@ -24,7 +24,7 @@
                 <tbody>
                     {% for a in unverified %}
                     <tr>
-                        <td>{{ a.name }}</td>
+                        <td>{{ a.first_name }} {{ a.last_name }}</td>
                         <td>
                             <a class="btn btn-default" href="/admin_update_profile/{{ a.user.id }}/" role="button">Edit</a>
                         </td>
