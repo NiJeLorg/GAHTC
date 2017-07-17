@@ -42,6 +42,40 @@ body {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* bootstrap override on link highlighting */
 
 
@@ -52,10 +86,45 @@ p {
     font-family: 'LinuxLibertine';
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*li {
      font-family: 'LinuxLibertine';
  }
 */
+
 h1 {
     font-weight: bold;
 }
@@ -103,7 +172,7 @@ body nav {
 }
 
 .navbar-header-holder .nav a {
-/*    padding: 0;
+    /*    padding: 0;
     margin-left: 15px;*/
     background-color: transparent;
 }
@@ -124,7 +193,7 @@ body nav {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-/*    margin-left: 15px;*/
+    /*    margin-left: 15px;*/
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -132,7 +201,7 @@ body nav {
 }
 
 .user-profile-dropdown-menu {
-/*    padding: 15px;*/
+    /*    padding: 15px;*/
 }
 
 .navbar-header a img {
@@ -147,7 +216,7 @@ body nav {
     align-items: center;
 }
 
-.navigation-links > a {
+.navigation-links>a {
     color: #fff;
     margin-right: 40px;
 }
@@ -265,10 +334,161 @@ body nav {
     margin-bottom: 0;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** Browse by Modules Styles **/
+
+.featured-modules-title {
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 0;
+    width: 85%;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #AAAAAA;
+}
+
+.featured-modules {
+    height: 250px;
+    padding: 20px 0;
+    border: 1px solid #D0D0D0;
+}
+
+.all-modules-title {
+    margin: 0 auto;
+    margin-top: 40px;
+    font-size: 14px;
+    color: #AAAAAA;
+    width: 85%;
+    font-family: sans-serif;
+}
+
+.all-modules {
+    width: 85%;
+    margin: 0 auto;
+}
+
+.module-heading {
+    color: #070707;
+    font-family: 'LinuxLibertine', serif;
+    font-weight: normal;
+    font-size: 24px;
+    font-style: normal;
+    margin: 0;
+    padding: 20px 40px;
+    background: #EFEFEF;
+}
+
+.module-contents {
+    padding: 40px 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.module-contents .module-text {
+    flex-basis: 65%;
+}
+
+.module-text .description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    line-height: 1.4em;
+    max-height: 7em;
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+}
+
+.module-text .description:before {
+    content: '...';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.module-text .created-by {
+    font-size: 14px;
+    font-family: sans-serif;
+    color: #AAAAAA;
+    margin-bottom: 2px;
+}
+
+.module-text footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.authors-docs .authors {
+  display: flex;
+}
+
+.authors-docs .authors a {
+    color: #4D0000;
+    margin-right: 10px;
+}
+
+.authors-docs .authors a:hover {
+    text-decoration: underline;
+}
+
+.download-module .button {
+    background: #BF413E;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    color: #fff;
+}
+
+// .module .panel-heading {
+//     background: #EFEFEF;
+//     color: #020202;
+//     padding: 15px 20px;
+// }
+// .panel-title>span {
+//     color: #070707;
+//     font-family: 'LinuxLibertine', serif;
+//     font-weight: normal;
+//     font-size: 24px;
+// }
+
+/** Browse by Modules Styles **/
+
 @media (max-width: 1024px) {
     .member-view {
         padding: 0 3%;
     }
+
     .members-group .member {
         flex-basis: 49%;
     }
@@ -284,12 +504,15 @@ body nav {
     .members-group .member {
         margin-bottom: 40px;
     }
+
     .members-section .members-group {
         flex-wrap: wrap;
     }
+
     .members-group .member {
         flex-basis: 100%;
     }
+
     h1 {
         font-size: 36px;
     }
@@ -300,25 +523,32 @@ body nav {
         flex-direction: column;
         height: auto;
     }
+
     .navbar-header a img {
         width: 150px;
         height: auto;
     }
+
     h1 {
         font-size: 32px;
     }
+
     h3 {
         font-size: 24px;
     }
+
     .navbar-header-holder {
         display: block;
     }
+
     .navbar-header-holder .user-nav {
         display: none;
     }
-    .navigation-links > a {
+
+    .navigation-links>a {
         display: none;
     }
+
     .navbar-nav .contact-us {
         display: block;
     }
@@ -337,6 +567,40 @@ blockquote p {
     margin-left: auto;
     margin-right: auto;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Background Image */
@@ -376,6 +640,40 @@ blockquote p {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -383,6 +681,40 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* footer */
@@ -418,6 +750,40 @@ blockquote p {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -434,6 +800,40 @@ blockquote p {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -447,6 +847,40 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Search results page */
@@ -585,6 +1019,40 @@ blockquote p {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Add bottom padding to all containers */
 
 .container {
@@ -592,11 +1060,79 @@ blockquote p {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Add some padding to the top of the search template container */
 
 .container.search-body {
     padding-top: 30px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Feedback Form */
@@ -630,9 +1166,42 @@ blockquote p {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Admin Forms */
 
 ul.as-selections li.as-original input {
     height: 39px !important;
 }
-
