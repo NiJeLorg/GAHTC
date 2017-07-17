@@ -133,17 +133,20 @@ class AdminVerifyUserForm(forms.ModelForm):
 class modulesForm(forms.ModelForm):
     class Meta:
         model = modules
-        fields = ('title', 'authors_m2m', 'description', 'keywords')
+        fields = ('title', 'authors_m2m', 'description', 'cover_image', 'featured', 'keywords')
         labels = {
             'title': 'Title (Required)',
             'authors_m2m': 'Authors (Required)',
             'description': 'Description',
+            'cover_image': 'Cover Image',
+            'featured': 'Is this a featured module?',
             'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
             'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
+            'featured': forms.Select(choices=YES_NO),
         }
 
 class modulesRemoveForm(forms.ModelForm):

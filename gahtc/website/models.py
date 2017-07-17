@@ -54,7 +54,9 @@ class modules(models.Model):
 	authors_m2m = models.ManyToManyField(profile)
 	description = models.TextField(default='', null=True, blank=True)
 	keywords = TaggableManager(blank=True)
-
+	cover_image = models.ImageField(upload_to="module_cover/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
+	featured = models.BooleanField(default=False)
+	
 	def __unicode__(self):
 		return self.title
 
