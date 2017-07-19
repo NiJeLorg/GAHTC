@@ -1222,35 +1222,71 @@ def lecturesView(request):
 
 
 	"""
-	  Loads all lectures 
+	  Loads all lectures grouped by module
 	"""	
 
-	lectures_returned = lectures.objects.exclude(extracted=False).order_by('module__title','title')
+	modules_returned = modules.objects.all().order_by('title')
 
-	for lec in lectures_returned:
-		# remove articles from titles for reordering
-		# first_word = lec.title.strip().lower().split(' ', 1)[0]
-		# if first_word == 'a' or first_word == 'the' or first_word == 'and':
-		# 	lec.no_article_title = lec.title.strip().lower().replace(first_word,"",1).strip()
-		# else:
-		# 	lec.no_article_title = lec.title.strip().lower()
-
-		lecture = str(lec.presentation)
-		lecture = lecture.split('/')
-		lec.lectureName = lecture[2]
-		# get lecture documents
-		lectureDocs = lectureDocuments.objects.filter(lecture=lec).order_by('title')
-		lec.lectureDocs = lectureDocs
-		for lecDoc in lec.lectureDocs:
-			document = str(lecDoc.document)
-			document = document.split('/')
-			lecDoc.documentName = document[2]
+	#remove articles from title for sorting
+	for module_returned in modules_returned:
+		first_word = module_returned.title.strip().lower().split(' ', 1)[0]
+		if first_word == 'a' or first_word == 'the' or first_word == 'and':
+			module_returned.no_article_title = module_returned.title.strip().lower().replace(first_word,"",1).strip()
+		else:
+			module_returned.no_article_title = module_returned.title.strip().lower()
 
 	# order titles minus articles
-	# lectures_returned_ordered = sorted(lectures_returned, key=operator.attrgetter('no_article_title'))
+	modules_returned_ordered = sorted(modules_returned, key=operator.attrgetter('no_article_title'))
 
 
-	context_dict = {'lectures_returned':lectures_returned}
+	for module_returned in modules_returned_ordered:
+		#look up module docs 
+		moduleDocs = moduleDocuments.objects.filter(module=module_returned).order_by('title')
+		# just get the file name
+		contents = []
+		for doc in moduleDocs:
+			document = str(doc.document)
+			document = document.split('/')
+			doc.documentName = document[2]
+			contents.append(doc.document_contents)
+
+		# join document contents together
+		module_returned.document_contents = '\n'.join(contents)	
+
+		#attach the module docs to the module returned 
+		module_returned.moduleDocs = moduleDocs
+
+		#look up the lectures
+		moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('module__title','title')
+		# get the file name
+		for lec in moduleLecs:
+			# order by lecture number
+			first_word = lec.title.strip().lower().split(' ', 1)[0]
+			if first_word == 'lecture':
+				first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
+				lec.numeric_order = int(first_number)
+			else:
+				lec.numeric_order = 0
+
+			lecture = str(lec.presentation)
+			lecture = lecture.split('/')
+			lec.lectureName = lecture[2]
+			# get lecture documents
+			lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+			lec.lectureDocs = lectureDocs
+			for lecDoc in lec.lectureDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				lecDoc.documentName = document[2]
+
+		# order titles minus articles
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
+
+		#attach the module docs to the module returned 
+		module_returned.moduleLecs = moduleLecs_ordered
+
+
+	context_dict = {'modules_returned':modules_returned_ordered}
 	return render(request, 'website/lectures.html', context_dict)
 
 

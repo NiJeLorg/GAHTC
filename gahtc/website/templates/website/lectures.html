@@ -1,14 +1,15 @@
 {% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Lectures{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
 <div class="container">
+	{% for module_returned in modules_returned %}
     <div class="row">
         <div class="col-md-12">
-            <h1>Lectures</h1>
+            <h1>{{ module_returned.title }}</h1>
         </div>
     </div>
     <div class="row marginBottom15">
         <div class="panel-group" id="accordion_lectures" role="tablist" aria-multiselectable="true">
-            {% for lecture_returned in lectures_returned %}
+            {% for lecture_returned in module_returned.moduleLecs %}
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="heading_{{ lecture_returned.id }}">
                     <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_lectures" href="#{{ lecture_returned.id }}" aria-expanded="true" aria-controls="{{ lecture_returned.id }}">
@@ -68,6 +69,7 @@
 
 		</div>
 	</div>
+	{% endfor %}
 
 </div>				
 {% endblock %}
