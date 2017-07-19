@@ -76,6 +76,12 @@ body {
 
 
 
+
+
+
+
+
+
 /* bootstrap override on link highlighting */
 
 
@@ -85,6 +91,11 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
+
+
+
+
+
 
 
 
@@ -366,6 +377,11 @@ body nav {
 
 
 
+
+
+
+
+
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -401,7 +417,7 @@ body nav {
 .module-heading {
     color: #070707;
     font-family: 'LinuxLibertine', serif;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 24px;
     font-style: normal;
     margin: 0;
@@ -415,16 +431,31 @@ body nav {
     justify-content: space-between;
 }
 
+.module .module-footer {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #EDEDED;
+}
+
+.module .module-footer h4 {
+    font-family: 'LinuxLibertine', serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 10px;
+    color: #BEBEBE;
+}
+
 .module-contents .module-text {
     flex-basis: 65%;
 }
 
 .module-text .description {
     overflow: hidden;
+    font-size: 20px;
     text-overflow: ellipsis;
     position: relative;
-    line-height: 1.4em;
-    max-height: 7em;
+    line-height: 1.3em;
+    max-height: 6.5em;
     text-align: justify;
     margin-right: -1em;
     padding-right: 1em;
@@ -438,7 +469,7 @@ body nav {
 }
 
 .module-text .created-by {
-    font-size: 14px;
+    font-size: 12px;
     font-family: sans-serif;
     color: #AAAAAA;
     margin-bottom: 2px;
@@ -450,16 +481,26 @@ body nav {
 }
 
 .authors-docs .authors {
-  display: flex;
+    display: flex;
+}
+
+.authors>p {
+    margin-bottom: 4px;
 }
 
 .authors-docs .authors a {
     color: #4D0000;
     margin-right: 10px;
+    font-weight: bold;
 }
 
 .authors-docs .authors a:hover {
     text-decoration: underline;
+}
+
+.authors-docs .docs p {
+    font-family: sans-serif;
+    font-size: 14px;
 }
 
 .download-module .button {
@@ -468,6 +509,7 @@ body nav {
     border-radius: 4px;
     padding: 10px 20px;
     color: #fff;
+    font-family: 'LinuxLibertine', serif;
 }
 
 // .module .panel-heading {
@@ -603,6 +645,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Background Image */
 
 #background,
@@ -674,6 +721,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -681,6 +733,11 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
+
+
 
 
 
@@ -784,6 +841,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -834,6 +896,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -847,6 +914,11 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
+
+
 
 
 
@@ -1053,11 +1125,21 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Add bottom padding to all containers */
 
 .container {
     padding-bottom: 30px;
 }
+
+
+
+
+
 
 
 
@@ -1135,6 +1217,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Feedback Form */
 
 .feedback {
@@ -1164,6 +1251,11 @@ blockquote p {
     text-decoration: none;
     background-color: #d9534f;
 }
+
+
+
+
+
 
 
 

@@ -12,7 +12,7 @@
                 <h3 class="module-heading">{{ module_returned.title }}</h3>
                 <div class="module-contents">
                     <div class="module-photo">
-                        <img src="" width="380px" height="240px">
+                        <img src="/media/{{module_returned.cover_image}}" width="380px" height="240px">
                     </div>
                     <div class="module-text">
                         <p class="description">
@@ -27,16 +27,26 @@
                                     </p>
                                 </div>
                                 <div class="docs">
-                                  <p>supporting documents</p>
+                                    <p>supporting documents:</p>
                                 </div>
                             </div>
                             <div class="download-module">
-                              <button class="button">Download Module</button>
-                              <button class="button">+</button>
+                                {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
+                                <button type="button" class="button" data-moduleid="{{ module_returned.id }}">Download Module</button>
+                                {% else %}
+                                <button type="button" class="button" data-toggle="modal" data-target="#waitingForVerification">Download Module</button>
+                                {% endif %} {% endif %}
+                                <button class="button">+</button>
                             </div>
                         </footer>
                     </div>
                 </div>
+                <footer class="module-footer">
+                    <!-- <p>SHOW MORE</p> -->
+                    <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_modules" href="#{{ module_returned.id }}" aria-expanded="true" aria-controls="{{ module_returned.id }}">
+                        <h4 class="panel-title"> SHOW MORE </h4>
+                    </a>
+                </footer>
                 <!--                 <div class="panel-heading" role="tab" id="heading_{{ module_returned.id }}">
                     <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_modules" href="#{{ module_returned.id }}" aria-expanded="true" aria-controls="{{ module_returned.id }}">
                         <h4 class="panel-title">
@@ -46,21 +56,6 @@
                 </div> -->
                 <div id="{{ module_returned.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{ module_returned.id }}">
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <p><strong>Authors:</strong> {% for authors in module_returned.authors_m2m.all %}
-                                    <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} {% endfor %}
-                                    <br />
-                                    <strong>Description: </strong> {{ module_returned.description }}</p>
-                            </div>
-                            <div class="col-md-3">
-                                {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
-                                <button type="button" class="btn btn-default downloadModule pull-right" data-moduleid="{{ module_returned.id }}">Download module</button>
-                                {% else %}
-                                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download module</button>
-                                {% endif %} {% endif %}
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 {% if module_returned.moduleDocs|length > 0 %}
