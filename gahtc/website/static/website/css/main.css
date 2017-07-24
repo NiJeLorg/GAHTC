@@ -107,6 +107,9 @@ body {
 
 
 
+
+
+
 /* bootstrap override on link highlighting */
 
 
@@ -116,6 +119,9 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
+
+
+
 
 
 
@@ -459,6 +465,9 @@ body nav {
 
 
 
+
+
+
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -513,8 +522,6 @@ body nav {
     white-space: nowrap;
 }
 
-
-
 .all-modules-title {
     margin: 0 auto;
     margin-top: 40px;
@@ -531,7 +538,21 @@ body nav {
 
 .all-modules .panel {
     background: #FAFAFA;
-    margin-bottom: 40px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 4px 4px 40px #dadada;
+}
+
+.panel-group .module-footer {
+    text-align: center;
+    background: #FAFAFA;
+    border: 1px solid #ddd;
+    border-top: none;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    margin-bottom: 50px;
 }
 
 .module-heading {
@@ -551,13 +572,12 @@ body nav {
     justify-content: space-between;
 }
 
-.module .module-footer {
-    display: flex;
-    justify-content: center;
-    border: 1px solid #EDEDED;
+
+.panel-group .module-footer {
+    box-shadow: 4px 4px 40px #dadada;
 }
 
-.module .module-footer h4 {
+.panel-group .module-footer h4 {
     font-family: 'LinuxLibertine', serif;
     font-size: 14px;
     margin: 0;
@@ -854,6 +874,9 @@ blockquote p {
 
 
 
+
+
+
 /* Background Image */
 
 #background,
@@ -956,6 +979,9 @@ blockquote p {
 
 
 
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -963,6 +989,9 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
 
 
 
@@ -1128,6 +1157,9 @@ blockquote p {
 
 
 
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -1209,6 +1241,9 @@ blockquote p {
 
 
 
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -1222,6 +1257,9 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
 
 
 
@@ -1490,11 +1528,17 @@ blockquote p {
 
 
 
+
+
+
 /* Add bottom padding to all containers */
 
 .container {
     padding-bottom: 30px;
 }
+
+
+
 
 
 
@@ -1634,6 +1678,9 @@ blockquote p {
 
 
 
+
+
+
 /* Feedback Form */
 
 .feedback {
@@ -1663,6 +1710,9 @@ blockquote p {
     text-decoration: none;
     background-color: #d9534f;
 }
+
+
+
 
 
 
