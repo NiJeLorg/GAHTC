@@ -16,7 +16,5 @@ $(document).ready(function() {
     } else {
         $('footer').css('position', 'static');
     }
-
 });
-
 

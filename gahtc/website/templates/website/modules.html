@@ -7,7 +7,7 @@
         <div class="image-container" style="background: url('/media/{{module_returned.cover_image}}')">
             {% endif%}
             <div class="title-container">
-                <span>{{ module_returned.title }}</span>
+                <h4><a href="#{{ module_returned.title }}">{{ module_returned.title }}</a></h4>
             </div>
         </div>
         {% endfor %}
@@ -18,7 +18,7 @@
     <div class="marginBottom15">
         <div class="panel-group" id="accordion_modules" role="tablist" aria-multiselectable="true">
             {% for module_returned in modules_returned %}
-            <div class="panel panel-default module">
+            <div class="panel panel-default module" id="{{ module_returned.title }}">
                 <h3 class="module-heading">{{ module_returned.title }}</h3>
                 <div class="module-contents">
                     <div class="module-photo">
