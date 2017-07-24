@@ -212,6 +212,8 @@ class Command(BaseCommand):
 		path_to_file = MEDIA_ROOT + '/' + str(self.lecturesObject.presentation)
 		head, tail = os.path.split(path_to_file)
 		print tail
+		print path_to_file
+
 
 		#name of pdf
 		croppedtail = tail[:-5]
@@ -221,13 +223,13 @@ class Command(BaseCommand):
 		# libreoffice --headless --convert-to pdf --outdir head path_to_file
 		call(["libreoffice","--headless","--convert-to","pdf","--outdir",head,path_to_file])
 
-		#extract all slides in pdf in imagemagic 
+		#extract all slides in pdf in imagemagic
 		# convert head/pdffilename[index] head/slide.png
 		pdfpath = head + '/' + pdffilename
 		pngpath = head + "/slide.jpg"
 
 		# only run the rest of script if pdf is present
-		if os.path.isfile(pdfpath): 
+		if os.path.isfile(pdfpath):
 			call(["convert",pdfpath,pngpath])
 
 			# text_runs will be populated with a list of strings,
@@ -287,7 +289,7 @@ class Command(BaseCommand):
 				# loop through a range from the index to the largest slide number
 				slide_number_plus_1 = index + 1
 				for count in xrange(slide_number_plus_1, largestslidenumber):
-					prs_slide.slides.delete_slide(prs_slide, slide_number_plus_1)                    
+					prs_slide.slides.delete_slide(prs_slide, slide_number_plus_1)
 
 				for count in xrange(0, index):
 					prs_slide.slides.delete_slide(prs_slide, 0)
@@ -328,7 +330,7 @@ class Command(BaseCommand):
 			os.remove(pdfpath)
 
 
-	
+
 	def extract_pptx_lectures(self):
 		# pull PPTX from database where content hasn't yet been extracted
 		lecturesObjects = lectures.objects.filter(extracted=False)
@@ -338,7 +340,7 @@ class Command(BaseCommand):
 			try:
 				self.lecturesObject = lecturesObject
 				self.extract_text_images_from_pptx()
-			except Exception as e: 
+			except Exception as e:
 				# email admins with an alert of the problem
 				group = models.Group.objects.get(name="superusers")
 				users = group.user_set.all()
@@ -355,7 +357,7 @@ class Command(BaseCommand):
 				send_mail(subject, message, 'gahtcweb@gmail.com', useremails, fail_silently=True, html_message=html_message)
 
 				pass
-				
+
 
 	def handle(self, *args, **options):
 		print "Extracting Lecture PPTX files...."

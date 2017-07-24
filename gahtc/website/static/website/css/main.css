@@ -82,6 +82,21 @@ body {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* bootstrap override on link highlighting */
 
 
@@ -91,6 +106,21 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -382,6 +412,21 @@ body nav {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -395,9 +440,18 @@ body nav {
 }
 
 .featured-modules {
-    height: 250px;
     padding: 20px 0;
     border: 1px solid #D0D0D0;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.featured-modules .image-container {
+    width: 510px;
+    height: 320px;
+    display: inline-block;
+    background-size: cover !important;
+    margin-right: 15px;
 }
 
 .all-modules-title {
@@ -412,6 +466,10 @@ body nav {
 .all-modules {
     width: 85%;
     margin: 0 auto;
+}
+
+.all-modules .panel {
+    background: #FAFAFA;
 }
 
 .module-heading {
@@ -525,6 +583,58 @@ body nav {
 // }
 
 /** Browse by Modules Styles **/
+
+.lecture-container {
+    margin: 0 4%;
+}
+
+.lecture-container .lecture-document {
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    padding: 2%;
+    border: 1px solid #DADADA;
+}
+
+.lecture-document .image-holder {
+    width: 180px;
+    height: 130px;
+}
+
+.lecture-document .lecture-description {
+    flex-basis: 70%;
+}
+
+.lecture-description h3 {
+    text-decoration: underline;
+}
+
+.lecture-description .supporting-docs {
+    display: inline-block;
+}
+
+.lecture-description span {
+    color: #777777;
+}
+
+.lecture-buttons .see-details {
+    background: #333333;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.member-comments-container {
+    border-bottom: 1px solid #F3F3F3;
+}
+
+.terms-conditions-container p {
+    font-family: sans-serif;
+    color: #b5b5b5;
+    margin: 0;
+    line-height: 24px;
+    font-size: 16px;
+}
 
 @media (max-width: 1024px) {
     .member-view {
@@ -650,6 +760,21 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Background Image */
 
 #background,
@@ -726,6 +851,21 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -733,6 +873,21 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -846,6 +1001,21 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -901,6 +1071,21 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -914,6 +1099,21 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1130,11 +1330,41 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Add bottom padding to all containers */
 
 .container {
     padding-bottom: 30px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1222,6 +1452,21 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Feedback Form */
 
 .feedback {
@@ -1251,6 +1496,21 @@ blockquote p {
     text-decoration: none;
     background-color: #d9534f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
