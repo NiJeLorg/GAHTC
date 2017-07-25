@@ -565,12 +565,13 @@ body nav {
     background: #BF413E;
     border: none;
     border-radius: 4px;
+    /*padding: 10px 15px 7px 15px;*/
     padding: 10px 20px;
     color: #fff;
     font-family: 'LinuxLibertine', serif;
 }
 
-// .module .panel-heading {
+/*// .module .panel-heading {
 //     background: #EFEFEF;
 //     color: #020202;
 //     padding: 15px 20px;
@@ -580,7 +581,7 @@ body nav {
 //     font-family: 'LinuxLibertine', serif;
 //     font-weight: normal;
 //     font-size: 24px;
-// }
+// }*/
 
 /** Browse by Modules Styles **/
 
@@ -1240,6 +1241,40 @@ blockquote p {
     line-height: 1.4;
 }
 
+.noLeftPadding {
+    padding-left: 0;
+}
+
+.noRightPadding {
+    padding-right: 0;
+}
+
+.zeroBorderRadiusRight {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.zeroBorderRadiusLeft {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.noBorderLeft {
+    border-left-width: 0;
+}
+
+.noBorderRight {
+    border-right-width: 0;
+}
+
+.marginLeftNegative5 {
+    margin-left: -5px;
+}
+
+.marginBottom0 {
+    margin-bottom: 0;
+}
+
 .marginBottom15 {
     margin-bottom: 15px;
 }
@@ -1248,8 +1283,16 @@ blockquote p {
     margin-right: 15px;
 }
 
+.marginRight5 {
+    margin-right: 5px;
+}
+
 .marginTop10 {
     margin-top: 10px;
+}
+
+.marginTop15 {
+    margin-top: 15px;
 }
 
 .marginTop30 {
@@ -1290,6 +1333,59 @@ blockquote p {
     margin-top: -12px;
 }
 
+/*highlight text*/
+.highlight {
+    background: rgba(255, 230, 0, 0.5);
+    padding: 5px 2px;
+    margin: -5px -2px;
+    border-radius: 3px;
+    display:inline-block;
+}
+
+/*one version of red buttons*/
+.gahtcRed {
+    background: #BF413E;
+}
+
+/*content titles*/
+.content-title {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* button css with hover interactions */
+.btn-img-hover-interaction {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    float: left; 
+}
+
+.btn-img-hover-interaction:hover {}
+
+.button-text-ribbon {
+    font-size: 20px;
+    background: #222;
+    color: #fff;
+    margin: -32px 0px 0px 0px;
+    padding: 5px 0px;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    z-index: 1;
+    width: 100%;
+}
+
+.button-text-ribbon:hover {
+    opacity: 0.9;
+}
+
+.img-rounded {
+    border-radius: 4px;
+}
 
 
 

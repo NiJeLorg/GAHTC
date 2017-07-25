@@ -8,16 +8,23 @@ $( document ).ready(function() {
 	// fade in main image and search bar
 	$(".fadein").fadeIn("slow");
 
-	// check for the existence of tab
-	if (typeof tab === 'undefined' || tab == "none") {
-		// do nothing
-	} else if (tab == "bundle") {
-		$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
-	} else if (tab == "profile") {
-		$('.nav-tabs a[href="#my-profile"]').tab('show');		
-	} else if (tab == "searches") {
-		$('.nav-tabs a[href="#my-saved-searches"]').tab('show');		
-	}
+	// launch modal to show lectures slides
+	$('.btn-img-hover-interaction').hover(function(){
+	    $(this).children('.button-text-ribbon').css({ opacity: 0.9 });
+	}, function(){
+	    $(this).children('.button-text-ribbon').css({ opacity: 0 });
+	});	
+
+	// // check for the existence of tab
+	// if (typeof tab === 'undefined' || tab == "none") {
+	// 	// do nothing
+	// } else if (tab == "bundle") {
+	// 	$('.nav-tabs a[href="#my-course-bundles"]').tab('show');
+	// } else if (tab == "profile") {
+	// 	$('.nav-tabs a[href="#my-profile"]').tab('show');		
+	// } else if (tab == "searches") {
+	// 	$('.nav-tabs a[href="#my-saved-searches"]').tab('show');		
+	// }
 
 	// select first in list and populate search result bar
 	// $( ".result:first" ).addClass('active');

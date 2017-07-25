@@ -110,6 +110,7 @@ def mainSearchCode(request, keyword, tab):
 	lecture_slides_returned_count = 0
 	coming_soon_modules_returned_count = 0
 	spelling_suggestion = ''
+	keyword_compare = keyword.lower()
 
 	if keyword != "":
 		all_results = SearchQuerySet().auto_query(keyword).highlight()
@@ -146,6 +147,7 @@ def mainSearchCode(request, keyword, tab):
 		lecture_documents_returned_count = len(lecture_documents_returned)
 		lecture_slides_returned_count = len(lecture_slides_returned)
 		coming_soon_modules_returned_count = len(coming_soon_modules_returned)
+		documents_returned_count = module_documents_returned_count + lecture_documents_returned_count + lecture_slides_returned_count
 		all_results_count = modules_returned_count + module_documents_returned_count + lectures_returned_count + lecture_segments_returned_count + lecture_documents_returned_count + lecture_slides_returned_count + coming_soon_modules_returned_count
 
 	if all_results_count == 0:
@@ -181,7 +183,7 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count, 'spelling_suggestion': spelling_suggestion}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned, 'moduleDocsCount': moduleDocsCount, 'lectures_returned':lectures_returned, 'lecture_segments_returned': lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count, 'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count, 'spelling_suggestion': spelling_suggestion, 'keyword_compare':keyword_compare, 'documents_returned_count':documents_returned_count}
 
 	else:
 		# concatonate module querysets
@@ -272,7 +274,7 @@ def mainSearchCode(request, keyword, tab):
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
 
-		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count, 'spelling_suggestion': spelling_suggestion}
+		context_dict = {'keyword':keyword, 'modules_returned':modules_returned_unique, 'moduleDocsCount': module_documents_returned_count, 'lectures_returned':lectures_returned, 'lecture_segments_returned':lecture_segments_returned, 'lecture_documents_returned':lecture_documents_returned, 'lecture_slides_returned':lecture_slides_returned, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'modules_returned_count':modules_returned_unique_count, 'lectures_returned_count':lectures_returned_count, 'lecture_segments_returned_count':lecture_segments_returned_count ,'lecture_documents_returned_count':lecture_documents_returned_count, 'lecture_slides_returned_count':lecture_slides_returned_count, 'coming_soon_modules_returned_count':coming_soon_modules_returned_count, 'tab': tab, 'user_profile': user_profile, 'saved_searches':saved_searches, 'all_results_count': all_results_count, 'spelling_suggestion': spelling_suggestion, 'keyword_compare':keyword_compare, 'documents_returned_count':documents_returned_count}
 
 	return context_dict
 
@@ -301,7 +303,7 @@ def search(request):
 			return HttpResponseRedirect("/")
 
 	
-	return render(request, 'website/profile.html', context_dict)
+	return render(request, 'website/search.html', context_dict)
 
 
 @login_required
@@ -1487,7 +1489,7 @@ def admin_module(request, id=None):
 
 	# A HTTP POST?
 	if request.method == 'POST':
-		form = modulesForm(request.POST, instance=modulesObject)
+		form = modulesForm(request.POST, request.FILES, instance=modulesObject)
 
 		# Have we been provided with a valid form?
 		if form.is_valid():
@@ -1498,7 +1500,7 @@ def admin_module(request, id=None):
 			form.save_m2m()
 
 			# ensure each author is tagged as contributing
-			profile_objects = profile.objects.filter(pk=modulesObject.authors_m2m)
+			profile_objects = profile.objects.filter(pk=modulesObject.authors_m2m.all())
 			for profile_object in profile_objects:
 				profile_object.contributing = True
 				profile_object.save()			
