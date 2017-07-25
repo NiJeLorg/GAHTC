@@ -97,6 +97,19 @@ body {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* bootstrap override on link highlighting */
 
 
@@ -106,6 +119,20 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -427,6 +454,20 @@ body nav {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -439,19 +480,46 @@ body nav {
     color: #AAAAAA;
 }
 
-.featured-modules {
-    padding: 20px 0;
-    border: 1px solid #D0D0D0;
-    overflow-x: scroll;
-    white-space: nowrap;
-}
-
 .featured-modules .image-container {
     width: 510px;
     height: 320px;
     display: inline-block;
     background-size: cover !important;
     margin-right: 15px;
+}
+
+.image-container .title-container {
+    height: 100%;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.title-container h4 {
+    margin: 0;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    background: rgba(43, 43, 44, .8);
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+    line-height: 1.2em;
+}
+
+.title-container a {
+    color: #fff;
+}
+
+.featured-modules {
+    padding: 20px 0;
+    border: 1px solid #D0D0D0;
+    overflow-x: scroll;
+    white-space: nowrap;
 }
 
 .all-modules-title {
@@ -470,6 +538,21 @@ body nav {
 
 .all-modules .panel {
     background: #FAFAFA;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 4px 4px 40px #dadada;
+}
+
+.panel-group .module-footer {
+    text-align: center;
+    background: #FAFAFA;
+    border: 1px solid #ddd;
+    border-top: none;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    margin-bottom: 50px;
 }
 
 .module-heading {
@@ -489,18 +572,23 @@ body nav {
     justify-content: space-between;
 }
 
-.module .module-footer {
-    display: flex;
-    justify-content: center;
-    border: 1px solid #EDEDED;
+
+.panel-group .module-footer {
+    box-shadow: 4px 4px 40px #dadada;
 }
 
-.module .module-footer h4 {
+.panel-group .module-footer h4 {
     font-family: 'LinuxLibertine', serif;
     font-size: 14px;
     margin: 0;
     padding: 10px;
     color: #BEBEBE;
+}
+
+.module-photo-container {
+    width: 480px;
+    height: 300px;
+    background-size: cover !important;
 }
 
 .module-contents .module-text {
@@ -512,8 +600,8 @@ body nav {
     font-size: 20px;
     text-overflow: ellipsis;
     position: relative;
-    line-height: 1.3em;
-    max-height: 6.5em;
+    line-height: 1.6em;
+    max-height: 9.6em;
     text-align: justify;
     margin-right: -1em;
     padding-right: 1em;
@@ -776,6 +864,20 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Background Image */
 
 #background,
@@ -867,6 +969,20 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -874,6 +990,20 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1017,6 +1147,20 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -1087,6 +1231,20 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -1100,6 +1258,20 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1441,11 +1613,39 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Add bottom padding to all containers */
 
 .container {
     padding-bottom: 30px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1563,6 +1763,20 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Feedback Form */
 
 .feedback {
@@ -1592,6 +1806,20 @@ blockquote p {
     text-decoration: none;
     background-color: #d9534f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
