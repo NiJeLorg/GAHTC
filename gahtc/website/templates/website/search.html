@@ -111,7 +111,7 @@
                                         <div class="authors">
                                             <p>
                                             {% for authors in module.authors_m2m.all %}
-                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name.strip }} {{ authors.last_name.strip }}</a>{% if not forloop.last %}, {% endif %} 
                                             {% endfor %}
                                             </p>
                                         </div>
