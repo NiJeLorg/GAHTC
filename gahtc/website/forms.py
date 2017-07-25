@@ -296,11 +296,12 @@ class lectureSlidesCommentsForm(forms.ModelForm):
 class CSmodulesForm(forms.ModelForm):
     class Meta:
         model = comingSoonModules
-        fields = ('title', 'authors_m2m', 'description', 'keywords')
+        fields = ('title', 'authors_m2m', 'description', 'cover_image', 'keywords')
         labels = {
             'title': 'Title (Required)',
             'authors_m2m': 'Authors (Required)',
             'description': 'Description',
+            'cover_image': 'Cover Image',
             'keywords': 'Keywords',
         }
         widgets = {

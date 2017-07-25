@@ -261,6 +261,7 @@ class comingSoonModules(models.Model):
 	authors = models.CharField(max_length=255, default='', null=False, blank=False)
 	authors_m2m = models.ManyToManyField(profile)
 	description = models.TextField(default='', null=True, blank=True)
+	cover_image = models.ImageField(upload_to="module_cover/%Y_%m_%d_%h_%M_%s", null=True, blank=True)
 	keywords = TaggableManager(blank=True)
 
 	def __unicode__(self):

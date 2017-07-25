@@ -47,7 +47,7 @@
                     <h4><small>Did you mean <a href="/search/?keyword={{ spelling_suggestion }}">{{ spelling_suggestion }}</a>?</small></h4>
                 {% endif %}
             {% else %}
-                <h4 class="marginTop15"><span class="highlight">"{{ keyword }}"</span> is found in {{ modules_returned_count }} module{{ modules_returned_count|pluralize }} and {{ lectures_returned_count }} lecture{{ lectures_returned_count|pluralize }}.</h4>
+                <h4 class="marginTop15"><span class="highlight">"{{ keyword }}"</span> is found in {{ modules_and_CS_modules_returned_count }} module{{ modules_and_CS_modules_returned_count|pluralize }} and {{ lectures_returned_count }} lecture{{ lectures_returned_count|pluralize }}.</h4>
                  {% if spelling_suggestion and spelling_suggestion != keyword_compare %}
                     <h4><small>Did you mean <a href="/search/?keyword={{ spelling_suggestion }}">{{ spelling_suggestion }}</a>?</small></h4>
                 {% endif %}               
@@ -60,7 +60,7 @@
         <div class="col-md-12 marginTop30">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#modules-tab" aria-controls="modules" role="tab" data-toggle="tab">{{ modules_returned_count }} module{{ modules_returned_count|pluralize }}</a></li>
+                <li role="presentation" class="active"><a href="#modules-tab" aria-controls="modules" role="tab" data-toggle="tab">{{ modules_and_CS_modules_returned_count }} module{{ modules_and_CS_modules_returned_count|pluralize }}</a></li>
                 <li role="presentation"><a href="#lectures-tab" aria-controls="lectures" role="tab" data-toggle="tab">{{ lectures_returned_count }} lecture{{ lectures_returned_count|pluralize }}</a></li>
                 <li role="presentation"><a href="#documents-tab" aria-controls="otherdocs" role="tab" data-toggle="tab">{{ documents_returned_count }} other doc{{ documents_returned_count|pluralize }}</a></li>
             </ul>
@@ -99,40 +99,342 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <!-- Module art -->
-                                    <button type="button" class="btn btn-default btn-img-hover-interaction">
-                                        <img src="/media/{{ module.cover_image }}" class="img-responsive img-rounded">
+                                    <a class="btn btn-default btn-img-hover-interaction" href="/modules/#heading_{{ module.id }}" role="button">
+                                        <img src="/media/{{ module.cover_image }}" class="img-responsive">
                                         <h4 class="button-text-ribbon">Go to module</h4>
-                                    </button>
+                                    </a>
                                 </div>
                                 <div class="col-sm-9 module-text">
                                     <!-- Authors and text where search terms appear -->
                                     <p class='created-by'>created by:</p>
                                     <div class="authors-docs">
                                         <div class="authors">
-                                            <p>{% for authors in module.authors_m2m.all %}
-                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} {% endfor %}
+                                            <p>
+                                            {% for authors in module.authors_m2m.all %}
+                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
                                             </p>
                                         </div>
-                                    </div> 
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in module.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>                           
+                        {% endfor %}
+                        {% for module in coming_soon_modules_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="content-title"><span class="gahtcRedText">Coming Soon!</span> {{ module.object.title }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <img src="/media/{{ module.object.cover_image }}" class="img-responsive"> 
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in module.object.authors_m2m.all %}
+                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in module.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>                           
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="lectures-tab">
+                    <div class="col-md-12">
+                        {% for lecture in lectures_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p class="content-title marginBottom0">{{ lecture.object.title }}</p>
+                                    <h4><small>From the module "{{ lecture.object.module.title }}"</small></h4>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.object.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right marginRight5" data-lectureid="{{ lecture.object.id }}">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button>
+                                        {% endif %} 
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <div>
+                                        <button type="button" class="btn btn-default btn-img-hover-interaction launchModal" data-lectureid="{{ lecture.object.id }}">
+                                            <img src="/media/{{ lecture.object.getSlideOne }}" class="img-responsive">
+                                            <h4 class="button-text-ribbon">Preview slides</h4>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-text-ribbon" href="/lectures/#heading_{{ lecture.object.id }}" role="button">
+                                            <h4 class="button-text-ribbon-opaque">Go to lecture</h4>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-text-ribbon" href="/modules/#heading_{{ lecture.object.module.id }}" role="button">
+                                            <h4 class="button-text-ribbon-opaque">Go to module</h4>
+                                        </a>   
+                                    </div>                                
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in lecture.object.authors_m2m.all %}
+                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in lecture.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
                                 </div>
                             </div>                           
                         {% endfor %}
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="lectures-tab">
-                    <div class="col-md-12">
-                        <p>Lectures</p>
-                    </div>
-                </div>
                 <div role="tabpanel" class="tab-pane" id="documents-tab">
-                    <div class="col-md-12 savedSearchList">
-                        <p>Other Documents</p>
+                    <div class="col-md-12">
+                        {% for module_document in module_documents_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p class="content-title marginBottom0">{{ module_document.object.title }}</p>
+                                    <h4><small>From the module "{{ module_document.object.module.title }}"</small></h4>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_document.object.module.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadModule pull-right marginRight5" data-moduleid="{{ module_document.object.module.id }}">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button>
+                                        {% endif %} 
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <div>
+                                        <a class="btn btn-default btn-img-hover-interaction" href="/modules/#heading_{{ module_document.object.module.id }}" role="button">
+                                            <img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
+                                            <h4 class="button-text-ribbon">Go to module</h4>
+                                        </a>
+                                    </div>                               
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in module_document.object.module.authors_m2m.all %}
+                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in module_document.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for lecture_document in lecture_documents_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p class="content-title marginBottom0">{{ lecture_document.object.title }}</p>
+                                    <h4><small>From the lecture "{{ lecture_document.object.lecture.title }}"</small></h4>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.object.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right marginRight5" data-lectureid="{{ lecture_document.object.lecture.id }}">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button>
+                                        {% endif %} 
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <div>
+                                        <a class="btn btn-default btn-img-hover-interaction" href="/lectures/#heading_{{ lecture_document.object.lecture.id }}" role="button">
+                                            <img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
+                                            <h4 class="button-text-ribbon">Go to lecture</h4>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-text-ribbon" href="/modules/#heading_{{ lecture_document.object.lecture.module.id }}" role="button">
+                                            <h4 class="button-text-ribbon-opaque">Go to module</h4>
+                                        </a>   
+                                    </div>                                
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in lecture_document.object.lecture.authors_m2m.all %}
+                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in lecture_document.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for lecture_slide in lecture_slides_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p class="content-title marginBottom0">Slide from "{{ lecture_slide.object.lecture.title }}"</p>
+                                    <h4><small>From the module "{{ lecture_slide.object.lecture.module.title }}"</small></h4>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide.object.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right marginRight5" data-lectureid="{{ lecture_slide.object.lecture.id }}">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button>
+                                        {% endif %} 
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <div>
+                                        <a class="btn btn-default btn-img-hover-interaction" href="/lectures/#heading_{{ lecture_document.object.lecture.id }}" role="button">
+                                            <img class="img-responsive" src="/media/{{ lecture_slide.object.slide }}" />
+                                            <h4 class="button-text-ribbon">Go to lecture</h4>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-text-ribbon" href="/modules/#heading_{{ lecture_slide.object.lecture.module.id }}" role="button">
+                                            <h4 class="button-text-ribbon-opaque">Go to module</h4>
+                                        </a>   
+                                    </div>                                
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in lecture_slide.object.lecture.authors_m2m.all %}
+                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in lecture_slide.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>                            
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
     {% endif %}
+    <div class="row marginBottom100">
+    </div>
 </div>
 {% endblock %}
 

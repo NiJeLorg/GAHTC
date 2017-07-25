@@ -356,9 +356,9 @@ $( document ).ready(function() {
 	});	
 
 	// listen for tab clicks and move footer
-	$(document).on('click', '.nav-tabs', function(e) {
-		gahtcApplication.updateFooter();
-	});
+	// $(document).on('click', '.nav-tabs', function(e) {
+	// 	gahtcApplication.updateFooter();
+	// });
 
 
 	// pull number for # out of url and open accordian on modules and lectures pages

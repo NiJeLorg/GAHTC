@@ -635,7 +635,7 @@ body nav {
 }
 
 .authors-docs .authors a {
-    color: #4D0000;
+    color: #BF413E;
     margin-right: 10px;
     font-weight: bold;
 }
@@ -1451,6 +1451,10 @@ blockquote p {
     margin-bottom: 15px;
 }
 
+.marginBottom100 {
+    margin-bottom: 100px;
+}
+
 .marginRight15 {
     margin-right: 15px;
 }
@@ -1514,9 +1518,13 @@ blockquote p {
     display:inline-block;
 }
 
-/*one version of red buttons*/
+/* red button backgrounds and text */
 .gahtcRed {
     background: #BF413E;
+}
+
+.gahtcRedText {
+    color: #BF413E;
 }
 
 /*content titles*/
@@ -1529,11 +1537,10 @@ blockquote p {
 .btn-img-hover-interaction {
     margin: 0;
     padding: 0;
+    border-radius: 0;
     position: relative;
     float: left; 
 }
-
-.btn-img-hover-interaction:hover {}
 
 .button-text-ribbon {
     font-size: 20px;
@@ -1555,9 +1562,26 @@ blockquote p {
     opacity: 0.9;
 }
 
-.img-rounded {
-    border-radius: 4px;
+.btn-text-ribbon {
+    margin-top: 5px;
+    padding: 0;
+    border-radius: 0;
+    width: 100%;
 }
+
+.button-text-ribbon-opaque {
+    font-size: 20px;
+    background: #222;
+    color: #fff;  
+    margin: 0;
+    padding: 5px;
+    opacity: 0.9;
+}
+
+.button-text-ribbon-opaque:hover {
+    opacity: 1;
+}
+
 
 
 
