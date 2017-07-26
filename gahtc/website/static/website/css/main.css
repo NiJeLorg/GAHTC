@@ -238,6 +238,11 @@ button {
 
 
 
+
+
+
+
+
 /* bootstrap override on link highlighting */
 
 
@@ -247,6 +252,11 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
+
+
+
+
+
 
 
 
@@ -852,6 +862,11 @@ body nav {
 
 
 
+
+
+
+
+
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -998,14 +1013,15 @@ body nav {
     bottom: 0;
 }
 
-.module-text .created-by {
+.created-by {
     font-size: 12px;
     font-family: sans-serif;
     color: #AAAAAA;
     margin-bottom: 2px;
 }
 
-.module-text footer {
+.module-text footer
+ {
     display: flex;
     justify-content: space-between;
 }
@@ -1052,6 +1068,11 @@ body nav {
     padding: 10px 20px;
     height: 100%;
 }
+
+
+
+
+
 
 
 
@@ -1284,6 +1305,15 @@ body nav {
     display: inline-block;
     color: #777777;
 }
+
+
+.module-lectures-container .lecture-description p {
+    line-height: 1.4em;
+    max-height: 9.8em;
+    overflow: hidden;
+}
+
+
 
 
 
@@ -1703,6 +1733,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Background Image */
 
 #background,
@@ -1857,6 +1892,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -1864,6 +1904,11 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
+
+
 
 
 
@@ -2133,6 +2178,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -2265,6 +2315,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -2278,6 +2333,11 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
+
+
 
 
 
@@ -2694,6 +2754,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /*highlight text*/
 
 .highlight {
@@ -2703,6 +2768,11 @@ blockquote p {
     border-radius: 3px;
     display: inline-block;
 }
+
+
+
+
+
 
 
 
@@ -2951,12 +3021,22 @@ blockquote p {
 
 
 
+
+
+
+
+
 /*content titles*/
 
 .content-title {
     font-size: 22px;
     font-weight: 700;
 }
+
+
+
+
+
 
 
 
@@ -3244,11 +3324,21 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Add bottom padding to all containers */
 
 .container {
     padding-bottom: 30px;
 }
+
+
+
+
+
 
 
 
@@ -3491,6 +3581,11 @@ blockquote p {
 
 
 
+
+
+
+
+
 /* Feedback Form */
 
 .feedback {
@@ -3520,6 +3615,11 @@ blockquote p {
     text-decoration: none;
     background-color: #d9534f;
 }
+
+
+
+
+
 
 
 

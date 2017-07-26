@@ -5,25 +5,57 @@
         <h3>Jump To Module</h3>
         <div class="lectures-titles">
             {% for module_returned in modules_returned %}
-            <a href="">{{ module_returned.title }}</a> {% endfor %}
+            <a href="#{{module_returned.id}}">{{ module_returned.title }}</a> {% endfor %}
         </div>
     </section>
 </div>
 <div class="module-lecture-container">
     {% for module_returned in modules_returned %}
-    <div class="module">
-        <h2 class="module-title">{{ module_returned.title }}</h2>
+    <div class="module" id="{{module_returned.id}}">
+        <h2 class="module-title">{{ module_returned.title }} </h2>
+        <!-- <span>{{module_returned.moduleLecs.length}}</span> -->
         <div class="module-lectures-container">
             {% for lecture_returned in module_returned.moduleLecs %}
             <div class="lecture">
                 <div class="lecture-first-slide-container">
                     <div class="lecture-first-slide" style="background: url('/media/{{lecture_returned.getSlideOne}}')">
-                        <button class="preview-slides">preview slides</button>
+                        {% if user.is_authenticated %}
+                        <button type="button" class="preview-slides launchModal" data-lectureid="{{ lecture_returned.id }}">preview slides</button>
+                        {% endif %}
                     </div>
                 </div>
-                <div class="lecture-description">
+                <div class="module-text lecture-description">
                     <h4 class="title">{{lecture_returned.title}}</h4>
-                    <p>{{lecture_returned.description}}</p>
+                    <p class="description">{{lecture_returned.description}}</p>
+                    <p class='created-by'>created by:</p>
+                    <footer>
+                        <div class="authors-docs">
+                            <div class="authors">
+                                <p>{% for authors in lecture_returned.authors_m2m.all %}
+                                    <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} {% endfor %}
+                                </p>
+                            </div>
+                            <div class="docs">
+                                <p>supporting documents:</p>
+                            </div>
+                        </div>
+                        <div class="download-module">
+                            {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
+                            <button type="button" class="button" data-moduleid="{{ lecture_returned.id }}">Download Lecture</button>
+                            {% else %}
+                            <button type="button" class="button" data-toggle="modal" data-target="#waitingForVerification">Download Lecture</button>
+                            {% endif %}
+                            <div class="dropdown">
+                                <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture_returned.id }}">
+                                    {% include "website/bundle_dropdown.html" %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </footer>
                 </div>
             </div>
             {% endfor %}
