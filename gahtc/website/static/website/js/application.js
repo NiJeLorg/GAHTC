@@ -4,6 +4,20 @@
 
 var gahtcApp = null;
 
+const truncateElementText = (elem) => {
+    let classNameOfElement = $(elem).attr('class');
+    let lectureDescriptionTextLength = 123;
+    let elementText = $(elem).text();
+
+    if (classNameOfElement === 'lecture-description-text' && elementText.length > 123) {
+        console.log('ola')
+        elementText = elementText.substring(0, lectureDescriptionTextLength) + ' ...';
+        console.log(elementText);
+    }
+    $(elem).text(elementText);
+};
+
+
 $(document).ready(function() {
 
     var gahtcApp = new gahtcApplication();
@@ -16,5 +30,6 @@ $(document).ready(function() {
     } else {
         $('footer').css('position', 'static');
     }
-});
 
+    truncateElementText($('.lecture-description-text'));
+});
