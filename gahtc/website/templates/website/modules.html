@@ -5,12 +5,11 @@
     <div class="featured-modules">
         {% for module_returned in modules_returned %} {% if module_returned.featured > 0 %}
         <div class="image-container" style="background: url('/media/{{module_returned.cover_image}}')">
-            {% endif%}
             <div class="title-container">
-                <h4><a href="#{{ module_returned.title }}">{{ module_returned.title }}</a></h4>
+                <h4><a href="#heading_{{ module_returned.id }}">{{ module_returned.title }}</a></h4>
             </div>
         </div>
-        {% endfor %}
+        {% endif%} {% endfor %}
     </div>
 </div>
 <p class="all-modules-title">all modules</p>
@@ -18,7 +17,7 @@
     <div class="marginBottom15">
         <div class="panel-group" id="accordion_modules" role="tablist" aria-multiselectable="true">
             {% for module_returned in modules_returned %}
-            <div class="panel panel-default module" id="{{ module_returned.title }}">
+            <div class="panel panel-default module" id="heading_{{ module_returned.id }}">
                 <h3 class="module-heading">{{ module_returned.title }}</h3>
                 <div class="module-contents">
                     <div class="module-photo-container" style="background: url('/media/{{module_returned.cover_image}}')">
@@ -44,8 +43,16 @@
                                 <button type="button" class="button" data-moduleid="{{ module_returned.id }}">Download Module</button>
                                 {% else %}
                                 <button type="button" class="button" data-toggle="modal" data-target="#waitingForVerification">Download Module</button>
-                                {% endif %} {% endif %}
-                                <button class="button">+</button>
+                                {% endif %}
+                                <div class="dropdown">
+                                    <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module.id }}">
+                                        {% include "website/bundle_dropdown.html" %}
+                                    </ul>
+                                </div>
+                                {% endif %}
                             </div>
                         </footer>
                     </div>
@@ -56,20 +63,46 @@
                             {% if module_returned.moduleLecs|length > 0 %} {% for lec in module_returned.moduleLecs %}
                             <div class="lecture-document">
                                 <div class="image-holder" style="background: url('/media/{{lec.getSlideOne}}')">
-                                    <p class="preview-slides">preview slides</p>
+                                    {% if user.is_authenticated %}
+                                    <button type='button' class="preview-slides launchModal" data-lectureid="{{ lec.id }}">preview slides</button>
+                                    {% endif %}
                                 </div>
                                 <div class="lecture-description">
-                                    <h3>{{lec.title}}</h3>
+                                    <div class="title-and-buttons">
+                                        <h3>{{lec.title}}</h3>
+                                        <div class="lecture-buttons">
+                                            <a href="/lectures/#{{lec.id}}" class="see-details">see details</a>
+                                            <div class="download-lecture">
+                                                {% if user.is_authenticated %}
+                                                <div class="dropdown">
+                                                    <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.object.id }}">
+                                                        {% include "website/bundle_dropdown.html" %}
+                                                    </ul>
+                                                </div>
+                                                {% if request.user.userProfile.verified %}
+                                                <button type="button" class="btn-danger gahtcRed downloadLecture pull-right marginRight5" data-lectureid="{{ lecture.object.id }}">
+                                                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                                </button>
+                                                {% else %}
+                                                <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                                </button>
+                                                {% endif %} {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
                                     <p class='lecture-description-text'>{{lec.description}}</p>
-                                    <!-- <p class="supporting-docs">supporting documents: </p>
-                                    <span>handout</span>
-                                    <span>quiz</span>
-                                    <span>quiz answers</span> -->
-                                </div>
-                                <div class="lecture-buttons">
-                                    <button class="see-details">see details</button>
-                                    <!--                                  <button>+</button>
-                                    <button>+</button> -->
+                                    <div class="support">
+                                        <p>supporting documents: &nbsp;</p>
+                                        <ul>
+                                            {% for lecDoc in lec.lectureDocs %}
+                                            <li>{{ lecDoc.title }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             {% endfor %} {% endif %}
@@ -93,12 +126,15 @@
                                 <hr /> {% endif %} {% endfor %} {% endif %}
                             </div> -->
                         </div>
+                        <div class="related-modules-container">
+                            <h4>related modules</h4>
+                        </div>
                         <div class="member-comments-container">
                             <h4>member comments</h4>
                         </div>
                         <div class="terms-conditions-container">
                             <p>terms and conditions</p>
-                            <p>Terms and Conditions: I understand that this material is to be used only in class romm settings. You are free to make changes to fit you constraints or teaching goals. However, this material connanot be used directly or indirectly, in whole or in part, for publication, in any form</p>
+                            <p>Terms and Conditions: I understand that this material is to be used only in class room settings. You are free to make changes to fit you constraints or teaching goals. However, this material connanot be used directly or indirectly, in whole or in part, for publication, in any form</p>
                             <p>Instructions.</p>
                             <p>You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. (We should figure out a way to 'add to my bundle' and a way to display the file size before users click on a link.) Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to</p>
                         </div>
@@ -150,6 +186,31 @@
             </div>
             <div class="modal-body">
                 <p>Your account has not yet been verified by a GAHTC administrator. Once your account is verified, you will be able to download course materials. You will be notified by email when your account has been verified. In the meantime, you can continue to search the site and add resources to your bundles. Thank you!</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Download Course Bundle Modal -->
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Download Lectures</h4>
+            </div>
+            <div class="modal-body">
+                <div id="downloadFileArea">
+                    <div class="containter">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img class="img-responsive pull-right" src="{% static 'website/css/images/spiffygif_114x114.gif' %}" />
+                            </div>
+                            <div class="col-md-9">
+                                <h2>Zipping Up Your Lecture!</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

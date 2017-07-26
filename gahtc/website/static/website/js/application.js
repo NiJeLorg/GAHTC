@@ -10,11 +10,10 @@ const truncateElementText = (elem) => {
     let elementText = $(elem).text();
 
     if (classNameOfElement === 'lecture-description-text' && elementText.length > 123) {
-        console.log('ola')
         elementText = elementText.substring(0, lectureDescriptionTextLength) + ' ...';
-        console.log(elementText);
     }
     $(elem).text(elementText);
+
 };
 
 

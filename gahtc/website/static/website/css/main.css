@@ -41,6 +41,126 @@ body {
     flex-direction: column;
 }
 
+button {
+    outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -127,6 +247,126 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -492,6 +732,126 @@ body nav {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -673,6 +1033,10 @@ body nav {
     font-size: 14px;
 }
 
+.download-module {
+    display: flex;
+}
+
 .download-module .button {
     background: #BF413E;
     border: none;
@@ -681,6 +1045,12 @@ body nav {
     padding: 10px 20px;
     color: #fff;
     font-family: 'LinuxLibertine', serif;
+    margin-right: 20px;
+}
+
+.download-module .dropdown button {
+    padding: 10px 20px;
+    height: 100%;
 }
 
 
@@ -689,6 +1059,330 @@ body nav {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Browswe by Lecture Styles */
+
+.jump-to-module-menu {
+    background: #E4E4E4;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.jump-to-module-menu section {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.jump-to-module-menu h3 {
+    font-family: sans-serif;
+    color: #131313;
+    border-bottom: 1px solid #8C8C8C;
+    padding-left: 20px;
+    font-style: normal;
+}
+
+.lectures-titles {
+    padding: 20px 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #8C8C8C;
+}
+
+.lectures-titles a {
+    font-size: 22px;
+    color: #424242;
+    font-family: 'LinuxLibertine', serif;
+}
+
+.module-lecture-container {
+    background: #FAFAFA;
+    padding: 4%;
+}
+
+.module .module-title {
+    font-family: "Source Sans Pro", Arial, Helvetica, sans-serif;
+    color: #AAA9AA;
+}
+
+.module-lectures-container {
+    border-left: 1px solid #CFCFCF;
+    padding-top: 50px;
+    padding-left: 50px;
+}
+
+.module-lectures-container .lecture {
+    background: #fff;
+    padding: 20px 40px;
+    box-shadow: 1px 1px 10px #dadada;
+    border-radius: 4px;
+    display: flex;
+}
+
+.lecture .lecture-first-slide-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.lecture-first-slide-container .lecture-first-slide {
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    border: 1px solid #D8D8D8;
+}
+
+.lecture .lecture-first-slide {
+    width: 240px;
+    height: 190px;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.lecture .lecture-description {
+    flex-basis: 80%;
+    margin-left: 50px;
+}
+
+.lecture-description h4 {
+    font-family: 'LinuxLibertine', serif;
+    font-size: 28px;
+    color: #000;
+}
+
+.lecture-description p {
+    color: #898989;
+}
+
+.lecture-description .support {
+    display: flex;
+}
+
+.lecture-description .support p {
+    color: #000;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.lecture-description .support ul {
+    padding-left: 0;
+}
+
+.lecture-description .support ul li {
+    display: inline-block;
+    color: #777777;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Browse by Lecture Styles*/
 
 
 /*// .module .panel-heading {
@@ -712,7 +1406,6 @@ body nav {
 
 .lecture-container .lecture-document {
     display: flex;
-    justify-content: space-between;
     background: #fff;
     padding: 2%;
     border: 1px solid #DADADA;
@@ -725,19 +1418,27 @@ body nav {
     flex-direction: column;
     justify-content: flex-end;
     background-size: contain !important;
+    border: 1px solid #D8D8D8;
+    margin-right: 40px;
 }
 
-.lecture-document .image-holder p {
+.preview-slides {
     font-family: sans-serif;
-    background: #999999;
+    background: rgba(51, 51, 51, .6);
     text-align: center;
     color: #fff;
     padding: 5px 0;
+    border: none;
 }
 
 
 .lecture-document .lecture-description {
-    flex-basis: 70%;
+    flex-grow: 1;
+}
+
+.lecture-description .title-and-buttons {
+    display: flex;
+    justify-content: space-between
 }
 
 .lecture-description h3 {
@@ -752,12 +1453,42 @@ body nav {
     color: #777777;
 }
 
+.lecture-buttons {
+    display: flex;
+    height: 50px;
+}
+
+.download-lecture {
+    display: flex;
+}
+
+.download-lecture button {
+    margin-right: 15px;
+}
+
+.download-lecture .dropdown {
+    margin-left: 15px;
+}
+
+.download-lecture .dropdown button {
+    height: 100%;
+}
+
+.lecture-buttons span {
+    color: #fff;
+}
+
 .lecture-buttons .see-details {
     background: #333333;
     border: none;
     color: #fff;
     padding: 10px 20px;
 }
+
+.related-modules-container {
+    border-bottom: 1px solid #F3F3F3;
+}
+
 
 .member-comments-container {
     border-bottom: 1px solid #F3F3F3;
@@ -854,6 +1585,46 @@ blockquote p {
     margin-left: auto;
     margin-right: auto;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1045,6 +1816,47 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -1052,6 +1864,47 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1239,6 +2092,47 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -1331,6 +2225,46 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -1344,6 +2278,46 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1611,6 +2585,115 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*highlight text*/
 
 .highlight {
@@ -1620,6 +2703,117 @@ blockquote p {
     border-radius: 3px;
     display: inline-block;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1647,12 +2841,233 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*content titles*/
 
 .content-title {
     font-size: 22px;
     font-weight: 700;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1711,6 +3126,46 @@ blockquote p {
 .button-text-ribbon-opaque:hover {
     opacity: 1;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1872,11 +3327,92 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Add some padding to the top of the search template container */
 
 .container.search-body {
     padding-top: 30px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1984,6 +3520,48 @@ blockquote p {
     text-decoration: none;
     background-color: #d9534f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
