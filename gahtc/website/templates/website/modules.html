@@ -52,38 +52,19 @@
                 </div>
                 <div id="{{ module_returned.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{ module_returned.id }}">
                     <div class="panel-body">
-                        <!--                         <div class="row">
-                            <div class="col-md-12">
-                                {% if module_returned.moduleDocs|length > 0 %} {% for doc in module_returned.moduleDocs %}
-                                <div class="lecture-document">
-                                    <div class="image-holder"></div>
-                                    <div class="lecture-description">
-                                        <title>{{ doc.title }}</title>
-                                        <p></p>
-                                        <footer></footer>
-                                    </div>
-                                    <div class="lecture-details"></div>
-                                </div>
-                                {% endfor %}
-                                <ul>
-                                    {% for doc in module_returned.moduleDocs %}
-                                    <li>{{ doc.title }}</li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
-                            </div>
-                        </div> -->
                         <div class="lecture-container">
+                            {% if module_returned.moduleLecs|length > 0 %} {% for lec in module_returned.moduleLecs %}
                             <div class="lecture-document">
-                                <div class="image-holder">
+                                <div class="image-holder" style="background: url('/media/{{lec.getSlideOne}}')">
+                                    <p class="preview-slides">preview slides</p>
                                 </div>
                                 <div class="lecture-description">
-                                    <h3>1. Civilization</h3>
+                                    <h3>{{lec.title}}</h3>
                                     <p>East Asia is a relatively clear idea defined by geography, culture, political constitution, and history...</p>
-                                    <p class="supporting-docs">supporting documents: </p>
+                                    <!-- <p class="supporting-docs">supporting documents: </p>
                                     <span>handout</span>
                                     <span>quiz</span>
-                                    <span>quiz answers</span>
+                                    <span>quiz answers</span> -->
                                 </div>
                                 <div class="lecture-buttons">
                                     <button class="see-details">see details</button>
@@ -91,6 +72,7 @@
                                     <button>+</button> -->
                                 </div>
                             </div>
+                            {% endfor %} {% endif %}
                             <!--                             <div class="col-md-12">
                                 {% if module_returned.moduleLecs %}
                                 <h5><span class="label label-success">Lectures</span></h5> {% for lec in module_returned.moduleLecs %}

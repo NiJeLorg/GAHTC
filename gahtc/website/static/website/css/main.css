@@ -110,6 +110,14 @@ body {
 
 
 
+
+
+
+
+
+
+
+
 /* bootstrap override on link highlighting */
 
 
@@ -119,6 +127,14 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -468,6 +484,14 @@ body nav {
 
 
 
+
+
+
+
+
+
+
+
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -636,7 +660,7 @@ body nav {
 
 .authors-docs .authors a {
     color: #BF413E;
-/*    margin-right: 10px;*/
+    /*    margin-right: 10px;*/
     font-weight: bold;
 }
 
@@ -659,6 +683,14 @@ body nav {
     font-family: 'LinuxLibertine', serif;
 }
 
+
+
+
+
+
+
+
+
 /*// .module .panel-heading {
 //     background: #EFEFEF;
 //     color: #020202;
@@ -670,6 +702,7 @@ body nav {
 //     font-weight: normal;
 //     font-size: 24px;
 // }*/
+
 
 /** Browse by Modules Styles **/
 
@@ -688,7 +721,20 @@ body nav {
 .lecture-document .image-holder {
     width: 180px;
     height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-size: contain !important;
 }
+
+.lecture-document .image-holder p {
+    font-family: sans-serif;
+    background: #999999;
+    text-align: center;
+    color: #fff;
+    padding: 5px 0;
+}
+
 
 .lecture-document .lecture-description {
     flex-basis: 70%;
@@ -878,6 +924,14 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
 /* Background Image */
 
 #background,
@@ -983,6 +1037,14 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -990,6 +1052,14 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1161,6 +1231,14 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -1245,6 +1323,14 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -1258,6 +1344,14 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1509,16 +1603,34 @@ blockquote p {
     margin-top: -12px;
 }
 
+
+
+
+
+
+
+
+
 /*highlight text*/
+
 .highlight {
     background: rgba(255, 230, 0, 0.5);
     padding: 5px 2px;
     margin: -5px -2px;
     border-radius: 3px;
-    display:inline-block;
+    display: inline-block;
 }
 
+
+
+
+
+
+
+
+
 /* red button backgrounds and text */
+
 .gahtcRed {
     background: #BF413E;
 }
@@ -1527,19 +1639,37 @@ blockquote p {
     color: #BF413E;
 }
 
+
+
+
+
+
+
+
+
 /*content titles*/
+
 .content-title {
     font-size: 22px;
     font-weight: 700;
 }
 
+
+
+
+
+
+
+
+
 /* button css with hover interactions */
+
 .btn-img-hover-interaction {
     margin: 0;
     padding: 0;
     border-radius: 0;
     position: relative;
-    float: left; 
+    float: left;
 }
 
 .button-text-ribbon {
@@ -1572,7 +1702,7 @@ blockquote p {
 .button-text-ribbon-opaque {
     font-size: 20px;
     background: #222;
-    color: #fff;  
+    color: #fff;
     margin: 0;
     padding: 5px;
     opacity: 0.9;
@@ -1581,6 +1711,14 @@ blockquote p {
 .button-text-ribbon-opaque:hover {
     opacity: 1;
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1726,11 +1864,27 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
 /* Add some padding to the top of the search template container */
 
 .container.search-body {
     padding-top: 30px;
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1830,6 +1984,14 @@ blockquote p {
     text-decoration: none;
     background-color: #d9534f;
 }
+
+
+
+
+
+
+
+
 
 
 
