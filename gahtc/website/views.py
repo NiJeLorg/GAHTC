@@ -2029,13 +2029,13 @@ def admin_accounts(request):
 		return HttpResponseRedirect('/')
 
 	# unverified
-	unverified = profile.objects.filter(verified__exact=None).exclude(name='').order_by('name')
+	unverified = profile.objects.filter(verified__exact=None).exclude(last_name='', first_name='').order_by('name')
 
 	# accepted
-	accepted = profile.objects.filter(verified__exact=True).exclude(name='').order_by('name')
+	accepted = profile.objects.filter(verified__exact=True).exclude(last_name='', first_name='').order_by('name')
 
 	# rejected
-	rejected = profile.objects.filter(verified__exact=False).exclude(name='').order_by('name')
+	rejected = profile.objects.filter(verified__exact=False).exclude(last_name='', first_name='').order_by('name')
 
 	# pull all account holders 
 	return render(request, 'website/admin_accounts.html', {'unverified': unverified, 'accepted': accepted, 'rejected':rejected})
