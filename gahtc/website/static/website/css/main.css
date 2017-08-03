@@ -152,97 +152,6 @@ button {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* bootstrap override on link highlighting */
 
 
@@ -252,97 +161,6 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -777,96 +595,6 @@ body nav {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -935,13 +663,12 @@ body nav {
     margin: 0 auto;
 }
 
-.all-modules .panel {
-    background: #FAFAFA;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    box-shadow: 4px 4px 40px #dadada;
-}
-
+//     .all-modules .panel {
+//     background: #FAFAFA;
+//     border-bottom-right-radius: 0;
+//     border-bottom-left-radius: 0;
+//     box-shadow: 4px 4px 40px #dadada;
+// }
 .panel-group .module-footer {
     text-align: center;
     background: #FAFAFA;
@@ -1020,8 +747,7 @@ body nav {
     margin-bottom: 2px;
 }
 
-.module-text footer
- {
+.module-text footer {
     display: flex;
     justify-content: space-between;
 }
@@ -1068,21 +794,6 @@ body nav {
     padding: 10px 20px;
     height: 100%;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1312,6 +1023,15 @@ body nav {
     max-height: 9.8em;
     overflow: hidden;
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1723,21 +1443,6 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Background Image */
 
 #background,
@@ -1882,21 +1587,6 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -1904,21 +1594,6 @@ blockquote p {
         margin-top: -50px;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2169,20 +1844,6 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* button group */
 
 .lowerLeft {
@@ -2306,20 +1967,6 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Search Bar */
 
 .searchbar {
@@ -2333,20 +1980,6 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2745,20 +2378,6 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*highlight text*/
 
 .highlight {
@@ -2768,22 +2387,6 @@ blockquote p {
     border-radius: 3px;
     display: inline-block;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3012,41 +2615,12 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*content titles*/
 
 .content-title {
     font-size: 22px;
     font-weight: 700;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3316,19 +2890,6 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Add bottom padding to all containers */
 
 .container {
@@ -3444,39 +3005,11 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Add some padding to the top of the search template container */
 
 .container.search-body {
     padding-top: 30px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3725,23 +3258,154 @@ blockquote p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Admin Forms */
 
 ul.as-selections li.as-original input {
     height: 39px !important;
+}
+
+
+.panel-group .panel {
+    margin-bottom: 50px;
+}
+
+.panel h3 {
+    margin: 0;
+    padding: 20px 50px;
+    background: #EFEFEF;
+    color: #000000;
+    font-style: normal;
+}
+
+.panel-main {
+    padding: 60px 30px;
+    background: #FAFAFA;
+    display: flex;
+    justify-content: space-between;
+}
+
+.panel-main .image-container {
+    width: 480px;
+    height: 300px;
+    background-size: cover !important;
+}
+
+.panel-main section {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.panel-main section p {
+    font-size: 21px;
+    line-height: 1.6em;
+    max-height: 8em;
+    overflow: hidden;
+    color: #383838;
+}
+
+.panel-main .created-by {
+    font-size: 14px;
+    font-family: sans-serif;
+    color: #AAAAAA;
+    margin-bottom: 2px;
+}
+
+.author-docs a {
+    color: #5C0000;
+}
+
+.panel-section-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-section-footer .buttons {
+    display: flex;
+    height: 100%;
+}
+
+.buttons button {
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    background: #BF413E;
+    font-family: LinuxLibertine, serif;
+    padding: 15px 20px;
+    margin-left: 10px;
+}
+
+.panel footer a {
+    text-align: center;
+    background: #FAFAFA;
+    font-family: 'LinuxLibertine', serif;
+    padding: 10px 0;
+    width: 100%;
+    display: inline-block;
+    border-top: 1px solid #E4E4E4;
+    color: #B0B0B0;
+}
+
+
+.panel-expand {
+    background: #FAFAFA;
+}
+
+.panel-expand-item {
+    width: 90%;
+    background: #fff;
+    margin: 0 auto;
+    padding: 30px 35px;
+    display: flex;
+    border: 1px solid #ece9e9;
+}
+
+.panel-expand-item .image-container {
+    width: 180px;
+    height: 130px;
+    background-size: contain !important;
+    border: 1px solid #cdcdcd;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.panel-expand-item section {
+    flex-grow: 1;
+    padding-left: 40px;
+}
+
+.panel-expand-item section h4 {
+    font-family: 'LinuxLibertine', serif;
+    text-decoration: underline;
+    font-style: italic;
+}
+
+.panel-expand-item .lecture-description-text {
+    font-size: 21px;
+}
+
+.panel-expand-item .supporting-documents {
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+.panel-expand-container {
+    padding: 0 20px;
+}
+
+.panel-expand-container h4 {
+    border-bottom: 1px solid #ece9e9;
+    margin-top: 0;
+}
+
+.panel-expand .terms-conditions {
+    font-family: sans-serif;
+    color: #CECECE;
+    font-size: 16px;
+    padding: 20px;
+    border-top: 1px solid #ece9e9;
+    margin: 0;
 }
