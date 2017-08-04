@@ -158,10 +158,11 @@ class modulesRemoveForm(forms.ModelForm):
 class moduleDocumentsForm(forms.ModelForm):
     class Meta:
         model = moduleDocuments
-        fields = ('document', 'module', 'title', 'description', 'keywords')
+        fields = ('document', 'module', 'doc_type', 'title', 'description', 'keywords')
         labels = {
             'document': 'File (Required)',
             'module': 'Related Module (Required)',
+            'doc_type': 'Document Type',
             'title': 'Title (Required)',
             'description': 'Description',
             'keywords': 'Keywords',
@@ -231,10 +232,11 @@ class lecturesegmentRemoveForm(forms.ModelForm):
 class lecturedocForm(forms.ModelForm):
     class Meta:
         model = lectureDocuments
-        fields = ('document', 'lecture', 'title', 'description', 'keywords')
+        fields = ('document', 'lecture', 'doc_type', 'title', 'description', 'keywords')
         labels = {
             'document': 'File (Required)',
             'lecture': 'Related Lecture (Required)',
+            'doc_type': 'Document Type',
             'title': 'Title (Required)',
             'description': 'Description',
             'keywords': 'Keywords',
@@ -318,6 +320,11 @@ class CSmodulesRemoveForm(forms.ModelForm):
         model = comingSoonModules
         fields = ()
 
+
+class docTypeAddForm(forms.ModelForm):
+    class Meta:
+        model = docType
+        fields = ('name',)
 
 
 

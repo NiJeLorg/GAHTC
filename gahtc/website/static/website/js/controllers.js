@@ -246,6 +246,15 @@ $( document ).ready(function() {
 
 	});
 
+	// remove document type
+	$(document).on('click', '.removeDocumentType', function(e) { 
+		e.preventDefault();
+		// pull bundle id
+		var doctypeid = $(this).data( "doctypeid" );
+		gahtcApplication.removeDocType(doctypeid);
+
+	});
+
 	// switch tab on download button click
 	$(" .switchToBundle ").click(function(e) {
 		e.preventDefault();
