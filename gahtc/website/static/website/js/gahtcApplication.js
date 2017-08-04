@@ -210,6 +210,19 @@ gahtcApplication.removeSearch = function (search) {
 	});
 }
 
+gahtcApplication.removeDocType = function (doctypeid) {
+	$.ajax({
+		type: "GET",
+		url: "/admin_removedoctype/?doctypeid=" + doctypeid,
+		success: function(data){	
+			console.log('success');		
+			// update document types list
+			console.log(data);
+			$('.currentDocTypes').html(data);
+        }
+	});
+}
+
 gahtcApplication.getBundle = function (bundle_id) {
 	$.ajax({
 		type: "GET",

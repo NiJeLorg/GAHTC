@@ -1,0 +1,38 @@
+{% extends 'website/base_admin.html' %} 
+{% load staticfiles %} 
+{% load bootstrap_tags %}
+{% block title %}Manage Document Types{% endblock %} 
+{% block head_js_block %} {% endblock %} 
+{% block css_block %}
+{% endblock %} 
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Manage Document Types</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 currentDocTypes">
+            {% include 'website/admin_current_doc_types.html' %} 
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Add a New Document Type</h4>
+            <form method="post" action=".">
+                {% csrf_token %} 
+                {{ form|as_bootstrap }}
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </form>            
+        </div>
+    </div>
+</div>
+<!-- /container -->
+{% endblock %} {% block js_block %}
+<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+{% endblock %}

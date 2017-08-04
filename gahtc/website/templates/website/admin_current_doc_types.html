@@ -1,0 +1,10 @@
+
+{% load staticfiles %}
+                	<h4>Current Document Types</h4>
+                    <ul>
+                    {% for type in doc_types %}
+                        <li>
+                            {{ type.name }} <button class="btn btn-link btn-xs removeDocumentType" data-doctypeid="{{ type.id }}"><span class="glyphicon glyphicon-remove-circle text-danger" aria-hidden="true"></span></button>  
+                        </li>
+                    {% endfor %}
+                    </ul>		
