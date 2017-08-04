@@ -18,7 +18,10 @@
         <div class="panel-group" id='accordion_modules' role='tablist' aria-multiselectable='true'>
             {%for module_returned in modules_returned%}
             <div class="panel panel-default" id="heading_{{ module_returned.id }}">
-                <h3>{{ module_returned.title }}</h3>
+                <div class="module-title">
+                    <h3>{{ module_returned.title }}</h3>
+                    <button class='launchModuleDescription' data-moduleid="{{ module_returned.id }}">i</button>
+                </div>
                 <main class='panel-main'>
                     <div class="image-container" style="background: url('/media/{{module_returned.cover_image}}')"></div>
                     <section>
@@ -56,7 +59,24 @@
                             {% endif %}
                         </div>
                         <section>
-                            <h4>{{lec.title}}</h4>
+                            <div class="title-buttons-group">
+                                <h4>{{lec.title}}</h4>
+                                <div class="lecture-buttons buttons">
+                                    <button class="see-details"><a href="/lectures/#{{lec.id}}">see details</a></button>
+                                    {% if user.is_authenticated %}
+                                    <div class="dropdown">
+                                        <button class="add-to-bundle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+</button>
+                                        <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
+                                            {% include "website/bundle_dropdown.html" %}
+                                        </ul>
+                                    </div>
+                                    {% if request.user.userProfile.verified %}
+                                    <button type="button" data-lectureid="{{ lec.object.id }}">|</button>
+                                    {% else %}
+                                    <button type="button" data-toggle="modal" data-target="#waitingForVerification">|</button>
+                                    {% endif %}{% endif %}
+                                </div>
+                            </div>
                             <p class='lecture-description-text'>{{lec.description}}</p>
                             <p class="supporting-documents">supporting documments: </p>
                         </section>
@@ -148,6 +168,8 @@
     </div>
 </div>
 <!-- Lecture Slides Modal -->
+<div class="modal fade" id="moduleFullDescription" tabindex="-1" role="dialog" aria-labelledby="moduleFullDescription">
+</div>
 <div class="modal fade" id="slideshow" tabindex="-1" role="dialog" aria-labelledby="mySlideshow">
 </div>
 {% endblock %} {% block js_block %}

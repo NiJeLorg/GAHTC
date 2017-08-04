@@ -152,6 +152,74 @@ button {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* bootstrap override on link highlighting */
 
 
@@ -161,6 +229,74 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -595,6 +731,74 @@ body nav {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
@@ -669,77 +873,6 @@ body nav {
 //     border-bottom-left-radius: 0;
 //     box-shadow: 4px 4px 40px #dadada;
 // }
-.panel-group .module-footer {
-    text-align: center;
-    background: #FAFAFA;
-    border: 1px solid #ddd;
-    border-top: none;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-    margin-bottom: 50px;
-}
-
-.module-heading {
-    color: #070707;
-    font-family: 'LinuxLibertine', serif;
-    font-weight: bold;
-    font-size: 24px;
-    font-style: normal;
-    margin: 0;
-    padding: 20px 40px;
-    background: #EFEFEF;
-}
-
-.module-contents {
-    padding: 40px 40px;
-    display: flex;
-    justify-content: space-between;
-}
-
-
-.panel-group .module-footer {
-    box-shadow: 4px 4px 40px #dadada;
-}
-
-.panel-group .module-footer h4 {
-    font-family: 'LinuxLibertine', serif;
-    font-size: 14px;
-    margin: 0;
-    padding: 10px;
-    color: #BEBEBE;
-}
-
-.module-photo-container {
-    width: 480px;
-    height: 300px;
-    background-size: cover !important;
-}
-
-.module-contents .module-text {
-    flex-basis: 65%;
-}
-
-.module-text .description {
-    overflow: hidden;
-    font-size: 20px;
-    text-overflow: ellipsis;
-    position: relative;
-    line-height: 1.6em;
-    max-height: 9.6em;
-    text-align: justify;
-    margin-right: -1em;
-    padding-right: 1em;
-}
-
-.module-text .description:before {
-    content: '...';
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-
 .created-by {
     font-size: 12px;
     font-family: sans-serif;
@@ -747,53 +880,77 @@ body nav {
     margin-bottom: 2px;
 }
 
-.module-text footer {
-    display: flex;
-    justify-content: space-between;
-}
 
-.authors-docs .authors {
-    display: flex;
-}
 
-.authors>p {
-    margin-bottom: 4px;
-}
 
-.authors-docs .authors a {
-    color: #BF413E;
-    /*    margin-right: 10px;*/
-    font-weight: bold;
-}
 
-.authors-docs .authors a:hover {
-    text-decoration: underline;
-}
 
-.authors-docs .docs p {
-    font-family: sans-serif;
-    font-size: 14px;
-}
 
-.download-module {
-    display: flex;
-}
 
-.download-module .button {
-    background: #BF413E;
-    border: none;
-    border-radius: 4px;
-    /*padding: 10px 15px 7px 15px;*/
-    padding: 10px 20px;
-    color: #fff;
-    font-family: 'LinuxLibertine', serif;
-    margin-right: 20px;
-}
 
-.download-module .dropdown button {
-    padding: 10px 20px;
-    height: 100%;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -944,9 +1101,10 @@ body nav {
     padding: 4%;
 }
 
-.module .module-title {
+.module .lecture-module-title {
     font-family: "Source Sans Pro", Arial, Helvetica, sans-serif;
     color: #AAA9AA;
+    font-style: normal;
 }
 
 .module-lectures-container {
@@ -1132,6 +1290,74 @@ body nav {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Browse by Lecture Styles*/
 
 
@@ -1148,18 +1374,7 @@ body nav {
 // }*/
 
 
-/** Browse by Modules Styles **/
-
-.lecture-container {
-    margin: 0 4%;
-}
-
-.lecture-container .lecture-document {
-    display: flex;
-    background: #fff;
-    padding: 2%;
-    border: 1px solid #DADADA;
-}
+/** Browse by Modules Styles mw**/
 
 .lecture-document .image-holder {
     width: 180px;
@@ -1230,9 +1445,14 @@ body nav {
 
 .lecture-buttons .see-details {
     background: #333333;
+    font-family: sans-serif;
     border: none;
     color: #fff;
     padding: 10px 20px;
+}
+
+.see-details a {
+    color: #fff;
 }
 
 .related-modules-container {
@@ -1335,6 +1555,74 @@ blockquote p {
     margin-left: auto;
     margin-right: auto;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1587,6 +1875,74 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -1594,6 +1950,74 @@ blockquote p {
         margin-top: -50px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1844,6 +2268,74 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* button group */
 
 .lowerLeft {
@@ -1967,6 +2459,74 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Search Bar */
 
 .searchbar {
@@ -1980,6 +2540,74 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2378,6 +3006,74 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*highlight text*/
 
 .highlight {
@@ -2387,6 +3083,74 @@ blockquote p {
     border-radius: 3px;
     display: inline-block;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2615,12 +3379,148 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*content titles*/
 
 .content-title {
     font-size: 22px;
     font-weight: 700;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2890,6 +3790,74 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Add bottom padding to all containers */
 
 .container {
@@ -3005,11 +3973,147 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Add some padding to the top of the search template container */
 
 .container.search-body {
     padding-top: 30px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3258,10 +4362,96 @@ blockquote p {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Admin Forms */
 
 ul.as-selections li.as-original input {
     height: 39px !important;
+}
+
+
+.module-title {
+    display: flex;
+    justify-content: space-between;
+    background: #EFEFEF;
+    padding: 20px 50px;
+}
+
+.module-title button {
+    border-radius: 50%;
+    background: #333333;
+    width: 40px;
+    align-items: center;
+    height: 40px;
+    color: #fff;
+    border: none;
 }
 
 
@@ -3271,7 +4461,6 @@ ul.as-selections li.as-original input {
 
 .panel h3 {
     margin: 0;
-    padding: 20px 50px;
     background: #EFEFEF;
     color: #000000;
     font-style: normal;
@@ -3385,6 +4574,7 @@ ul.as-selections li.as-original input {
 
 .panel-expand-item .lecture-description-text {
     font-size: 21px;
+    margin-top: 20px;
 }
 
 .panel-expand-item .supporting-documents {
@@ -3408,4 +4598,75 @@ ul.as-selections li.as-original input {
     padding: 20px;
     border-top: 1px solid #ece9e9;
     margin: 0;
+}
+
+.title-buttons-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.lecture-buttons button {
+    border-radius: 0;
+}
+
+.lecture-buttons .dropdown button {
+    padding: 12px 20px;
+}
+
+.lecture-panel .image-container-parent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.lecture-panel .image-container {
+    width: 240px;
+    height: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    border: 1px solid #cdcdcd;
+}
+
+.lecture-panel .panel-main {
+    background: #fff;
+    padding: 40px 60px;
+}
+
+
+.lecture-panel .panel-main section {
+    flex-basis: 80%;
+}
+
+.lecture-panel-section h4 {
+    font-family: 'LinuxLibertine', serif;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.lecture-panel .lecture-panel-section p {
+    font-size: 18px;
+    color: #9C9C9C;
+}
+
+.lecture-panel footer a {
+    background: #fff;
+}
+
+.lecture-panel .panel-expand {
+    background: #fff;
+}
+
+
+.lecture-panel .lecture-documents {
+    width: 55%;
+    margin: 0 auto;
+}
+
+.lecture-documents .document {
+    display: flex;
+    justify-content: space-between;
 }

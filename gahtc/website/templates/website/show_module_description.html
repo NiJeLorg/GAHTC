@@ -1,0 +1,17 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+            <h4 class="modal-title" id="mySlideshow">{{ module_returned.title }}</h4>
+        </div>
+        <div class="modal-body">
+            <p>{{module_returned.description}}</p>
+            <div class="author-docs">
+                <p class="created-by">created by:</p>
+                <p>{% for authors in module_returned.authors_m2m.all %}
+                    <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
