@@ -27,7 +27,7 @@ gahtcApplication.getModule = function (module_id) {
 		url: "/show_module/" + module_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});
 }
@@ -38,7 +38,7 @@ gahtcApplication.getLecture = function (lecture_id) {
 		url: "/show_lecture/" + lecture_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});		
 }
@@ -49,7 +49,7 @@ gahtcApplication.getLectureSegment = function (lecture_segment_id) {
 		url: "/show_lecture_segment/" + lecture_segment_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});		
 }
@@ -60,7 +60,7 @@ gahtcApplication.getLectureDocument = function (lecture_document_id) {
 		url: "/show_lecture_document/" + lecture_document_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});		
 }
@@ -71,7 +71,7 @@ gahtcApplication.getLectureSlide = function (lecture_slide_id) {
 		url: "/show_lecture_slide/" + lecture_slide_id + "/" ,
 		success: function(data){
 			$('.searchSidebar').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});
 }
@@ -127,7 +127,7 @@ gahtcApplication.createNewBundle = function () {
 
 			// add response from template to bundles uls
 			$('.bundles').html(data);
-			gahtcApplication.updateFooter();
+			
 
 			// update bundle page
 			gahtcApplication.refreshSidebarBundle();
@@ -162,7 +162,7 @@ gahtcApplication.removeFromBundle = function (bundle, itemid, type) {
 		url: "/remove_from_bundle/?bundle=" + bundle + "&itemid=" + itemid + "&type=" + type,
 		success: function(data){
 			gahtcApplication.getBundle(bundle);
-			gahtcApplication.updateFooter();
+			
         }
 	});
 }
@@ -193,7 +193,7 @@ gahtcApplication.removeBundle = function (bundle) {
 
 			// add response from template to bundles uls
 			$('.bundles').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});
 }
@@ -205,7 +205,6 @@ gahtcApplication.removeSearch = function (search) {
 		success: function(data){			
 			// update search list
 			$('.savedSearchList').html(data);
-			gahtcApplication.updateFooter();
         }
 	});
 }
@@ -229,7 +228,7 @@ gahtcApplication.getBundle = function (bundle_id) {
 		url: "/show_bundle/" + bundle_id + "/" ,
 		success: function(data){
 			$('.bundleSidebar').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});
 }
@@ -277,7 +276,7 @@ gahtcApplication.refreshSidebarBundle = function () {
 			var bundleid = $( ".bundleResult:first" ).data( 'bundleid' );
 			if (bundleid) {
 				gahtcApplication.getBundle(bundleid);
-				gahtcApplication.updateFooter();
+				
 			}
         }
 	});
@@ -290,7 +289,7 @@ gahtcApplication.saveSearchString = function (searchString) {
 		success: function(data){
 			$('#searchSaved').removeClass('hidden');
 			$('.savedSearchList').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});
 }
@@ -301,26 +300,11 @@ gahtcApplication.saveComment = function (comment, itemid) {
 		url: "/save_comment/?comment=" + comment + "&itemid=" + itemid,
 		success: function(data){
 			$('.searchSidebar').html(data);
-			gahtcApplication.updateFooter();
+			
         }
 	});
 }
 
-/* on ajax calls, set position of footer */
-gahtcApplication.updateFooter = function () {
-	var $body = $('body').height();
-	var $win = $(window).height();
-	console.log($body, 'body');
-	console.log($win, 'win');
-	if ($body <= $win ) {
-		$('.footer').css({ "position": "absolute", "bottom": "0" });
-	} else {
-		$('.footer').css({ "position": "relative", "bottom": "auto" });
-	}
-	if ($('.footer').hasClass('hidden')) {
-		$('.footer').removeClass('hidden');
-	}
-}
 
 gahtcApplication.contactBundle = function (bundleid) {
 	$.ajax({

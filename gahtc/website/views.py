@@ -322,15 +322,19 @@ def mybundles(request):
 
 
 	"""
-	  Queries the database for search terms and returns list of results; goes to bundle
+	  Pulls all user bundles and prints
 	"""
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
 
-	# placeholder keyword to return all items
-	keyword = ''
-	tab = 'bundle'
-	context_dict = mainSearchCode(request, keyword, tab)	
+	else: 
+		bundles_returned = bundles.objects.none()
 
-	return render(request, 'website/profile.html', context_dict)
+	context_dict = {'bundles_returned':bundles_returned,}
+
+
+	return render(request, 'website/bundle_list.html', context_dict)
 
 
 @login_required
@@ -352,17 +356,21 @@ def myprofile(request):
 @login_required
 def mysavedsearches(request):
 
-
 	"""
-	  Queries the database for search terms and returns list of results; goes to bundle
+	  Pulls all user searches and prints
 	"""
+	if request.user.is_authenticated():
 
-	# placeholder keyword to return all items
-	keyword = ''
-	tab = 'searches'
-	context_dict = mainSearchCode(request, keyword, tab)	
+		# pull saved searches
+		saved_searches = savedSearches.objects.filter(user=request.user)
 
-	return render(request, 'website/profile.html', context_dict)
+	else: 
+		saved_searches = savedSearches.objects.none()
+
+	context_dict = {'saved_searches':saved_searches,}
+
+
+	return render(request, 'website/saved_searches.html', context_dict)
 
 
 
@@ -754,7 +762,7 @@ def removeSearch(request):
 	saved_searches = savedSearches.objects.filter(user=request.user)
 
 	context_dict = {'saved_searches':saved_searches}
-	return render(request, 'website/saved_searches.html', context_dict)
+	return render(request, 'website/current_saved_searches.html', context_dict)
 
 
 def showBundle(request, id=None):
