@@ -58,6 +58,13 @@ class modules(models.Model):
 	def __unicode__(self):
 		return self.title
 
+#document types lookup
+class docType(models.Model):
+	name = models.CharField(max_length=255, default='', null=False, blank=False)
+
+	def __unicode__(self):
+		return self.name
+
 #module documents
 class moduleDocuments(models.Model):
 	module = models.ForeignKey(modules, related_name='moduleDocsModule')
@@ -68,6 +75,7 @@ class moduleDocuments(models.Model):
 	document_contents = models.TextField(default='', null=True, blank=True)
 	extracted = models.BooleanField(default=False)
 	keywords = TaggableManager(blank=True)
+	doc_type = models.ForeignKey(docType, related_name='module_doc_type', null=True, blank=True, default='', on_delete=models.SET_NULL)
 
 # lectures
 class lectures(models.Model):
@@ -127,6 +135,7 @@ class lectureDocuments(models.Model):
 	document_contents = models.TextField(default='', null=True, blank=True)
 	extracted = models.BooleanField(default=False)
 	keywords = TaggableManager(blank=True)
+	doc_type = models.ForeignKey(docType, related_name='lecture_doc_type', null=True, blank=True, default='', on_delete=models.SET_NULL)
 
 
 # lecture slides
