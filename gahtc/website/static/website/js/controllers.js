@@ -377,5 +377,11 @@ $(document).ready(function() {
         $('#' + url_num).addClass('in');
     }
 
+	// close the download modal after download link is clicked
+	$(document).on('click', '.downloadLink', function(e) {
+		$('#downloadModal').modal('hide');
+	});
+
+
 
 });
