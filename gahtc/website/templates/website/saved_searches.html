@@ -1,25 +1,34 @@
+{% extends 'website/base.html' %} 
+{% load staticfiles %} 
 
-{% load staticfiles %}
+{% block title %}My Saved Searches{% endblock %} 
 
-<div class="container">
-	<div class="row marginTop30">
-		{% if saved_searches %}
-			<h4>Saved Searches</h4>
-			<ul>
-			{% for search in saved_searches %}
-				<li>
-					<p><a href="/search/?keyword={{ search.searchString }}">{{ search.searchString }}</a> 
-						<button class="btn btn-link btn-xs removeSearch" data-searchid="{{ search.id }}"><span class="glyphicon glyphicon-remove-circle text-danger" aria-hidden="true"></span></button>
-					</p>
-				</li>
-			{% endfor %}
-			</ul> 
-		{% else %}
-			<div class="col-md-6">
-				<h4>No Searches Yet Saved!</h4>
-				<p>After you have searched for course materials using the search box above, you can save and return to your search by clicking the <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> button to the right of the search box.</p>
-			</div>
-		{% endif %}
+{% block css_block %} 
+{% endblock %} 
+
+{% block head_js_block %} 
+{% endblock %} 
+
+{% block content %}
+<!-- Page Content -->
+<div class="container search-body">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="marginBottom15">My Saved Searches</h2>
+        </div>
+    </div>
+    <div class="row savedSearchList">
+    	{% include 'website/current_saved_searches.html' %}
 	</div>
-</div>				
+	<div class="row marginBottom100">
+    </div>
+</div>
+{% endblock %}
+
+{% block js_block %}
+<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+{% endblock %}
+
 

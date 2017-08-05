@@ -322,15 +322,20 @@ def mybundles(request):
 
 
 	"""
-	  Queries the database for search terms and returns list of results; goes to bundle
+	  Pulls all user bundles and prints
 	"""
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
 
-	# placeholder keyword to return all items
-	keyword = ''
-	tab = 'bundle'
-	context_dict = mainSearchCode(request, keyword, tab)
+	else:
+		bundles_returned = bundles.objects.none()
 
-	return render(request, 'website/profile.html', context_dict)
+
+	context_dict = {'bundles_returned':bundles_returned,}
+
+
+	return render(request, 'website/bundle_list.html', context_dict)
 
 
 @login_required
@@ -352,17 +357,22 @@ def myprofile(request):
 @login_required
 def mysavedsearches(request):
 
-
 	"""
-	  Queries the database for search terms and returns list of results; goes to bundle
+	  Pulls all user searches and prints
 	"""
+	if request.user.is_authenticated():
 
-	# placeholder keyword to return all items
-	keyword = ''
-	tab = 'searches'
-	context_dict = mainSearchCode(request, keyword, tab)
+		# pull saved searches
+		saved_searches = savedSearches.objects.filter(user=request.user)
 
-	return render(request, 'website/profile.html', context_dict)
+
+	else:
+		saved_searches = savedSearches.objects.none()
+
+	context_dict = {'saved_searches':saved_searches,}
+
+
+	return render(request, 'website/saved_searches.html', context_dict)
 
 
 
@@ -764,7 +774,7 @@ def removeSearch(request):
 	saved_searches = savedSearches.objects.filter(user=request.user)
 
 	context_dict = {'saved_searches':saved_searches}
-	return render(request, 'website/saved_searches.html', context_dict)
+	return render(request, 'website/current_saved_searches.html', context_dict)
 
 
 def showBundle(request, id=None):
@@ -2296,6 +2306,80 @@ def admin_remove_coming_soon_module(request, id=None):
 	# Bad form (or form details), no form supplied...
 	# Render the form with error messages (if any).
 	return render(request, 'website/admin_remove_coming_soon_module.html', {'form': form, 'modulesObject': modulesObject,})
+
+@login_required
+def admin_managedoctypes(request, id=None):
+	"""
+	  Check if superuser
+	"""
+	if request.user.groups.filter(name="superusers").exists():
+		empty = {}
+	else:
+		return HttpResponseRedirect('/')
+
+	#get doc types
+	doc_types = docType.objects.all()
+
+	if id:
+		doc_type_object = docType.objects.get(id=id)
+	else:
+		doc_type_object = docType()
+
+	# A HTTP POST?
+	if request.method == 'POST':
+		form = docTypeAddForm(request.POST, instance=doc_type_object)
+
+		# Have we been provided with a valid form?
+		if form.is_valid():
+			# Save the new data to the database.
+			f = form.save()
+
+			# send back to dashboard
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+		else:
+			# The supplied form contained errors - just print them to the terminal.
+			print form.errors
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = docTypeAddForm(instance=doc_type_object)
+
+	return render(request, 'website/admin_managedoctypes.html', {'doc_types': doc_types, 'form': form})
+
+def admin_removedoctype(request):
+
+	"""
+	  AJAX request to save search string
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		doctypeid = request.GET.get("doctypeid","")
+
+		# look up lecture and module docs that have this doc type and set them to nno doc type so they don't get deleted!
+		doc_type_object = docType.objects.get(pk=doctypeid)
+		lec_docs = lectureDocuments.objects.filter(doc_type=doc_type_object)
+
+		for lec_doc in lec_docs:
+			print lec_doc
+			lec_doc.doc_type = None
+
+		# delete document type
+		doc_type_object.delete()
+
+
+	#get doc types
+	doc_types = docType.objects.all()
+
+
+	doc_type_object = docType()
+
+	# If the request was not a POST, display the form to enter details.
+	form = docTypeAddForm(instance=doc_type_object)
+
+
+	context_dict = {'doc_types':doc_types, 'form': form}
+	return render(request, 'website/admin_current_doc_types.html', context_dict)
 
 
 def contactBundle(request):
