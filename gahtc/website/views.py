@@ -77,7 +77,7 @@ def testimonials(request):
 def grants(request):
 	context_dict = {}
 	return render(request, 'website/grants.html', context_dict)
-	
+
 
 def contact(request):
 
@@ -166,7 +166,7 @@ def mainSearchCode(request, keyword, tab):
 		lecture_documents_returned = lectureDocuments.objects.none()
 		lecture_slides_returned = lectureSlides.objects.none()
 		coming_soon_modules_returned = comingSoonModules.objects.none()
-		
+
 		if request.user.is_authenticated():
 			# pull bundles
 			bundles_returned = bundles.objects.filter(user=request.user)
@@ -186,7 +186,7 @@ def mainSearchCode(request, keyword, tab):
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
 
-		else: 
+		else:
 			bundles_returned = bundles.objects.none()
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
@@ -202,7 +202,7 @@ def mainSearchCode(request, keyword, tab):
 
 		for module in modules_returned:
 			if module.object is not None:
-				module.object.highlighted = module.highlighted 
+				module.object.highlighted = module.highlighted
 				module_modules.append(module.object)
 
 		for module_document in module_documents_returned:
@@ -261,7 +261,7 @@ def mainSearchCode(request, keyword, tab):
 
 		# sum up all results count again
 		all_results_count = modules_returned_unique_count + module_documents_returned_count + lectures_returned_count + lecture_segments_returned_count + lecture_documents_returned_count + lecture_slides_returned_count + coming_soon_modules_returned_count
-		
+
 		if request.user.is_authenticated():
 			# pull bundles
 			bundles_returned = bundles.objects.filter(user=request.user)
@@ -280,7 +280,7 @@ def mainSearchCode(request, keyword, tab):
 			# pull saved searches
 			saved_searches = savedSearches.objects.filter(user=request.user)
 
-		else: 
+		else:
 			bundles_returned = bundles.objects.none()
 			user_profile = profile.objects.none()
 			saved_searches = savedSearches.objects.none()
@@ -313,7 +313,7 @@ def search(request):
 		except KeyError:
 			return HttpResponseRedirect("/")
 
-	
+
 	return render(request, 'website/search.html', context_dict)
 
 
@@ -322,15 +322,20 @@ def mybundles(request):
 
 
 	"""
-	  Queries the database for search terms and returns list of results; goes to bundle
+	  Pulls all user bundles and prints
 	"""
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
 
-	# placeholder keyword to return all items
-	keyword = ''
-	tab = 'bundle'
-	context_dict = mainSearchCode(request, keyword, tab)	
+	else:
+		bundles_returned = bundles.objects.none()
 
-	return render(request, 'website/profile.html', context_dict)
+
+	context_dict = {'bundles_returned':bundles_returned,}
+
+
+	return render(request, 'website/bundle_list.html', context_dict)
 
 
 @login_required
@@ -344,7 +349,7 @@ def myprofile(request):
 	# placeholder keyword to return all items
 	keyword = ''
 	tab = 'profile'
-	context_dict = mainSearchCode(request, keyword, tab)	
+	context_dict = mainSearchCode(request, keyword, tab)
 
 	return render(request, 'website/profile.html', context_dict)
 
@@ -352,17 +357,22 @@ def myprofile(request):
 @login_required
 def mysavedsearches(request):
 
-
 	"""
-	  Queries the database for search terms and returns list of results; goes to bundle
+	  Pulls all user searches and prints
 	"""
+	if request.user.is_authenticated():
 
-	# placeholder keyword to return all items
-	keyword = ''
-	tab = 'searches'
-	context_dict = mainSearchCode(request, keyword, tab)	
+		# pull saved searches
+		saved_searches = savedSearches.objects.filter(user=request.user)
 
-	return render(request, 'website/profile.html', context_dict)
+
+	else:
+		saved_searches = savedSearches.objects.none()
+
+	context_dict = {'saved_searches':saved_searches,}
+
+
+	return render(request, 'website/saved_searches.html', context_dict)
 
 
 
@@ -373,7 +383,7 @@ def showModule(request, id=None):
 	#get module
 	module_returned = modules.objects.get(pk=id)
 
-	#look up module docs 
+	#look up module docs
 	moduleDocs = moduleDocuments.objects.filter(module=module_returned)
 	# just get the file name
 	for doc in moduleDocs:
@@ -406,7 +416,7 @@ def showModule(request, id=None):
 			lecDoc.documentName = document[2]
 
 	# order titles minus articles
-	moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))	
+	moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
 
 	moduleDocsCount = moduleDocuments.objects.filter(module=module_returned)
 	contents = []
@@ -415,7 +425,7 @@ def showModule(request, id=None):
 		contents.append(doc.document_contents)
 
 	# join document contents together
-	module_returned.document_contents = '\n'.join(contents)	
+	module_returned.document_contents = '\n'.join(contents)
 
 	#get first lecture uploaded
 	earliest_lecture = lectures.objects.filter(module=module_returned).exclude(extracted=False).earliest('created')
@@ -423,7 +433,7 @@ def showModule(request, id=None):
 	if request.user.is_authenticated():
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
-	else: 
+	else:
 		bundles_returned = bundles.objects.none()
 
 	# get comments
@@ -446,7 +456,7 @@ def showLecture(request, id=None):
 	if request.user.is_authenticated():
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
-	else: 
+	else:
 		bundles_returned = bundles.objects.none()
 
 	# get comments
@@ -469,7 +479,7 @@ def showLectureSegment(request, id=None):
 	if request.user.is_authenticated():
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
-	else: 
+	else:
 		bundles_returned = bundles.objects.none()
 
 	# get comments
@@ -491,7 +501,7 @@ def showLectureDocument(request, id=None):
 	if request.user.is_authenticated():
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
-	else: 
+	else:
 		bundles_returned = bundles.objects.none()
 
 	# get comments
@@ -513,7 +523,7 @@ def showLectureSlide(request, id=None):
 	if request.user.is_authenticated():
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
-	else: 
+	else:
 		bundles_returned = bundles.objects.none()
 
 	# get comments
@@ -535,6 +545,16 @@ def showLectureModal(request, id=None):
 
 	context_dict = {'lecture_returned':lecture_returned, 'lecture_slides':lecture_slides}
 	return render(request, 'website/show_lecture_modal.html', context_dict)
+
+def showModuleDescription(request, id=None):
+  """
+    Response from AJAX request to show lecture slides in modal
+  """
+  #get lecture
+  module_returned = modules.objects.get(pk=id)
+
+  context_dict = {'module_returned':module_returned}
+  return render(request, 'website/show_module_description.html', context_dict)
 
 def showLectureSegmentModal(request, id=None):
 	"""
@@ -571,7 +591,7 @@ def createNewBundle(request):
 		bundle = bundles(user=request.user, title=title)
 		bundle.save()
 
-		# add item to appropriate bundle 
+		# add item to appropriate bundle
 		itemid = itemid.split("_")
 		if itemid[0] == 'module':
 			#look up module
@@ -620,7 +640,7 @@ def addToBundle(request):
 		# get bundle
 		bundle = bundles.objects.get(pk=bundleid)
 
-		# add item to appropriate bundle 
+		# add item to appropriate bundle
 		itemid = itemid.split("_")
 		if itemid[0] == 'module':
 			#look up module
@@ -676,14 +696,14 @@ def removeFromBundle(request):
 		# get bundle
 		bundle = bundles.objects.get(pk=bundleid)
 
-		# remove item from appropriate bundle 
+		# remove item from appropriate bundle
 		if typename == 'module':
 			#look up module
 			module = modules.objects.get(pk=itemid)
 			bm = bundleModule.objects.filter(bundle=bundle, module=module)
 			for rec in bm:
 				rec.delete()
-			
+
 		elif typename == 'lecture':
 			#look up lecture
 			lecture = lectures.objects.get(pk=itemid)
@@ -754,7 +774,7 @@ def removeSearch(request):
 	saved_searches = savedSearches.objects.filter(user=request.user)
 
 	context_dict = {'saved_searches':saved_searches}
-	return render(request, 'website/saved_searches.html', context_dict)
+	return render(request, 'website/current_saved_searches.html', context_dict)
 
 
 def showBundle(request, id=None):
@@ -773,7 +793,7 @@ def showBundle(request, id=None):
 
 	# for each module in a bundle, attach the module documents and the lectures
 	for bundle in bundle_modules:
-		#look up module docs 
+		#look up module docs
 		moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
 		# just get the file name
 		for doc in moduleDocs:
@@ -809,7 +829,7 @@ def showBundle(request, id=None):
 				lecDoc.documentName = document[2]
 
 		# order titles minus articles
-		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))	
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
 
 		bundle.module.lectures = moduleLecs_ordered
 
@@ -864,7 +884,7 @@ def zipUpBundle(request, id=None):
 		for bundle in bundle_modules:
 			# create directory for module
 
-			#look up module docs 
+			#look up module docs
 			moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
 			#loop over docs and add to zip archive in the correct folder
 			for doc in moduleDocs:
@@ -906,11 +926,11 @@ def zipUpBundle(request, id=None):
 					myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
-		# for each lecture write to zip archive 
+		# for each lecture write to zip archive
 		for i, bundle in enumerate(bundle_lectures,1):
 			lecTitle = bundle.lecture.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-			lecTitle = '_'.join(lecTitle.split())[:100]			
+			lecTitle = '_'.join(lecTitle.split())[:100]
 
 			document = unicode(bundle.lecture.presentation)
 			document = document.split('/')
@@ -928,11 +948,11 @@ def zipUpBundle(request, id=None):
 				myzip.write(MEDIA_ROOT + '/' + str(lecDoc.document), directory)
 
 
-		# for each lecture segment write to zip archive 
+		# for each lecture segment write to zip archive
 		for i, bundle in enumerate(bundle_lecture_segments,1):
 			lecTitle = bundle.lectureSegment.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-			lecTitle = '_'.join(lecTitle.split())[:100]	
+			lecTitle = '_'.join(lecTitle.split())[:100]
 
 			document = unicode(bundle.lectureSegment.presentation)
 			document = document.split('/')
@@ -942,10 +962,10 @@ def zipUpBundle(request, id=None):
 
 
 		#for each lecture document strip out name of file
-		for i, bundle in enumerate(bundle_lecture_documents,1):	
+		for i, bundle in enumerate(bundle_lecture_documents,1):
 			lecTitle = bundle.lectureDocument.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-			lecTitle = '_'.join(lecTitle.split())[:100]	
+			lecTitle = '_'.join(lecTitle.split())[:100]
 
 			document = unicode(bundle.lectureDocument.document)
 			document = document.split('/')
@@ -957,7 +977,7 @@ def zipUpBundle(request, id=None):
 		for i, bundle in enumerate(bundle_lecture_slides,1):
 			lecTitle = bundle.lectureSlide.lecture.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-			lecTitle = '_'.join(lecTitle.split())[:100]	
+			lecTitle = '_'.join(lecTitle.split())[:100]
 
 			document = unicode(bundle.lectureSlide.presentation)
 			document = document.split('/')
@@ -976,7 +996,7 @@ def zipUpModule(request, id=None):
 	"""
 	  Response from AJAX request to zip up module and create download
 	"""
-	# get module 
+	# get module
 	module_returned = modules.objects.get(pk=id)
 	modTitle = module_returned.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
 	"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
@@ -1000,7 +1020,7 @@ def zipUpModule(request, id=None):
 		d.downloaded = True
 		d.save()
 
-		#look up module docs 
+		#look up module docs
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
 		#loop over docs and add to zip archive in the correct folder
 		for doc in moduleDocs:
@@ -1049,7 +1069,7 @@ def zipUpLecture(request, id=None):
 	lec = lectures.objects.get(pk=id)
 	lecTitle = lec.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
 	"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-	lecTitle = '_'.join(lecTitle.split())[:100]	
+	lecTitle = '_'.join(lecTitle.split())[:100]
 
 	#folder for zip file
 	folder = "/zip_files/lecture_"+ id +"/"
@@ -1111,7 +1131,7 @@ def updateProfile(request):
 
 	"""
 	  Loads the user profile page for editing
-	"""	
+	"""
 
 
 	#get user profile data and pass to view
@@ -1119,29 +1139,29 @@ def updateProfile(request):
 		user_profile = profile.objects.get(user=request.user)
 	except profile.DoesNotExist:
 		user_profile = None
-		
+
 	if request.method == 'POST':
 		user_form = UserInfoForm(data=request.POST, instance=request.user)
 		profile_form = UserProfileForm(data=request.POST, instance=user_profile)
 		if user_form.is_valid() and profile_form.is_valid():
-			user_form.save()       
+			user_form.save()
 			pf = profile_form.save(commit=False)
 			try:
-				pf.avatar = request.FILES['avatar'] 
+				pf.avatar = request.FILES['avatar']
 			except KeyError:
 				nothing = {}
 			try:
-				pf.instutution_document = request.FILES['instutution_document'] 
+				pf.instutution_document = request.FILES['instutution_document']
 			except KeyError:
 				nothing = {}
 			pf.user = request.user
 			pf.save()
 
 			return HttpResponseRedirect("/profile/")
-						
+
 		else:
 			print user_form.errors, profile_form.errors
-			
+
 	else:
 		user_form = UserInfoForm(instance=request.user)
 		profile_form = UserProfileForm(instance=user_profile)
@@ -1149,7 +1169,7 @@ def updateProfile(request):
 
 	keyword = ''
 	tab = 'profile'
-	context_dict = mainSearchCode(request, keyword, tab)	
+	context_dict = mainSearchCode(request, keyword, tab)
 
 	context_dict_extra = {'user_form': user_form, 'profile_form': profile_form}
 
@@ -1161,8 +1181,8 @@ def updateProfile(request):
 def modulesView(request):
 
 	"""
-	  Loads all modules 
-	"""	
+	  Loads all modules
+	"""
 
 	modules_returned = modules.objects.all().order_by('title')
 
@@ -1179,7 +1199,7 @@ def modulesView(request):
 
 
 	for module_returned in modules_returned_ordered:
-		#look up module docs 
+		#look up module docs
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned).order_by('title')
 		# just get the file name
 		contents = []
@@ -1190,9 +1210,9 @@ def modulesView(request):
 			contents.append(doc.document_contents)
 
 		# join document contents together
-		module_returned.document_contents = '\n'.join(contents)	
+		module_returned.document_contents = '\n'.join(contents)
 
-		#attach the module docs to the module returned 
+		#attach the module docs to the module returned
 		module_returned.moduleDocs = moduleDocs
 
 		#look up the lectures
@@ -1221,7 +1241,7 @@ def modulesView(request):
 		# order titles minus articles
 		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
 
-		#attach the module docs to the module returned 
+		#attach the module docs to the module returned
 		module_returned.moduleLecs = moduleLecs_ordered
 
 	coming_soon_modules_returned = comingSoonModules.objects.all().order_by('title')
@@ -1236,7 +1256,7 @@ def lecturesView(request):
 
 	"""
 	  Loads all lectures grouped by module
-	"""	
+	"""
 
 	modules_returned = modules.objects.all().order_by('title')
 
@@ -1253,7 +1273,7 @@ def lecturesView(request):
 
 
 	for module_returned in modules_returned_ordered:
-		#look up module docs 
+		#look up module docs
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned).order_by('title')
 		# just get the file name
 		contents = []
@@ -1264,9 +1284,9 @@ def lecturesView(request):
 			contents.append(doc.document_contents)
 
 		# join document contents together
-		module_returned.document_contents = '\n'.join(contents)	
+		module_returned.document_contents = '\n'.join(contents)
 
-		#attach the module docs to the module returned 
+		#attach the module docs to the module returned
 		module_returned.moduleDocs = moduleDocs
 
 		#look up the lectures
@@ -1295,7 +1315,7 @@ def lecturesView(request):
 		# order titles minus articles
 		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
 
-		#attach the module docs to the module returned 
+		#attach the module docs to the module returned
 		module_returned.moduleLecs = moduleLecs_ordered
 
 
@@ -1307,7 +1327,7 @@ def lecturesView(request):
 def membersView(request):
 	"""
 	  Loads all user profiles
-	"""	
+	"""
 
 	contributing_profiles_returned = profile.objects.filter(verified=True, public=True).filter(Q(modules__isnull=False) | Q(lectures__isnull=False) | Q(comingsoonmodules__isnull=False)).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
 
@@ -1357,7 +1377,7 @@ def saveComment(request):
 		itemid = request.GET.get("itemid","")
 		comment = request.GET.get("comment","")
 
-		# add item to appropriate bundle 
+		# add item to appropriate bundle
 		itemid = itemid.split("_")
 		if itemid[0] == 'module':
 			#look up module
@@ -1398,7 +1418,7 @@ def saveComment(request):
 @login_required
 def dashboard(request):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1407,7 +1427,7 @@ def dashboard(request):
 
 	"""
 	  Admin dashboard -- get modules with their content
-	"""	
+	"""
 
 	modulesObjects = modules.objects.all().order_by('title')
 
@@ -1424,7 +1444,7 @@ def dashboard(request):
 
 
 	for module_returned in modules_returned_ordered:
-		#look up module docs 
+		#look up module docs
 		moduleDocs = moduleDocuments.objects.filter(module=module_returned)
 
 		#look up the document name split
@@ -1433,7 +1453,7 @@ def dashboard(request):
 			document = document.split('/')
 			doc.documentName = document[2]
 
-		#attach the module docs to the module returned 
+		#attach the module docs to the module returned
 		module_returned.moduleDocumentsObjects = moduleDocs
 
 		#look up the lectures
@@ -1460,7 +1480,7 @@ def dashboard(request):
 			for doc in lectureDocs:
 				document = str(doc.document)
 				document = document.split('/')
-				doc.documentName = document[2]			
+				doc.documentName = document[2]
 			lec.lectureDocumentsObjects = lectureDocs
 			lectureSegs = lectureSegments.objects.filter(lecture=lec)
 			#look up the document name split
@@ -1468,13 +1488,13 @@ def dashboard(request):
 				#look up the document name split
 				lectureseg = str(lecseg.presentation)
 				lectureseg = lectureseg.split('/')
-				lecseg.lectureName = lectureseg[2]			
+				lecseg.lectureName = lectureseg[2]
 			lec.lectureSegmentsObjects = lectureSegs
 
 		# order titles minus articles
-		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))		
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
 
-		#attach the module docs to the module returned 
+		#attach the module docs to the module returned
 		module_returned.lecturesObjects = moduleLecs_ordered
 
 
@@ -1486,7 +1506,7 @@ def dashboard(request):
 @login_required
 def admin_module(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1514,7 +1534,7 @@ def admin_module(request, id=None):
 			profile_objects = profile.objects.filter(pk=modulesObject.authors_m2m.all())
 			for profile_object in profile_objects:
 				profile_object.contributing = True
-				profile_object.save()			
+				profile_object.save()
 
 
 			# route user depending on what button they clicked
@@ -1526,8 +1546,8 @@ def admin_module(request, id=None):
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.id)))
 			else:
 				# send to new lecture form
-				return HttpResponseRedirect(reverse('admin_lecture', args=(0,f.id)))			
-			
+				return HttpResponseRedirect(reverse('admin_lecture', args=(0,f.id)))
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1544,7 +1564,7 @@ def admin_module(request, id=None):
 @login_required
 def admin_removemodule(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1553,7 +1573,7 @@ def admin_removemodule(request, id=None):
 
 	if id:
 		modulesObject = modules.objects.get(id=id)
-			#look up module docs 
+			#look up module docs
 		moduleDocs = moduleDocuments.objects.filter(module=modulesObject)
 		# just get the file name
 		for doc in moduleDocs:
@@ -1589,7 +1609,7 @@ def admin_removemodule(request, id=None):
 			if 'delete' in request.POST:
 				modulesObject.delete()
 				return HttpResponseRedirect(request.POST['referer'])
-	
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1606,7 +1626,7 @@ def admin_removemodule(request, id=None):
 @login_required
 def admin_moduledoc(request, id=None, moduleid=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1637,7 +1657,7 @@ def admin_moduledoc(request, id=None, moduleid=None):
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.module.id,)))
-			
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1653,7 +1673,7 @@ def admin_moduledoc(request, id=None, moduleid=None):
 @login_required
 def admin_removemoduledoc(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1676,7 +1696,7 @@ def admin_removemoduledoc(request, id=None):
 			if 'delete' in request.POST:
 				moduleDocumentsObject.delete()
 				return HttpResponseRedirect(request.POST['referer'])
-	
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1693,7 +1713,7 @@ def admin_removemoduledoc(request, id=None):
 @login_required
 def admin_lecture(request, id=None, moduleid=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1725,7 +1745,7 @@ def admin_lecture(request, id=None, moduleid=None):
 				f.extracted = True
 
 			f.save()
-			
+
 			# Without this next line the tags won't be saved.
 			form.save_m2m()
 
@@ -1748,7 +1768,7 @@ def admin_lecture(request, id=None, moduleid=None):
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_lecture', args=(0,f.module.id,)))
-			
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1765,7 +1785,7 @@ def admin_lecture(request, id=None, moduleid=None):
 @login_required
 def admin_removelecture(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1803,7 +1823,7 @@ def admin_removelecture(request, id=None):
 			if 'delete' in request.POST:
 				lectureObject.delete()
 				return HttpResponseRedirect(request.POST['referer'])
-	
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1820,7 +1840,7 @@ def admin_removelecture(request, id=None):
 @login_required
 def admin_lecturesegment(request, id=None, lectureid=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1879,7 +1899,7 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_lecturesegment', args=(0,f.lecture.id,)))
-			
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1895,7 +1915,7 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 @login_required
 def admin_removelecturesegment(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1918,7 +1938,7 @@ def admin_removelecturesegment(request, id=None):
 			if 'delete' in request.POST:
 				lecturesegmentObject.delete()
 				return HttpResponseRedirect(request.POST['referer'])
-	
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1935,7 +1955,7 @@ def admin_removelecturesegment(request, id=None):
 @login_required
 def admin_lecturedoc(request, id=None, lectureid=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -1966,7 +1986,7 @@ def admin_lecturedoc(request, id=None, lectureid=None):
 			else:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.lecture.id,)))
-			
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -1982,7 +2002,7 @@ def admin_lecturedoc(request, id=None, lectureid=None):
 @login_required
 def admin_removelecturedoc(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2005,7 +2025,7 @@ def admin_removelecturedoc(request, id=None):
 			if 'delete' in request.POST:
 				lecturedocObject.delete()
 				return HttpResponseRedirect(request.POST['referer'])
-	
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -2021,7 +2041,7 @@ def admin_removelecturedoc(request, id=None):
 @login_required
 def admin_accounts(request):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2037,13 +2057,13 @@ def admin_accounts(request):
 	# rejected
 	rejected = profile.objects.filter(verified__exact=False).exclude(last_name='', first_name='').order_by('name')
 
-	# pull all account holders 
+	# pull all account holders
 	return render(request, 'website/admin_accounts.html', {'unverified': unverified, 'accepted': accepted, 'rejected':rejected})
 
 @login_required
 def admin_unverified(request):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2053,13 +2073,13 @@ def admin_unverified(request):
 	# unverified
 	unverified = profile.objects.filter(verified__exact=None).order_by('name')
 
-	# pull all account holders 
+	# pull all account holders
 	return render(request, 'website/admin_unverified.html', {'unverified': unverified,})
 
 @login_required
 def admin_update_profile(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2072,28 +2092,28 @@ def admin_update_profile(request, id=None):
 		user_profile = profile.objects.get(user=thisUser)
 	except profile.DoesNotExist:
 		user_profile = None
-		
+
 	if request.method == 'POST':
 		user_form = UserInfoForm(data=request.POST, instance=thisUser)
 		profile_form = AdminUserProfileForm(data=request.POST, instance=user_profile)
 		if user_form.is_valid() and profile_form.is_valid():
-			user_form.save()       
+			user_form.save()
 			pf = profile_form.save(commit=False)
 			try:
-				pf.avatar = request.FILES['avatar'] 
+				pf.avatar = request.FILES['avatar']
 			except KeyError:
 				nothing = {}
 			try:
-				pf.instutution_document = request.FILES['instutution_document'] 
+				pf.instutution_document = request.FILES['instutution_document']
 			except KeyError:
 				nothing = {}
 			pf.save()
 
 			return HttpResponseRedirect(request.POST['referer'])
-						
+
 		else:
 			print user_form.errors, profile_form.errors
-			
+
 	else:
 		user_form = UserInfoForm(instance=thisUser)
 		profile_form = AdminUserProfileForm(instance=user_profile)
@@ -2106,7 +2126,7 @@ def admin_update_profile(request, id=None):
 @login_required
 def admin_verify_user(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2119,11 +2139,11 @@ def admin_verify_user(request, id=None):
 		user_profile = profile.objects.get(user=thisUser)
 	except profile.DoesNotExist:
 		user_profile = None
-		
+
 	if request.method == 'POST':
 		verify_form = AdminVerifyUserForm(data=request.POST, instance=user_profile)
 		if verify_form.is_valid():
-			vf = verify_form.save()       
+			vf = verify_form.save()
 
 			#send email if use was verified or rejected
 			if vf.verified != None:
@@ -2133,20 +2153,20 @@ def admin_verify_user(request, id=None):
 					html_message = "Hello "+ user_profile.name +"!<br /><br />Your account has now been verified on <a href='http://gahtc.org/'>gahtc.org</a>, and you may now bundle and download course materials. Please visit <a href='http://gahtc.org/'>gahtc.org</a> to get started.<br /><br />Thank you!<br />GAHTC | Global Architectural History Teaching Collaborative"
 					message = "Hello "+ user_profile.name +"! Your account has now been verified on gahtc.org, and you may now bundle and download course materials. Please visit gahtc.org to get started. Thank you! GAHTC | Global Architectural History Teaching Collaborative"
 
-					send_mail(subject, message, 'gahtcweb@gmail.com', [user_profile.user.email], fail_silently=True, html_message=html_message)				
+					send_mail(subject, message, 'gahtcweb@gmail.com', [user_profile.user.email], fail_silently=True, html_message=html_message)
 				else:
 					subject = "[GAHTC] We're sorry, but your account has been rejected."
 					html_message = "Hello "+ user_profile.name +",<br /><br />We're sorry to report, but your account had been rejected by the GAHTC administrator. You may still search the GAHTC site for course materials, but you will not be able to download any of these materials until your account is approved. If you feel that this has been done in error, please contact GAHTC by visiting <a href='http://gahtc.org/contact/'>Contact GAHTC</a>.<br /><br />GAHTC | Global Architectural History Teaching Collaborative"
 					message = "Hello "+ user_profile.name +", We're sorry to report, but your account had been rejected by the GAHTC administrator. You may still search the GAHCT site for course materials, but you will not be able to download any of these materials until your account is approved. If you feel that this has been done in error, please contact GAHTC by visiting the Contact GAHTC page ( http://gahtc.org/contact/ ). GAHTC | Global Architectural History Teaching Collaborative"
 
-					send_mail(subject, message, 'gahtcweb@gmail.com', [user_profile.user.email], fail_silently=True, html_message=html_message)				
-				
+					send_mail(subject, message, 'gahtcweb@gmail.com', [user_profile.user.email], fail_silently=True, html_message=html_message)
+
 
 			return HttpResponseRedirect(request.POST['referer'])
-						
+
 		else:
 			print verify_form.errors
-			
+
 	else:
 		verify_form = AdminVerifyUserForm(instance=user_profile)
 
@@ -2160,7 +2180,7 @@ def admin_verify_user(request, id=None):
 @login_required
 def admin_download_user_profiles(request):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2176,7 +2196,7 @@ def admin_download_user_profiles(request):
 @login_required
 def admin_downloads(request):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2202,7 +2222,7 @@ def admin_downloads(request):
 @login_required
 def admin_coming_soon_module(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2225,7 +2245,7 @@ def admin_coming_soon_module(request, id=None):
 
 			# send back to dashboard
 			return HttpResponseRedirect(request.POST['referer'])
-			
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -2240,7 +2260,7 @@ def admin_coming_soon_module(request, id=None):
 @login_required
 def admin_remove_coming_soon_modules(request):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2253,7 +2273,7 @@ def admin_remove_coming_soon_modules(request):
 @login_required
 def admin_remove_coming_soon_module(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2275,7 +2295,7 @@ def admin_remove_coming_soon_module(request, id=None):
 			if 'delete' in request.POST:
 				modulesObject.delete()
 				return HttpResponseRedirect(request.POST['referer'])
-	
+
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -2290,7 +2310,7 @@ def admin_remove_coming_soon_module(request, id=None):
 @login_required
 def admin_managedoctypes(request, id=None):
 	"""
-	  Check if superuser 
+	  Check if superuser
 	"""
 	if request.user.groups.filter(name="superusers").exists():
 		empty = {}
@@ -2322,7 +2342,7 @@ def admin_managedoctypes(request, id=None):
 			print form.errors
 	else:
 		# If the request was not a POST, display the form to enter details.
-		form = docTypeAddForm(instance=doc_type_object)	
+		form = docTypeAddForm(instance=doc_type_object)
 
 	return render(request, 'website/admin_managedoctypes.html', {'doc_types': doc_types, 'form': form})
 
@@ -2342,7 +2362,7 @@ def admin_removedoctype(request):
 
 		for lec_doc in lec_docs:
 			print lec_doc
-			lec_doc.doc_type = None 
+			lec_doc.doc_type = None
 
 		# delete document type
 		doc_type_object.delete()
@@ -2355,7 +2375,7 @@ def admin_removedoctype(request):
 	doc_type_object = docType()
 
 	# If the request was not a POST, display the form to enter details.
-	form = docTypeAddForm(instance=doc_type_object)	
+	form = docTypeAddForm(instance=doc_type_object)
 
 
 	context_dict = {'doc_types':doc_types, 'form': form}
@@ -2525,7 +2545,7 @@ def inlineEditUpdateDoc(request):
 
 		#change name
 		doc_name = doc.name.split('/')
-		
+
 		#update fileserver name
 		os.rename(doc.path, new_path)
 
