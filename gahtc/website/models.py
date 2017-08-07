@@ -97,8 +97,12 @@ class lectures(models.Model):
 		   Get the first slide image of a lecture  
 		"""
 		x = lectureSlides.objects.filter(lecture=self.pk, slide_number=0)[:1]
-		y = x[0].slide
-		return x[0].slide
+		try:
+			y = x[0].slide
+		except Exception as e:
+			y = None
+		
+		return y
 
 	def __unicode__(self):
 		return self.title
@@ -123,9 +127,12 @@ class lectureSegments(models.Model):
 		   Get the first slide image of a lecture  
 		"""
 		x = lectureSlidesSegment.objects.filter(lecture_segment=self.pk, slide_number=0)[:1]
-		y = x[0].slide
-		return x[0].slide
-
+		try:
+			y = x[0].slide
+		except Exception as e:
+			y = None
+		
+		return y
 
 # lecture documents
 class lectureDocuments(models.Model):
