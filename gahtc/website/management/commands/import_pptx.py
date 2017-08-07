@@ -221,7 +221,7 @@ class Command(BaseCommand):
 
 		# run the command and put the output in "head"
 		# libreoffice --headless --convert-to pdf --outdir head path_to_file
-		call(["soffice","--headless","--convert-to","pdf","--outdir",head,path_to_file])
+		call(["libreoffice","--headless","--convert-to","pdf","--outdir",head,path_to_file])
 
 		#extract all slides in pdf in imagemagic
 		# convert head/pdffilename[index] head/slide.png
