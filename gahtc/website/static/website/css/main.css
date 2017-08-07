@@ -1082,10 +1082,12 @@ body nav {
 }
 
 .lectures-titles {
-    padding: 20px 0;
+    padding: 20px 0;    
     padding-left: 20px;
     display: flex;
     flex-direction: column;
+    height: 350px;
+    overflow: scroll;
     border-bottom: 1px solid #8C8C8C;
 }
 

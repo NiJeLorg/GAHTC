@@ -90,11 +90,6 @@
                                 <p class="supporting-documents">supporting documments: </p>
                             </section>
                         </div>
-                        {% comment %}
-                        <div class="image-container" style="background: url('/media/{{lec.getSlideOne}}')">
-                            {% if user.is_authenticated %}
-                            <button type='button' class="preview-slides launchModal" data-lectureid="{{ lec.id }}">preview slides</button>                            {% endif %}
-                        </div> {% endcomment %}
                     </div>
                     {% endfor %} {% endif %}
                     <div class="panel-expand-container">
