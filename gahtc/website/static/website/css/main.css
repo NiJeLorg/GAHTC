@@ -2,7 +2,6 @@
  * Main CSS for GAHTC Website
  */
 
-
 /*
 * Font-faces for custom serifed font
 */
@@ -803,7 +802,7 @@ body nav {
 
 .featured-modules-title {
     margin: 0 auto;
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 0;
     width: 85%;
     font-family: sans-serif;
@@ -812,8 +811,8 @@ body nav {
 }
 
 .featured-modules .image-container {
-    width: 510px;
-    height: 320px;
+    width: 400px;
+    height: 250px;
     display: inline-block;
     background-size: cover !important;
     margin-right: 15px;
@@ -1418,10 +1417,6 @@ body nav {
     color: #777777;
 }
 
-.lecture-buttons {
-    display: flex;
-    height: 50px;
-}
 
 .download-lecture {
     display: flex;
@@ -1439,21 +1434,7 @@ body nav {
     height: 100%;
 }
 
-.lecture-buttons span {
-    color: #fff;
-}
 
-.lecture-buttons .see-details {
-    background: #333333;
-    font-family: sans-serif;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-}
-
-.see-details a {
-    color: #fff;
-}
 
 .related-modules-container {
     border-bottom: 1px solid #F3F3F3;
@@ -1464,13 +1445,7 @@ body nav {
     border-bottom: 1px solid #F3F3F3;
 }
 
-.terms-conditions-container p {
-    font-family: sans-serif;
-    color: #b5b5b5;
-    margin: 0;
-    line-height: 24px;
-    font-size: 16px;
-}
+
 
 @media (max-width: 1024px) {
     .member-view {
@@ -4441,15 +4416,16 @@ ul.as-selections li.as-original input {
     display: flex;
     justify-content: space-between;
     background: #EFEFEF;
-    padding: 20px 50px;
+    padding: 20px 40px;
+    align-items: center;
 }
 
 .module-title button {
     border-radius: 50%;
     background: #333333;
-    width: 40px;
+    width: 30px;
     align-items: center;
-    height: 40px;
+    height: 30px;
     color: #fff;
     border: none;
 }
@@ -4461,37 +4437,43 @@ ul.as-selections li.as-original input {
 
 .panel h3 {
     margin: 0;
+    font-size: 24px;
+    font-weight: bold;
     background: #EFEFEF;
     color: #000000;
     font-style: normal;
 }
 
 .panel-main {
-    padding: 60px 30px;
+    padding: 40px 30px;
     background: #FAFAFA;
-    display: flex;
-    justify-content: space-between;
 }
 
-.panel-main .image-container {
-    width: 480px;
-    height: 300px;
-    background-size: cover !important;
+.panel-main .row {
+    margin: 0;
 }
 
 .panel-main section {
-    width: 65%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .panel-main section p {
-    font-size: 21px;
+    font-size: 18px;
     line-height: 1.6em;
     max-height: 8em;
     overflow: hidden;
     color: #383838;
+    margin-bottom: 0;
+}
+
+.panel-main section .readMore {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: #BF413E;
+    font-weight: bold;
 }
 
 .panel-main .created-by {
@@ -4506,24 +4488,18 @@ ul.as-selections li.as-original input {
 }
 
 .panel-section-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-top: 40px;
 }
+
 
 .panel-section-footer .buttons {
     display: flex;
     height: 100%;
+    justify-content: flex-end;
 }
 
 .buttons button {
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    background: #BF413E;
-    font-family: LinuxLibertine, serif;
-    padding: 15px 20px;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 .panel footer a {
@@ -4535,6 +4511,7 @@ ul.as-selections li.as-original input {
     display: inline-block;
     border-top: 1px solid #E4E4E4;
     color: #B0B0B0;
+    font-size: 14px;
 }
 
 
@@ -4563,18 +4540,18 @@ ul.as-selections li.as-original input {
 
 .panel-expand-item section {
     flex-grow: 1;
-    padding-left: 40px;
 }
 
 .panel-expand-item section h4 {
     font-family: 'LinuxLibertine', serif;
     text-decoration: underline;
+    font-size: 22px;
     font-style: italic;
 }
 
 .panel-expand-item .lecture-description-text {
-    font-size: 21px;
-    margin-top: 20px;
+    font-size: 18px;
+    margin-top: 10px;
 }
 
 .panel-expand-item .supporting-documents {
@@ -4591,27 +4568,12 @@ ul.as-selections li.as-original input {
     margin-top: 0;
 }
 
-.panel-expand .terms-conditions {
-    font-family: sans-serif;
-    color: #CECECE;
-    font-size: 16px;
-    padding: 20px;
-    border-top: 1px solid #ece9e9;
-    margin: 0;
-}
 
-.title-buttons-group {
+.title-buttons-group .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
-.lecture-buttons button {
-    border-radius: 0;
-}
-
-.lecture-buttons .dropdown button {
-    padding: 12px 20px;
-}
 
 .lecture-panel .image-container-parent {
     display: flex;
@@ -4669,4 +4631,21 @@ ul.as-selections li.as-original input {
 .lecture-documents .document {
     display: flex;
     justify-content: space-between;
+}
+
+.see-details {
+    background: #333333;
+    color: #fff;
+}
+
+.see-details:hover {
+    color: #fff;
+}
+
+.terms-conditions {
+    font-family: sans-serif;
+    color: #b5b5b5;
+    margin: 0;
+    line-height: 24px;
+    font-size: 14px;
 }
