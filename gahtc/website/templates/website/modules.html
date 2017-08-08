@@ -5,7 +5,11 @@
 <div class="featured-modules-container">
     <div class="featured-modules">
         {% for module_returned in modules_returned %} {% if module_returned.featured > 0 %}
-        <div class="image-container" style="background: url('/media/{{module_returned.cover_image}}')">
+        <div class="module">
+            <a href="#heading_{{ module_returned.id }}">
+                <div class="image-container" style="background: url('/media/{{module_returned.cover_image}}')">
+                </div>
+            </a>
             <div class="title-container">
                 <h4><a href="#heading_{{ module_returned.id }}">{{ module_returned.title }}</a></h4>
             </div>
@@ -71,8 +75,7 @@
                                 <div class="title-buttons-group row">
                                     <h4 class="col-md-8">{{lec.title}}</h4>
                                     <div class="buttons col-md-4">
-                                        <a class='btn pull-right see-details' href="/lectures/#{{lec.id}}">see details</a>                                        
-                                        {% if user.is_authenticated %}
+                                        <a class='btn pull-right see-details' href="/lectures/#{{lec.id}}">see details</a>                                        {% if user.is_authenticated %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
