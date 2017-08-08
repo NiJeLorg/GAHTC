@@ -1,4 +1,4 @@
-{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Lectures{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
+{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Lectures{% endblock %} {% block css_block %} {%endblock%} {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
 <div class="jump-to-module-menu">
     <section>
@@ -12,66 +12,78 @@
 <div class="module-lecture-container">
     {% for module_returned in modules_returned %}
     <div class="module" id="heading_{{module_returned.id}}">
-        <h3 class="lecture-module-title">{{ module_returned.title }} ({{module_returned.moduleLecs|length}} lecture{{module_returned.moduleLecs|length|pluralize}}) </h3>
+        <h3 class="lecture-module-title">{{ module_returned.title }} ({{module_returned.moduleLecs|length}} lecture{{module_returned.moduleLecs|length|pluralize}})
+        </h3>
         <!-- <span>{{module_returned.moduleLecs.length}}</span> -->
         <div class="module-lectures-container">
             <div class="panel-group" id="accordion_modules" role="tablist" aria-multiselectable="true">
                 {% for lecture_returned in module_returned.moduleLecs %}
                 <div class="panel panel-default lecture-panel">
-                    <main class="panel-main">
-                        <div class="image-container-parent">
-                            <div class="image-container" style="background: url('/media/{{lecture_returned.getSlideOne}}')">
-                                {% if user.is_authenticated %}
-                                <button type='button' class="preview-slides launchModal" data-lectureid="{{ lecture_returned.id }}">preview slides</button>
-                                {% endif %}
-                            </div>
+                    <main class="panel-main row">
+                        <div class="image-container-parent col-md-3">
+                            <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid='{{lecture_returned.id}}'>
+                                <img src="/media/{{lecture_returned.getSlideOne}}" alt="" class="img-responsive">
+                                <h4 class="button-text-ribbon">preview slides</h4>
+                            </a>
                         </div>
-                        <section class="lecture-panel-section">
+                        <section class="lecture-panel-section col-md-9">
                             <h4>{{lecture_returned.title}}</h4>
                             <p>{{lecture_returned.description}}</p>
                             <div class="panel-section-footer">
-                                <div class="author-docs">
-                                    <p class="created-by">created by:</p>
-                                    <p>{% for authors in lecture_returned.authors_m2m.all %}
-                                        <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} {% endfor %}
-                                    </p>
-                                </div>
-                                <div class="buttons">
-                                    {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
-                                    <button class="download-module" data-moduleid="{{ lecture_returned.id }}">Download Lecture</button>
-                                    {% else %}
-                                    <button class="download-module" data-toggle="modal" data-target="#waitingForVerification">Download Lecture</button>
-                                    {% endif %}
-                                    <div class="dropdown">
-                                        <button class="add-to-bundle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+</button>
-                                        <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture_returned.id }}">
-                                            {% include "website/bundle_dropdown.html" %}
-                                        </ul>
+                                <div class="row">
+                                    <div class="author-docs col-md-7">
+                                        <span class="created-by">created by:</span>
+                                        <p>{% for authors in lecture_returned.authors_m2m.all %}
+                                            <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>                                            {% if not forloop.last %}, {% endif %} {% endfor %}
+                                        </p>
                                     </div>
-                                    {% endif %}
+                                    <div class="buttons col-md-5">
+                                        {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
+                                        <a class="btn btn-danger gahtcRed pull-right" type='button' data-lectureid="{{ lecture_returned.id }}">Download Lecture</a>                                        {% else %}
+                                        <a class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">Download Lecture</a>                                        {% endif %}
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type='button' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture_returned.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </section>
                     </main>
                     <div id="{{ lecture_returned.id }}" class="panel-collapse collapse panel-expand" role='tabpanel' aria-labelledby="{{ lecture_returned.id }}">
-                        <div class="lecture-documents">
-                            {% for lecDoc in lecture_returned.lectureDocs %}
-                            <div class="document">
-                                <p>{{lecDoc.title}}</p>
-                                <a href=""> <span>download ({{lecDoc.document.size|filesizeformat}})</span></a>
+                        <div class="row">
+                            <div class="lecture-documents col-md-8 col-md-offset-3">
+                                {% for lecDoc in lecture_returned.lectureDocs %}
+                                <div class="document">
+                                    <p>{{lecDoc.title}}</p>
+                                    <div class="dotted-effect"></div>
+                                    <a href=""> <span>download ({{lecDoc.document.size|filesizeformat}})</span></a>
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
                         <div class="panel-expand-container">
                             <h4>members comments: </h4>
                         </div>
                         <p class="panel-expand-container terms-conditions">Instructions
-                            <br> You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. (We should figure out a way to add to my bundle and a way to display the file size before users click on a link) Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
-                            <br> Terms and conditions. I understand that this material is to be used only in class room settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indicrectly, in whole or in part, for publication, in any form.
+                            <br> You can download individual files by selecting them from the list. Or download the entire
+                            module by clicking the 'Download Module' button above. (We should figure out a way to add to
+                            my bundle and a way to display the file size before users click on a link) Please read the terms
+                            and conditions before downloading any content. By downloading content from GAHTC.org you hereby
+                            agree to our terms and conditions.
+                            <br> Terms and conditions. I understand that this material is to be used only in class room settings.
+                            You are free to make changes to fit your constraints or teaching goals. However, this material
+                            cannot be used directly or indicrectly, in whole or in part, for publication, in any form.
                         </p>
                     </div>
                     <footer>
-                        <a href="#{{ lecture_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="{{ lecture_returned.id }}">SHOW MORE</a>
+                        <a href="#{{ lecture_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true"
+                            aria-controls="{{ lecture_returned.id }}">SHOW MORE</a>
                     </footer>
                     <!-- <div class="lecture-first-slide-container">
     <div class="lecture-first-slide" style="background: url('/media/{{lecture_returned.getSlideOne}}')">
@@ -200,7 +212,9 @@
                 <h4 class="modal-title" id="myModalLabel">Your account is awaiting verification.</h4>
             </div>
             <div class="modal-body">
-                <p>Your account has not yet been verified by a GAHTC administrator. Once your account is verified, you will be able to download course materials. You will be notified by email when your account has been verified. In the meantime, you can continue to search the site and add resources to your bundles. Thank you!</p>
+                <p>Your account has not yet been verified by a GAHTC administrator. Once your account is verified, you will
+                    be able to download course materials. You will be notified by email when your account has been verified.
+                    In the meantime, you can continue to search the site and add resources to your bundles. Thank you!</p>
             </div>
         </div>
     </div>
@@ -210,7 +224,7 @@
 </div>
 {% endblock %} {% block js_block %}
 <script type="text/javascript">
-var tab = "none";
+    var tab = "none";
 
 </script>
 <script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>

@@ -46,180 +46,6 @@ button {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* bootstrap override on link highlighting */
 
 
@@ -229,183 +55,6 @@ p {
     text-align: justify;
     font-family: 'LinuxLibertine';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*li {
@@ -623,187 +272,11 @@ body nav {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /** Browse by Modules Styles **/
 
 .featured-modules-title {
     margin: 0 auto;
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 0;
     width: 85%;
     font-family: sans-serif;
@@ -811,35 +284,31 @@ body nav {
     color: #AAAAAA;
 }
 
-.featured-modules .image-container {
-    width: 510px;
-    height: 320px;
+.featured-modules .module {
+    width: 400px;
     display: inline-block;
-    background-size: cover !important;
-    margin-right: 15px;
 }
 
-.image-container .title-container {
-    height: 100%;
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    transform: rotate(180deg);
+.featured-modules .image-container {
+    width: 400px;
+    height: 250px;
+    background-size: cover !important;
+}
+
+.featured-modules .module {
+    margin-right: 20px;
+}
+
+.featured-modules .module .title-container {
+    margin-top: -45px;
 }
 
 .title-container h4 {
-    margin: 0;
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    transform: rotate(180deg);
-    background: rgba(43, 43, 44, .8);
+    margin: 0;    
+    background: rgba(43, 43, 44, .6);
     padding: 10px;
     overflow: hidden;
     position: relative;
-    line-height: 1.2em;
 }
 
 .title-container a {
@@ -867,198 +336,19 @@ body nav {
     margin: 0 auto;
 }
 
-//     .all-modules .panel {
-//     background: #FAFAFA;
-//     border-bottom-right-radius: 0;
-//     border-bottom-left-radius: 0;
-//     box-shadow: 4px 4px 40px #dadada;
-// }
+.all-modules .panel {
+    background: #FAFAFA;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 4px 4px 40px #dadada;
+}
+
 .created-by {
     font-size: 12px;
     font-family: sans-serif;
     color: #AAAAAA;
     margin-bottom: 2px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Browswe by Lecture Styles */
@@ -1087,6 +377,8 @@ body nav {
     padding-left: 20px;
     display: flex;
     flex-direction: column;
+    height: 350px;
+    overflow: scroll;
     border-bottom: 1px solid #8C8C8C;
 }
 
@@ -1110,7 +402,11 @@ body nav {
 .module-lectures-container {
     border-left: 1px solid #CFCFCF;
     padding-top: 50px;
-    padding-left: 50px;
+}
+
+.module-lectures-container .panel-group {
+    width: 90%;
+    margin: 0 auto;
 }
 
 .module-lectures-container .lecture {
@@ -1175,187 +471,11 @@ body nav {
     color: #777777;
 }
 
-
 .module-lectures-container .lecture-description p {
     line-height: 1.4em;
     max-height: 9.8em;
     overflow: hidden;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Browse by Lecture Styles*/
@@ -1396,7 +516,6 @@ body nav {
     border: none;
 }
 
-
 .lecture-document .lecture-description {
     flex-grow: 1;
 }
@@ -1418,11 +537,6 @@ body nav {
     color: #777777;
 }
 
-.lecture-buttons {
-    display: flex;
-    height: 50px;
-}
-
 .download-lecture {
     display: flex;
 }
@@ -1439,44 +553,18 @@ body nav {
     height: 100%;
 }
 
-.lecture-buttons span {
-    color: #fff;
-}
-
-.lecture-buttons .see-details {
-    background: #333333;
-    font-family: sans-serif;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-}
-
-.see-details a {
-    color: #fff;
-}
-
 .related-modules-container {
     border-bottom: 1px solid #F3F3F3;
 }
 
-
 .member-comments-container {
     border-bottom: 1px solid #F3F3F3;
-}
-
-.terms-conditions-container p {
-    font-family: sans-serif;
-    color: #b5b5b5;
-    margin: 0;
-    line-height: 24px;
-    font-size: 16px;
 }
 
 @media (max-width: 1024px) {
     .member-view {
         padding: 0 3%;
     }
-
     .members-group .member {
         flex-basis: 49%;
     }
@@ -1492,15 +580,12 @@ body nav {
     .members-group .member {
         margin-bottom: 40px;
     }
-
     .members-section .members-group {
         flex-wrap: wrap;
     }
-
     .members-group .member {
         flex-basis: 100%;
     }
-
     h1 {
         font-size: 36px;
     }
@@ -1511,32 +596,25 @@ body nav {
         flex-direction: column;
         height: auto;
     }
-
     .navbar-header a img {
         width: 150px;
         height: auto;
     }
-
     h1 {
         font-size: 32px;
     }
-
     h3 {
         font-size: 24px;
     }
-
     .navbar-header-holder {
         display: block;
     }
-
     .navbar-header-holder .user-nav {
         display: none;
     }
-
     .navigation-links>a {
         display: none;
     }
-
     .navbar-nav .contact-us {
         display: block;
     }
@@ -1555,180 +633,6 @@ blockquote p {
     margin-left: auto;
     margin-right: auto;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Background Image */
@@ -1768,181 +672,6 @@ blockquote p {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Navbar */
 
 @media (min-width: 1200px) {
@@ -1950,181 +679,6 @@ blockquote p {
         margin-top: -50px;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* footer */
@@ -2160,182 +714,6 @@ blockquote p {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* button group */
 
 .lowerLeft {
@@ -2352,181 +730,6 @@ blockquote p {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Search Bar */
 
 .searchbar {
@@ -2540,181 +743,6 @@ blockquote p {
 .greybackground {
     background-color: rgba(204, 204, 204, 0.5);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Search results page */
@@ -2899,181 +927,6 @@ blockquote p {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*highlight text*/
 
 .highlight {
@@ -3083,181 +936,6 @@ blockquote p {
     border-radius: 3px;
     display: inline-block;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* red button backgrounds and text */
@@ -3271,364 +949,12 @@ blockquote p {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*content titles*/
 
 .content-title {
     font-size: 22px;
     font-weight: 700;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* button css with hover interactions */
@@ -3682,182 +1008,6 @@ blockquote p {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Add bottom padding to all containers */
 
 .container {
@@ -3865,362 +1015,11 @@ blockquote p {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Add some padding to the top of the search template container */
 
 .container.search-body {
     padding-top: 30px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Feedback Form */
@@ -4254,206 +1053,29 @@ blockquote p {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Admin Forms */
 
 ul.as-selections li.as-original input {
     height: 39px !important;
 }
 
-
 .module-title {
     display: flex;
     justify-content: space-between;
     background: #EFEFEF;
-    padding: 20px 50px;
+    padding: 20px 40px;
+    align-items: center;
 }
 
 .module-title button {
     border-radius: 50%;
     background: #333333;
-    width: 40px;
+    width: 30px;
     align-items: center;
-    height: 40px;
+    height: 30px;
     color: #fff;
     border: none;
 }
-
 
 .panel-group .panel {
     margin-bottom: 50px;
@@ -4461,40 +1083,47 @@ ul.as-selections li.as-original input {
 
 .panel h3 {
     margin: 0;
+    font-size: 24px;
+    font-weight: bold;
     background: #EFEFEF;
     color: #000000;
     font-style: normal;
 }
 
-.panel-main {
-    padding: 60px 30px;
-    background: #FAFAFA;
-    display: flex;
-    justify-content: space-between;
+.panel .row {
+    margin: 0;
 }
 
-.panel-main .image-container {
-    width: 480px;
-    height: 300px;
-    background-size: cover !important;
+.panel-main {
+    padding: 40px 30px;
+    background: #FAFAFA;
 }
+
 
 .panel-main section {
-    width: 65%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .panel-main section p {
-    font-size: 21px;
+    font-size: 18px;
     line-height: 1.6em;
     max-height: 8em;
     overflow: hidden;
     color: #383838;
+    margin-bottom: 0;
 }
 
-.panel-main .created-by {
+.panel-main section .readMore {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: #BF413E;
+    font-weight: bold;
+}
+
+.created-by {
     font-size: 14px;
     font-family: sans-serif;
     color: #AAAAAA;
@@ -4506,24 +1135,26 @@ ul.as-selections li.as-original input {
 }
 
 .panel-section-footer {
+    margin-top: 30px;
+}
+
+.panel-section-footer .row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+}
+
+.panel-section-footer .author-docs {
+    padding-left: 0;
 }
 
 .panel-section-footer .buttons {
     display: flex;
     height: 100%;
+    justify-content: flex-end;
 }
 
 .buttons button {
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    background: #BF413E;
-    font-family: LinuxLibertine, serif;
-    padding: 15px 20px;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 .panel footer a {
@@ -4535,8 +1166,8 @@ ul.as-selections li.as-original input {
     display: inline-block;
     border-top: 1px solid #E4E4E4;
     color: #B0B0B0;
+    font-size: 14px;
 }
-
 
 .panel-expand {
     background: #FAFAFA;
@@ -4563,18 +1194,18 @@ ul.as-selections li.as-original input {
 
 .panel-expand-item section {
     flex-grow: 1;
-    padding-left: 40px;
 }
 
 .panel-expand-item section h4 {
     font-family: 'LinuxLibertine', serif;
     text-decoration: underline;
+    font-size: 22px;
     font-style: italic;
 }
 
 .panel-expand-item .lecture-description-text {
-    font-size: 21px;
-    margin-top: 20px;
+    font-size: 18px;
+    margin-top: 10px;
 }
 
 .panel-expand-item .supporting-documents {
@@ -4591,32 +1222,18 @@ ul.as-selections li.as-original input {
     margin-top: 0;
 }
 
-.panel-expand .terms-conditions {
-    font-family: sans-serif;
-    color: #CECECE;
-    font-size: 16px;
-    padding: 20px;
-    border-top: 1px solid #ece9e9;
-    margin: 0;
-}
-
-.title-buttons-group {
+.title-buttons-group .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
-.lecture-buttons button {
-    border-radius: 0;
-}
-
-.lecture-buttons .dropdown button {
-    padding: 12px 20px;
+.lecture-panel .panel-main {
+    background: #fff;
+    padding: 30px 30px;
 }
 
 .lecture-panel .image-container-parent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    margin-top: 60px;
 }
 
 .lecture-panel .image-container {
@@ -4630,10 +1247,6 @@ ul.as-selections li.as-original input {
     border: 1px solid #cdcdcd;
 }
 
-.lecture-panel .panel-main {
-    background: #fff;
-    padding: 40px 60px;
-}
 
 
 .lecture-panel .panel-main section {
@@ -4660,13 +1273,42 @@ ul.as-selections li.as-original input {
     background: #fff;
 }
 
-
 .lecture-panel .lecture-documents {
-    width: 55%;
-    margin: 0 auto;
+    padding-left: 30px;
 }
 
 .lecture-documents .document {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: baseline;
+}
+
+.lecture-documents  p {
+    margin: 0;
+}
+
+.lecture-documents .dotted-effect {
+    flex-grow: 1;
+    border-bottom: 1px dotted #000;
+}
+
+
+
+.see-details {
+    background: #333333;
+    color: #fff;
+}
+
+.see-details:hover {
+    color: #fff;
+}
+
+.terms-conditions {
+    font-family: sans-serif;
+    color: #b5b5b5;
+    margin: 0;
+    line-height: 24px;
+    font-size: 14px;
+    line-height: 19px;
 }
