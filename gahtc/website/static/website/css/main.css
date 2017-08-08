@@ -1280,7 +1280,20 @@ ul.as-selections li.as-original input {
 .lecture-documents .document {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: baseline;
 }
+
+.lecture-documents  p {
+    margin: 0;
+}
+
+.lecture-documents .dotted-effect {
+    flex-grow: 1;
+    border-bottom: 1px dotted #000;
+}
+
+
 
 .see-details {
     background: #333333;
@@ -1297,4 +1310,5 @@ ul.as-selections li.as-original input {
     margin: 0;
     line-height: 24px;
     font-size: 14px;
+    line-height: 19px;
 }

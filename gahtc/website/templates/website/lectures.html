@@ -61,6 +61,7 @@
                                 {% for lecDoc in lecture_returned.lectureDocs %}
                                 <div class="document">
                                     <p>{{lecDoc.title}}</p>
+                                    <div class="dotted-effect"></div>
                                     <a href=""> <span>download ({{lecDoc.document.size|filesizeformat}})</span></a>
                                 </div>
                                 {% endfor %}
