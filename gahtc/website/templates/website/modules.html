@@ -38,8 +38,10 @@
                                 <div class="row">
                                     <div class="author-docs col-md-7">
                                         <span class="created-by">created by:</span>
-                                        <p>{% for authors in module_returned.authors_m2m.all %}
-                                            <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>                                            {% if forloop.last %}, {% endif %} {% endfor %}
+                                        <p>
+                                        {% for authors in module_returned.authors_m2m.all %}
+                                            <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
                                         </p>
                                     </div>
                                     <div class="buttons col-md-5">
@@ -65,17 +67,18 @@
                     {% if module_returned.moduleLecs|length > 0 %} {% for lec in module_returned.moduleLecs %}
                     <div class="panel-expand-item">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid="{{ lec.id }}">
                                     <img src="/media/{{lec.getSlideOne}}" alt="" class="img-responsive">
                                     <h4 class="button-text-ribbon">preview slides</h4>
                                 </a>
                             </div>
-                            <section class="col-md-10">
+                            <section class="col-md-9">
                                 <div class="title-buttons-group row">
-                                    <h4 class="col-md-8">{{lec.title}}</h4>
-                                    <div class="buttons col-md-4">
-                                        <a class='btn pull-right see-details' href="/lectures/#{{lec.id}}">see details</a>                                        {% if user.is_authenticated %}
+                                    <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
+                                    <div class="buttons col-md-4 paddingRight0">
+                                        <a class='btn pull-right see-details' href="/lectures/#heading_{{lec.id}}">see details</a>
+                                        {% if user.is_authenticated %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -90,7 +93,17 @@
                                     </div>
                                 </div>
                                 <p class='lecture-description-text'>{{lec.description}}</p>
-                                <p class="supporting-documents">supporting documments: </p>
+                                <p class="supporting-documents">supporting documments: 
+                                {%for doc in lec.lectureDocs %}
+                                    <span class="supporting-document-type">
+                                    {% if doc.doc_type %}
+                                        &bull; {{ doc.doc_type }} 
+                                    {% else %}
+                                        &bull; Document 
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                </p>
                             </section>
                         </div>
                     </div>
@@ -101,15 +114,16 @@
                     <div class="panel-expand-container">
                         <h4>members comments: </h4>
                     </div>
-                    <p class="panel-expand-container terms-conditions">terms and conditions
-                        <br> Terms and Conditions: I understand that this material is to be used only in class room settings.
-                        You are free to make changes to fit you constraints or teaching goals. However, this material cannot
-                        be used directly or indirectly, in whole or in part, for publication, in any form.
-                        <br>Instructions
-                        <br> You can download individual files by selecting them from the list. Or download the entire module
-                        by clicking the 'Download Module' button above. (We should figure out a way to 'add to my bundle'
-                        and a way to display the file size before users click on a link.) Please read the terms and conditions
-                        before downloading any content. By downloading content from GAHTC.org you hereby agree to.
+                    <p class="panel-expand-container terms-conditions">
+                            <strong>Instructions</strong>
+                            <br /> 
+                            You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby
+                            agree to our terms and conditions.
+                            <br />
+                            <br /> 
+                            <strong>Terms and conditions</strong>
+                            <br />  
+                            I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
                     </p>
                 </div>
                 <footer>

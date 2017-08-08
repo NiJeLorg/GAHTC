@@ -5,20 +5,20 @@
         <h3>Jump To Module</h3>
         <div class="lectures-titles">
             {% for module_returned in modules_returned %}
-            <a href="#heading_{{ module_returned.id }}">{{ module_returned.title }}</a> {% endfor %}
+            <a href="#module_{{ module_returned.id }}">{{ module_returned.title }}</a> {% endfor %}
         </div>
     </section>
 </div>
 <div class="module-lecture-container">
     {% for module_returned in modules_returned %}
-    <div class="module" id="heading_{{module_returned.id}}">
+    <div class="module" id="module_{{module_returned.id}}">
         <h3 class="lecture-module-title">{{ module_returned.title }} ({{module_returned.moduleLecs|length}} lecture{{module_returned.moduleLecs|length|pluralize}})
         </h3>
         <!-- <span>{{module_returned.moduleLecs.length}}</span> -->
         <div class="module-lectures-container">
             <div class="panel-group" id="accordion_modules" role="tablist" aria-multiselectable="true">
                 {% for lecture_returned in module_returned.moduleLecs %}
-                <div class="panel panel-default lecture-panel">
+                <div id="heading_{{lecture_returned.id}}" class="panel panel-default lecture-panel">
                     <main class="panel-main row">
                         <div class="image-container-parent col-md-3">
                             <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid='{{lecture_returned.id}}'>
@@ -60,7 +60,7 @@
                             <div class="lecture-documents col-md-8 col-md-offset-3">
                                 {% for lecDoc in lecture_returned.lectureDocs %}
                                 <div class="document">
-                                    <p>{{lecDoc.title}}</p>
+                                    <p>{{lecDoc.type}}</p>
                                     <div class="dotted-effect"></div>
                                     <a href=""> <span>download ({{lecDoc.document.size|filesizeformat}})</span></a>
                                 </div>
@@ -70,15 +70,16 @@
                         <div class="panel-expand-container">
                             <h4>members comments: </h4>
                         </div>
-                        <p class="panel-expand-container terms-conditions">Instructions
-                            <br> You can download individual files by selecting them from the list. Or download the entire
-                            module by clicking the 'Download Module' button above. (We should figure out a way to add to
-                            my bundle and a way to display the file size before users click on a link) Please read the terms
-                            and conditions before downloading any content. By downloading content from GAHTC.org you hereby
+                        <p class="panel-expand-container terms-conditions">
+                            <strong>Instructions</strong>
+                            <br /> 
+                            You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby
                             agree to our terms and conditions.
-                            <br> Terms and conditions. I understand that this material is to be used only in class room settings.
-                            You are free to make changes to fit your constraints or teaching goals. However, this material
-                            cannot be used directly or indicrectly, in whole or in part, for publication, in any form.
+                            <br />
+                            <br /> 
+                            <strong>Terms and conditions</strong>
+                            <br />  
+                            I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
                         </p>
                     </div>
                     <footer>

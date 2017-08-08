@@ -897,6 +897,14 @@ blockquote p {
     margin-bottom: 20px;
 }
 
+.paddingLeft0 {
+    padding-left: 0;
+}
+
+.paddingRight0 {
+    padding-right: 0;
+}
+
 .textbox {
     height: 20vh;
     overflow: auto;
@@ -1213,6 +1221,10 @@ ul.as-selections li.as-original input {
     font-size: 16px;
 }
 
+.panel-expand-item .supporting-documents .supporting-document-type {
+    padding: 0 10px;
+}
+
 .panel-expand-container {
     padding: 0 20px;
 }
@@ -1311,4 +1323,5 @@ ul.as-selections li.as-original input {
     line-height: 24px;
     font-size: 14px;
     line-height: 19px;
+    margin-bottom: 20px;
 }
