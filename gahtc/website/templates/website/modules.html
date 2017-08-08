@@ -33,7 +33,7 @@
                             <div class="panel-section-footer">
                                 <div class="row">
                                     <div class="author-docs col-md-7">
-                                        <p class="created-by">created by:</p>
+                                        <span class="created-by">created by:</span>
                                         <p>{% for authors in module_returned.authors_m2m.all %}
                                             <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>                                            {% if forloop.last %}, {% endif %} {% endfor %}
                                         </p>
@@ -64,7 +64,7 @@
                             <div class="col-md-2">
                                 <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid="{{ lec.id }}">
                                     <img src="/media/{{lec.getSlideOne}}" alt="" class="img-responsive">
-                                    <h4 class="button-text-ribbon">Preview Slides</h4>
+                                    <h4 class="button-text-ribbon">preview slides</h4>
                                 </a>
                             </div>
                             <section class="col-md-10">
