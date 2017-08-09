@@ -39,17 +39,14 @@
                                     <div class="author-docs col-md-7">
                                         <span class="created-by">created by:</span>
                                         <p>
-                                        {% for authors in module_returned.authors_m2m.all %}
-                                            <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
-                                        {% endfor %}
+                                            {% for authors in module_returned.authors_m2m.all %}
+                                            <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>                                            {% if not forloop.last %}, {% endif %} {% endfor %}
                                         </p>
                                     </div>
                                     <div class="buttons col-md-5 paddingRight0">
                                         {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
-                                            <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>
-                                        {% else %}
-                                            <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>
-                                        {% endif %}
+                                        <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>                                        {% else %}
+                                        <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        {% endif %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -79,8 +76,7 @@
                                 <div class="title-buttons-group row">
                                     <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
                                     <div class="buttons col-md-4 paddingRight0">
-                                        <a class='btn pull-right see-details' href="/lectures/#heading_{{lec.id}}">see details</a>
-                                        {% if user.is_authenticated %}
+                                        <a class='btn pull-right see-details' href="/lectures/#heading_{{lec.id}}">see details</a>                                        {% if user.is_authenticated %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -90,28 +86,23 @@
                                             </ul>
                                         </div>
                                         {% if request.user.userProfile.verified %}
-                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
+                                        <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
                                                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                                            </button>
-                                        {% else %}
-                                            <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
+                                            </button> {% else %}
+                                        <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
                                                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                                            </button>
-                                        {% endif %} 
-                                        {% endif %}
+                                            </button> {% endif %} {% endif %}
                                     </div>
                                 </div>
                                 <p class='lecture-description-text'>{{lec.description}}</p>
-                                <p class="supporting-documents">supporting documments: 
-                                {%for doc in lec.lectureDocs %}
+                                <p class="supporting-documents">supporting documments: {%for doc in lec.lectureDocs %}
                                     <span class="supporting-document-type">
                                     {% if doc.doc_type %}
                                         &bull; {{ doc.doc_type }} 
                                     {% else %}
                                         &bull; Document 
                                     {% endif %}
-                                    </span>
-                                {% endfor %}
+                                    </span> {% endfor %}
                                 </p>
                             </section>
                         </div>
@@ -124,15 +115,17 @@
                         <h4>members comments: </h4>
                     </div>
                     <p class="panel-expand-container terms-conditions">
-                            <strong>Instructions</strong>
-                            <br /> 
-                            You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby
-                            agree to our terms and conditions.
-                            <br />
-                            <br /> 
-                            <strong>Terms and conditions</strong>
-                            <br />  
-                            I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
+                        <strong>Instructions</strong>
+                        <br /> You can download individual files by selecting them from the list. Or download the entire
+                        module by clicking the 'Download Module' button above. Please read the terms and conditions before
+                        downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and
+                        conditions.
+                        <br />
+                        <br />
+                        <strong>Terms and conditions</strong>
+                        <br /> I understand that this material is to be used only in classroom settings. You are free to
+                        make changes to fit your constraints or teaching goals. However, this material cannot be used directly
+                        or indirectly, in whole or in part, for publication, in any form.
                     </p>
                 </div>
                 <footer>
@@ -205,8 +198,7 @@
                         <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
                     </div>
                     <div id="noBundleTitleAlert" class="alert alert-warning hidden" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        Please add a title!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>                        Please add a title!
                     </div>
                 </form>
             </div>
