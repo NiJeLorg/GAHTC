@@ -212,7 +212,34 @@
     {% endfor %}
 </div>
  -->
-{% endblock %} {% block modal_block %}
+{% endblock %} 
+
+{% block modal_block %}
+<!-- Download Course Bundle Modal -->
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
+            </div>
+            <div class="modal-body">
+                <div id="downloadFileArea">
+                    <div class="containter">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img class="img-responsive pull-right" src="{% static 'website/css/images/spiffygif_114x114.gif' %}" />
+                            </div>
+                            <div class="col-md-9">
+                                <h2>Zipping Up Your Materials!</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Awaiting verification modal -->
 <div class="modal fade" id="waitingForVerification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
