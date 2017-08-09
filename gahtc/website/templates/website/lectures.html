@@ -33,13 +33,16 @@
                                 <div class="row">
                                     <div class="author-docs col-md-7">
                                         <span class="created-by">created by:</span>
-                                        <p>{% for authors in lecture_returned.authors_m2m.all %}
-                                            <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>                                            {% if not forloop.last %}, {% endif %} {% endfor %}
+                                        <p>
+                                        {% for authors in lecture_returned.authors_m2m.all %}
+                                            <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                        {% endfor %}
                                         </p>
                                     </div>
-                                    <div class="buttons col-md-5">
+                                    <div class="buttons col-md-5 paddingRight0">
                                         {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
-                                        <a class="btn btn-danger gahtcRed pull-right" type='button' data-lectureid="{{ lecture_returned.id }}">Download Lecture</a>                                        {% else %}
+                                        <a class="btn btn-danger gahtcRed pull-right downloadLecture" type='button' data-lectureid="{{ lecture_returned.id }}">Download Lecture</a> 
+                                        {% else %}
                                         <a class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">Download Lecture</a>                                        {% endif %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type='button' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
