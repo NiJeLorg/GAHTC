@@ -1246,7 +1246,14 @@ def modulesView(request):
 
 	coming_soon_modules_returned = comingSoonModules.objects.all().order_by('title')
 
-	context_dict = {'modules_returned':modules_returned_ordered, 'profile':profile, 'coming_soon_modules_returned':coming_soon_modules_returned}
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+
+	else:
+		bundles_returned = bundles.objects.none()
+
+	context_dict = {'modules_returned':modules_returned_ordered, 'profile':profile, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned }
 	return render(request, 'website/modules.html', context_dict)
 
 
@@ -1318,8 +1325,14 @@ def lecturesView(request):
 		#attach the module docs to the module returned
 		module_returned.moduleLecs = moduleLecs_ordered
 
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
 
-	context_dict = {'modules_returned':modules_returned_ordered}
+	else:
+		bundles_returned = bundles.objects.none()
+
+	context_dict = {'modules_returned':modules_returned_ordered, 'bundles_returned': bundles_returned }
 	return render(request, 'website/lectures.html', context_dict)
 
 

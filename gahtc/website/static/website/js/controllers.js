@@ -42,7 +42,7 @@ $(document).ready(function() {
         return $("<strong />").append($(this).contents());
     });
 
-    // on click of module, run query to pull module
+/*    // on click of module, run query to pull module
     $(".module").click(function(e) {
         $(".result").removeClass('active');
         $(this).addClass('active');
@@ -80,7 +80,7 @@ $(document).ready(function() {
         $(this).addClass('active');
         var lecture_slide_id = $(this).data("lectureslideid");
         gahtcApplication.getLectureSlide(lecture_slide_id);
-    });
+    });*/
 
     // launch modal to show lectures slides
     $(document).on('click', '.launchModal', function(e) {

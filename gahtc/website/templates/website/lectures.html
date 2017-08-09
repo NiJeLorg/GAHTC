@@ -60,7 +60,13 @@
                             <div class="lecture-documents col-md-8 col-md-offset-3">
                                 {% for lecDoc in lecture_returned.lectureDocs %}
                                 <div class="document">
-                                    <p>{{lecDoc.type}}</p>
+                                    <p>
+                                    {% if lecDoc.doc_type %}
+                                        {{lecDoc.doc_type}}
+                                    {% else %}
+                                        Document 
+                                    {% endif %}
+                                    </p>
                                     <div class="dotted-effect"></div>
                                     <a href=""> <span>download ({{lecDoc.document.size|filesizeformat}})</span></a>
                                 </div>

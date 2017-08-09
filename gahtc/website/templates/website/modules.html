@@ -44,10 +44,12 @@
                                         {% endfor %}
                                         </p>
                                     </div>
-                                    <div class="buttons col-md-5">
+                                    <div class="buttons col-md-5 paddingRight0">
                                         {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
-                                        <a class="btn btn-danger gahtcRed pull-right" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>                                        {% else %}
-                                        <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        {% endif %}
+                                            <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>
+                                        {% else %}
+                                            <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>
+                                        {% endif %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
