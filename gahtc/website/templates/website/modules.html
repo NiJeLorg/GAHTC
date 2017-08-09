@@ -90,7 +90,7 @@
                                             </ul>
                                         </div>
                                         {% if request.user.userProfile.verified %}
-                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lecture.object.id }}">
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
                                                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
                                             </button>
                                         {% else %}
