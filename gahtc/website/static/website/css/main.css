@@ -41,8 +41,17 @@ body {
     flex-direction: column;
 }
 
-button {
+button,
+input {
     outline: none;
+}
+
+.row {
+    margin: 0;
+}
+
+.glyphicon-search {
+    color: #bebebe;
 }
 
 
@@ -304,7 +313,7 @@ body nav {
 }
 
 .title-container h4 {
-    margin: 0;    
+    margin: 0;
     background: rgba(43, 43, 44, .6);
     padding: 10px;
     overflow: hidden;
@@ -1099,7 +1108,6 @@ ul.as-selections li.as-original input {
     background: #FAFAFA;
 }
 
-
 .panel-main section {
     display: flex;
     flex-direction: column;
@@ -1247,8 +1255,6 @@ ul.as-selections li.as-original input {
     border: 1px solid #cdcdcd;
 }
 
-
-
 .lecture-panel .panel-main section {
     flex-basis: 80%;
 }
@@ -1284,7 +1290,7 @@ ul.as-selections li.as-original input {
     align-items: baseline;
 }
 
-.lecture-documents  p {
+.lecture-documents p {
     margin: 0;
 }
 
@@ -1292,8 +1298,6 @@ ul.as-selections li.as-original input {
     flex-grow: 1;
     border-bottom: 1px dotted #000;
 }
-
-
 
 .see-details {
     background: #333333;
@@ -1312,3 +1316,104 @@ ul.as-selections li.as-original input {
     font-size: 14px;
     line-height: 19px;
 }
+
+
+/* Profiles/Member Page Styles */
+
+.members-view .cover-photo {
+    height: 560px;
+    background: grey;
+}
+
+.members-view main {
+    width: 65%;
+    margin: 0 auto;
+}
+
+.members-view main h1 {
+    margin: 0;
+    padding: 30px 0;
+}
+
+.members-view main a {
+    color: #5d0104;
+    text-decoration: underline;
+}
+
+.alphabeticalFilterContainer ul {
+    margin: 0;
+    padding: 10px 0;
+    border-top: 1px solid #ad7f80;
+    border-bottom: 1px solid #ad7f80;
+}
+
+.alphabeticalFilterContainer ul li {
+    display: inline-block;
+    padding-right: 10px;
+    padding-left: 10px;
+    position: relative;
+}
+
+.alphabeticalFilterContainer ul li:before {
+    display: inline-block;
+    text-align: center;
+    position: absolute;
+    left: 10px;
+}
+
+main form {
+    margin-bottom: 60px;
+}
+
+.searchForMembers {
+    display: flex;
+}
+
+.searchForMembers input {
+    width: 60%;
+    padding: 10px 15px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #efefef;
+    color: #cacaca;
+    border-right: none;
+}
+
+.searchForMembers button {
+    padding: 10px 15px;
+    border: 1px solid #efefef;
+    border-radius: 0 5px 5px 0;
+    background: none;
+    border-left: none;
+    display: flex;
+}
+
+.members-view .member {
+    border-top: 1px solid #7f7f7f;
+    border-bottom: 1px solid #7f7f7f;
+}
+
+.member h3 {
+    font-family: "Source Sans Pro", Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    margin: 0;
+    border-bottom: 1px solid #efefef;
+    padding: 15px 30px;
+}
+
+.member .institution-affiliation {
+    font-style: italic;
+    font-weight: normal;
+}
+
+.member .member-profile {
+    padding: 10px 30px;
+}
+
+
+/* .members-view main p {
+    
+} */
+
+
+/* Profiles/Member Page Styles */

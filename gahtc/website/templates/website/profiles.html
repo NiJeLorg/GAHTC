@@ -1,4 +1,77 @@
-{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
+{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {%endblock%}
+{% block head_js_block %} {% endblock %} {% block content %}
+
+<div class="members-view">
+	<div class="cover-photo"></div>
+	<main>
+		<h1>Current Members</h1>
+		<p>GAHTC membership is based upon the principle of community and collaboration. We currently have over 200 members from all
+			over the world, of various ranks and disciplines. Of those members, 68 are contributing members, with content in the GAHTC
+			library. Over the next three years, the GAHTC's aim is to provide opportunity, through its various grant options, for
+			members to share their research and knowledge with the GAHTC community, and our GAHTC community. As membership continues
+			to grow,, so will our community, and our network. Join GAHTC and receive access to some of the best architectural history
+			survey courses covering a diverse set of topics and regions. GAHTC members are eligible to apply for research funding,
+			travel funding, and workshop funding, as well as funded attendance to the Member's Conference to collaborate, interact
+			and innovate with fellow global scholars. Questions?
+		</p>
+		<p>Contact GAHTC Project Manager, <i>Eliana Hamdi Murchie</i> at <a href="">emurchie@mit.edu</a> or click here to <a href="">apply for membership.</a>
+		</p>
+		<!-- <div class="alphabeticalFilterContainer">
+			<ul>
+				<li><a href="">A</a></li>
+				<li><a href="">B</a></li>
+				<li><a href="">C</a></li>
+				<li><a href="">D</a></li>
+				<li><a href="">E</a></li>
+				<li><a href="">F</a></li>
+				<li><a href="">G</a></li>
+				<li><a href="">H</a></li>
+				<li><a href="">I</a></li>
+				<li><a href="">J</a></li>				
+				<li><a href="">K</a></li>
+				<li><a href="">L</a></li>
+				<li><a href="">M</a></li>
+				<li><a href="">N</a></li>
+				<li><a href="">O</a></li>
+				<li><a href="">P</a></li>
+				<li><a href="">Q</a></li>
+				<li><a href="">R</a></li>
+				<li><a href="">S</a></li>
+				<li><a href="">T</a></li>
+				<li><a href="">U</a></li>
+				<li><a href="">V</a></li>
+				<li><a href="">W</a></li>
+				<li><a href="">X</a></li>
+				<li><a href="">Y</a></li>
+				<li><a href="">Z</a></li>
+			</ul>
+		</div> -->
+		<form>
+			<div class="searchForMembers">
+				<input type="text" name="searchformembers" placeholder='Search for members...'>
+				<button>
+					<span class="glyphicon glyphicon-search"></span>				
+				</button>
+			</div>
+		</form>
+		<div class="member">
+			<h3>Jamal Abed
+				<span class="institution-affiliation">(University of Michigan)</span>
+			</h3>
+			<div class="member-profile">
+				<div class="row">
+					<div class="col-md-3">
+					</div>
+					<div class="col-md-6">
+						<p>A graduate from the American University</p>
+					</div>
+				</div>				
+			</div>
+		</div>
+
+	</main>
+</div>
+
 <!-- Page Content -->
 
 <!-- <div class="container member-view">
@@ -65,16 +138,12 @@
     </div> -->
 
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<h1>Members</h1>
-		</div>
-	</div>
+<!-- <div class="container">
 	<div class="row">
 		<div class="col-md-8">
 			<p>
-				GAHTC is managed by a project manager and a core team of board members. Together they endeavor to extend the reach of architectural survey and research that supports global knowledge. 
+				GAHTC is managed by a project manager and a core team of board members. Together they endeavor to extend the reach of architectural
+				survey and research that supports global knowledge.
 			</p>
 			<h4>
 				<em>Current board members:</em>
@@ -106,15 +175,13 @@
 		<div class="col-md-12">
 			<h3>Contributing Members</h3>
 		</div>
-	</div>	
+	</div>
 	{% for user_profile in contributing_profiles_returned %}
 	<div class="row marginBottom15 marginTop30" id="{{ user_profile.id }}">
 		<div class="col-md-3">
 			{% if user_profile.avatar %}
-				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
-			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-			{% endif %}
+			<img class="img-responsive" src="/media/{{ user_profile.avatar }}" /> {% else %}
+			<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" /> {% endif %}
 		</div>
 		<div class="col-md-6 col-md-offset-1">
 			<div class="row">
@@ -125,32 +192,32 @@
 				<p><strong>Contributions:</strong></p>
 				<p>
 					{% if user_profile.modules %}
-						<em>Modules</em>
-						<ul>
+					<em>Modules</em>
+					<ul>
 						{% for m in user_profile.modules %}
-							<li><a href="/modules/#heading_{{ m.id }}">{{ m.title }}</a></li>
+						<li><a href="/modules/#heading_{{ m.id }}">{{ m.title }}</a></li>
 						{% endfor %}
-						</ul>
+					</ul>
 					{% endif %}
 				</p>
 				<p>
 					{% if user_profile.csmodules %}
-						<em>Modules Coming Soon</em>
-						<ul>
+					<em>Modules Coming Soon</em>
+					<ul>
 						{% for m in user_profile.csmodules %}
-							<li><a href="/modules/#heading_cs{{ m.id }}">{{ m.title }}</a></li>
+						<li><a href="/modules/#heading_cs{{ m.id }}">{{ m.title }}</a></li>
 						{% endfor %}
-						</ul>
+					</ul>
 					{% endif %}
 				</p>
 				<p>
 					{% if user_profile.lectures %}
-						<em>Lectures</em>
-						<ul>
+					<em>Lectures</em>
+					<ul>
 						{% for l in user_profile.lectures %}
-							<li><a href="/lectures/#heading_{{ l.id }}">{{ l.title }}</a></li>
+						<li><a href="/lectures/#heading_{{ l.id }}">{{ l.title }}</a></li>
 						{% endfor %}
-						</ul>
+					</ul>
 					{% endif %}
 				</p>
 				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
@@ -158,22 +225,19 @@
 		</div>
 		<div class="col-md-2"></div>
 	</div>
+	<hr /> {% endfor %}
 	<hr />
-	{% endfor %}
-	<hr />	
 	<div class="row">
 		<div class="col-md-12">
 			<h3></h3>
 		</div>
-	</div>	
+	</div>
 	{% for user_profile in profiles_returned %}
 	<div class="row marginBottom15 marginTop30">
 		<div class="col-md-3">
 			{% if user_profile.avatar %}
-				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
-			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-			{% endif %}
+			<img class="img-responsive" src="/media/{{ user_profile.avatar }}" /> {% else %}
+			<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" /> {% endif %}
 		</div>
 		<div class="col-md-6 col-md-offset-1">
 			<div class="row">
@@ -186,7 +250,6 @@
 		</div>
 		<div class="col-md-2"></div>
 	</div>
-	<hr />
-	{% endfor %}
+	<hr /> {% endfor %} -->
 </div>
 {% endblock %} {% block js_block %} {% endblock %}
