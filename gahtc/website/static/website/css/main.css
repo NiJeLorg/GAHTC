@@ -65,12 +65,6 @@ p {
     font-family: 'LinuxLibertine';
 }
 
-
-/*li {
-     font-family: 'LinuxLibertine';
- }
-*/
-
 h1 {
     font-weight: bold;
 }
@@ -84,6 +78,22 @@ h3 {
 a:hover,
 a:focus {
     text-decoration: none;
+}
+
+.scrollToTop {
+    position: fixed;
+    bottom: 40px;
+    left: 20px;
+    background: #c9302c;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+.scrollToTop .glyphicon-arrow-up {
+    font-size: 28Insecure S2 E4px;
+    color: #fff;
 }
 
 body nav {
@@ -387,7 +397,7 @@ body nav {
     display: flex;
     flex-direction: column;
     height: 350px;
-    overflow: scroll;
+    overflow: auto;
     border-bottom: 1px solid #8C8C8C;
 }
 
@@ -399,7 +409,12 @@ body nav {
 
 .module-lecture-container {
     background: #FAFAFA;
-    padding: 4%;
+    padding-top: 4%;
+}
+
+.module-lecture-container .module {
+    width: 90%;
+    margin: 0 auto;
 }
 
 .module .lecture-module-title {

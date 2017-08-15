@@ -17,7 +17,8 @@ const truncateElementText = (elem) => {
 };
 
 
-$(document).ready(function() {
+
+$(document).ready(function () {
 
     var gahtcApp = new gahtcApplication();
 
@@ -31,4 +32,20 @@ $(document).ready(function() {
     }
 
     truncateElementText($('.lecture-description-text'));
+
+    $(window).scroll(() => {
+        if ($(this).scrollTop() > 400) {
+            $('.scrollToTop').fadeIn();
+        } else {
+            $('.scrollToTop').fadeOut();
+        }
+    });
+
+    $('.scrollToTop').on('click', () => {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 750);
+    });
+
+    
 });

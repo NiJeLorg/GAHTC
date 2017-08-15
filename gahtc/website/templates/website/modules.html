@@ -114,13 +114,16 @@
                 </div>
                 <footer>
                     <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true"
-                        aria-controls="{{ module_returned.id }}">SHOW MORE</a>
+                        aria-controls="{{ module_returned.id }}" class='showMore'>SHOW MORE</a>
                 </footer>
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <span class="glyphicon glyphicon-arrow-up"></span>
+</button> 
 {% endblock %} {% block modal_block %}
 <!-- Download Course Bundle Modal -->
 <div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
