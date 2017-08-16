@@ -41,8 +41,17 @@ body {
     flex-direction: column;
 }
 
-button {
+button,
+input {
     outline: none;
+}
+
+.row {
+    margin: 0;
+}
+
+.glyphicon-search {
+    color: #bebebe;
 }
 
 
@@ -56,12 +65,6 @@ p {
     font-family: 'LinuxLibertine';
 }
 
-
-/*li {
-     font-family: 'LinuxLibertine';
- }
-*/
-
 h1 {
     font-weight: bold;
 }
@@ -72,9 +75,26 @@ h3 {
     font-style: italic;
 }
 
+a,
 a:hover,
 a:focus {
     text-decoration: none;
+}
+
+.scrollToTop {
+    position: fixed;
+    bottom: 40px;
+    left: 20px;
+    background: #c9302c;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+.scrollToTop .glyphicon-arrow-up {
+    font-size: 28Insecure S2 E4px;
+    color: #fff;
 }
 
 body nav {
@@ -304,7 +324,7 @@ body nav {
 }
 
 .title-container h4 {
-    margin: 0;    
+    margin: 0;
     background: rgba(43, 43, 44, .6);
     padding: 10px;
     overflow: hidden;
@@ -378,7 +398,7 @@ body nav {
     display: flex;
     flex-direction: column;
     height: 350px;
-    overflow: scroll;
+    overflow: auto;
     border-bottom: 1px solid #8C8C8C;
 }
 
@@ -390,7 +410,12 @@ body nav {
 
 .module-lecture-container {
     background: #FAFAFA;
-    padding: 4%;
+    padding-top: 4%;
+}
+
+.module-lecture-container .module {
+    width: 90%;
+    margin: 0 auto;
 }
 
 .module .lecture-module-title {
@@ -1107,7 +1132,6 @@ ul.as-selections li.as-original input {
     background: #FAFAFA;
 }
 
-
 .panel-main section {
     display: flex;
     flex-direction: column;
@@ -1123,7 +1147,7 @@ ul.as-selections li.as-original input {
     margin-bottom: 0;
 }
 
-.panel-main section .readMore {
+.readMore {
     background: none;
     border: none;
     text-decoration: underline;
@@ -1259,8 +1283,6 @@ ul.as-selections li.as-original input {
     border: 1px solid #cdcdcd;
 }
 
-
-
 .lecture-panel .panel-main section {
     flex-basis: 80%;
 }
@@ -1296,7 +1318,7 @@ ul.as-selections li.as-original input {
     align-items: baseline;
 }
 
-.lecture-documents  p {
+.lecture-documents p {
     margin: 0;
 }
 
@@ -1304,8 +1326,6 @@ ul.as-selections li.as-original input {
     flex-grow: 1;
     border-bottom: 1px dotted #000;
 }
-
-
 
 .see-details {
     background: #333333;
@@ -1325,3 +1345,171 @@ ul.as-selections li.as-original input {
     line-height: 19px;
     margin-bottom: 20px;
 }
+
+
+/* Profiles/Member Page Styles */
+
+.members-view .cover-photo {
+    width: 100%;
+    height: 560px;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: 0 !important;
+}
+
+.members-view main {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.members-view main h1 {
+    margin: 0;
+    padding: 30px 0;
+}
+
+.members-view main a {
+    color: #5d0104;
+    text-decoration: underline;
+}
+
+.alphabeticalFilterList {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ad7f80;
+    border-bottom: 1px solid #ad7f80;
+    margin: 20px 0;
+}
+
+.alphabeticalFilterList li {
+    float: left;
+    padding-right: 30px;
+}
+
+.alphabeticalFilterList li a {
+    text-decoration: none;
+}
+
+main form {
+    margin-bottom: 60px;
+}
+
+.searchForMembers {
+    display: flex;
+}
+
+.searchForMembers input {
+    width: 60%;
+    padding: 10px 15px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #efefef;
+    color: #cacaca;
+    border-right: none;
+}
+
+.searchForMembers button {
+    padding: 10px 15px;
+    border: 1px solid #efefef;
+    border-radius: 0 5px 5px 0;
+    background: none;
+    border-left: none;
+    display: flex;
+}
+
+.members-view .member {
+    border-top: 1px solid #7f7f7f;
+    border-bottom: 1px solid #7f7f7f;
+    margin-bottom: 20px;
+}
+
+.member .member-contributions {
+    padding: 20px 30px;
+    background: #5d0104;
+    color: #fff;
+    font-family: 'LinuxLibertine', serif;
+}
+
+.member .member-contributions ul {
+    list-style-type: none;
+}
+
+.member .member-contributions p:nth-child(1) {
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
+
+.member .member-contributions p {
+    margin-bottom: 0;
+}
+
+.member .member-contributions a {
+    color: #fff;
+    font-style: italic;
+    text-decoration: none;
+}
+
+.member .contributing-member {
+    background: url('images/ocean_currents_light.png');
+    background-position: 0;
+}
+
+.member h3 {
+    font-family: "LinuxLibertine", serif;
+    font-style: normal;
+    font-weight: bold;
+    margin: 0;
+    border-bottom: 1px solid #efefef;
+    padding: 15px 30px;
+}
+
+.member .institution-affiliation {
+    font-style: italic;
+    font-weight: normal;
+}
+
+.member .member-profile {
+    padding: 15px 30px;
+}
+
+.member-profile .member-profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.member-profile .member-profile-info p {
+    margin-bottom: 0;
+}
+
+.member-profile .description {
+    line-height: 1.6em;
+    max-height: 8em;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.member-profile .contact-info {
+    margin-top: 20px;
+}
+
+.member-profile .contact-info p {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+.member-profile .contact-info p:nth-child(2) {
+    font-weight: bold;
+}
+
+.member-profile .contact-info p:nth-child(3) {
+    font-style: italic;
+}
+
+
+/* .members-view main p {
+    
+} */
+
+
+/* Profiles/Member Page Styles */

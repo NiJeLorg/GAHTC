@@ -1,192 +1,127 @@
-{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
-<!-- Page Content -->
+{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {%endblock%}
+{% block head_js_block %} {% endblock %} {% block content %}
 
-<!-- <div class="container member-view">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="heading">Members</h1>
-        </div>
-    </div>
-    <div class="members-section">
-        <div class="members-group">
-            <div class="member">
-                <div class="member-heading">
-                    <h4 class="name">Rachel Lee  <span>(Cornell University)</span></h4>
-                </div>
-                <div class="member-main">
-                    <div class="photo">
-                    </div>
-                    <div class="description">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                        <div class="contacts">
-                            <p>Assistant Proferssor</p>
-                            <p>University of Michigan</p>
-                            <p>anamarialeon@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="member">
-                <div class="member-heading">
-                    <h4 class="name">Anna Goodman  <span>(Portland State University)</span></h4>
-                </div>
-                <div class="member-main">
-                    <div class="photo">
-                    </div>
-                    <div class="description">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="members-group">
-            <div class="member">
-                <div class="member-heading">
-                    <h4 class="name">Ana Maria Leon  <span>(University of Michigan)</span></h4>
-                </div>
-                <div class="member-main">
-                    <div class="photo">
-                    </div>
-                    <div class="description">
-                    </div>
-                </div>
-            </div>
-            <div class="member">
-                <div class="member-heading">
-                    <h4 class="name">Bernd R O Nicolai <span>(Chair for Architecturial History and Cultural Heritage, University of Bern/Switzerland)</span></h4>
-                </div>
-                <div class="member-main">
-                    <div class="photo">
-                    </div>
-                    <div class="description">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
+<div class="members-view">
+	<div class="cover-photo img-responsive" style='background: url("{% static 'website/css/images/qizil_caves.png' %}")'></div>
+	<main>
+		<h1>Current Members</h1>
+		<p>GAHTC membership is based upon the principle of community and collaboration. We currently have over 200 members from all
+			over the world, of various ranks and disciplines. Of those members, 68 are contributing members, with content in the GAHTC
+			library. Over the next three years, the GAHTC's aim is to provide opportunity, through its various grant options, for
+			members to share their research and knowledge with the GAHTC community, and our GAHTC community. As membership continues
+			to grow,, so will our community, and our network. Join GAHTC and receive access to some of the best architectural history
+			survey courses covering a diverse set of topics and regions. GAHTC members are eligible to apply for research funding,
+			travel funding, and workshop funding, as well as funded attendance to the Member's Conference to collaborate, interact
+			and innovate with fellow global scholars. Questions?
+		</p>
+		<p>Contact GAHTC Project Manager, <i>Eliana Hamdi Murchie</i> at <a href="mailto:emurchie@mit.edu">emurchie@mit.edu</a> or
+			click here to <a href="{% url 'howtobecomeamember' %}">apply for membership.</a>
+		</p>
+		<ul class="alphabeticalFilterList">
+			<li><a href="">A</a></li>
+			<li><a href="">B</a></li>
+			<li><a href="">C</a></li>
+			<li><a href="">D</a></li>
+			<li><a href="">E</a></li>
+			<li><a href="">F</a></li>
+			<li><a href="">G</a></li>
+			<li><a href="">H</a></li>
+			<li><a href="">I</a></li>
+			<li><a href="">J</a></li>
+			<li><a href="">K</a></li>
+			<li><a href="">L</a></li>
+			<li><a href="">M</a></li>
+			<li><a href="">N</a></li>
+			<li><a href="">O</a></li>
+			<li><a href="">P</a></li>
+			<li><a href="">Q</a></li>
+			<li><a href="">R</a></li>
+			<li><a href="">S</a></li>
+			<li><a href="">T</a></li>
+			<li><a href="">U</a></li>
+			<li><a href="">V</a></li>
+			<li><a href="">W</a></li>
+			<li><a href="">X</a></li>
+			<li><a href="">Y</a></li>
+			<li><a href="">Z</a></li>
+		</ul>
 
+		<form method='post'>
+			{% csrf_token %}
+			<div class="searchForMembers">
+				<input type="text" name="searchformembers" placeholder='Search for members...' name='keyword'>
+				<button type='submit'>
+					<span class="glyphicon glyphicon-search"></span>				
+				</button>
+			</div>
+		</form>
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<h1>Members</h1>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-8">
-			<p>
-				GAHTC is managed by a project manager and a core team of board members. Together they endeavor to extend the reach of architectural survey and research that supports global knowledge. 
-			</p>
-			<h4>
-				<em>Current board members:</em>
-			</h4>
-			<ul>
-				<li>Robert Cowherd</li>
-				<li>Mark Jarzombek</li>
-				<li>Carla Keyvanian</li>
-				<li>Gail Fenske</li>
-				<li>Suzanne Marchand</li>
-				<li>Adnan Morshed</li>
-				<li>Vikram Prakash</li>
-			</ul>
-			<h4>
-				<em>Project Manager:</em>
-			</h4>
-			<ul>
-				<li>Eliana Hamdi Murchie</li>
-			</ul>
-			<h4>
-				<em>Team Assistant:</em>
-			</h4>
-			<ul>
-				<li>Andre Malan</li>
-			</ul>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<h3>Contributing Members</h3>
-		</div>
-	</div>	
-	{% for user_profile in contributing_profiles_returned %}
-	<div class="row marginBottom15 marginTop30" id="{{ user_profile.id }}">
-		<div class="col-md-3">
-			{% if user_profile.avatar %}
-				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
-			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-			{% endif %}
-		</div>
-		<div class="col-md-6 col-md-offset-1">
-			<div class="row">
-				<p><strong>Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
-				<p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
-				<p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
-				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
-				<p><strong>Contributions:</strong></p>
-				<p>
-					{% if user_profile.modules %}
-						<em>Modules</em>
-						<ul>
-						{% for m in user_profile.modules %}
-							<li><a href="/modules/#heading_{{ m.id }}">{{ m.title }}</a></li>
-						{% endfor %}
-						</ul>
-					{% endif %}
-				</p>
-				<p>
-					{% if user_profile.csmodules %}
-						<em>Modules Coming Soon</em>
-						<ul>
-						{% for m in user_profile.csmodules %}
-							<li><a href="/modules/#heading_cs{{ m.id }}">{{ m.title }}</a></li>
-						{% endfor %}
-						</ul>
-					{% endif %}
-				</p>
-				<p>
-					{% if user_profile.lectures %}
-						<em>Lectures</em>
-						<ul>
-						{% for l in user_profile.lectures %}
-							<li><a href="/lectures/#heading_{{ l.id }}">{{ l.title }}</a></li>
-						{% endfor %}
-						</ul>
-					{% endif %}
-				</p>
-				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
+		{% for user_profile in profiles_returned %} {%if user_profile.modules or user_profile.csmodules %}
+		<div class="member">
+			<div class='contributing-member'>
+				<h3>{{user_profile.first_name}} {{user_profile.last_name}}
+					<span class="institution-affiliation">({{user_profile.institution}})</span>
+				</h3>
+				<div class="member-profile">
+					<div class="row">
+						{% if user_profile.avatar %}
+						<img src="/media/{{user_profile.avatar}}" class='img-responsive col-md-3'> {% else %}
+						<img src="{% static 'website/css/images/gahtc-logo.png' %}" class="img-responsive col-md-3" /> {% endif %}
+						<div class="col-md-9 member-profile-info">
+							<p class='description'>{{user_profile.introduction}}
+								<p>...<button class='launchModuleDescription readMore' data-moduleid="{{ module_returned.id }}">Read More</button></p>
+							</p>
+							<div class="contact-info">
+								<p>{{user_profile.title}}</p>
+								<p>{{user_profile.institution}}</p>
+								<p>{{user_profile.user.email}}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="member-contributions">
+				<p>Contributions:</p>
+					{% for module in user_profile.modules %}
+						<p> {{module.title}}
+							<a href="/modules/#heading_{{ module.id }}">(view module)</a>
+						</p>
+					{% endfor %}
 			</div>
 		</div>
-		<div class="col-md-2"></div>
-	</div>
-	<hr />
-	{% endfor %}
-	<hr />	
-	<div class="row">
-		<div class="col-md-12">
-			<h3></h3>
-		</div>
-	</div>	
-	{% for user_profile in profiles_returned %}
-	<div class="row marginBottom15 marginTop30">
-		<div class="col-md-3">
-			{% if user_profile.avatar %}
-				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
-			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-			{% endif %}
-		</div>
-		<div class="col-md-6 col-md-offset-1">
-			<div class="row">
-				<p><strong>Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
-				<p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
-				<p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
-				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
-				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
+		{% else %}
+		<div class="member">
+			<h3>{{user_profile.first_name}} {{user_profile.last_name}}
+				<span class="institution-affiliation">({{user_profile.institution}})</span>
+			</h3>
+			<div class="member-profile">
+				<div class="row">
+					{% if user_profile.avatar %}
+					<img src="/media/{{user_profile.avatar}}" class='img-responsive col-md-3'> {% else %}
+					<img src="{% static 'website/css/images/gahtc-logo.png' %}" class="img-responsive col-md-3" /> {% endif %}
+					<div class="col-md-9 member-profile-info">
+						<p class='description'>{{user_profile.introduction}}
+							<p>...<button class='launchModuleDescription readMore' data-moduleid="{{ module_returned.id }}">Read More</button></p>
+						</p>
+						<div class="contact-info">
+							<p>{{user_profile.title}}</p>
+							<p>{{user_profile.institution}}</p>
+							<p>{{user_profile.user.email}}</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-2"></div>
-	</div>
-	<hr />
-	{% endfor %}
+		{%endif%} {%endfor%}
+	</main>
 </div>
-{% endblock %} {% block js_block %} {% endblock %}
+
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <span class="glyphicon glyphicon-arrow-up"></span>
+</button>
+{% endblock %} 
+
+{% block js_block %} 
+	<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>	
+	<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+{% endblock %}

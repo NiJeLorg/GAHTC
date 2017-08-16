@@ -1342,23 +1342,30 @@ def membersView(request):
 	  Loads all user profiles
 	"""
 
-	contributing_profiles_returned = profile.objects.filter(verified=True, public=True).filter(Q(modules__isnull=False) | Q(lectures__isnull=False) | Q(comingsoonmodules__isnull=False)).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+	# contributing_profiles_returned = profile.objects.filter(verified=True, public=True).filter(Q(modules__isnull=False) | Q(lectures__isnull=False) | Q(comingsoonmodules__isnull=False)).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+
+	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
 
 	#attach modules and lectures to profiles
-	for cp in contributing_profiles_returned:
+	for cp in profiles_returned:
 		cp_modules = modules.objects.filter(authors_m2m=cp).order_by('title')
 		cp.modules = cp_modules
-		cp_lectures = lectures.objects.filter(authors_m2m=cp).exclude(extracted=False).order_by('module__title','title')
-		cp.lectures = cp_lectures
 		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp).order_by('title')
 		cp.csmodules = cp_csmodules
 
-	profiles_returned = profile.objects.filter(verified=True, public=True, modules__isnull=True, lectures__isnull=True, comingsoonmodules__isnull=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name')
-
-	context_dict = {'contributing_profiles_returned': contributing_profiles_returned, 'profiles_returned':profiles_returned}
+	context_dict = {'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)
 
-
+def searchMembers(request):
+	if request.method == 'POST':
+		# search members
+		try:
+			keyword = request.POST['keyword']
+			print(keyword)
+		except:
+			pass
+	 
+			
 def saveSearchString(request):
 	"""
 	  AJAX request to save search string
