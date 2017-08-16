@@ -75,6 +75,7 @@ h3 {
     font-style: italic;
 }
 
+a,
 a:hover,
 a:focus {
     text-decoration: none;
@@ -1138,7 +1139,7 @@ ul.as-selections li.as-original input {
     margin-bottom: 0;
 }
 
-.panel-main section .readMore {
+.readMore {
     background: none;
     border: none;
     text-decoration: underline;
@@ -1336,12 +1337,15 @@ ul.as-selections li.as-original input {
 /* Profiles/Member Page Styles */
 
 .members-view .cover-photo {
+    width: 100%;
     height: 560px;
-    background: grey;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: 0 !important;
 }
 
 .members-view main {
-    width: 65%;
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -1355,25 +1359,23 @@ ul.as-selections li.as-original input {
     text-decoration: underline;
 }
 
-.alphabeticalFilterContainer ul {
-    margin: 0;
-    padding: 10px 0;
+.alphabeticalFilterList {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
     border-top: 1px solid #ad7f80;
     border-bottom: 1px solid #ad7f80;
+    margin: 20px 0;
 }
 
-.alphabeticalFilterContainer ul li {
-    display: inline-block;
-    padding-right: 10px;
-    padding-left: 10px;
-    position: relative;
+.alphabeticalFilterList li {
+    float: left;
+    padding-right: 30px;
 }
 
-.alphabeticalFilterContainer ul li:before {
-    display: inline-block;
-    text-align: center;
-    position: absolute;
-    left: 10px;
+.alphabeticalFilterList li a {
+    text-decoration: none;
 }
 
 main form {
@@ -1405,10 +1407,42 @@ main form {
 .members-view .member {
     border-top: 1px solid #7f7f7f;
     border-bottom: 1px solid #7f7f7f;
+    margin-bottom: 20px;
+}
+
+.member .member-contributions {
+    padding: 20px 30px;
+    background: #5d0104;
+    color: #fff;
+    font-family: 'LinuxLibertine', serif;
+}
+
+.member .member-contributions ul {
+    list-style-type: none;
+}
+
+.member .member-contributions p:nth-child(1) {
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
+
+.member .member-contributions p {
+    margin-bottom: 0;
+}
+
+.member .member-contributions a {
+    color: #fff;
+    font-style: italic;
+    text-decoration: none;
+}
+
+.member .contributing-member {
+    background: url('images/ocean_currents_light.png');
+    background-position: 0;
 }
 
 .member h3 {
-    font-family: "Source Sans Pro", Arial, Helvetica, sans-serif;
+    font-family: "LinuxLibertine", serif;
     font-style: normal;
     font-weight: bold;
     margin: 0;
@@ -1422,7 +1456,41 @@ main form {
 }
 
 .member .member-profile {
-    padding: 10px 30px;
+    padding: 15px 30px;
+}
+
+.member-profile .member-profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.member-profile .member-profile-info p {
+    margin-bottom: 0;
+}
+
+.member-profile .description {
+    line-height: 1.6em;
+    max-height: 8em;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.member-profile .contact-info {
+    margin-top: 20px;
+}
+
+.member-profile .contact-info p {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+.member-profile .contact-info p:nth-child(2) {
+    font-weight: bold;
+}
+
+.member-profile .contact-info p:nth-child(3) {
+    font-style: italic;
 }
 
 
