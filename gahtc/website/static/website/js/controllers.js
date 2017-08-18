@@ -95,6 +95,12 @@ $(document).ready(function() {
         gahtcApplication.getModuleDescriptionModal(module_id);
     });
 
+    $(document).on('click', '.launchMemberIntroduction', function(e) {
+        e.preventDefault();
+        var member_id = $(this).data('memberid');
+        gahtcApplication.getMemberFullDescrptionModal(member_id);
+    });
+
     // launch modal to show lecture segment slides
     $(document).on('click', '.launchSegmentModal', function(e) {
         e.preventDefault();

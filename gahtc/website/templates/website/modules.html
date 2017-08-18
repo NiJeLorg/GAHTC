@@ -42,7 +42,7 @@
                                         <span class="created-by">created by:</span>
                                         <p>
                                             {% for authors in module_returned.authors_m2m.all %}
-                                            <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a> {% if not forloop.last %}, {% endif %} {% endfor %}
+                                            <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a> {% if not forloop.last %}, {% endif %} {% endfor %}
                                         </p>
                                     </div>
                                     <div class="buttons col-md-5 paddingRight0">
