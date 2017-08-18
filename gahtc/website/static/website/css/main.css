@@ -821,7 +821,7 @@ blockquote p {
     margin-right: 10px;
 }
 
-.bundleResult {
+/* .bundleResult {
     padding: 10px 0px;
     cursor: pointer;
     border-bottom: 1px solid #ccc;
@@ -838,7 +838,7 @@ blockquote p {
 .bundleList {
     padding: 10px 0px;
     border-bottom: 1px solid #ccc;
-}
+} */
 
 .rightSidebar {
     padding-top: 15px;
@@ -957,6 +957,32 @@ blockquote p {
 
 .backToTopLink {
     margin-top: -12px;
+}
+
+
+/* Browse My Bundles styles */
+
+.bundle-title {
+    display: flex;
+    flex-direction: row;
+    background: #EFEFEF;
+    padding: 20px 40px;
+    align-items: center;
+}
+
+.bundle-title .title {
+    flex-grow: 1;
+}
+
+.all-bundles {
+    width: 100%;
+}
+
+.all-bundles .panel {
+    background: #FAFAFA;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 4px 4px 40px #dadada;
 }
 
 

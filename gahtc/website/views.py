@@ -328,6 +328,70 @@ def mybundles(request):
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
 
+		for bundle_returned in bundles_returned:
+			#get return all other content
+			bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
+			bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+			bundle_returned.bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
+			bundle_returned.bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
+			bundle_returned.bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
+
+			# for each module in a bundle, attach the module documents and the lectures
+			for bundle in bundle_returned.bundle_modules:
+				#look up module docs
+				moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
+				# just get the file name
+				for doc in moduleDocs:
+					document = str(doc.document)
+					document = document.split('/')
+					doc.documentName = document[2]
+
+				#attach to the bundle
+				bundle.module.moduleDocs = moduleDocs
+
+				#look up the lectures
+				moduleLecs = lectures.objects.filter(module=bundle.module).exclude(extracted=False).order_by('title')
+				# get the file name
+				for lec in moduleLecs:
+
+					# order by lecture number
+					first_word = lec.title.strip().lower().split(' ', 1)[0]
+					if first_word == 'lecture':
+						first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
+						lec.numeric_order = int(first_number)
+					else:
+						lec.numeric_order = 0
+
+					lecture = str(lec.presentation)
+					lecture = lecture.split('/')
+					lec.lectureName = lecture[2]
+					# get lecture documents
+					lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+					lec.lectureDocs = lectureDocs
+					for lecDoc in lec.lectureDocs:
+						document = str(lecDoc.document)
+						document = document.split('/')
+						lecDoc.documentName = document[2]
+
+				# order titles minus articles
+				moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
+
+				bundle.module.lectures = moduleLecs_ordered
+
+
+			#for each lecture document strip out name of file
+			for bundle in bundle_returned.bundle_lecture_documents:
+				document = str(bundle.lectureDocument.document)
+				document = document.split('/')
+				bundle.lectureDocument.documentName = document[2]
+
+			#for each lecture slide strip out name of file and slide notes file
+			for bundle in bundle_returned.bundle_lecture_slides:
+				slide = str(bundle.lectureSlide.presentation)
+				slide = slide.split('/')
+				bundle.lectureSlide.slideName = slide[2]
+
+
 	else:
 		bundles_returned = bundles.objects.none()
 
@@ -785,14 +849,14 @@ def showBundle(request, id=None):
 	bundle_returned = bundles.objects.get(pk=id, user=request.user)
 
 	#get return all other content
-	bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
-	bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
-	bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
-	bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
-	bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
 
 	# for each module in a bundle, attach the module documents and the lectures
-	for bundle in bundle_modules:
+	for bundle in bundle_returned.bundle_modules:
 		#look up module docs
 		moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
 		# just get the file name
@@ -835,19 +899,19 @@ def showBundle(request, id=None):
 
 
 	#for each lecture document strip out name of file
-	for bundle in bundle_lecture_documents:
+	for bundle in bundle_returned.bundle_lecture_documents:
 		document = str(bundle.lectureDocument.document)
 		document = document.split('/')
 		bundle.lectureDocument.documentName = document[2]
 
 	#for each lecture slide strip out name of file and slide notes file
-	for bundle in bundle_lecture_slides:
+	for bundle in bundle_returned.bundle_lecture_slides:
 		slide = str(bundle.lectureSlide.presentation)
 		slide = slide.split('/')
 		bundle.lectureSlide.slideName = slide[2]
 
 
-	context_dict = {'bundle_returned':bundle_returned, 'bundle_modules':bundle_modules, 'bundle_lectures': bundle_lectures, 'bundle_lecture_segments':bundle_lecture_segments , 'bundle_lecture_documents': bundle_lecture_documents, 'bundle_lecture_slides': bundle_lecture_slides}
+	context_dict = {'bundle_returned':bundle_returned,}
 	return render(request, 'website/show_bundle.html', context_dict)
 
 
@@ -1119,6 +1183,68 @@ def refreshSidebarBundle(request):
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
+	for bundle_returned in bundles_returned:
+		#get return all other content
+		bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
+		bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+		bundle_returned.bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
+		bundle_returned.bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
+		bundle_returned.bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
+
+		# for each module in a bundle, attach the module documents and the lectures
+		for bundle in bundle_returned.bundle_modules:
+			#look up module docs
+			moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
+			# just get the file name
+			for doc in moduleDocs:
+				document = str(doc.document)
+				document = document.split('/')
+				doc.documentName = document[2]
+
+			#attach to the bundle
+			bundle.module.moduleDocs = moduleDocs
+
+			#look up the lectures
+			moduleLecs = lectures.objects.filter(module=bundle.module).exclude(extracted=False).order_by('title')
+			# get the file name
+			for lec in moduleLecs:
+
+				# order by lecture number
+				first_word = lec.title.strip().lower().split(' ', 1)[0]
+				if first_word == 'lecture':
+					first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
+					lec.numeric_order = int(first_number)
+				else:
+					lec.numeric_order = 0
+
+				lecture = str(lec.presentation)
+				lecture = lecture.split('/')
+				lec.lectureName = lecture[2]
+				# get lecture documents
+				lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+				lec.lectureDocs = lectureDocs
+				for lecDoc in lec.lectureDocs:
+					document = str(lecDoc.document)
+					document = document.split('/')
+					lecDoc.documentName = document[2]
+
+			# order titles minus articles
+			moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
+
+			bundle.module.lectures = moduleLecs_ordered
+
+
+		#for each lecture document strip out name of file
+		for bundle in bundle_returned.bundle_lecture_documents:
+			document = str(bundle.lectureDocument.document)
+			document = document.split('/')
+			bundle.lectureDocument.documentName = document[2]
+
+		#for each lecture slide strip out name of file and slide notes file
+		for bundle in bundle_returned.bundle_lecture_slides:
+			slide = str(bundle.lectureSlide.presentation)
+			slide = slide.split('/')
+			bundle.lectureSlide.slideName = slide[2]
 
 	context_dict = {'bundles_returned':bundles_returned}
 	return render(request, 'website/bundle_list.html', context_dict)
