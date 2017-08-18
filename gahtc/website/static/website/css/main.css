@@ -85,9 +85,9 @@ a:focus {
     position: fixed;
     bottom: 40px;
     left: 20px;
-    background: #c9302c;
+    background: #BF413E;
     border: none;
-    padding: 10px;
+    padding: 10px 8px 10px 7px;
     border-radius: 5px;
     display: none;
 }

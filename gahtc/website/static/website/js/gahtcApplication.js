@@ -98,6 +98,17 @@ gahtcApplication.getModuleDescriptionModal = function (module_id) {
     });
 };
 
+gahtcApplication.getLectureDescriptionModal = function (lecture_id) {
+    $.ajax({
+        type: 'GET',
+        url: '/show_lecture_description/' + lecture_id + '/',
+        success: function (data) {
+            $('#lectureFullDescription').html(data);
+            $('#lectureFullDescription').modal('show');
+        }
+    });
+};
+
 gahtcApplication.getMemberFullDescrptionModal = function (member_id) {
     $.ajax({
         type: 'GET',
@@ -254,7 +265,7 @@ gahtcApplication.getBundle = function (bundle_id) {
         type: "GET",
         url: "/show_bundle/" + bundle_id + "/",
         success: function (data) {
-            $('.bundleSidebar').html(data);
+            $('#bundle_'+bundle_id ).html(data);
         }
     });
 }

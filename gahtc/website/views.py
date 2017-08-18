@@ -332,7 +332,6 @@ def mybundles(request):
 			#get return all other content
 			bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
 			bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
-			bundle_returned.bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
 			bundle_returned.bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
 			bundle_returned.bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
 
@@ -612,7 +611,7 @@ def showLectureModal(request, id=None):
 
 def showModuleDescription(request, id=None):
   """
-    Response from AJAX request to show lecture slides in modal
+    Response from AJAX request to show module description in modal
   """
   #get lecture
   module_returned = modules.objects.get(pk=id)
@@ -620,9 +619,19 @@ def showModuleDescription(request, id=None):
   context_dict = {'module_returned':module_returned}
   return render(request, 'website/show_module_description.html', context_dict)
 
+def showLectureDescription(request, id=None):
+  """
+    Response from AJAX request to show lecture description in modal
+  """
+  #get lecture
+  lecture_returned = lectures.objects.get(pk=id)
+
+  context_dict = {'lecture_returned':lecture_returned}
+  return render(request, 'website/show_lecture_description.html', context_dict)
+
 def showMemberIntroduction(request, id=None):
   """
-    Response from AJAX request to show lecture slides in modal
+    Response from AJAX request to show member introduction in modal
   """
   #get lecture
   profile_returned = profile.objects.get(pk=id)
@@ -1198,7 +1207,6 @@ def refreshSidebarBundle(request):
 		#get return all other content
 		bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
 		bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
-		bundle_returned.bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
 		bundle_returned.bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
 		bundle_returned.bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
 
