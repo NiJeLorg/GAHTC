@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^show_lecture_slide/(?P<id>\d+)/$', views.showLectureSlide, name='showLectureSlide'),
     url(r'^show_lecture_modal/(?P<id>\d+)/$', views.showLectureModal, name='showLectureModal'),
     url(r'^show_module_description/(?P<id>\d+)/$', views.showModuleDescription, name='showModuleDescription'),
+    url(r'^show_member_introduction/(?P<id>\d+)/$', views.showMemberIntroduction, name='showMemberIntroduction'),
     url(r'^show_lecture_segment_modal/(?P<id>\d+)/$', views.showLectureSegmentModal, name='showLectureSegmentModal'),
     url(r'^show_lecture_slide_modal/(?P<id>\d+)/$', views.showLectureSlideModal, name='showLectureSlideModal'),
     url(r'^create_new_bundle/$', views.createNewBundle, name='createNewBundle'),

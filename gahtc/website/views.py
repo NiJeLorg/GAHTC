@@ -620,6 +620,17 @@ def showModuleDescription(request, id=None):
   context_dict = {'module_returned':module_returned}
   return render(request, 'website/show_module_description.html', context_dict)
 
+def showMemberIntroduction(request, id=None):
+  """
+    Response from AJAX request to show lecture slides in modal
+  """
+  #get lecture
+  profile_returned = profile.objects.get(pk=id)
+
+  context_dict = {'profile_returned':profile_returned}
+  return render(request, 'website/show_member_introduction.html', context_dict)
+
+
 def showLectureSegmentModal(request, id=None):
 	"""
 	  Response from AJAX request to show lecture segment slides in modal
@@ -1468,9 +1479,16 @@ def membersView(request):
 	  Loads all user profiles
 	"""
 
+	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', 	first_name='').order_by('last_name', 'first_name').distinct()
+	if request.GET.get('initial') or request.GET.get('name'):
+		name = request.GET.get('name')
+		initial = request.GET.get('initial')
+		# import ipdb; ipdb.set_trace()
+		query_str = Q(first_name__istartswith=initial) | Q(last_name__istartswith=initial)
+		if name:
+			query_str = Q(last_name__icontains=name) | Q(first_name__icontains=name)
+		profiles_returned = profile.objects.filter(query_str, verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
 	# contributing_profiles_returned = profile.objects.filter(verified=True, public=True).filter(Q(modules__isnull=False) | Q(lectures__isnull=False) | Q(comingsoonmodules__isnull=False)).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
-
-	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
 
 	#attach modules and lectures to profiles
 	for cp in profiles_returned:
@@ -1490,8 +1508,8 @@ def searchMembers(request):
 			print(keyword)
 		except:
 			pass
-	 
-			
+
+
 def saveSearchString(request):
 	"""
 	  AJAX request to save search string

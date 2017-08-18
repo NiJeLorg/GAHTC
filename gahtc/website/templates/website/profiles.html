@@ -17,12 +17,119 @@
 		<p>Contact GAHTC Project Manager, <i>Eliana Hamdi Murchie</i> at <a href="mailto:emurchie@mit.edu">emurchie@mit.edu</a> or
 			click here to <a href="{% url 'howtobecomeamember' %}">apply for membership.</a>
 		</p>
-		<ul class="alphabeticalFilterList">
-			<li><a href="">A</a></li>
+		<div class="alphabeticalFilterList">
+			<div class='letter'>
+				<a href="/members/?initial=A">A</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=B">B</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=C">C</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=D">D</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=E">E</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=F">F</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=G">G</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=H">H</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=I">I</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=J">J</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=K">K</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=L">L</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=M">M</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=N">N</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=O">O</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=P">P</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=Q">Q</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=R">R</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=S">S</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=T">T</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=U">U</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=V">V</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=W">W</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=X">X</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=Y">Y</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="/members/?initial=Z">Z</a>
+			</div>
+		</div>
+
+
+		<!-- <ul class="alphabeticalFilterList">
+			<li><a href="/members/?initial=A">A</a></li>
 			<li><a href="">B</a></li>
 			<li><a href="">C</a></li>
 			<li><a href="">D</a></li>
-			<li><a href="">E</a></li>
+			<li><a href="/members/?initial=E">E</a></li>
 			<li><a href="">F</a></li>
 			<li><a href="">G</a></li>
 			<li><a href="">H</a></li>
@@ -44,20 +151,20 @@
 			<li><a href="">X</a></li>
 			<li><a href="">Y</a></li>
 			<li><a href="">Z</a></li>
-		</ul>
+		</ul> -->
 
-		<form method='post'>
+		<form method='get' action="/members/">
 			{% csrf_token %}
 			<div class="searchForMembers">
-				<input type="text" name="searchformembers" placeholder='Search for members...' name='keyword'>
+				<input type="text" placeholder='Search for members...' name='name'>
 				<button type='submit'>
-					<span class="glyphicon glyphicon-search"></span>				
+					<span class="glyphicon glyphicon-search"></span>
 				</button>
 			</div>
 		</form>
 
 		{% for user_profile in profiles_returned %} {%if user_profile.modules or user_profile.csmodules %}
-		<div class="member">
+		<div class="member" id='heading_{{user_profile.id}}'>
 			<div class='contributing-member'>
 				<h3>{{user_profile.first_name}} {{user_profile.last_name}}
 					<span class="institution-affiliation">({{user_profile.institution}})</span>
@@ -68,9 +175,10 @@
 						<img src="/media/{{user_profile.avatar}}" class='img-responsive col-md-3'> {% else %}
 						<img src="{% static 'website/css/images/gahtc-logo.png' %}" class="img-responsive col-md-3" /> {% endif %}
 						<div class="col-md-9 member-profile-info">
-							<p class='description'>{{user_profile.introduction}}
-								<p>...<button class='launchModuleDescription readMore' data-moduleid="{{ module_returned.id }}">Read More</button></p>
-							</p>
+							<p class='description'>{{user_profile.introduction}}</p>
+							{%if user_profile.introduction|length > 400 %}
+							<p>...<button class='launchMemberIntroduction readMore' data-memberid="{{ user_profile.id }}">continue reading</button></p>
+							{%endif%}
 							<div class="contact-info">
 								<p>{{user_profile.title}}</p>
 								<p>{{user_profile.institution}}</p>
@@ -82,15 +190,15 @@
 			</div>
 			<div class="member-contributions">
 				<p>Contributions:</p>
-					{% for module in user_profile.modules %}
-						<p> {{module.title}}
-							<a href="/modules/#heading_{{ module.id }}">(view module)</a>
-						</p>
-					{% endfor %}
+				{% for module in user_profile.modules %}
+				<p> {{module.title}}
+					<a href="/modules/#heading_{{ module.id }}">(view module)</a>
+				</p>
+				{% endfor %}
 			</div>
 		</div>
 		{% else %}
-		<div class="member">
+		<div class="member non-contributing" id='heading_{{user_profile.id}}'>
 			<h3>{{user_profile.first_name}} {{user_profile.last_name}}
 				<span class="institution-affiliation">({{user_profile.institution}})</span>
 			</h3>
@@ -100,9 +208,10 @@
 					<img src="/media/{{user_profile.avatar}}" class='img-responsive col-md-3'> {% else %}
 					<img src="{% static 'website/css/images/gahtc-logo.png' %}" class="img-responsive col-md-3" /> {% endif %}
 					<div class="col-md-9 member-profile-info">
-						<p class='description'>{{user_profile.introduction}}
-							<p>...<button class='launchModuleDescription readMore' data-moduleid="{{ module_returned.id }}">Read More</button></p>
-						</p>
+						<p class='description'>{{user_profile.introduction}}</p>
+						{%if user_profile.introduction|length > 400 %}
+						<p>...<button class='launchMemberIntroduction readMore' data-memberid="{{ user_profile.id }}">continue reading</button></p>
+						{%endif%}
 						<div class="contact-info">
 							<p>{{user_profile.title}}</p>
 							<p>{{user_profile.institution}}</p>
@@ -118,10 +227,12 @@
 
 <button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
     <span class="glyphicon glyphicon-arrow-up"></span>
-</button>
-{% endblock %} 
-
-{% block js_block %} 
-	<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>	
-	<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+</button> {% endblock %} {% block modal_block %}
+<div class="modal fade" id="memberFullIntroduction" tabindex="-1" role="dialog" aria-labelledby="memberFullIntroduction">
+</div>
+{% endblock %} {% block js_block %}
+<script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
 {% endblock %}

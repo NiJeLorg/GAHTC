@@ -1294,6 +1294,7 @@ ul.as-selections li.as-original input {
     padding: 30px 30px;
 }
 
+
 /*.lecture-panel .image-container-parent {
     margin-top: 60px;
 }*/
@@ -1377,7 +1378,7 @@ ul.as-selections li.as-original input {
 
 .members-view .cover-photo {
     width: 100%;
-    height: 560px;
+    height: 360px;
     background-repeat: no-repeat !important;
     background-size: cover !important;
     background-position: 0 !important;
@@ -1399,21 +1400,32 @@ ul.as-selections li.as-original input {
 }
 
 .alphabeticalFilterList {
-    width: 100%;
-    height: 40px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     border-top: 1px solid #ad7f80;
     border-bottom: 1px solid #ad7f80;
     margin: 20px 0;
+    padding: 10px 0;
 }
 
-.alphabeticalFilterList li {
-    float: left;
-    padding-right: 30px;
+.alphabeticalFilterList .letter {
+    display: flex;
+    align-items: center;
 }
 
-.alphabeticalFilterList li a {
+.alphabeticalFilterList .letter .circle {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #5d0104;
+    /* float: left;
+    padding-right: 30px; */
+}
+
+.alphabeticalFilterList .letter a {
+    padding: 0 10px;
     text-decoration: none;
 }
 
@@ -1444,7 +1456,6 @@ main form {
 }
 
 .members-view .member {
-    border-top: 1px solid #7f7f7f;
     border-bottom: 1px solid #7f7f7f;
     margin-bottom: 20px;
 }
@@ -1478,6 +1489,16 @@ main form {
 .member .contributing-member {
     background: url('images/ocean_currents_light.png');
     background-position: 0;
+    border: 2px solid #5d0104;
+}
+
+.non-contributing:nth-child(odd) {
+    background: url('images/ocean_currents_light.png');
+    background-position: 0;
+}
+
+.non-contributing h3 {
+    border-top: 1px solid #7f7f7f;
 }
 
 .member h3 {
@@ -1534,7 +1555,7 @@ main form {
 
 
 /* .members-view main p {
-    
+
 } */
 
 
