@@ -22,6 +22,8 @@ $(document).ready(function () {
 
     var gahtcApp = new gahtcApplication();
 
+    let isPanelOpen = false;
+
     if (window.location.pathname === '/') {
         $('footer').css('position', 'fixed');
         $('footer').css('bottom', '0');
@@ -47,7 +49,33 @@ $(document).ready(function () {
         }, 750);
     });
 
-    $('.scrollRight').on('click', ()=> {
+    $('.showMore').on('click', function () {
+        var text = $(this).text();
+        let allPanelExpand = $('.panel-expand');
+        if (text === 'SHOW MORE') {
+            var el = $(this);
+            $('.showMore').each(function (index) {
+                if ($(this) !== el) {
+                    $(this).text('SHOW MORE');
+                }
+                el.text('SHOW LESS')
+            })
+        } else if (text === 'SHOW LESS') {
+            $(this).text('SHOW MORE')
+        }
+
+
+
+
+        // allPanelExpand.forEach((item, index)=> {
+        //     console.log(item, 'ITEM');
+        // })
+
+    });
+
+
+
+    $('.scrollRight').on('click', () => {
         console.log('clicked');
         $('.featured-modules p:last').scrollRight();
     });

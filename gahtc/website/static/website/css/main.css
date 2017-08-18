@@ -314,6 +314,8 @@ body nav {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    padding: 20px 0;
+    pointer-events: none;
 }
 
 .arrows-container div {
