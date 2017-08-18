@@ -304,6 +304,25 @@ body nav {
     color: #AAAAAA;
 }
 
+.featured-modules-container {
+    position: relative;
+}
+
+.featured-modules-container .arrows-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.arrows-container div {
+    display: flex;
+    align-items: center;
+    background: rgba(43, 43, 44, .6);
+    padding: 0 10px;
+}
+
 .featured-modules .module {
     width: 400px;
     display: inline-block;

@@ -47,5 +47,12 @@ $(document).ready(function () {
         }, 750);
     });
 
-    
+    $('.scrollRight').on('click', ()=> {
+        console.log('clicked');
+        $('.featured-modules p:last').scrollRight();
+    });
+
+
+
+
 });
