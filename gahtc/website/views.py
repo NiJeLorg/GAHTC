@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
 from django.db.models import TextField, CharField, Q, Count
+from django.db.models.functions import Lower
 from django.contrib.auth.decorators import login_required
 from itertools import chain
 from django.conf import settings
@@ -1555,7 +1556,7 @@ def membersView(request):
 	  Loads all user profiles
 	"""
 
-	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by(Lower('last_name'), Lower('first_name')).distinct()
 
 	#attach modules and lectures to profiles
 	for cp in profiles_returned:
@@ -1584,9 +1585,9 @@ def searchMembers(request):
 			for kw in split_keyword[1:]:
 				query_str.add((Q(last_name__icontains=kw) | Q(first_name__icontains=kw)), query_str.connector)
 
-			profiles_returned = profile.objects.filter(query_str, verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+			profiles_returned = profile.objects.filter(query_str, verified=True, public=True).exclude(last_name='', first_name='').order_by(Lower('last_name'), Lower('first_name')).distinct()
 		else:
-			profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+			profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by(Lower('last_name'), Lower('first_name')).distinct()
 
 		#attach modules and lectures to profiles
 		for cp in profiles_returned:
