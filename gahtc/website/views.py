@@ -208,7 +208,7 @@ def mainSearchCode(request, keyword, tab):
 		for module_document in module_documents_returned:
 			if module_document.object is not None:
 				module_document.object.module.highlighted = []
-				module_document.object.module.append(module_document.highlighted)
+				module_document.object.module.highlighted.append(module_document.highlighted)
 				module_documents_modules.append(module_document.object.module)
 
 		for lecture in lectures_returned:
