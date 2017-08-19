@@ -9,11 +9,15 @@ $(document).ready(function() {
     $(".fadein").fadeIn("slow");
 
     // launch modal to show lectures slides
-    $('.btn-img-hover-interaction').hover(function() {
+    $(document).on('hover', '.btn-img-hover-interaction', function(e) {
         $(this).children('.button-text-ribbon').css({ opacity: 0.9 });
-    }, function() {
-        $(this).children('.button-text-ribbon').css({ opacity: 0 });
     });
+
+    // $('.btn-img-hover-interaction').hover(function() {
+    //     $(this).children('.button-text-ribbon').css({ opacity: 0.9 });
+    // }, function() {
+    //     $(this).children('.button-text-ribbon').css({ opacity: 0 });
+    // });
 
     // // check for the existence of tab
     // if (typeof tab === 'undefined' || tab == "none") {
