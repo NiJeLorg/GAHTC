@@ -199,18 +199,22 @@ def mainSearchCode(request, keyword, tab):
 		module_modules = []
 		module_documents_modules = []
 		lectures_modules = []
+		
 
 		for module in modules_returned:
 			if module.object is not None:
-				module.object.highlighted = module.highlighted
 				module_modules.append(module.object)
 
 		for module_document in module_documents_returned:
 			if module_document.object is not None:
+				module_document.object.module.highlighted = []
+				module_document.object.module.append(module_document.highlighted)
 				module_documents_modules.append(module_document.object.module)
 
 		for lecture in lectures_returned:
 			if lecture.object is not None:
+				lecture.object.module.highlighted = []
+				lecture.object.module.highlighted.append(lecture.highlighted)
 				lectures_modules.append(lecture.object.module)
 
 		module_list = list(chain(module_modules, module_documents_modules, lectures_modules))
@@ -222,6 +226,7 @@ def mainSearchCode(request, keyword, tab):
 
 		#reorder modules if title or author is in the keyword
 		for module in unique_module_list:
+
 			if module.title.lower().find(keyword.lower()) != -1 or module.authors.lower().find(keyword.lower()) != -1:
 				#remove item
 				unique_module_list.remove(module)

@@ -120,6 +120,7 @@
                                         </div>
                                     </div>
                                     <p class="swapem">
+                                        {{ module.object }}
                                         {% for text in module.highlighted %} 
                                             ... {% autoescape off %}{{ text }}{% endautoescape %} 
                                             {% if forloop.last %} ... {% endif %}
@@ -229,7 +230,7 @@
                                     </div>
                                     <p class="swapem">
                                         {% for text in lecture.highlighted %} 
-                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            ... {% autoescape on %}{{ text }}{% endautoescape %} 
                                             {% if forloop.last %} ... {% endif %}
                                         {% endfor %}
                                     </p> 
