@@ -85,7 +85,8 @@
 					<span class="created-by">created by:</span>
 					<p>
 						{% for authors in bundle.lecture.authors_m2m.all %}
-						<a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a> {% if not forloop.last %}, {% endif %} {% endfor %}
+							<a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
+						{% endfor %}
 					</p>
 				</div>
 			</div>
