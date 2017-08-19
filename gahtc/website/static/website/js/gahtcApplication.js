@@ -419,7 +419,6 @@ gahtcApplication.dontContactLecture = function (lectureid) {
 gahtcApplication.searchMembers = function () {
     // get values
     var keyword = $('#memberNameLookup').val();
-    console.log(keyword);
 
     $.ajax({
         type: "GET",

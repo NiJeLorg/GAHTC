@@ -1596,6 +1596,8 @@ def searchMembers(request):
 			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp).order_by('title')
 			cp.csmodules = cp_csmodules	
 
+			cp.first_letter_last_name = cp.last_name[:1]
+
 	context_dict = {'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles_returned.html', context_dict)
 
