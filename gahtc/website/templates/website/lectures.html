@@ -6,13 +6,13 @@
         <h3>Jump To Module</h3>
         <div class="lectures-titles">
             {% for module_returned in modules_returned %}
-            <a href="#heading_{{ module_returned.id }}">{{ module_returned.title }}</a> {% endfor %}
+            <a href="#module_{{ module_returned.id }}">{{ module_returned.title }}</a> {% endfor %}
         </div>
     </section>
 </div>
 <div class="module-lecture-container">
     {% for module_returned in modules_returned %}
-    <div class="module" id="heading_{{module_returned.id}}">
+    <div class="module" id="module_{{module_returned.id}}">
         <h3 class="lecture-module-title">{{ module_returned.title }} ({{module_returned.moduleLecs|length}} lecture{{module_returned.moduleLecs|length|pluralize}})
         </h3>
         <!-- <span>{{module_returned.moduleLecs.length}}</span> -->
