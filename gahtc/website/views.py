@@ -1563,6 +1563,9 @@ def membersView(request):
 		cp.modules = cp_modules
 		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp).order_by('title')
 		cp.csmodules = cp_csmodules
+		#first letter of last name
+
+		cp.first_letter_last_name = cp.last_name[:1]
 
 	context_dict = {'profiles_returned':profiles_returned}
 	return render(request, 'website/profiles.html', context_dict)

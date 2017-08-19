@@ -4,7 +4,9 @@
 	<h3 class="marginBottom100">No Members Found.</h3>
 {% endif %}
 
-{% for user_profile in profiles_returned %} 
+{% for user_profile in profiles_returned %}
+	<!-- Anchor by first letter of last name -->
+	<div id="{{ user_profile.first_letter_last_name }}"></div>
 	{%if user_profile.modules or user_profile.csmodules %}
 	<div class="member" id='heading_{{user_profile.id}}'>
 		<div class='contributing-member'>
