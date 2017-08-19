@@ -75,11 +75,11 @@ h3 {
     font-style: italic;
 }
 
-a,
+/* a,
 a:hover,
 a:focus {
     text-decoration: none;
-}
+} */
 
 .scrollToTop {
     position: fixed;
@@ -1210,7 +1210,7 @@ ul.as-selections li.as-original input {
 }
 
 .author-docs a {
-    color: #5C0000;
+    color: #BF413E;
 }
 
 .panel-section-footer {
@@ -1233,7 +1233,7 @@ ul.as-selections li.as-original input {
 }
 
 .buttons button {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .panel footer a {

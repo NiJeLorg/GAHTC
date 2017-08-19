@@ -73,9 +73,11 @@
 			</div>
 			<div class="row">
 				<p>{{ bundle.lecture.description }}
-					<p>...
-						<button class='launchLectureDescription readMore' data-lectureid="{{ bundle.lecture.id }}">Read More</button>
-					</p>
+					{%if bundle.lecture.description|length > 400 %}
+						<p>...
+							<button class='launchLectureDescription readMore' data-lectureid="{{ bundle.lecture.id }}">Read More</button>
+						</p>
+					{%endif%} 
 				</p>
 			</div>
 			<div class="panel-section-footer row">

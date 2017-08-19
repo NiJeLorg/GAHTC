@@ -37,9 +37,11 @@
                         <img src="/media/{{module_returned.cover_image}}" alt="" class="img-responsive col-md-4">
                         <section class="col-md-8">
                             <p>{{ module_returned.description }}
+                            {%if module_returned.description|length > 400 %}
                                 <p>...
                                     <button class='launchModuleDescription readMore' data-moduleid="{{ module_returned.id }}">Read More</button>
                                 </p>
+                            {%endif%}
                             </p>
                             <div class="panel-section-footer">
                                 <div class="row">
@@ -81,8 +83,8 @@
                             </div>
                             <section class="col-md-9">
                                 <div class="title-buttons-group row">
-                                    <h4 class="col-md-8">{{lec.title}}</h4>
-                                    <div class="buttons col-md-4">
+                                    <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
+                                    <div class="buttons col-md-4 paddingRight0">
                                         <a class='btn pull-right see-details' href="/lectures/#heading_{{lec.id}}">see details</a>                                        {% if user.is_authenticated %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -115,24 +117,47 @@
                         </div>
                     </div>
                     {% endfor %} {% endif %}
-                    <div class="panel-expand-container">
+                    <div class="panel-expand-container marginTop10">
+                        {% if module_returned.related_modules %}
                         <h4>related modules: </h4>
+                        <div class="featured-modules-container">
+                                <div class='arrows-container'>
+                                   <div><img src='{% static 'website/css/images/left_arrow.png' %}' class='scrollLeft'></div>
+                                   <div><img src='{% static 'website/css/images/right_arrow.png' %}' class='scrollRight'></div>
+                               </div>
+                               <div class="featured-modules">
+                                   {% for r_module_returned in module_returned.related_modules %}
+                                   <div class="module">
+                                       <a href="#heading_{{ r_module_returned.id }}">
+                                           <div class="image-container" style="background: url('/media/{{r_module_returned.cover_image}}')">
+                                           </div>
+                                       </a>
+                                       <div class="title-container">
+                                           <h4><a href="#heading_{{ r_module_returned.id }}">{{ r_module_returned.title }}</a></h4>
+                                       </div>
+                                   </div>
+                                   {% endfor %}                           
+                               </div>
+                           </div>                        
+                        {% endif %}
                     </div>
-                    <div class="panel-expand-container">
-                        <h4>members comments: </h4>
+                    <div class="panel-expand-container marginTop10">
+                        {% if module_returned.comments %}
+                            <h4>members comments: </h4>
+                            {% for comment in module_returned.comments %}
+                                <p>"{{ comment.comment }}"
+                                <br />
+                                by: <a href="/members/#heading_{{ user.id }}">{{ comment.commenter_profile.first_name }} {{ comment.commenter_profile.last_name }}</a> on {{ comment.created|date:"F j, Y" }}</p>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                     <p class="panel-expand-container terms-conditions">
                         <strong>Instructions</strong>
-                        <br /> You can download individual files by selecting them from the list. Or download the entire
-                        module by clicking the 'Download Module' button above. Please read the terms and conditions before
-                        downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and
-                        conditions.
+                        <br /> You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
                         <br />
                         <br />
                         <strong>Terms and conditions</strong>
-                        <br /> I understand that this material is to be used only in classroom settings. You are free to
-                        make changes to fit your constraints or teaching goals. However, this material cannot be used directly
-                        or indirectly, in whole or in part, for publication, in any form.
+                        <br /> I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
                     </p>
                 </div>
                 <footer>

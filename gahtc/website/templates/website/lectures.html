@@ -29,7 +29,13 @@
                         </div>
                         <section class="lecture-panel-section col-md-9">
                             <h4>{{lecture_returned.title}}</h4>
-                            <p>{{lecture_returned.description}}</p>
+                            <p>{{lecture_returned.description}}
+                                {%if lecture_returned.description|length > 400 %}
+                                    <p>...
+                                        <button class='launchLectureDescription readMore' data-lectureid="{{ lecture_returned.id }}">Read More</button>
+                                    </p>
+                                {%endif%}                                
+                            </p>
                             <div class="panel-section-footer">
                                 <div class="row">
                                     <div class="author-docs col-md-7">
@@ -73,18 +79,23 @@
                             </div>
                         </div>
                         <div class="panel-expand-container">
-                            <h4>members comments: </h4>
+                            {% if lecture_returned.comments %}
+                                <h4>members comments: </h4>
+                                {% for comment in lecture_returned.comments %}
+                                    <p>"{{ comment.comment }}"
+                                    <br />
+                                    by: <a href="/members/#heading_{{ user.id }}">{{ comment.commenter_profile.first_name }} {{ comment.commenter_profile.last_name }}</a> on {{ comment.created|date:"F j, Y" }}</p>
+                                {% endfor %}
+                            {% endif %}
                         </div>
-                        <p class="panel-expand-container terms-conditions">Instructions
-                            <br> You can download individual files by selecting them from the list. Or download the entire
-                            module by clicking the 'Download Module' button above. (We should figure out a way to add to
-                            my bundle and a way to display the file size before users click on a link) Please read the terms
-                            and conditions before downloading any content. By downloading content from GAHTC.org you hereby
-                            agree to our terms and conditions.
-                            <br> Terms and conditions. I understand that this material is to be used only in class room settings.
-                            You are free to make changes to fit your constraints or teaching goals. However, this material
-                            cannot be used directly or indicrectly, in whole or in part, for publication, in any form.
-                        </p>
+                        <p class="panel-expand-container terms-conditions">
+                                <strong>Instructions</strong>
+                                <br /> You can download individual files by selecting them from the list. Or download the entire lecture and all its accompanying documents by clicking the 'Download Lecture' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
+                                <br />
+                                <br />
+                                <strong>Terms and conditions</strong>
+                                <br /> I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
+                            </p>
                     </div>
                     <footer>
                         <a href="#{{ lecture_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true"
