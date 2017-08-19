@@ -16,3 +16,11 @@ admin.site.register(bundleLecture)
 admin.site.register(bundleLectureDocument)
 admin.site.register(bundleLectureSlides)
 admin.site.register(profile)
+admin.site.register(modulesComments)
+admin.site.register(lecturesComments)
+admin.site.register(lectureDocumentsComments)
+admin.site.register(lectureSlidesComments)
+
+
+
+

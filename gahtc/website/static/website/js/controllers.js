@@ -95,6 +95,12 @@ $(document).ready(function() {
         gahtcApplication.getModuleDescriptionModal(module_id);
     });
 
+    $(document).on('click', '.launchLectureDescription', function(e) {
+        e.preventDefault();
+        var lecture_id = $(this).data('lectureid');
+        gahtcApplication.getLectureDescriptionModal(lecture_id);
+    });
+
     $(document).on('click', '.launchMemberIntroduction', function(e) {
         e.preventDefault();
         var member_id = $(this).data('memberid');
@@ -398,6 +404,17 @@ $(document).ready(function() {
 
     });
 
+
+    // ajax search for profiles
+    $('#memberNameLookup').keyup(function(e) {
+        if (e.which == 13) {
+            e.preventDefault();
+        }       
+    });  
+
+    $('#memberNameLookup').keyup(function(e) {   
+        gahtcApplication.searchMembers();
+    });
 
 
 

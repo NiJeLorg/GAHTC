@@ -199,18 +199,22 @@ def mainSearchCode(request, keyword, tab):
 		module_modules = []
 		module_documents_modules = []
 		lectures_modules = []
+		
 
 		for module in modules_returned:
 			if module.object is not None:
-				module.object.highlighted = module.highlighted
 				module_modules.append(module.object)
 
 		for module_document in module_documents_returned:
 			if module_document.object is not None:
+				module_document.object.module.highlighted = []
+				module_document.object.module.append(module_document.highlighted)
 				module_documents_modules.append(module_document.object.module)
 
 		for lecture in lectures_returned:
 			if lecture.object is not None:
+				lecture.object.module.highlighted = []
+				lecture.object.module.highlighted.append(lecture.highlighted)
 				lectures_modules.append(lecture.object.module)
 
 		module_list = list(chain(module_modules, module_documents_modules, lectures_modules))
@@ -222,6 +226,7 @@ def mainSearchCode(request, keyword, tab):
 
 		#reorder modules if title or author is in the keyword
 		for module in unique_module_list:
+
 			if module.title.lower().find(keyword.lower()) != -1 or module.authors.lower().find(keyword.lower()) != -1:
 				#remove item
 				unique_module_list.remove(module)
@@ -327,6 +332,69 @@ def mybundles(request):
 	if request.user.is_authenticated():
 		# pull bundles
 		bundles_returned = bundles.objects.filter(user=request.user)
+
+		for bundle_returned in bundles_returned:
+			#get return all other content
+			bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
+			bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+			bundle_returned.bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
+			bundle_returned.bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
+
+			# for each module in a bundle, attach the module documents and the lectures
+			for bundle in bundle_returned.bundle_modules:
+				#look up module docs
+				moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
+				# just get the file name
+				for doc in moduleDocs:
+					document = str(doc.document)
+					document = document.split('/')
+					doc.documentName = document[2]
+
+				#attach to the bundle
+				bundle.module.moduleDocs = moduleDocs
+
+				#look up the lectures
+				moduleLecs = lectures.objects.filter(module=bundle.module).exclude(extracted=False).order_by('title')
+				# get the file name
+				for lec in moduleLecs:
+
+					# order by lecture number
+					first_word = lec.title.strip().lower().split(' ', 1)[0]
+					if first_word == 'lecture':
+						first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
+						lec.numeric_order = int(first_number)
+					else:
+						lec.numeric_order = 0
+
+					lecture = str(lec.presentation)
+					lecture = lecture.split('/')
+					lec.lectureName = lecture[2]
+					# get lecture documents
+					lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+					lec.lectureDocs = lectureDocs
+					for lecDoc in lec.lectureDocs:
+						document = str(lecDoc.document)
+						document = document.split('/')
+						lecDoc.documentName = document[2]
+
+				# order titles minus articles
+				moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
+
+				bundle.module.lectures = moduleLecs_ordered
+
+
+			#for each lecture document strip out name of file
+			for bundle in bundle_returned.bundle_lecture_documents:
+				document = str(bundle.lectureDocument.document)
+				document = document.split('/')
+				bundle.lectureDocument.documentName = document[2]
+
+			#for each lecture slide strip out name of file and slide notes file
+			for bundle in bundle_returned.bundle_lecture_slides:
+				slide = str(bundle.lectureSlide.presentation)
+				slide = slide.split('/')
+				bundle.lectureSlide.slideName = slide[2]
+
 
 	else:
 		bundles_returned = bundles.objects.none()
@@ -548,7 +616,7 @@ def showLectureModal(request, id=None):
 
 def showModuleDescription(request, id=None):
   """
-    Response from AJAX request to show lecture slides in modal
+    Response from AJAX request to show module description in modal
   """
   #get lecture
   module_returned = modules.objects.get(pk=id)
@@ -556,9 +624,19 @@ def showModuleDescription(request, id=None):
   context_dict = {'module_returned':module_returned}
   return render(request, 'website/show_module_description.html', context_dict)
 
+def showLectureDescription(request, id=None):
+  """
+    Response from AJAX request to show lecture description in modal
+  """
+  #get lecture
+  lecture_returned = lectures.objects.get(pk=id)
+
+  context_dict = {'lecture_returned':lecture_returned}
+  return render(request, 'website/show_lecture_description.html', context_dict)
+
 def showMemberIntroduction(request, id=None):
   """
-    Response from AJAX request to show lecture slides in modal
+    Response from AJAX request to show member introduction in modal
   """
   #get lecture
   profile_returned = profile.objects.get(pk=id)
@@ -796,14 +874,14 @@ def showBundle(request, id=None):
 	bundle_returned = bundles.objects.get(pk=id, user=request.user)
 
 	#get return all other content
-	bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
-	bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
-	bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
-	bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
-	bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_lecture_segments = bundleLectureSegments.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
+	bundle_returned.bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
 
 	# for each module in a bundle, attach the module documents and the lectures
-	for bundle in bundle_modules:
+	for bundle in bundle_returned.bundle_modules:
 		#look up module docs
 		moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
 		# just get the file name
@@ -846,19 +924,19 @@ def showBundle(request, id=None):
 
 
 	#for each lecture document strip out name of file
-	for bundle in bundle_lecture_documents:
+	for bundle in bundle_returned.bundle_lecture_documents:
 		document = str(bundle.lectureDocument.document)
 		document = document.split('/')
 		bundle.lectureDocument.documentName = document[2]
 
 	#for each lecture slide strip out name of file and slide notes file
-	for bundle in bundle_lecture_slides:
+	for bundle in bundle_returned.bundle_lecture_slides:
 		slide = str(bundle.lectureSlide.presentation)
 		slide = slide.split('/')
 		bundle.lectureSlide.slideName = slide[2]
 
 
-	context_dict = {'bundle_returned':bundle_returned, 'bundle_modules':bundle_modules, 'bundle_lectures': bundle_lectures, 'bundle_lecture_segments':bundle_lecture_segments , 'bundle_lecture_documents': bundle_lecture_documents, 'bundle_lecture_slides': bundle_lecture_slides}
+	context_dict = {'bundle_returned':bundle_returned,}
 	return render(request, 'website/show_bundle.html', context_dict)
 
 
@@ -1130,6 +1208,67 @@ def refreshSidebarBundle(request):
 	# pull bundles
 	bundles_returned = bundles.objects.filter(user=request.user)
 
+	for bundle_returned in bundles_returned:
+		#get return all other content
+		bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
+		bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
+		bundle_returned.bundle_lecture_documents = bundleLectureDocument.objects.filter(bundle=bundle_returned)
+		bundle_returned.bundle_lecture_slides = bundleLectureSlides.objects.filter(bundle=bundle_returned)
+
+		# for each module in a bundle, attach the module documents and the lectures
+		for bundle in bundle_returned.bundle_modules:
+			#look up module docs
+			moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
+			# just get the file name
+			for doc in moduleDocs:
+				document = str(doc.document)
+				document = document.split('/')
+				doc.documentName = document[2]
+
+			#attach to the bundle
+			bundle.module.moduleDocs = moduleDocs
+
+			#look up the lectures
+			moduleLecs = lectures.objects.filter(module=bundle.module).exclude(extracted=False).order_by('title')
+			# get the file name
+			for lec in moduleLecs:
+
+				# order by lecture number
+				first_word = lec.title.strip().lower().split(' ', 1)[0]
+				if first_word == 'lecture':
+					first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
+					lec.numeric_order = int(first_number)
+				else:
+					lec.numeric_order = 0
+
+				lecture = str(lec.presentation)
+				lecture = lecture.split('/')
+				lec.lectureName = lecture[2]
+				# get lecture documents
+				lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+				lec.lectureDocs = lectureDocs
+				for lecDoc in lec.lectureDocs:
+					document = str(lecDoc.document)
+					document = document.split('/')
+					lecDoc.documentName = document[2]
+
+			# order titles minus articles
+			moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
+
+			bundle.module.lectures = moduleLecs_ordered
+
+
+		#for each lecture document strip out name of file
+		for bundle in bundle_returned.bundle_lecture_documents:
+			document = str(bundle.lectureDocument.document)
+			document = document.split('/')
+			bundle.lectureDocument.documentName = document[2]
+
+		#for each lecture slide strip out name of file and slide notes file
+		for bundle in bundle_returned.bundle_lecture_slides:
+			slide = str(bundle.lectureSlide.presentation)
+			slide = slide.split('/')
+			bundle.lectureSlide.slideName = slide[2]
 
 	context_dict = {'bundles_returned':bundles_returned}
 	return render(request, 'website/bundle_list.html', context_dict)
@@ -1255,6 +1394,58 @@ def modulesView(request):
 		#attach the module docs to the module returned
 		module_returned.moduleLecs = moduleLecs_ordered
 
+
+		#look up related modules based on keywords in module
+		r_modules_returned = []
+		r_module_documents_returned = []
+		r_lectures_returned = []
+		r_lecture_segments_returned = []
+		r_lecture_documents_returned = []
+		r_lecture_slides_returned = []
+		r_coming_soon_modules_returned = []
+		
+		all_results = SearchQuerySet().auto_query(module_returned.description)
+
+		# sort search query to bins
+		for r in all_results:
+			if r.model_name == "modules":
+				r_modules_returned.append(r)
+			elif r.model_name == "moduledocuments":
+				r_module_documents_returned.append(r)
+			elif r.model_name == "lectures":
+				r_lectures_returned.append(r)
+
+		# concatonate module querysets
+		# first create list of modules
+		module_modules = []
+		module_documents_modules = []
+		lectures_modules = []
+		
+		for module in r_modules_returned:
+			if module.object is not None and module.object.title != module_returned.title:
+				module_modules.append(module.object)
+
+		for module_document in r_module_documents_returned:
+			if module_document.object is not None and module_document.object.module.title != module_returned.title:
+				module_documents_modules.append(module_document.object.module)
+
+		for lecture in r_lectures_returned:
+			if lecture.object is not None and lecture.object.module.title != module_returned.title:
+				lectures_modules.append(lecture.object.module)
+
+		module_list = list(chain(module_modules, module_documents_modules, lectures_modules))
+
+		# make unique
+		module_set = set(module_list)
+		module_returned.related_modules = list(module_set)
+
+		# pull comments for this module
+		module_returned.comments = modulesComments.objects.filter(module=module_returned)
+
+		for comment in module_returned.comments:
+			commenter_profile = profile.objects.get(user=comment.user)
+			comment.commenter_profile = commenter_profile
+
 	coming_soon_modules_returned = comingSoonModules.objects.all().order_by('title')
 
 	if request.user.is_authenticated():
@@ -1330,11 +1521,20 @@ def lecturesView(request):
 				document = document.split('/')
 				lecDoc.documentName = document[2]
 
+			# pull comments for this module
+			lec.comments = lecturesComments.objects.filter(lecture=lec)
+
+			for comment in lec.comments:
+				commenter_profile = profile.objects.get(user=comment.user)
+				comment.commenter_profile = commenter_profile
+
 		# order titles minus articles
 		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
 
 		#attach the module docs to the module returned
 		module_returned.moduleLecs = moduleLecs_ordered
+
+
 
 	if request.user.is_authenticated():
 		# pull bundles
@@ -1353,16 +1553,7 @@ def membersView(request):
 	  Loads all user profiles
 	"""
 
-	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', 	first_name='').order_by('last_name', 'first_name').distinct()
-	if request.GET.get('initial') or request.GET.get('name'):
-		name = request.GET.get('name')
-		initial = request.GET.get('initial')
-		# import ipdb; ipdb.set_trace()
-		query_str = Q(first_name__istartswith=initial) | Q(last_name__istartswith=initial)
-		if name:
-			query_str = Q(last_name__icontains=name) | Q(first_name__icontains=name)
-		profiles_returned = profile.objects.filter(query_str, verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
-	# contributing_profiles_returned = profile.objects.filter(verified=True, public=True).filter(Q(modules__isnull=False) | Q(lectures__isnull=False) | Q(comingsoonmodules__isnull=False)).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
 
 	#attach modules and lectures to profiles
 	for cp in profiles_returned:
@@ -1375,13 +1566,32 @@ def membersView(request):
 	return render(request, 'website/profiles.html', context_dict)
 
 def searchMembers(request):
-	if request.method == 'POST':
-		# search members
-		try:
-			keyword = request.POST['keyword']
-			print(keyword)
-		except:
-			pass
+	"""
+	  AJAX request to search and retrun member profiles
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		keyword = request.GET.get("keyword","")
+		if keyword:
+			split_keyword = keyword.split()
+			query_str = Q(last_name__icontains=split_keyword[0]) | Q(first_name__icontains=split_keyword[0])
+			for kw in split_keyword[1:]:
+				query_str.add((Q(last_name__icontains=kw) | Q(first_name__icontains=kw)), query_str.connector)
+
+			profiles_returned = profile.objects.filter(query_str, verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+		else:
+			profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+
+		#attach modules and lectures to profiles
+		for cp in profiles_returned:
+			cp_modules = modules.objects.filter(authors_m2m=cp).order_by('title')
+			cp.modules = cp_modules
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp).order_by('title')
+			cp.csmodules = cp_csmodules	
+
+	context_dict = {'profiles_returned':profiles_returned}
+	return render(request, 'website/profiles_returned.html', context_dict)
 
 
 def saveSearchString(request):

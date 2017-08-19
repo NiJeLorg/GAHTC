@@ -50,9 +50,9 @@ input {
     margin: 0;
 }
 
-.glyphicon-search {
+/* .glyphicon-search {
     color: #bebebe;
-}
+} */
 
 
 /* bootstrap override on link highlighting */
@@ -75,19 +75,19 @@ h3 {
     font-style: italic;
 }
 
-a,
+/* a,
 a:hover,
 a:focus {
     text-decoration: none;
-}
+} */
 
 .scrollToTop {
     position: fixed;
     bottom: 40px;
     left: 20px;
-    background: #c9302c;
+    background: #BF413E;
     border: none;
-    padding: 10px;
+    padding: 10px 8px 10px 7px;
     border-radius: 5px;
     display: none;
 }
@@ -157,9 +157,9 @@ body nav {
     background: #000;
 }
 
-.user-profile-dropdown-menu {
-    /*    padding: 15px;*/
-}
+/* .user-profile-dropdown-menu {
+    padding: 15px;
+} */
 
 .navbar-header a img {
     width: 250px;
@@ -842,7 +842,7 @@ blockquote p {
     margin-right: 10px;
 }
 
-.bundleResult {
+/* .bundleResult {
     padding: 10px 0px;
     cursor: pointer;
     border-bottom: 1px solid #ccc;
@@ -859,7 +859,7 @@ blockquote p {
 .bundleList {
     padding: 10px 0px;
     border-bottom: 1px solid #ccc;
-}
+} */
 
 .rightSidebar {
     padding-top: 15px;
@@ -912,6 +912,10 @@ blockquote p {
 
 .marginBottom15 {
     margin-bottom: 15px;
+}
+
+.marginBottom50 {
+    margin-bottom: 50px;
 }
 
 .marginBottom100 {
@@ -978,6 +982,40 @@ blockquote p {
 
 .backToTopLink {
     margin-top: -12px;
+}
+
+
+/* Browse My Bundles styles */
+
+.bundle-title {
+    display: flex;
+    flex-direction: row;
+    background: #EFEFEF;
+    padding: 20px 40px;
+    align-items: center;
+}
+
+.bundle-title .title {
+    flex-grow: 1;
+}
+
+.all-bundles {
+    width: 100%;
+}
+
+.all-bundles .panel {
+    background: #FAFAFA;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 4px 4px 40px #dadada;
+}
+
+.bundle-add-alert, .saved-search-alert {
+    display: none;
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    margin-bottom: 0;
 }
 
 
@@ -1184,7 +1222,7 @@ ul.as-selections li.as-original input {
 }
 
 .author-docs a {
-    color: #5C0000;
+    color: #BF413E;
 }
 
 .panel-section-footer {
@@ -1207,7 +1245,7 @@ ul.as-selections li.as-original input {
 }
 
 .buttons button {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .panel footer a {

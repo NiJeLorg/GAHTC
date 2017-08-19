@@ -98,6 +98,17 @@ gahtcApplication.getModuleDescriptionModal = function (module_id) {
     });
 };
 
+gahtcApplication.getLectureDescriptionModal = function (lecture_id) {
+    $.ajax({
+        type: 'GET',
+        url: '/show_lecture_description/' + lecture_id + '/',
+        success: function (data) {
+            $('#lectureFullDescription').html(data);
+            $('#lectureFullDescription').modal('show');
+        }
+    });
+};
+
 gahtcApplication.getMemberFullDescrptionModal = function (member_id) {
     $.ajax({
         type: 'GET',
@@ -167,15 +178,17 @@ gahtcApplication.addToBundle = function (bundle, itemid, title) {
         url: "/add_to_bundle/?bundle=" + bundle + "&itemid=" + itemid,
         success: function (data) {
             // success alert message
-            var timeout = window.setTimeout(slowAlert, 300);
+            window.setTimeout(slowAlert, 10);
+            window.setTimeout(removeAlert, 3000);            
 
             function slowAlert() {
-                $('.bundle-add-alert').removeClass('hidden');
+                $('.bundle-add-alert').fadeIn( "slow" );
                 $('#bundle-title').text(title);
             }
 
-            // refresh bundle page
-            gahtcApplication.refreshSidebarBundle();
+            function removeAlert() {
+                $('.bundle-add-alert').fadeOut( "slow" );
+            }
 
         }
     });
@@ -254,7 +267,7 @@ gahtcApplication.getBundle = function (bundle_id) {
         type: "GET",
         url: "/show_bundle/" + bundle_id + "/",
         success: function (data) {
-            $('.bundleSidebar').html(data);
+            $('#bundle_'+bundle_id ).html(data);
         }
     });
 }
@@ -314,8 +327,19 @@ gahtcApplication.saveSearchString = function (searchString) {
         type: "GET",
         url: "/save_search/?searchString=" + keyword,
         success: function (data) {
-            $('#searchSaved').removeClass('hidden');
-            $('.savedSearchList').html(data);
+            // success alert message
+            window.setTimeout(slowAlert, 10);
+            window.setTimeout(removeAlert, 3000);            
+
+            function slowAlert() {
+                $('.saved-search-alert').fadeIn( "slow" );
+            }
+
+            function removeAlert() {
+                $('.saved-search-alert').fadeOut( "slow" );
+            }
+
+
         }
     });
 }
@@ -390,3 +414,21 @@ gahtcApplication.dontContactLecture = function (lectureid) {
         }
     });
 }
+
+
+gahtcApplication.searchMembers = function () {
+    // get values
+    var keyword = $('#memberNameLookup').val();
+    console.log(keyword);
+
+    $.ajax({
+        type: "GET",
+        url: "/search_members/?keyword=" + keyword,
+        success: function (data) {
+            // retrun the matched profiles to the template
+            $('.profiles_returned').html(data);
+        }
+    });
+
+}
+

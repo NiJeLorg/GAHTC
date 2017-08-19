@@ -18,34 +18,47 @@
             <h2 class="marginBottom15">My Bundles</h2>
         </div>
     </div>
-    {% for bundle in bundles_returned %}
-    <div class="row bundleResult" data-bundleid="{{ bundle.id }}">
-        <div class="col-xs-3">
-            <img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-        </div>
-        <div class="col-xs-9">
-            <div class="row">
-                <div class="col-xs-7 resultTitle">
-                    <p><strong>{{ bundle.title }}</strong></p>
-                </div>
-                <div class="col-xs-5">
-                    {% if request.user.userProfile.verified %}
-                    <button type="button" class="btn btn-default downloadBundle pull-right" data-bundleid="{{ bundle.id }}">Download</button>
-                    {% else %}
-                    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download</button>
-                    {% endif %}
+    <div class="row">
+        <div class="all-bundles col-md-12">
+            <div class="marginBottom15">
+                <div class="panel-group" id='accordion_bundles' role='tablist' aria-multiselectable='true'>
+                    {% for bundle in bundles_returned %}
+                    <div class="panel panel-default bundleResult" data-bundleid="{{ bundle.id }}">
+                        <div class="bundle-title">
+                            <h3 class="title">{{ bundle.title }}</h3>
+                            {% if request.user.userProfile.verified %}
+                                <button type="button" class="btn btn-danger gahtcRed marginRight5 downloadBundle" data-bundleid="{{ bundle.id }}" title="Download bundle">
+                                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-danger gahtcRed marginRight5" data-toggle="modal" data-target="#waitingForVerification" title="Download bundle">
+                                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                </button>
+                            {% endif %}
+                            <button type="button" class="btn btn-danger gahtcRed removeBundle" data-bundleid="{{ bundle.id }}" title="Delete bundle">
+                                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <main class='panel-main' id="bundle_{{ bundle.id }}">
+                            {% include 'website/show_bundle.html' with bundle_returned=bundle %}
+                        </main>
+                    </div>
+                    {% empty %}
+                    <h4>No Bundles Yet Created!</h4>
+                    <p><a href="#" class="create-new-bundle">Create a new bundle here</a> and then search for course materials using the search box above. Once you find the course materials you're looking for, you can add them to your bundle and download them from here. </p>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-    {% empty %}
-    <h4>No Bundles Yet Created!</h4>
-    <p><a href="#" class="create-new-bundle">Create a new bundle here</a> and then search for course materials using the search box above. Once you find the course materials you're looking for, you can add them to your bundle and download them from here. </p>
-    {% endfor %}
 
     <div class="row marginBottom100">
     </div>
 </div>
+
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <span class="glyphicon glyphicon-arrow-up"></span>
+</button> 
 {% endblock %}
 
 {% block modal_block %}
@@ -116,6 +129,10 @@
 </div>
 <!-- Lecture Slides Modal -->
 <div class="modal fade" id="slideshow" tabindex="-1" role="dialog" aria-labelledby="mySlideshow">
+</div>
+<div class="modal fade" id="moduleFullDescription" tabindex="-1" role="dialog" aria-labelledby="moduleFullDescription">
+</div>
+<div class="modal fade" id="lectureFullDescription" tabindex="-1" role="dialog" aria-labelledby="lectureFullDescription">
 </div>
 {% endblock %} 
 
