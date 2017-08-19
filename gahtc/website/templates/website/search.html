@@ -110,7 +110,7 @@
                                         </div>
                                     </div>
                                     <p class="swapem">
-                                        {% for text in module.highlighted %} 
+                                        {% for text in module.flattened_highlighted %} 
                                             ... {% autoescape off %}{{ text }}{% endautoescape %} 
                                             {% if forloop.last %} ... {% endif %}
                                         {% endfor %}

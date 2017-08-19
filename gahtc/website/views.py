@@ -224,7 +224,7 @@ def mainSearchCode(request, keyword, tab):
 		unique_module_list = list(module_set)
 		unique_module_list_count = len(unique_module_list)
 
-		#reorder modules if title or author is in the keyword
+		#reorder modules if title or author is in the keyword and remove outer list shell from highlighted text
 		for module in unique_module_list:
 
 			if module.title.lower().find(keyword.lower()) != -1 or module.authors.lower().find(keyword.lower()) != -1:
@@ -233,6 +233,8 @@ def mainSearchCode(request, keyword, tab):
 				#readd item in the front of the list
 				unique_module_list.insert(0, module)
 
+			module.flattened_highlighted = [val for sublist in module.highlighted for val in sublist]
+			
 		#reorder lectures if title or author is in the keyword
 		for lec in lectures_returned:
 			if lec.object.title.lower().find(keyword.lower()) != -1 or lec.object.authors.lower().find(keyword.lower()) != -1:
