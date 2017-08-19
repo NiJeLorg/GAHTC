@@ -104,7 +104,7 @@
                                         <div class="authors">
                                             <p>
                                             {% for authors in module.authors_m2m.all %}
-                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
                                             {% endfor %}
                                             </p>
                                         </div>
@@ -137,7 +137,7 @@
                                         <div class="authors">
                                             <p>
                                             {% for authors in module.object.authors_m2m.all %}
-                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
                                             {% endfor %}
                                             </p>
                                         </div>
@@ -212,7 +212,7 @@
                                         <div class="authors">
                                             <p>
                                             {% for authors in lecture.object.authors_m2m.all %}
-                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
                                             {% endfor %}
                                             </p>
                                         </div>
@@ -276,7 +276,7 @@
                                         <div class="authors">
                                             <p>
                                             {% for authors in module_document.object.module.authors_m2m.all %}
-                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
                                             {% endfor %}
                                             </p>
                                         </div>
@@ -341,7 +341,7 @@
                                         <div class="authors">
                                             <p>
                                             {% for authors in lecture_document.object.lecture.authors_m2m.all %}
-                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
                                             {% endfor %}
                                             </p>
                                         </div>
@@ -406,7 +406,7 @@
                                         <div class="authors">
                                             <p>
                                             {% for authors in lecture_slide.object.lecture.authors_m2m.all %}
-                                                <a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
                                             {% endfor %}
                                             </p>
                                         </div>
