@@ -46,6 +46,7 @@ urlpatterns = [
     url(r'^modules/$', views.modulesView, name='modulesView'),
     url(r'^lectures/$', views.lecturesView, name='lecturesView'),
     url(r'^members/$', views.membersView, name='membersView'),
+    url(r'^search_members/$', views.searchMembers, name='searchMembers'),
     url(r'^save_search/$', views.saveSearchString, name='saveSearchString'),
     url(r'^save_comment/$', views.saveComment, name='saveComment'),
     url(r'^dashboard/$', views.dashboard, name='dashboard'),

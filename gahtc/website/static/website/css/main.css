@@ -50,9 +50,9 @@ input {
     margin: 0;
 }
 
-.glyphicon-search {
+/* .glyphicon-search {
     color: #bebebe;
-}
+} */
 
 
 /* bootstrap override on link highlighting */
@@ -914,6 +914,10 @@ blockquote p {
     margin-bottom: 15px;
 }
 
+.marginBottom50 {
+    margin-bottom: 50px;
+}
+
 .marginBottom100 {
     margin-bottom: 100px;
 }
@@ -1004,6 +1008,14 @@ blockquote p {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     box-shadow: 4px 4px 40px #dadada;
+}
+
+.bundle-add-alert, .saved-search-alert {
+    display: none;
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    margin-bottom: 0;
 }
 
 

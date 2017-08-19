@@ -33,16 +33,6 @@
         </div>
     </div> 
     <div class="row">
-        {% if user.is_authenticated %}
-        <div class="col-md-12">
-            <div id="searchSaved" class="alert alert-success hidden" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                Search saved!
-            </div>
-        </div>
-        {% endif %}
-    </div> 
-    <div class="row">
         <div class="col-md-12">
             {% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 and coming_soon_modules_returned_count == 0 %}
                 <h4 class="marginTop15"><span class="highlight">"{{ keyword }}"</span> is not found.</h4>
@@ -440,6 +430,20 @@
     <div class="row marginBottom100">
     </div>
 </div>
+<!-- Back to top button -->
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <span class="glyphicon glyphicon-arrow-up"></span>
+</button> 
+<!-- Add bundle alert -->
+<div class="alert alert-success bundle-add-alert" role="alert">
+    <p>This content has been added to your bundle, <span id="bundle-title"></span>. <a href="{% url 'mybundles' %}">View your bundles</a>.</p>
+</div>
+<!-- Saved search alert -->
+<div class="alert alert-success saved-search-alert" role="alert">
+    <p>Search term saved. <a href="{% url 'mysavedsearches' %}">View your saved search terms</a>.</p>
+</div>
+    
+
 {% endblock %}
 
 {% block modal_block %}

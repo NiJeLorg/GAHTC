@@ -1,0 +1,68 @@
+{% load staticfiles %}
+
+{% if not profiles_returned %}
+	<h3 class="marginBottom100">No Members Found.</h3>
+{% endif %}
+
+{% for user_profile in profiles_returned %} 
+	{%if user_profile.modules or user_profile.csmodules %}
+	<div class="member" id='heading_{{user_profile.id}}'>
+		<div class='contributing-member'>
+			<h3>{{user_profile.first_name}} {{user_profile.last_name}}
+				<span class="institution-affiliation">({{user_profile.institution}})</span>
+			</h3>
+			<div class="member-profile">
+				<div class="row">
+					{% if user_profile.avatar %}
+					<img src="/media/{{user_profile.avatar}}" class='img-responsive col-md-3'> {% else %}
+					<img src="{% static 'website/css/images/gahtc-logo.png' %}" class="img-responsive col-md-3" /> {% endif %}
+					<div class="col-md-9 member-profile-info">
+						<p class='description'>{{user_profile.introduction}}</p>
+						{%if user_profile.introduction|length > 400 %}
+						<p>...<button class='launchMemberIntroduction readMore' data-memberid="{{ user_profile.id }}">continue reading</button></p>
+						{%endif%}
+						<div class="contact-info">
+							<p>{{user_profile.title}}</p>
+							<p>{{user_profile.institution}}</p>
+							<p>{{user_profile.user.email}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="member-contributions">
+			<p>Contributions:</p>
+			{% for module in user_profile.modules %}
+			<p> {{module.title}}
+				<a href="/modules/#heading_{{ module.id }}">(view module)</a>
+			</p>
+			{% endfor %}
+		</div>
+	</div>
+	{% else %}
+	<div class="member non-contributing" id='heading_{{user_profile.id}}'>
+		<h3>{{user_profile.first_name}} {{user_profile.last_name}}
+			<span class="institution-affiliation">({{user_profile.institution}})</span>
+		</h3>
+		<div class="member-profile">
+			<div class="row">
+				{% if user_profile.avatar %}
+				<img src="/media/{{user_profile.avatar}}" class='img-responsive col-md-3'> {% else %}
+				<img src="{% static 'website/css/images/gahtc-logo.png' %}" class="img-responsive col-md-3" /> {% endif %}
+				<div class="col-md-9 member-profile-info">
+					<p class='description'>{{user_profile.introduction}}</p>
+					{%if user_profile.introduction|length > 400 %}
+					<p>...<button class='launchMemberIntroduction readMore' data-memberid="{{ user_profile.id }}">continue reading</button></p>
+					{%endif%}
+					<div class="contact-info">
+						<p>{{user_profile.title}}</p>
+						<p>{{user_profile.institution}}</p>
+						<p>{{user_profile.user.email}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{%endif%} 
+{%endfor%}
+

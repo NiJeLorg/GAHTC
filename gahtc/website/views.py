@@ -1553,16 +1553,7 @@ def membersView(request):
 	  Loads all user profiles
 	"""
 
-	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', 	first_name='').order_by('last_name', 'first_name').distinct()
-	if request.GET.get('initial') or request.GET.get('name'):
-		name = request.GET.get('name')
-		initial = request.GET.get('initial')
-		# import ipdb; ipdb.set_trace()
-		query_str = Q(first_name__istartswith=initial) | Q(last_name__istartswith=initial)
-		if name:
-			query_str = Q(last_name__icontains=name) | Q(first_name__icontains=name)
-		profiles_returned = profile.objects.filter(query_str, verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
-	# contributing_profiles_returned = profile.objects.filter(verified=True, public=True).filter(Q(modules__isnull=False) | Q(lectures__isnull=False) | Q(comingsoonmodules__isnull=False)).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+	profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
 
 	#attach modules and lectures to profiles
 	for cp in profiles_returned:
@@ -1575,13 +1566,32 @@ def membersView(request):
 	return render(request, 'website/profiles.html', context_dict)
 
 def searchMembers(request):
-	if request.method == 'POST':
-		# search members
-		try:
-			keyword = request.POST['keyword']
-			print(keyword)
-		except:
-			pass
+	"""
+	  AJAX request to search and retrun member profiles
+	"""
+
+	if request.method == 'GET':
+		#gather variables from get request
+		keyword = request.GET.get("keyword","")
+		if keyword:
+			split_keyword = keyword.split()
+			query_str = Q(last_name__icontains=split_keyword[0]) | Q(first_name__icontains=split_keyword[0])
+			for kw in split_keyword[1:]:
+				query_str.add((Q(last_name__icontains=kw) | Q(first_name__icontains=kw)), query_str.connector)
+
+			profiles_returned = profile.objects.filter(query_str, verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+		else:
+			profiles_returned = profile.objects.filter(verified=True, public=True).exclude(last_name='', first_name='').order_by('last_name', 'first_name').distinct()
+
+		#attach modules and lectures to profiles
+		for cp in profiles_returned:
+			cp_modules = modules.objects.filter(authors_m2m=cp).order_by('title')
+			cp.modules = cp_modules
+			cp_csmodules = comingSoonModules.objects.filter(authors_m2m=cp).order_by('title')
+			cp.csmodules = cp_csmodules	
+
+	context_dict = {'profiles_returned':profiles_returned}
+	return render(request, 'website/profiles_returned.html', context_dict)
 
 
 def saveSearchString(request):

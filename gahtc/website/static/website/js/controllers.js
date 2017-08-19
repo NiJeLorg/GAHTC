@@ -405,6 +405,17 @@ $(document).ready(function() {
     });
 
 
+    // ajax search for profiles
+    $('#memberNameLookup').keyup(function(e) {
+        if (e.which == 13) {
+            e.preventDefault();
+        }       
+    });  
+
+    $('#memberNameLookup').keyup(function(e) {   
+        gahtcApplication.searchMembers();
+    });
+
 
 
 });
