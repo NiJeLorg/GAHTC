@@ -1396,7 +1396,11 @@ def dashboard(request):
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'lecture':
 				first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
-				lec.numeric_order = int(first_number)
+				try:
+					lec.numeric_order = int(first_number)
+				except ValueError:
+					lec.numeric_order = 0
+				
 			else:
 				lec.numeric_order = 0
 
