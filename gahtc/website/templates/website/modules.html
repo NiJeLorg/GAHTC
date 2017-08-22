@@ -4,8 +4,8 @@
 <p class="featured-modules-title">featured modules</p>
 <div class="featured-modules-container">
      <div class='arrows-container'>
-        <div><img src='{% static 'website/css/images/left_arrow.png' %}' class='scrollLeft'></div>
-        <div><img src='{% static 'website/css/images/right_arrow.png' %}' class='scrollRight'></div>
+        <div class='arrow-holder'><img src='{% static 'website/css/images/left_arrow.png' %}' class='scrollLeft'></div>
+        <div class='arrow-holder'><img src='{% static 'website/css/images/right_arrow.png' %}' class='scrollRight'></div>
     </div>
     <div class="featured-modules">
         {% for module_returned in modules_returned %} {% if module_returned.featured > 0 %}
@@ -136,9 +136,9 @@
                                            <h4><a href="#heading_{{ r_module_returned.id }}">{{ r_module_returned.title }}</a></h4>
                                        </div>
                                    </div>
-                                   {% endfor %}                           
+                                   {% endfor %}
                                </div>
-                           </div>                        
+                           </div>
                         {% endif %}
                     </div>
                     <div class="panel-expand-container marginTop10">
@@ -172,12 +172,12 @@
 <!-- Back to top button -->
 <button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
     <span class="glyphicon glyphicon-arrow-up"></span>
-</button> 
+</button>
 <!-- Add bundle alert -->
 <div class="alert alert-success bundle-add-alert" role="alert">
     <p>This content has been added to your bundle, <span id="bundle-title"></span>. <a href="{% url 'mybundles' %}">View your bundles</a>.</p>
 </div>
-{% endblock %} 
+{% endblock %}
 
 {% block modal_block %}
 <!-- Download Course Bundle Modal -->
