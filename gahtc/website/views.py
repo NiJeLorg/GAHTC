@@ -1484,7 +1484,7 @@ def admin_module(request, id=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			elif 'new_module_document' in request.POST:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.id)))
@@ -1597,7 +1597,7 @@ def admin_moduledoc(request, id=None, moduleid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.module.id,)))
@@ -1702,7 +1702,7 @@ def admin_lecture(request, id=None, moduleid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			elif 'new_lecure_document' in request.POST:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.id)))
@@ -1839,7 +1839,7 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_lecturesegment', args=(0,f.lecture.id,)))
@@ -1926,7 +1926,7 @@ def admin_lecturedoc(request, id=None, lectureid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			else:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.lecture.id,)))
@@ -2188,7 +2188,7 @@ def admin_coming_soon_module(request, id=None):
 			f = form.save()
 
 			# send back to dashboard
-			return HttpResponseRedirect(request.POST['referer'])
+			return HttpResponseRedirect('/dashboard/')
 			
 		else:
 			# The supplied form contained errors - just print them to the terminal.
@@ -2279,7 +2279,7 @@ def admin_managedoctypes(request, id=None):
 			f = form.save()
 
 			# send back to dashboard
-			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			return HttpResponseRedirect('/dashboard/')
 
 		else:
 			# The supplied form contained errors - just print them to the terminal.
