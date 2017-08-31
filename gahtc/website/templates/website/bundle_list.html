@@ -50,6 +50,11 @@
                                 <main class='panel-main' id="bundle_{{ bundle.id }}">
                                     {% include 'website/show_bundle.html' with bundle_returned=bundle %}
                                 </main>
+                                <div class="panel-bundle-footer">
+                                    <a href="#" class="removeBundle remove-from-bundle-link" data-bundleid="{{ bundle.id }}" title="Delete bundle">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <em>Delete this entire bundle</em>
+                                    </a> 
+                                </div>
                             </div>
                             {% empty %}
                             <h4>No Bundles Yet Created!</h4>

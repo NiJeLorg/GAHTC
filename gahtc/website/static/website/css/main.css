@@ -929,6 +929,10 @@ blockquote p {
     margin-bottom: 15px;
 }
 
+.marginBottom30 {
+    margin-bottom: 30px;
+}
+
 .marginBottom50 {
     margin-bottom: 50px;
 }
@@ -1053,6 +1057,10 @@ blockquote p {
 .doc-size {
     color: #AAAAAA;
     font-size: 14px;   
+}
+
+.panel-bundle-footer {
+    padding: 0 0 30px 45px;
 }
 
 
