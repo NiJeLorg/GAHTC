@@ -56,7 +56,10 @@ input {
 } */
 
 
-/* bootstrap override on link highlighting */
+/* bootstrap override on glyphicon top */
+.glyphicon {
+    top: 2px;
+}
 
 
 /* justify all conent */
@@ -999,6 +1002,13 @@ blockquote p {
 
 /* Browse My Bundles styles */
 
+.details-title {
+    margin-top: 40px;
+    font-size: 14px;
+    color: #AAAAAA;
+    font-family: sans-serif;
+}
+
 .bundle-title {
     display: flex;
     flex-direction: row;
@@ -1029,6 +1039,20 @@ blockquote p {
     bottom: 40px;
     right: 20px;
     margin-bottom: 0;
+}
+
+.remove-from-bundle-link {
+    color: #BF413E;
+    font-size: 14px;
+}
+
+.remove-from-bundle-link:hover, .remove-from-bundle-link:focus {
+    color: #BF413E;
+}
+
+.doc-size {
+    color: #AAAAAA;
+    font-size: 14px;   
 }
 
 

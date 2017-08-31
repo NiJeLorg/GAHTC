@@ -926,6 +926,16 @@ def showBundle(request, id=None):
 		bundle.module.lectures = moduleLecs_ordered
 
 
+	#for each lecture, attach lecture docs
+	for bundle in bundle_returned.bundle_lectures:
+		# get lecture documents
+		lectureDocs = lectureDocuments.objects.filter(lecture=bundle.lecture)
+		bundle.lecture.lectureDocs = lectureDocs
+		for lecDoc in bundle.lecture.lectureDocs:
+			document = str(lecDoc.document)
+			document = document.split('/')
+			lecDoc.documentName = document[2]
+		
 	#for each lecture document strip out name of file
 	for bundle in bundle_returned.bundle_lecture_documents:
 		document = str(bundle.lectureDocument.document)
