@@ -328,7 +328,6 @@ def search(request):
 @login_required
 def mybundles(request):
 
-
 	"""
 	  Pulls all user bundles and prints
 	"""
@@ -385,6 +384,16 @@ def mybundles(request):
 
 				bundle.module.lectures = moduleLecs_ordered
 
+			#for each lecture, attach lecture docs
+			for bundle in bundle_returned.bundle_lectures:
+				# get lecture documents
+				lectureDocs = lectureDocuments.objects.filter(lecture=bundle.lecture)
+				bundle.lecture.lectureDocs = lectureDocs
+				for lecDoc in bundle.lecture.lectureDocs:
+					document = str(lecDoc.document)
+					document = document.split('/')
+					lecDoc.documentName = document[2]
+
 
 			#for each lecture document strip out name of file
 			for bundle in bundle_returned.bundle_lecture_documents:
@@ -403,7 +412,31 @@ def mybundles(request):
 		bundles_returned = bundles.objects.none()
 
 
-	context_dict = {'bundles_returned':bundles_returned,}
+	# also pull saved searches
+	if request.user.is_authenticated():
+		# pull saved searches
+		saved_searches = savedSearches.objects.filter(user=request.user)
+	else:
+		saved_searches = savedSearches.objects.none()
+
+	# also pull my profile
+	if request.user.is_authenticated():
+		# pull user profile
+		user_profile = profile.objects.get(user=request.user)
+
+		#attach modules and lectures to profile
+		cp_modules = modules.objects.filter(authors_m2m=user_profile).order_by('title')
+		user_profile.modules = cp_modules
+		cp_lectures = lectures.objects.filter(authors_m2m=user_profile).exclude(extracted=False).order_by('module__title','title')
+		user_profile.lectures = cp_lectures
+		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile).order_by('title')
+		user_profile.csmodules = cp_csmodules
+
+	else:
+		user_profile = profile.objects.none()
+
+
+	context_dict = {'bundles_returned':bundles_returned, 'saved_searches':saved_searches, 'user_profile': user_profile,}
 
 
 	return render(request, 'website/bundle_list.html', context_dict)
@@ -641,7 +674,7 @@ def showMemberIntroduction(request, id=None):
   """
     Response from AJAX request to show member introduction in modal
   """
-  #get lecture
+  #get profile
   profile_returned = profile.objects.get(pk=id)
 
   context_dict = {'profile_returned':profile_returned}
@@ -1270,6 +1303,15 @@ def refreshSidebarBundle(request):
 
 			bundle.module.lectures = moduleLecs_ordered
 
+		#for each lecture, attach lecture docs
+		for bundle in bundle_returned.bundle_lectures:
+			# get lecture documents
+			lectureDocs = lectureDocuments.objects.filter(lecture=bundle.lecture)
+			bundle.lecture.lectureDocs = lectureDocs
+			for lecDoc in bundle.lecture.lectureDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				lecDoc.documentName = document[2]
 
 		#for each lecture document strip out name of file
 		for bundle in bundle_returned.bundle_lecture_documents:

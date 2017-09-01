@@ -1007,7 +1007,6 @@ blockquote p {
 /* Browse My Bundles styles */
 
 .details-title {
-    margin-top: 40px;
     font-size: 14px;
     color: #AAAAAA;
     font-family: sans-serif;
@@ -1060,7 +1059,12 @@ blockquote p {
 }
 
 .panel-bundle-footer {
-    padding: 0 0 30px 45px;
+    padding: 0 0 15px 15px;
+}
+
+.bundle-expand {
+    padding: 0px 30px;
+    background: #FAFAFA;
 }
 
 

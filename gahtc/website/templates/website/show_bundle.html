@@ -1,11 +1,15 @@
 {% load staticfiles %}
 
+<main class='panel-main'>
 	<!-- Count of items -->
 	<div class="row">
 		<div class="col-md-12">
 			Your bundle contains {{ bundle_returned.bundle_modules.count }} module{{ bundle_returned.bundle_modules.count|pluralize }}, {{ bundle_returned.bundle_lectures.count }} lecture{{ bundle_returned.bundle_lectures.count|pluralize }}, {{ bundle_returned.bundle_lecture_documents.count }} supporting document{{ bundle_returned.bundle_lecture_documents.count|pluralize }}
 		</div>
 	</div>
+</main>
+
+<div id="{{ bundle_returned.id }}" class="panel-collapse collapse panel-expand bundle-expand" role="tabpanel" aria-labelledby="{{ bundle_returned.id }}">
 	<div class="row">
 		<div class="col-md-12">
 			<p class="details-title">details</p>
@@ -32,15 +36,15 @@
 								<li>
 									{% if doc.doc_type %}
 										{{ doc.doc_type.name }}
-                                    {% else %}
-                                        Document
-                                    {% endif %}
+									{% else %}
+										Document
+									{% endif %}
 									<span class="doc-size">[{{ doc.document.size|filesizeformat }}]</span>
 								</li>
 							{% endfor %}
 						</ul>
 						{% for lec in bundle.module.lectures %}
-						 	<li>
+							<li>
 								{{ lec.title }} <span class="doc-size">[{{ lec.presentation.size|filesizeformat }}]</span>
 								<ul>
 									{% for doc in lec.lectureDocs %}
@@ -151,3 +155,13 @@
 		</section>
 	</div>
 	{% endfor %}
+
+	<div class="panel-bundle-footer">
+		<a href="#" class="removeBundle remove-from-bundle-link" data-bundleid="{{ bundle.id }}" title="Delete bundle">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <em>Delete this entire bundle</em>
+		</a> 
+	</div>
+
+
+<!-- close accordian show more / show less -->
+</div>

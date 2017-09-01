@@ -2,11 +2,13 @@
 {% load staticfiles %} 
 
 		{% if saved_searches %}
-			<ul>
+			<ul class="marginTop30">
 			{% for search in saved_searches %}
 				<li>
 					<a href="/search/?keyword={{ search.searchString }}">{{ search.searchString }}</a> 
-						<button class="btn btn-link btn-xs removeSearch" data-searchid="{{ search.id }}"><span class="glyphicon glyphicon-remove-circle text-danger" aria-hidden="true"></span></button>
+					<a href="#" class="removeSearch remove-from-bundle-link" data-searchid="{{ search.id }}" title="Remove saved search">
+						[remove]
+					</a>					
 				</li>
 			{% endfor %}
 			</ul> 

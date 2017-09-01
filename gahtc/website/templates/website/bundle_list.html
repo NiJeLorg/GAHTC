@@ -47,14 +47,13 @@
                                         </button>
                                     {% endif %}
                                 </div>
-                                <main class='panel-main' id="bundle_{{ bundle.id }}">
-                                    {% include 'website/show_bundle.html' with bundle_returned=bundle %}
-                                </main>
-                                <div class="panel-bundle-footer">
-                                    <a href="#" class="removeBundle remove-from-bundle-link" data-bundleid="{{ bundle.id }}" title="Delete bundle">
-                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <em>Delete this entire bundle</em>
-                                    </a> 
-                                </div>
+                                
+                                {% include 'website/show_bundle.html' with bundle_returned=bundle %}
+
+                                <footer>
+                                    <a href="#{{ bundle.id }}" data-parent="#accordion_bundles" data-toggle="collapse" role="button" aria-expanded="false"
+                                        aria-controls="{{ bundle.id }}" class='showMore'>SHOW MORE</a>
+                                </footer>
                             </div>
                             {% empty %}
                             <h4>No Bundles Yet Created!</h4>
@@ -64,9 +63,10 @@
                     </div>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane active" id="searches-tab">
+            <div role="tabpanel" class="tab-pane" id="searches-tab">
                 <div class="all-bundles col-md-12">
-                    <div class="marginBottom15">
+                    <div class="marginBottom15 savedSearchList">
+                        {% include 'website/current_saved_searches.html' %}
                     </div>
                 </div>
             </div>
