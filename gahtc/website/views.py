@@ -1621,7 +1621,7 @@ def indexView(request):
 
 
 		# pull comments for this module
-		module_returned.comments = modulesComments.objects.filter(module=module_returned).order-by('-created')
+		module_returned.comments = modulesComments.objects.filter(module=module_returned).order_by('-created')
 
 		for comment in module_returned.comments:
 			commenter_profile = profile.objects.get(user=comment.user)
