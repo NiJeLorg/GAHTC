@@ -257,6 +257,9 @@ class modulesCommentsForm(forms.ModelForm):
     class Meta:
         model = modulesComments
         fields = ('comment',)
+        labels = {
+            'comment': 'member comments:',
+        }
         widgets = {
             'comment': forms.widgets.Textarea(attrs={'rows': 2}),
         }
@@ -265,6 +268,9 @@ class lecturesCommentsForm(forms.ModelForm):
     class Meta:
         model = lecturesComments
         fields = ('comment',)
+        labels = {
+            'comment': 'member comments:',
+        }
         widgets = {
             'comment': forms.widgets.Textarea(attrs={'rows': 2}),
         }
