@@ -372,7 +372,7 @@ body nav {
 .featured-modules {
     padding: 20px 0;
     border: 1px solid #D0D0D0;
-    overflow-x: scroll;
+    overflow-x: hidden;
     white-space: nowrap;
     display: flex;
 }
