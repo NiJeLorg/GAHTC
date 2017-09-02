@@ -1,4 +1,4 @@
-{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {%endblock%}
+{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Browse{% endblock %} {% block css_block %} {%endblock%}
 {% block head_js_block %} {% endblock %} {% block content %}
 <!-- Page Content -->
 <p class="featured-modules-title">featured modules</p>
@@ -85,7 +85,7 @@
                                 <div class="title-buttons-group row">
                                     <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
                                     <div class="buttons col-md-4 paddingRight0">
-                                        <a class='btn pull-right see-details' href="/lectures/#heading_{{lec.id}}">see details</a>                                        {% if user.is_authenticated %}
+                                        <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a>                                        {% if user.is_authenticated %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     {% endfor %} {% endif %}
-                    <div class="panel-expand-container marginTop10">
+                    {% comment %} <div class="panel-expand-container marginTop10">
                         {% if module_returned.related_modules %}
                         <h4>related modules: </h4>
                         <div class="featured-modules-container">
@@ -140,16 +140,9 @@
                                </div>
                            </div>
                         {% endif %}
-                    </div>
-                    <div class="panel-expand-container marginTop10">
-                        {% if module_returned.comments %}
-                            <h4>members comments: </h4>
-                            {% for comment in module_returned.comments %}
-                                <p>"{{ comment.comment }}"
-                                <br />
-                                by: <a href="/members/#heading_{{ user.id }}">{{ comment.commenter_profile.first_name }} {{ comment.commenter_profile.last_name }}</a> on {{ comment.created|date:"F j, Y" }}</p>
-                            {% endfor %}
-                        {% endif %}
+                    </div> {% endcomment %}
+                    <div id="module_comments_{{ module_returned.id }}" class="module-comments-wrapper">
+                        {% include 'website/module_comments.html' with module_returned=module_returned %}
                     </div>
                     <p class="panel-expand-container terms-conditions">
                         <strong>Instructions</strong>

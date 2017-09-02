@@ -56,7 +56,10 @@ input {
 } */
 
 
-/* bootstrap override on link highlighting */
+/* bootstrap override on glyphicon top */
+.glyphicon {
+    top: 2px;
+}
 
 
 /* justify all conent */
@@ -474,6 +477,18 @@ body nav {
     display: flex;
 }
 
+.module-comments-wrapper {
+    padding: 30px 45px;
+}
+
+.module-comment-form {
+    width: 50%;
+}
+
+.module-comments {
+    padding-top: 30px;
+}
+
 .lecture .lecture-first-slide-container {
     display: flex;
     flex-direction: column;
@@ -804,6 +819,15 @@ blockquote p {
 
 /* Search results page */
 
+.go-to {
+    line-height: 1.1;
+    font-family: 'Source Sans Pro',Arial,Helvetica,sans-serif;
+}
+
+.go-to a {
+    color: #BF413E;
+}
+
 .searchText {
     margin-top: 6px;
 }
@@ -926,6 +950,10 @@ blockquote p {
     margin-bottom: 15px;
 }
 
+.marginBottom30 {
+    margin-bottom: 30px;
+}
+
 .marginBottom50 {
     margin-bottom: 50px;
 }
@@ -999,6 +1027,12 @@ blockquote p {
 
 /* Browse My Bundles styles */
 
+.details-title {
+    font-size: 14px;
+    color: #AAAAAA;
+    font-family: sans-serif;
+}
+
 .bundle-title {
     display: flex;
     flex-direction: row;
@@ -1029,6 +1063,29 @@ blockquote p {
     bottom: 40px;
     right: 20px;
     margin-bottom: 0;
+}
+
+.remove-from-bundle-link {
+    color: #BF413E;
+    font-size: 14px;
+}
+
+.remove-from-bundle-link:hover, .remove-from-bundle-link:focus {
+    color: #BF413E;
+}
+
+.doc-size {
+    color: #AAAAAA;
+    font-size: 14px;   
+}
+
+.panel-bundle-footer {
+    padding: 0 0 15px 15px;
+}
+
+.bundle-expand {
+    padding: 0px 30px;
+    background: #FAFAFA;
 }
 
 
@@ -1380,8 +1437,35 @@ ul.as-selections li.as-original input {
     background: #fff;
 }
 
-.lecture-panel .lecture-documents {
-    padding-left: 30px;
+.lecture-panel .lecture-documents, .lecture-panel .lecture-button-group, .lecture-panel .lecture-comment-form {
+    padding: 0px 30px;
+}
+
+.lecture-panel .lecture-comment-form {
+    width: 50%;
+}
+
+.lecture-panel .lecture-comments {
+    padding: 30px;
+}
+
+.comment-form label {
+    font-weight: normal;
+}
+
+
+
+.lecture-panel .lecture-description {
+    padding: 30px 30px 0px 30px;
+}
+
+.lecture-panel .lecture-description p {
+    color: #383838;
+}
+
+.lecture-panel .lecture-documents p, .lecture-panel .lecture-comments p {
+    font-family: 'Source Sans Pro',Arial,Helvetica,sans-serif;
+    color:#383838;
 }
 
 .lecture-documents .document {
@@ -1599,6 +1683,13 @@ main form {
     font-style: italic;
 }
 
+.authored-contributions { 
+    color: #aaa;
+}
+
+.authored-contributions a { 
+    color: #aaa;
+}
 
 /* .members-view main p {
 
@@ -1606,3 +1697,43 @@ main form {
 
 
 /* Profiles/Member Page Styles */
+
+
+/* Library index styles */
+.index-heading {
+    font-family: 'LinuxLibertine', serif;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    padding: 10px 0px;
+    margin-top: 30px;
+}
+
+.index-list a {
+    color: #383838;
+}
+
+
+/* Single lecture view styles */
+.lecture-container {
+    background: #FAFAFA;
+    margin-top: 60px;
+    box-shadow: 4px 4px 40px #dadada;
+}
+
+.lecture-title {
+    font-family: 'LinuxLibertine', serif;
+    text-decoration: underline;
+    font-size: 22px !important;
+    font-style: italic !important;
+}
+
+.download-link {
+    color: #BF413E;
+    font-size: 14px;
+}
+
+
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+    border-bottom-right-radius: 4px; 
+    border-top-right-radius: 4px;
+}

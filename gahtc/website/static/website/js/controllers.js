@@ -17,27 +17,16 @@ $(document).ready(function() {
         $(this).children('.button-text-ribbon').css({ opacity: 0 });
     });
 
-    // // check for the existence of tab
-    // if (typeof tab === 'undefined' || tab == "none") {
-    //  // do nothing
-    // } else if (tab == "bundle") {
-    //  $('.nav-tabs a[href="#my-course-bundles"]').tab('show');
-    // } else if (tab == "profile") {
-    //  $('.nav-tabs a[href="#my-profile"]').tab('show');
-    // } else if (tab == "searches") {
-    //  $('.nav-tabs a[href="#my-saved-searches"]').tab('show');
-    // }
-
     // select first in list and populate search result bar
     // $( ".result:first" ).addClass('active');
     // gahtcApplication.whichToGet($( ".result:first" ));
 
-    // select first in bundle list and pull bundle for right sidebar
-    $(".bundleResult:first").addClass('active');
-    var bundleid = $(".bundleResult:first").data('bundleid');
-    if (bundleid) {
-        gahtcApplication.getBundle(bundleid);
-    }
+    // // select first in bundle list and pull bundle for right sidebar
+    // $(".bundleResult:first").addClass('active');
+    // var bundleid = $(".bundleResult:first").data('bundleid');
+    // if (bundleid) {
+    //     gahtcApplication.getBundle(bundleid);
+    // }
 
     // swap out <em> tags for <strong> tags for search results
     $(".swapem em").replaceWith(function() {
@@ -127,8 +116,8 @@ $(document).ready(function() {
         e.preventDefault();
         $(".bundleResult").removeClass('active');
         $(this).addClass('active');
-        var bundleid = $(this).data('bundleid');
-        gahtcApplication.getBundle(bundleid);
+        // var bundleid = $(this).data('bundleid');
+        // gahtcApplication.getBundle(bundleid);
     });
 
 
@@ -299,7 +288,7 @@ $(document).ready(function() {
 
     });
 
-    // download module
+    // download lecture
     $(document).on('click', '.downloadLecture', function(e) {
         e.preventDefault();
         // open modal
@@ -310,6 +299,21 @@ $(document).ready(function() {
         gahtcApplication.zipUpLecture(lecture);
 
     });
+
+    // download individual files
+    $(document).on('click', '.downloadFile', function(e) {
+        e.preventDefault();
+        // open modal
+        $('#downloadIndividualFile').modal('show');
+        // pull file path and file name
+        var path = '/media/' + $(this).data("file");
+        var filesize = $(this).data("filesize");
+        var filename = $(this).data("filename");
+        $('.downloadLink').attr('href', path);
+        $('.filesize').text(filesize);
+        $('.filename').text(filename);
+    
+    });    
 
     // listening the terms checkbox
     $(document).on('change', '#terms', function(e) {
@@ -372,6 +376,10 @@ $(document).ready(function() {
     $(document).on('click', '.submitComment', function(e) {
         e.preventDefault();
         var comment = $("#id_comment").val();
+        if (!comment) {
+            comment = $(this).closest(".comment-form").find('textarea').val();
+            console.log(comment);
+        }
         var itemid = $(this).data("itemid");
         gahtcApplication.saveComment(comment, itemid);
     });

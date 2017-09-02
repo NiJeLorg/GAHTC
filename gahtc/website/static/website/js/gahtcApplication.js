@@ -349,7 +349,13 @@ gahtcApplication.saveComment = function (comment, itemid) {
         type: "GET",
         url: "/save_comment/?comment=" + comment + "&itemid=" + itemid,
         success: function (data) {
-            $('.searchSidebar').html(data);
+            if (itemid.startsWith('lecture')) {
+                $('.lecture-comments-wrapper').html(data);
+            }
+            if (itemid.startsWith('module')) {
+                var moduleid = itemid.replace('module_','');
+                $('#module_comments_'+moduleid).html(data);
+            }
         }
     });
 }

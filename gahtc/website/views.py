@@ -328,6 +328,13 @@ def search(request):
 @login_required
 def mybundles(request):
 
+	# which url route was this from
+	if request.path == '/profile/':
+		tab = 'profile'
+	elif request.path == '/bundles/':
+		tab = 'bundle'
+	else:
+		tab = 'searches'
 
 	"""
 	  Pulls all user bundles and prints
@@ -337,6 +344,10 @@ def mybundles(request):
 		bundles_returned = bundles.objects.filter(user=request.user)
 
 		for bundle_returned in bundles_returned:
+			#start collapsed
+			bundle_returned.in_class = ''
+			bundle_returned.show_more = 'SHOW MORE'
+
 			#get return all other content
 			bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
 			bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
@@ -385,6 +396,16 @@ def mybundles(request):
 
 				bundle.module.lectures = moduleLecs_ordered
 
+			#for each lecture, attach lecture docs
+			for bundle in bundle_returned.bundle_lectures:
+				# get lecture documents
+				lectureDocs = lectureDocuments.objects.filter(lecture=bundle.lecture)
+				bundle.lecture.lectureDocs = lectureDocs
+				for lecDoc in bundle.lecture.lectureDocs:
+					document = str(lecDoc.document)
+					document = document.split('/')
+					lecDoc.documentName = document[2]
+
 
 			#for each lecture document strip out name of file
 			for bundle in bundle_returned.bundle_lecture_documents:
@@ -403,47 +424,70 @@ def mybundles(request):
 		bundles_returned = bundles.objects.none()
 
 
-	context_dict = {'bundles_returned':bundles_returned,}
+	# also pull saved searches
+	if request.user.is_authenticated():
+		# pull saved searches
+		saved_searches = savedSearches.objects.filter(user=request.user)
+	else:
+		saved_searches = savedSearches.objects.none()
+
+	# also pull my profile
+	if request.user.is_authenticated():
+		# pull user profile
+		user_profile = profile.objects.get(user=request.user)
+
+		#attach modules and lectures to profile
+		cp_modules = modules.objects.filter(authors_m2m=user_profile).order_by('title')
+		user_profile.modules = cp_modules
+		cp_lectures = lectures.objects.filter(authors_m2m=user_profile).exclude(extracted=False).order_by('module__title','title')
+		user_profile.lectures = cp_lectures
+		cp_csmodules = comingSoonModules.objects.filter(authors_m2m=user_profile).order_by('title')
+		user_profile.csmodules = cp_csmodules
+
+	else:
+		user_profile = profile.objects.none()
+
+	context_dict = {'bundles_returned':bundles_returned, 'saved_searches':saved_searches, 'user_profile': user_profile, 'tab':tab}
 
 
 	return render(request, 'website/bundle_list.html', context_dict)
 
 
-@login_required
-def myprofile(request):
+# @login_required
+# def myprofile(request):
 
 
-	"""
-	  Queries the database for search terms and returns list of results; goes to bundle
-	"""
+# 	"""
+# 	  Queries the database for search terms and returns list of results; goes to bundle
+# 	"""
 
-	# placeholder keyword to return all items
-	keyword = ''
-	tab = 'profile'
-	context_dict = mainSearchCode(request, keyword, tab)
+# 	# placeholder keyword to return all items
+# 	tab = 'profile'
 
-	return render(request, 'website/profile.html', context_dict)
+# 	context_dict = {}
 
-
-@login_required
-def mysavedsearches(request):
-
-	"""
-	  Pulls all user searches and prints
-	"""
-	if request.user.is_authenticated():
-
-		# pull saved searches
-		saved_searches = savedSearches.objects.filter(user=request.user)
+# 	return render(request, 'website/profile.html', context_dict)
 
 
-	else:
-		saved_searches = savedSearches.objects.none()
+# @login_required
+# def mysavedsearches(request):
 
-	context_dict = {'saved_searches':saved_searches,}
+# 	"""
+# 	  Pulls all user searches and prints
+# 	"""
+# 	if request.user.is_authenticated():
+
+# 		# pull saved searches
+# 		saved_searches = savedSearches.objects.filter(user=request.user)
 
 
-	return render(request, 'website/saved_searches.html', context_dict)
+# 	else:
+# 		saved_searches = savedSearches.objects.none()
+
+# 	context_dict = {'saved_searches':saved_searches,}
+
+
+# 	return render(request, 'website/saved_searches.html', context_dict)
 
 
 
@@ -641,7 +685,7 @@ def showMemberIntroduction(request, id=None):
   """
     Response from AJAX request to show member introduction in modal
   """
-  #get lecture
+  #get profile
   profile_returned = profile.objects.get(pk=id)
 
   context_dict = {'profile_returned':profile_returned}
@@ -926,6 +970,16 @@ def showBundle(request, id=None):
 		bundle.module.lectures = moduleLecs_ordered
 
 
+	#for each lecture, attach lecture docs
+	for bundle in bundle_returned.bundle_lectures:
+		# get lecture documents
+		lectureDocs = lectureDocuments.objects.filter(lecture=bundle.lecture)
+		bundle.lecture.lectureDocs = lectureDocs
+		for lecDoc in bundle.lecture.lectureDocs:
+			document = str(lecDoc.document)
+			document = document.split('/')
+			lecDoc.documentName = document[2]
+		
 	#for each lecture document strip out name of file
 	for bundle in bundle_returned.bundle_lecture_documents:
 		document = str(bundle.lectureDocument.document)
@@ -937,6 +991,9 @@ def showBundle(request, id=None):
 		slide = str(bundle.lectureSlide.presentation)
 		slide = slide.split('/')
 		bundle.lectureSlide.slideName = slide[2]
+
+	bundle_returned.in_class = 'in'
+	bundle_returned.show_more = 'SHOW LESS'
 
 
 	context_dict = {'bundle_returned':bundle_returned,}
@@ -1212,6 +1269,10 @@ def refreshSidebarBundle(request):
 	bundles_returned = bundles.objects.filter(user=request.user)
 
 	for bundle_returned in bundles_returned:
+		#start collapesed
+		bundle_returned.in_class = ''
+		bundle_returned.show_more = 'SHOW MORE'
+
 		#get return all other content
 		bundle_returned.bundle_modules = bundleModule.objects.filter(bundle=bundle_returned)
 		bundle_returned.bundle_lectures = bundleLecture.objects.filter(bundle=bundle_returned)
@@ -1260,6 +1321,15 @@ def refreshSidebarBundle(request):
 
 			bundle.module.lectures = moduleLecs_ordered
 
+		#for each lecture, attach lecture docs
+		for bundle in bundle_returned.bundle_lectures:
+			# get lecture documents
+			lectureDocs = lectureDocuments.objects.filter(lecture=bundle.lecture)
+			bundle.lecture.lectureDocs = lectureDocs
+			for lecDoc in bundle.lecture.lectureDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				lecDoc.documentName = document[2]
 
 		#for each lecture document strip out name of file
 		for bundle in bundle_returned.bundle_lecture_documents:
@@ -1272,6 +1342,7 @@ def refreshSidebarBundle(request):
 			slide = str(bundle.lectureSlide.presentation)
 			slide = slide.split('/')
 			bundle.lectureSlide.slideName = slide[2]
+
 
 	context_dict = {'bundles_returned':bundles_returned}
 	return render(request, 'website/bundle_list.html', context_dict)
@@ -1320,13 +1391,7 @@ def updateProfile(request):
 		profile_form = UserProfileForm(instance=user_profile)
 
 
-	keyword = ''
-	tab = 'profile'
-	context_dict = mainSearchCode(request, keyword, tab)
-
-	context_dict_extra = {'user_form': user_form, 'profile_form': profile_form}
-
-	context_dict.update(context_dict_extra)
+	context_dict = {'user_form': user_form, 'profile_form': profile_form}
 
 	return render(request, 'website/update_profile.html', context_dict)
 
@@ -1443,7 +1508,7 @@ def modulesView(request):
 		module_returned.related_modules = list(module_set)
 
 		# pull comments for this module
-		module_returned.comments = modulesComments.objects.filter(module=module_returned)
+		module_returned.comments = modulesComments.objects.filter(module=module_returned).order_by('-created')
 
 		for comment in module_returned.comments:
 			commenter_profile = profile.objects.get(user=comment.user)
@@ -1458,8 +1523,178 @@ def modulesView(request):
 	else:
 		bundles_returned = bundles.objects.none()
 
-	context_dict = {'modules_returned':modules_returned_ordered, 'profile':profile, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned }
+	# comment form
+	comment_form = modulesCommentsForm()
+
+	context_dict = {'modules_returned':modules_returned_ordered, 'profile':profile, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned, 'comment_form':comment_form, }
 	return render(request, 'website/modules.html', context_dict)
+
+def moduleComments(request, id=None):
+	#get module
+	module_returned = modules.objects.get(pk=id)
+
+	# pull comments for this module
+	module_returned.comments = modulesComments.objects.filter(module=module_returned).order_by('-created')
+
+	for comment in module_returned.comments:
+		commenter_profile = profile.objects.get(user=comment.user)
+		comment.commenter_profile = commenter_profile
+
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+	else:
+		bundles_returned = bundles.objects.none()
+
+	# comment form
+	comment_form = modulesCommentsForm()
+
+	context_dict = {'module_returned':module_returned, 'bundles_returned':bundles_returned, 'comment_form':comment_form}
+	return render(request, 'website/module_comments.html', context_dict)
+
+
+def indexView(request):
+
+	"""
+	  Loads all modules
+	"""
+
+	modules_returned = modules.objects.all().order_by('title')
+
+	#remove articles from title for sorting
+	for module_returned in modules_returned:
+		first_word = module_returned.title.strip().lower().split(' ', 1)[0]
+		if first_word == 'a' or first_word == 'the' or first_word == 'and':
+			module_returned.no_article_title = module_returned.title.strip().lower().replace(first_word,"",1).strip()
+		else:
+			module_returned.no_article_title = module_returned.title.strip().lower()
+
+	# order titles minus articles
+	modules_returned_ordered = sorted(modules_returned, key=operator.attrgetter('no_article_title'))
+
+
+	for module_returned in modules_returned_ordered:
+		#look up module docs
+		moduleDocs = moduleDocuments.objects.filter(module=module_returned).order_by('title')
+		# just get the file name
+		contents = []
+		for doc in moduleDocs:
+			document = str(doc.document)
+			document = document.split('/')
+			doc.documentName = document[2]
+			contents.append(doc.document_contents)
+
+		# join document contents together
+		module_returned.document_contents = '\n'.join(contents)
+
+		#attach the module docs to the module returned
+		module_returned.moduleDocs = moduleDocs
+
+		#look up the lectures
+		moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('module__title','title')
+		# get the file name
+		for lec in moduleLecs:
+			# order by lecture number
+			first_word = lec.title.strip().lower().split(' ', 1)[0]
+			if first_word == 'lecture':
+				first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
+				lec.numeric_order = int(first_number)
+			else:
+				lec.numeric_order = 0
+
+			lecture = str(lec.presentation)
+			lecture = lecture.split('/')
+			lec.lectureName = lecture[2]
+			# get lecture documents
+			lectureDocs = lectureDocuments.objects.filter(lecture=lec)
+			lec.lectureDocs = lectureDocs
+			for lecDoc in lec.lectureDocs:
+				document = str(lecDoc.document)
+				document = document.split('/')
+				lecDoc.documentName = document[2]
+
+		# order titles minus articles
+		moduleLecs_ordered = sorted(moduleLecs, key=operator.attrgetter('numeric_order'))
+
+		#attach the module docs to the module returned
+		module_returned.moduleLecs = moduleLecs_ordered
+
+
+		# pull comments for this module
+		module_returned.comments = modulesComments.objects.filter(module=module_returned).order-by('-created')
+
+		for comment in module_returned.comments:
+			commenter_profile = profile.objects.get(user=comment.user)
+			comment.commenter_profile = commenter_profile
+
+	coming_soon_modules_returned = comingSoonModules.objects.all().order_by('title')
+
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+
+	else:
+		bundles_returned = bundles.objects.none()
+
+	context_dict = {'modules_returned':modules_returned_ordered, 'coming_soon_modules_returned':coming_soon_modules_returned, 'bundles_returned':bundles_returned }
+	return render(request, 'website/index_list.html', context_dict)
+
+
+
+def lectureView(request, id=None):
+
+	#get lecture
+	lecture_returned = lectures.objects.get(pk=id)
+
+	# get lecture documents
+	lectureDocs = lectureDocuments.objects.filter(lecture=lecture_returned)
+	lecture_returned.lectureDocs = lectureDocs
+	for lecDoc in lecture_returned.lectureDocs:
+		document = str(lecDoc.document)
+		document = document.split('/')
+		lecDoc.documentName = document[2]
+
+	# pull comments for this module
+	lecture_returned.comments = lecturesComments.objects.filter(lecture=lecture_returned).order_by('-created')
+
+	for comment in lecture_returned.comments:
+		commenter_profile = profile.objects.get(user=comment.user)
+		comment.commenter_profile = commenter_profile
+
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+	else:
+		bundles_returned = bundles.objects.none()
+
+	# comment form
+	comment_form = lecturesCommentsForm()
+
+	context_dict = {'lecture_returned':lecture_returned, 'bundles_returned':bundles_returned, 'comment_form':comment_form}
+	return render(request, 'website/lecture.html', context_dict)
+
+def lectureComments(request, id=None):
+	#get lecture
+	lecture_returned = lectures.objects.get(pk=id)
+
+	# pull comments for this module
+	lecture_returned.comments = lecturesComments.objects.filter(lecture=lecture_returned).order_by('-created')
+
+	for comment in lecture_returned.comments:
+		commenter_profile = profile.objects.get(user=comment.user)
+		comment.commenter_profile = commenter_profile
+
+	if request.user.is_authenticated():
+		# pull bundles
+		bundles_returned = bundles.objects.filter(user=request.user)
+	else:
+		bundles_returned = bundles.objects.none()
+
+	# comment form
+	comment_form = lecturesCommentsForm()
+
+	context_dict = {'lecture_returned':lecture_returned, 'bundles_returned':bundles_returned, 'comment_form':comment_form}
+	return render(request, 'website/lecture_comments.html', context_dict)
 
 
 
@@ -1525,7 +1760,7 @@ def lecturesView(request):
 				lecDoc.documentName = document[2]
 
 			# pull comments for this module
-			lec.comments = lecturesComments.objects.filter(lecture=lec)
+			lec.comments = lecturesComments.objects.filter(lecture=lec).order_by('-created')
 
 			for comment in lec.comments:
 				commenter_profile = profile.objects.get(user=comment.user)
@@ -1548,6 +1783,8 @@ def lecturesView(request):
 
 	context_dict = {'modules_returned':modules_returned_ordered, 'bundles_returned': bundles_returned }
 	return render(request, 'website/lectures.html', context_dict)
+
+
 
 
 @login_required
@@ -1641,13 +1878,13 @@ def saveComment(request):
 			#does bundle/module exist already?
 			c = modulesComments(user=request.user, module=module, comment=comment)
 			c.save()
-			return HttpResponseRedirect(reverse('showModule', args=(module.id,)))
+			return HttpResponseRedirect(reverse('moduleComments', args=(module.id,)))
 		elif itemid[0] == 'lecture':
 			#look up lecture
 			lecture = lectures.objects.get(pk=itemid[1])
 			c = lecturesComments(user=request.user, lecture=lecture, comment=comment)
 			c.save()
-			return HttpResponseRedirect(reverse('showLecture', args=(lecture.id,)))
+			return HttpResponseRedirect(reverse('lectureComments', args=(lecture.id,)))
 		elif itemid[0] == 'lecturesegment':
 			#look up lectureSegment
 			lectureSegment = lectureSegments.objects.get(pk=itemid[1])

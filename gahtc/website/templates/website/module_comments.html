@@ -1,0 +1,22 @@
+{% load staticfiles %} 
+{% load bootstrap_tags %}
+
+<div class="module-comment-form">
+    <hr />
+    {% if comment_form %}
+    <form class="comment-form" role="form" method="post" action=".">
+        {% csrf_token %} {{ comment_form|as_bootstrap }}
+        <button data-itemid="module_{{ module_returned.id }}" type="submit" class="btn btn-default submitComment" name="submit" value="submit">Submit</button>
+    </form>
+    {% endif %}
+</div>
+<div class="module-comments">
+    {% if module_returned.comments %}
+        {% for comment in module_returned.comments %}
+            <p>"{{ comment.comment }}"
+            <br />
+            by: <a href="/members/#heading_{{ user.id }}">{{ comment.commenter_profile.first_name }} {{ comment.commenter_profile.last_name }}</a> on {{ comment.created|date:"F j, Y" }}</p>
+        {% endfor %}
+    {% endif %}
+</div> 
+
