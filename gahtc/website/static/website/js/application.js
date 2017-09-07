@@ -20,9 +20,9 @@ const truncateElementText = (elem) => {
 
 $(document).ready(function () {
 
-    var gahtcApp = new gahtcApplication();
-
-    let isPanelOpen = false;
+    let gahtcApp = new gahtcApplication(),
+        isPanelOpen = false,
+        isAsideNavOpen = false;
 
     if (window.location.pathname === '/') {
         $('footer').css('position', 'fixed');
@@ -35,11 +35,58 @@ $(document).ready(function () {
 
     truncateElementText($('.lecture-description-text'));
 
+
     $(window).scroll(() => {
         if ($(this).scrollTop() > 400) {
             $('.scrollToTop').fadeIn();
         } else {
             $('.scrollToTop').fadeOut();
+        }
+    });
+
+    $(window).scroll(() => {
+        let navbarHeight = $('.navbar').height();
+        if ($(this).scrollTop() > 146) {
+            $('.user-nav .user-profile').css({
+                'border-radius': '10%'
+            });
+            $('.navbar .navigation-links').css({
+                'display': 'none'
+            });
+            $('.uncollapsed-logo').css({
+                'opacity': '0'
+            });
+            $('.collapsed-container').css({
+                'opacity': '1'
+            });
+            $('.navbar-header-holder').css({
+                'padding': '0'
+            });
+            $('.main-nav').css({
+                'height': '80px'
+            });
+        } else {
+            $('.collapsed-container aside').css({
+                'display': 'none'
+            })
+            $('.user-nav .user-profile').css({
+                'border-radius': '50%'
+            });
+            $('.navbar .navigation-links').css({
+                'display': 'flex'
+            });
+            $('.uncollapsed-logo').css({
+                'opacity': '1'
+            });
+            $('.collapsed-container').css({
+                'opacity': '0'
+            });
+            $('.navbar-header-holder').css({
+                'padding': '15px 0'
+            })
+            $('.main-nav').css({
+                'height': '146px'
+            });
         }
     });
 
@@ -62,6 +109,37 @@ $(document).ready(function () {
             })
         } else if (text === 'SHOW LESS') {
             $(this).text('SHOW MORE')
+        }
+    });
+
+    $('.hamburger-icon').click(() => {
+        if (!isAsideNavOpen) {
+            $('.collapsed-container aside').css({
+                'display': 'block'
+            });
+            isAsideNavOpen = true;
+        } else {
+            $('.collapsed-container aside').css({
+                'display': 'none'
+            });
+            isAsideNavOpen = false;
+        }
+
+    });
+
+    $('.menu-item > p').on('click', (e) => {
+        if ($(e.currentTarget).hasClass('submenu-open')) {
+            $(e.currentTarget).next().css('display', 'none');
+            $(e.currentTarget).css({
+                'text-decoration': 'none'
+            });
+            $(e.currentTarget).removeClass('submenu-open');
+        } else {
+            $(e.currentTarget).next().css('display', 'block');
+            $(e.currentTarget).css({
+                'text-decoration': 'underline'
+            });
+            $(e.currentTarget).addClass('submenu-open');
         }
     });
 

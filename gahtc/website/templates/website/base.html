@@ -28,12 +28,56 @@
 </head>
 
 <body id="top">
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default main-nav">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header-holder">
                 <div class="navbar-header">
-                    <a href="/"><img src="{% static 'website/css/images/gahtc_logo.svg' %}"></a>
+                    <a href="/"><img src="{% static 'website/css/images/gahtc_logo.svg' %}" class='uncollapsed-logo'></a>
+                    <div class='collapsed-container dropdown'>
+                        <button class='dropdown-toggle' type='button' data-toggle='dropdown'><img src="{% static 'website/css/images/hamburger_icon.svg' %}" class='hamburger-icon'></button>
+                        <a href="/"><img src="{% static 'website/css/images/gahtc_logo_collapsed.svg' %}" class='collapsed-logo'></a>
+                        <aside class='sidenav'>
+                            <div class="menu-item">
+                                <p>About</p>
+                                <ul class='submenu'>
+                                    <li><a href="{% url 'about' %}">About GAHTC</a></li>
+                                    <li><a href="{% url 'howToUse' %}">How to Use GAHTC</a></li>
+                                </ul>
+                            </div>
+                            <div class="menu-item">
+                                <p>Explore Content</p>
+                                <ul class='submenu'>
+                                    <li><a href="{% url 'modulesView' %}">Browse</a></li>
+                                    <li><a href="{% url 'indexView' %}">Library Index</a></li>
+                                    <li><a href="{% url 'architectureTalk' %}">Architecture Talk</a></li>
+                                    <li><a href="{% url 'timescape' %}">Timescape</a></li>
+                                </ul>
+                            </div>
+                            <div class="menu-item">
+                                <p >Membership</p>
+                                <ul class='submenu'>
+                                    <li><a href="{% url 'howtobecomeamember' %}">How to Become a Member</a></li>
+                                    <li><a href="{% url 'membersView' %}">Browse Current Members</a></li>
+                                    <li><a href="{% url 'membersconference' %}">Bi-Annual Members' Conference</a></li>
+                                    <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
+                                </ul>
+                            </div>
+                            <div class="menu-item">
+                                <p>Apply for a Grant</p>
+                                <ul class='submenu'>
+                                    <li><a href="{% url 'grants' %}">All Grant Opportunities</a></li>
+                                    <li><a href="{% url 'grants' %}#teacher-to-teacher"><strong>New!</strong> Teacher-to-Teacher Workshops</a></li>
+                                    <li><a href="{% url 'grants' %}#targeted-acquisition-grants">Targeted Acquisition Grants</a></li>
+                                    <li><a href="{% url 'grants' %}#untargeted-field-initiated-grants">Untargeted Field-initiated Grants</a></li>
+                                    <li><a href="{% url 'grants' %}#emerging-scholar-grants">Emerging Scholar Grants</a></li>
+                                    <li><a href="{% url 'grants' %}#global-connections-fellowship">Global Connections Fellowship</a></li>
+                                    <li><a href="{% url 'grants' %}#research-to-teaching-grants">Research-to-Teaching Grants in affiliation with SAH</a></li>
+                                    <li><a href="{% url 'grants' %}#travel-grants">Field Seminar Travel Grants in affiliation with SAH</a></li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gahtc-navbar-collapse" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
@@ -122,7 +166,7 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-    <span style='display: flex; flex-direction: column; flex-grow: 100'>
+    <span style='display: flex; flex-direction: column; flex-grow: 100' class='main-content'>
     {% block content %} {% endblock %}
 
         <footer class="footer">
@@ -137,6 +181,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript" src="{% static 'website/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+    <script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
     {% block js_block %} {% endblock %}
 </body>
 
