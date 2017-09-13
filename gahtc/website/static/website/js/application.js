@@ -45,7 +45,6 @@ $(document).ready(function () {
     });
 
     $(window).scroll(() => {
-        let navbarHeight = $('.navbar').height();
         if ($(this).scrollTop() > 146) {
             $('.user-nav .user-profile').css({
                 'border-radius': '10%'
@@ -64,6 +63,12 @@ $(document).ready(function () {
             });
             $('.main-nav').css({
                 'height': '80px'
+            });
+            $('.user-nav p').css({
+                'color': '#a1a0a1'
+            });
+            $('.user-nav p').css({
+                'color': '#666666'
             });
         } else {
             $('.collapsed-container aside').css({
@@ -87,8 +92,19 @@ $(document).ready(function () {
             $('.main-nav').css({
                 'height': '146px'
             });
+            $('.user-nav p').css({
+                'color': '#a1a0a1'
+            });
+            isAsideNavOpen = false;
         }
+
     });
+
+    if ($(document).width() <= 425) {
+        $('.main-nav').css({
+            'height': '80px'
+        });
+    }
 
     $('.scrollToTop').on('click', () => {
         $('html, body').animate({
@@ -113,18 +129,17 @@ $(document).ready(function () {
     });
 
     $('.hamburger-icon').click(() => {
-        if (!isAsideNavOpen) {
-            $('.collapsed-container aside').css({
-                'display': 'block'
-            });
-            isAsideNavOpen = true;
-        } else {
+        if (isAsideNavOpen) {
             $('.collapsed-container aside').css({
                 'display': 'none'
             });
             isAsideNavOpen = false;
+        } else {
+            $('.collapsed-container aside').css({
+                'display': 'block'
+            });
+            isAsideNavOpen = true;
         }
-
     });
 
     $('.menu-item > p').on('click', (e) => {
@@ -142,6 +157,8 @@ $(document).ready(function () {
             $(e.currentTarget).addClass('submenu-open');
         }
     });
+
+
 
     function horizontalScroll() {
         let pos = 0;
