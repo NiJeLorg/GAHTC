@@ -1085,11 +1085,7 @@ def zipUpBundle(request, id=None):
 		for i, bundle in enumerate(bundle_lectures,1):
 			lecTitle = bundle.lecture.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-<<<<<<< HEAD
-			lecTitle = '_'.join(lecTitle.split())[:100]
-=======
 			lecTitle = '_'.join(lecTitle.split())[:30]			
->>>>>>> master
 
 			document = unicode(bundle.lecture.presentation)
 			document = document.split('/')
@@ -1111,11 +1107,7 @@ def zipUpBundle(request, id=None):
 		for i, bundle in enumerate(bundle_lecture_segments,1):
 			lecTitle = bundle.lectureSegment.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-<<<<<<< HEAD
-			lecTitle = '_'.join(lecTitle.split())[:100]
-=======
 			lecTitle = '_'.join(lecTitle.split())[:30]	
->>>>>>> master
 
 			document = unicode(bundle.lectureSegment.presentation)
 			document = document.split('/')
@@ -1125,17 +1117,10 @@ def zipUpBundle(request, id=None):
 
 
 		#for each lecture document strip out name of file
-<<<<<<< HEAD
-		for i, bundle in enumerate(bundle_lecture_documents,1):
-			lecTitle = bundle.lectureDocument.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
-			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-			lecTitle = '_'.join(lecTitle.split())[:100]
-=======
 		for i, bundle in enumerate(bundle_lecture_documents,1):	
 			lecTitle = bundle.lectureDocument.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
 			lecTitle = '_'.join(lecTitle.split())[:30]	
->>>>>>> master
 
 			document = unicode(bundle.lectureDocument.document)
 			document = document.split('/')
@@ -1147,11 +1132,7 @@ def zipUpBundle(request, id=None):
 		for i, bundle in enumerate(bundle_lecture_slides,1):
 			lecTitle = bundle.lectureSlide.lecture.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-<<<<<<< HEAD
-			lecTitle = '_'.join(lecTitle.split())[:100]
-=======
 			lecTitle = '_'.join(lecTitle.split())[:30]	
->>>>>>> master
 
 			document = unicode(bundle.lectureSlide.presentation)
 			document = document.split('/')
@@ -1243,11 +1224,7 @@ def zipUpLecture(request, id=None):
 	lec = lectures.objects.get(pk=id)
 	lecTitle = lec.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 	"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-<<<<<<< HEAD
-	lecTitle = '_'.join(lecTitle.split())[:100]
-=======
 	lecTitle = '_'.join(lecTitle.split())[:30]	
->>>>>>> master
 
 	#folder for zip file
 	folder = "/zip_files/lecture_"+ id +"/"
@@ -2773,13 +2750,8 @@ def admin_coming_soon_module(request, id=None):
 			f = form.save()
 
 			# send back to dashboard
-<<<<<<< HEAD
-			return HttpResponseRedirect(request.POST['referer'])
-
-=======
 			return HttpResponseRedirect('/dashboard/')
 			
->>>>>>> master
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
