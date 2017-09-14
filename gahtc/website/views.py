@@ -515,7 +515,10 @@ def showModule(request, id=None):
 		first_word = lec.title.strip().lower().split(' ', 1)[0]
 		if first_word == 'lecture':
 			first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
-			lec.numeric_order = int(first_number)
+			try:
+				lec.numeric_order = int(first_number)
+			except ValueError:
+				lec.numeric_order = 0
 		else:
 			lec.numeric_order = 0
 
@@ -949,7 +952,10 @@ def showBundle(request, id=None):
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'lecture':
 				first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
-				lec.numeric_order = int(first_number)
+				try:
+					lec.numeric_order = int(first_number)
+				except ValueError:
+					lec.numeric_order = 0
 			else:
 				lec.numeric_order = 0
 
@@ -1037,9 +1043,9 @@ def zipUpBundle(request, id=None):
 			moduleDocs = moduleDocuments.objects.filter(module=bundle.module)
 			#loop over docs and add to zip archive in the correct folder
 			for doc in moduleDocs:
-				modTitle = bundle.module.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+				modTitle = bundle.module.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 				"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
-				modTitle = '_'.join(modTitle.split())[:100]
+				modTitle = '_'.join(modTitle.split())[:30]
 
 				document = unicode(doc.document)
 				document = document.split('/')
@@ -1051,13 +1057,13 @@ def zipUpBundle(request, id=None):
 			moduleLecs = lectures.objects.filter(module=bundle.module).exclude(extracted=False).order_by('title')
 			#loop over lectures and add to zip archive in the correct folder
 			for i, lec in enumerate(moduleLecs,1):
-				modTitle = bundle.module.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+				modTitle = bundle.module.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 				"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
-				modTitle = '_'.join(modTitle.split())[:100]
+				modTitle = '_'.join(modTitle.split())[:30]
 
-				lecTitle = lec.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+				lecTitle = lec.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 				"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-				lecTitle = '_'.join(lecTitle.split())[:100]
+				lecTitle = '_'.join(lecTitle.split())[:30]
 
 				document = unicode(lec.presentation)
 				document = document.split('/')
@@ -1077,9 +1083,13 @@ def zipUpBundle(request, id=None):
 
 		# for each lecture write to zip archive
 		for i, bundle in enumerate(bundle_lectures,1):
-			lecTitle = bundle.lecture.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			lecTitle = bundle.lecture.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+<<<<<<< HEAD
 			lecTitle = '_'.join(lecTitle.split())[:100]
+=======
+			lecTitle = '_'.join(lecTitle.split())[:30]			
+>>>>>>> master
 
 			document = unicode(bundle.lecture.presentation)
 			document = document.split('/')
@@ -1099,9 +1109,13 @@ def zipUpBundle(request, id=None):
 
 		# for each lecture segment write to zip archive
 		for i, bundle in enumerate(bundle_lecture_segments,1):
-			lecTitle = bundle.lectureSegment.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			lecTitle = bundle.lectureSegment.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+<<<<<<< HEAD
 			lecTitle = '_'.join(lecTitle.split())[:100]
+=======
+			lecTitle = '_'.join(lecTitle.split())[:30]	
+>>>>>>> master
 
 			document = unicode(bundle.lectureSegment.presentation)
 			document = document.split('/')
@@ -1111,10 +1125,17 @@ def zipUpBundle(request, id=None):
 
 
 		#for each lecture document strip out name of file
+<<<<<<< HEAD
 		for i, bundle in enumerate(bundle_lecture_documents,1):
 			lecTitle = bundle.lectureDocument.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
 			lecTitle = '_'.join(lecTitle.split())[:100]
+=======
+		for i, bundle in enumerate(bundle_lecture_documents,1):	
+			lecTitle = bundle.lectureDocument.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
+			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+			lecTitle = '_'.join(lecTitle.split())[:30]	
+>>>>>>> master
 
 			document = unicode(bundle.lectureDocument.document)
 			document = document.split('/')
@@ -1124,9 +1145,13 @@ def zipUpBundle(request, id=None):
 
 		#for each lecture slide strip out name of file and slide notes file
 		for i, bundle in enumerate(bundle_lecture_slides,1):
-			lecTitle = bundle.lectureSlide.lecture.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			lecTitle = bundle.lectureSlide.lecture.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+<<<<<<< HEAD
 			lecTitle = '_'.join(lecTitle.split())[:100]
+=======
+			lecTitle = '_'.join(lecTitle.split())[:30]	
+>>>>>>> master
 
 			document = unicode(bundle.lectureSlide.presentation)
 			document = document.split('/')
@@ -1147,9 +1172,9 @@ def zipUpModule(request, id=None):
 	"""
 	# get module
 	module_returned = modules.objects.get(pk=id)
-	modTitle = module_returned.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+	modTitle = module_returned.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 	"".join(c for c in modTitle if c.isalnum() or c==' ').rstrip()
-	modTitle = '_'.join(modTitle.split())[:100]
+	modTitle = '_'.join(modTitle.split())[:30]
 
 	#folder for zip file
 	folder = "/zip_files/module_"+ id +"/"
@@ -1183,9 +1208,9 @@ def zipUpModule(request, id=None):
 		moduleLecs = lectures.objects.filter(module=module_returned).exclude(extracted=False).order_by('title')
 		#loop over lectures and add to zip archive in the correct folder
 		for i, lec in enumerate(moduleLecs,1):
-			lecTitle = lec.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+			lecTitle = lec.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 			"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
-			lecTitle = '_'.join(lecTitle.split())[:100]
+			lecTitle = '_'.join(lecTitle.split())[:30]
 			document = unicode(lec.presentation)
 			document = document.split('/')
 			doc_name = document[2].encode('utf8', 'replace')
@@ -1216,9 +1241,13 @@ def zipUpLecture(request, id=None):
 	"""
 
 	lec = lectures.objects.get(pk=id)
-	lecTitle = lec.title.replace(":", "").replace("/", "").replace("\\", "").replace(",", "")
+	lecTitle = lec.title.replace("<", "").replace(">", "").replace(":", "").replace('"', '').replace("/", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace(",", "").replace(".", "")
 	"".join(c for c in lecTitle if c.isalnum() or c==' ').rstrip()
+<<<<<<< HEAD
 	lecTitle = '_'.join(lecTitle.split())[:100]
+=======
+	lecTitle = '_'.join(lecTitle.split())[:30]	
+>>>>>>> master
 
 	#folder for zip file
 	folder = "/zip_files/lecture_"+ id +"/"
@@ -1441,7 +1470,10 @@ def modulesView(request):
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'lecture':
 				first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
-				lec.numeric_order = int(first_number)
+				try:
+					lec.numeric_order = int(first_number)
+				except ValueError:
+					lec.numeric_order = 0
 			else:
 				lec.numeric_order = 0
 
@@ -1958,7 +1990,11 @@ def dashboard(request):
 			first_word = lec.title.strip().lower().split(' ', 1)[0]
 			if first_word == 'lecture':
 				first_number = lec.title.strip().lower().split(' ')[1].replace('.','').replace(':','')
-				lec.numeric_order = int(first_number)
+				try:
+					lec.numeric_order = int(first_number)
+				except ValueError:
+					lec.numeric_order = 0
+				
 			else:
 				lec.numeric_order = 0
 
@@ -2033,7 +2069,7 @@ def admin_module(request, id=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			elif 'new_module_document' in request.POST:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.id)))
@@ -2146,7 +2182,7 @@ def admin_moduledoc(request, id=None, moduleid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_moduledoc', args=(0,f.module.id,)))
@@ -2251,7 +2287,7 @@ def admin_lecture(request, id=None, moduleid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			elif 'new_lecure_document' in request.POST:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.id)))
@@ -2388,7 +2424,7 @@ def admin_lecturesegment(request, id=None, lectureid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			else:
 				# send to new module doc form
 				return HttpResponseRedirect(reverse('admin_lecturesegment', args=(0,f.lecture.id,)))
@@ -2475,7 +2511,7 @@ def admin_lecturedoc(request, id=None, lectureid=None):
 			# route user depending on what button they clicked
 			if 'save' in request.POST:
 				# send back to dashboard
-				return HttpResponseRedirect(request.POST['referer'])
+				return HttpResponseRedirect('/dashboard/')
 			else:
 				# send to new lecture doc form
 				return HttpResponseRedirect(reverse('admin_lecturedoc', args=(0,f.lecture.id,)))
@@ -2737,8 +2773,13 @@ def admin_coming_soon_module(request, id=None):
 			f = form.save()
 
 			# send back to dashboard
+<<<<<<< HEAD
 			return HttpResponseRedirect(request.POST['referer'])
 
+=======
+			return HttpResponseRedirect('/dashboard/')
+			
+>>>>>>> master
 		else:
 			# The supplied form contained errors - just print them to the terminal.
 			print form.errors
@@ -2828,7 +2869,7 @@ def admin_managedoctypes(request, id=None):
 			f = form.save()
 
 			# send back to dashboard
-			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			return HttpResponseRedirect('/dashboard/')
 
 		else:
 			# The supplied form contained errors - just print them to the terminal.
