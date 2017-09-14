@@ -102,7 +102,7 @@
                           {% endif %}
                         </a>
                         <ul class="dropdown-menu user-profile-dropdown-menu">
-                            {% if perms.wagtailadmin.can_access_wagtail_admin %}
+                            {% if perms.website.add_modules %}
                             <li><a href="{% url 'dashboard' %}">Admin Area</a></li>
                             {% endif %}
                             <li><a href="{% url 'myprofile' %}">My Profile</a></li>
