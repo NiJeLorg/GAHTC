@@ -37,8 +37,8 @@
     <div class="marginBottom15">
         <div class="panel-group" id='accordion_modules' role='tablist' aria-multiselectable='true'>
             {%for module_returned in modules_returned%}
-            <section>
-                <div class="panel panel-default" id="heading_{{ module_returned.id }}">
+            <section id="heading_{{ module_returned.id }}">
+                <div class="panel panel-default">
                     <div class="module-title">
                         <h3>{{ module_returned.title }}</h3>
                         <button class='launchModuleDescription' data-moduleid="{{ module_returned.id }}">i</button>
