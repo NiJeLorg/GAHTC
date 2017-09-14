@@ -37,145 +37,147 @@
     <div class="marginBottom15">
         <div class="panel-group" id='accordion_modules' role='tablist' aria-multiselectable='true'>
             {%for module_returned in modules_returned%}
-            <div class="panel panel-default" id="heading_{{ module_returned.id }}">
-                <div class="module-title">
-                    <h3>{{ module_returned.title }}</h3>
-                    <button class='launchModuleDescription' data-moduleid="{{ module_returned.id }}">i</button>
-                </div>
-                <main class='panel-main'>
-                    <div class="row">
-                        {% if module_returned.cover_image %}
-                            {% thumbnail '400x250' module_returned.cover_image as th %}
-                            <img src="{{ th.url }}" alt="" class="img-responsive col-md-4">
-                        {% else %}
-                            <div class="col-md-4"></div>
-                        {% endif %}
-                        <section class="col-md-8">
-                            <p>{{ module_returned.description }}
-                            {%if module_returned.description|length > 400 %}
-                                <p>...
-                                    <button class='launchModuleDescription readMore' data-moduleid="{{ module_returned.id }}">Read More</button>
-                                </p>
-                            {%endif%}
-                            </p>
-                            <div class="panel-section-footer">
-                                <div class="row">
-                                    <div class="author-docs col-md-7">
-                                        <span class="created-by">created by:</span>
-                                        <p>
-                                            {% for authors in module_returned.authors_m2m.all %}
-                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
-                                            {% endfor %}
-                                    </div>
-                                    <div class="buttons col-md-5 paddingRight0">
-                                        {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
-                                        <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>                                        {% else %}
-                                        <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        {% endif %}
-                                        <div class="dropdown">
-                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
-                                                {% include "website/bundle_dropdown.html" %}
-                                            </ul>
-                                        </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+            <section>
+                <div class="panel panel-default" id="heading_{{ module_returned.id }}">
+                    <div class="module-title">
+                        <h3>{{ module_returned.title }}</h3>
+                        <button class='launchModuleDescription' data-moduleid="{{ module_returned.id }}">i</button>
                     </div>
-                </main>
-                <div id="{{ module_returned.id }}" class="panel-collapse collapse panel-expand module-expand" role="tabpanel" aria-labelledby="{{ module_returned.id }}">
-                    {% if module_returned.moduleLecs|length > 0 %} {% for lec in module_returned.moduleLecs %}
-                    <div class="panel-expand-item">
+                    <main class='panel-main'>
                         <div class="row">
-                            <div class="col-md-3">
-                                <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid="{{ lec.id }}">
-                                    {% if lec.getSlideOne %}
-                                        {% thumbnail '200x150' lec.getSlideOne as th %}
-                                        <img src="{{ th.url }}" alt="" class="img-responsive">
-                                    {% endif %}
-                                    <h4 class="button-text-ribbon">preview slides</h4>
-                                </a>
-                            </div>
-                            <section class="col-md-9">
-                                <div class="title-buttons-group row">
-                                    <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
-                                    <div class="buttons col-md-4 paddingRight0">
-                                        <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a>                                        {% if user.is_authenticated %}
-                                        <div class="dropdown">
-                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
-                                                {% include "website/bundle_dropdown.html" %}
-                                            </ul>
+                            {% if module_returned.cover_image %}
+                                {% thumbnail '400x250' module_returned.cover_image as th %}
+                                <img src="{{ th.url }}" alt="" class="img-responsive col-md-4">
+                            {% else %}
+                                <div class="col-md-4"></div>
+                            {% endif %}
+                            <section class="col-md-8">
+                                <p>{{ module_returned.description }}
+                                {%if module_returned.description|length > 400 %}
+                                    <p>...
+                                        <button class='launchModuleDescription readMore' data-moduleid="{{ module_returned.id }}">Read More</button>
+                                    </p>
+                                {%endif%}
+                                </p>
+                                <div class="panel-section-footer">
+                                    <div class="row">
+                                        <div class="author-docs col-md-7">
+                                            <span class="created-by">created by:</span>
+                                            <p>
+                                                {% for authors in module_returned.authors_m2m.all %}
+                                                    <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
                                         </div>
-                                        {% if request.user.userProfile.verified %}
-                                        <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
-                                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                                        </button> {% else %}
-                                        <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
-                                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                                        </button> {% endif %} {% endif %}
+                                        <div class="buttons col-md-5 paddingRight0">
+                                            {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
+                                            <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>                                        {% else %}
+                                            <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        {% endif %}
+                                            <div class="dropdown">
+                                                <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
+                                                    {% include "website/bundle_dropdown.html" %}
+                                                </ul>
+                                            </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
-                                <p class='lecture-description-text'>{{lec.description}}</p>
-                                <p class="supporting-documents">supporting documments: {%for doc in lec.lectureDocs %}
-                                    <span class="supporting-document-type">
-                                    {% if doc.doc_type %}
-                                        &bull; {{ doc.doc_type }}
-                                    {% else %}
-                                        &bull; Document
-                                    {% endif %}
-                                    </span> {% endfor %}
-                                </p>
                             </section>
                         </div>
+                    </main>
+                    <div id="{{ module_returned.id }}" class="panel-collapse collapse panel-expand module-expand" role="tabpanel" aria-labelledby="{{ module_returned.id }}">
+                        {% if module_returned.moduleLecs|length > 0 %} {% for lec in module_returned.moduleLecs %}
+                        <div class="panel-expand-item">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid="{{ lec.id }}">
+                                        {% if lec.getSlideOne %}
+                                            {% thumbnail '200x150' lec.getSlideOne as th %}
+                                            <img src="{{ th.url }}" alt="" class="img-responsive">
+                                        {% endif %}
+                                        <h4 class="button-text-ribbon">preview slides</h4>
+                                    </a>
+                                </div>
+                                <section class="col-md-9">
+                                    <div class="title-buttons-group row">
+                                        <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
+                                        <div class="buttons col-md-4 paddingRight0">
+                                            <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a>                                        {% if user.is_authenticated %}
+                                            <div class="dropdown">
+                                                <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
+                                                    {% include "website/bundle_dropdown.html" %}
+                                                </ul>
+                                            </div>
+                                            {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button> {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
+                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                            </button> {% endif %} {% endif %}
+                                        </div>
+                                    </div>
+                                    <p class='lecture-description-text'>{{lec.description}}</p>
+                                    <p class="supporting-documents">supporting documments: {%for doc in lec.lectureDocs %}
+                                        <span class="supporting-document-type">
+                                        {% if doc.doc_type %}
+                                            &bull; {{ doc.doc_type }}
+                                        {% else %}
+                                            &bull; Document
+                                        {% endif %}
+                                        </span> {% endfor %}
+                                    </p>
+                                </section>
+                            </div>
+                        </div>
+                        {% endfor %} {% endif %}
+                        {% comment %} <div class="panel-expand-container marginTop10">
+                            {% if module_returned.related_modules %}
+                            <h4>related modules: </h4>
+                            <div class="featured-modules-container">
+                                    <div class='arrows-container'>
+                                    <div><img src='{% static 'website/css/images/left_arrow.png' %}' class='scrollLeft'></div>
+                                    <div><img src='{% static 'website/css/images/right_arrow.png' %}' class='scrollRight'></div>
+                                </div>
+                                <div class="featured-modules">
+                                    {% for r_module_returned in module_returned.related_modules %}
+                                    <div class="module">
+                                        <a href="#heading_{{ r_module_returned.id }}">
+                                            <div class="image-container" style="background: url('/media/{{r_module_returned.cover_image}}')">
+                                            </div>
+                                        </a>
+                                        <div class="title-container">
+                                            <h4><a href="#heading_{{ r_module_returned.id }}">{{ r_module_returned.title }}</a></h4>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div> {% endcomment %}
+                        <div id="module_comments_{{ module_returned.id }}" class="module-comments-wrapper">
+                            {% include 'website/module_comments.html' with module_returned=module_returned %}
+                        </div>
+                        <p class="panel-expand-container terms-conditions">
+                            <strong>Instructions</strong>
+                            <br /> You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
+                            <br />
+                            <br />
+                            <strong>Terms and conditions</strong>
+                            <br /> I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
+                        </p>
                     </div>
-                    {% endfor %} {% endif %}
-                    {% comment %} <div class="panel-expand-container marginTop10">
-                        {% if module_returned.related_modules %}
-                        <h4>related modules: </h4>
-                        <div class="featured-modules-container">
-                                <div class='arrows-container'>
-                                   <div><img src='{% static 'website/css/images/left_arrow.png' %}' class='scrollLeft'></div>
-                                   <div><img src='{% static 'website/css/images/right_arrow.png' %}' class='scrollRight'></div>
-                               </div>
-                               <div class="featured-modules">
-                                   {% for r_module_returned in module_returned.related_modules %}
-                                   <div class="module">
-                                       <a href="#heading_{{ r_module_returned.id }}">
-                                           <div class="image-container" style="background: url('/media/{{r_module_returned.cover_image}}')">
-                                           </div>
-                                       </a>
-                                       <div class="title-container">
-                                           <h4><a href="#heading_{{ r_module_returned.id }}">{{ r_module_returned.title }}</a></h4>
-                                       </div>
-                                   </div>
-                                   {% endfor %}
-                               </div>
-                           </div>
-                        {% endif %}
-                    </div> {% endcomment %}
-                    <div id="module_comments_{{ module_returned.id }}" class="module-comments-wrapper">
-                        {% include 'website/module_comments.html' with module_returned=module_returned %}
-                    </div>
-                    <p class="panel-expand-container terms-conditions">
-                        <strong>Instructions</strong>
-                        <br /> You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
-                        <br />
-                        <br />
-                        <strong>Terms and conditions</strong>
-                        <br /> I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
-                    </p>
+                    <footer>
+                        <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true"
+                            aria-controls="{{ module_returned.id }}" class='showMore'>SHOW MORE</a>
+                    </footer>
                 </div>
-                <footer>
-                    <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true"
-                        aria-controls="{{ module_returned.id }}" class='showMore'>SHOW MORE</a>
-                </footer>
-            </div>
+            </section>
             {% endfor %}
         </div>
     </div>
