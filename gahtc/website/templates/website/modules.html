@@ -19,9 +19,10 @@
         {% for module_returned in modules_returned %} {% if module_returned.featured > 0 %}
         <div class="module">
             <a href="#heading_{{ module_returned.id }}">
-                {% thumbnail '400x250' module_returned.cover_image as th %}
-                <div class="image-container" style="background: url('{{ th.url }}')">
-                </div>
+                {% if module_returned.cover_image %}
+                    {% thumbnail '400x250' module_returned.cover_image as th %}
+                    <div class="image-container" style="background: url('{{ th.url }}')"></div>
+                {% endif %}
             </a>
             <div class="title-container">
                 <h4><a href="#heading_{{ module_returned.id }}">{{ module_returned.title }}</a></h4>
@@ -43,8 +44,12 @@
                 </div>
                 <main class='panel-main'>
                     <div class="row">
-                        {% thumbnail '400x250' module_returned.cover_image as th %}
-                        <img src="{{ th.url }}" alt="" class="img-responsive col-md-4">
+                        {% if module_returned.cover_image %}
+                            {% thumbnail '400x250' module_returned.cover_image as th %}
+                            <img src="{{ th.url }}" alt="" class="img-responsive col-md-4">
+                        {% else %}
+                            <div class="col-md-4"></div>
+                        {% endif %}
                         <section class="col-md-8">
                             <p>{{ module_returned.description }}
                             {%if module_returned.description|length > 400 %}
