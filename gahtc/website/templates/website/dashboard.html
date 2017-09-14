@@ -40,10 +40,17 @@
   <div class="row">
     <div class="col-md-12">
       <h4>Manage Document Types</h4>
-	  <a class="btn btn-default" href="{% url 'admin_managedoctypes' %}" role="button">Manage Document Types</a>
+	  	<a class="btn btn-default" href="{% url 'admin_managedoctypes' %}" role="button">Manage Document Types</a>
     </div>  
   </div>
-  <br />
+	<br />
+  <div class="row">
+		<div class="col-md-12">
+			<h4>Update Website Content</h4>
+			<a class="btn btn-default" href="/cms/" role="button">Enter Wagtail</a>
+		</div>  
+	</div>
+	<br />
   <div class="row">
     <div class="col-md-12">
     	{% if modulesObjects %}
