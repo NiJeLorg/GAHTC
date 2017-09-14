@@ -9,6 +9,21 @@ from django.contrib.auth.models import User
 # django taggit import
 from taggit_autosuggest.managers import TaggableManager
 
+#wagtail imports
+from wagtail.wagtailcore.models import Page
+from wagtail.wagtailcore.fields import RichTextField, StreamField
+from wagtail.wagtailcore import blocks
+from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, TabbedInterface, ObjectList, StreamFieldPanel
+from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
+from wagtail.wagtailimages.blocks import ImageChooserBlock
+from wagtail.wagtailembeds.blocks import EmbedBlock
+from wagtail.wagtaildocs.blocks import DocumentChooserBlock
+from wagtail.wagtailsearch import index
+
+# #thumbnails using imagekit
+# from imagekit import ImageSpec, register
+# from imagekit.processors import ResizeToFill
+
 
 TZ_CHOICES = [(float(x[0]), x[1]) for x in (
 	(-12, '-12'), (-11, '-11'), (-10, '-10'), (-9.5, '-09.5'), (-9, '-09'),
@@ -284,3 +299,36 @@ class comingSoonModules(models.Model):
 		return self.title
 
 
+
+#wagtail CMS models
+class TextHeavyPages(Page):
+	# Database fields
+	date = models.DateField("Updated On")
+	splash_image = models.ForeignKey(
+		'wagtailimages.Image',
+		null=True,
+		blank=True,
+		on_delete=models.SET_NULL,
+		related_name='+'
+	)
+	page_content = RichTextField(blank=True)
+
+	search_fields = Page.search_fields + [
+		index.SearchField('page_content'),
+		index.FilterField('date'),
+	]
+
+	# Editor panels configuration
+	content_panels = Page.content_panels + [
+		ImageChooserPanel('splash_image'),
+		FieldPanel('page_content', classname="full"),
+		FieldPanel('date')
+	]
+
+# #thumbnail imagekit generator
+# class Thumbnail(ImageSpec):
+#     processors = [ResizeToFill(400, 250)]
+#     format = 'JPEG'
+#     options = {'quality': 90}
+
+# register.generator('website:thumbnail', Thumbnail)

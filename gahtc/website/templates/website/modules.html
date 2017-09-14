@@ -1,5 +1,13 @@
-{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Browse{% endblock %} {% block css_block %} {%endblock%}
-{% block head_js_block %} {% endblock %} {% block content %}
+{% extends 'website/base.html' %} 
+{% load staticfiles %} 
+{% load imagekit %}
+
+{% block title %}Browse{% endblock %} 
+
+{% block css_block %} {%endblock%}
+{% block head_js_block %} {% endblock %} 
+
+{% block content %}
 <!-- Page Content -->
 <p class="featured-modules-title">featured modules</p>
 <div class="featured-modules-container">
@@ -11,7 +19,8 @@
         {% for module_returned in modules_returned %} {% if module_returned.featured > 0 %}
         <div class="module">
             <a href="#heading_{{ module_returned.id }}">
-                <div class="image-container" style="background: url('/media/{{module_returned.cover_image}}')">
+                {% thumbnail '400x250' module_returned.cover_image as th %}
+                <div class="image-container" style="background: url('{{ th.url }}')">
                 </div>
             </a>
             <div class="title-container">
@@ -34,7 +43,8 @@
                 </div>
                 <main class='panel-main'>
                     <div class="row">
-                        <img src="/media/{{module_returned.cover_image}}" alt="" class="img-responsive col-md-4">
+                        {% thumbnail '400x250' module_returned.cover_image as th %}
+                        <img src="{{ th.url }}" alt="" class="img-responsive col-md-4">
                         <section class="col-md-8">
                             <p>{{ module_returned.description }}
                             {%if module_returned.description|length > 400 %}

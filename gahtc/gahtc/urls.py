@@ -20,12 +20,21 @@ from website import regbackend
 from django.conf import settings
 from django.conf.urls.static import static
 
+# for wagtail
+from wagtail.wagtailadmin import urls as wagtailadmin_urls
+from wagtail.wagtaildocs import urls as wagtaildocs_urls
+from wagtail.wagtailcore import urls as wagtail_urls
+
+
 urlpatterns = [
 	url(r'^', include(website_urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/register/$', regbackend.MyRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
+    url(r'^cms/', include(wagtailadmin_urls)),
+    url(r'^documents/', include(wagtaildocs_urls)),
+    url(r'^pages/', include(wagtail_urls)),
 ]
 
 if settings.DEBUG:
