@@ -1478,49 +1478,49 @@ def modulesView(request):
 		module_returned.moduleLecs = moduleLecs_ordered
 
 
-		#look up related modules based on keywords in module
-		r_modules_returned = []
-		r_module_documents_returned = []
-		r_lectures_returned = []
-		r_lecture_segments_returned = []
-		r_lecture_documents_returned = []
-		r_lecture_slides_returned = []
-		r_coming_soon_modules_returned = []
+		# #look up related modules based on keywords in module
+		# r_modules_returned = []
+		# r_module_documents_returned = []
+		# r_lectures_returned = []
+		# r_lecture_segments_returned = []
+		# r_lecture_documents_returned = []
+		# r_lecture_slides_returned = []
+		# r_coming_soon_modules_returned = []
 		
-		all_results = SearchQuerySet().auto_query(module_returned.description)
+		# all_results = SearchQuerySet().auto_query(module_returned.description)
 
-		# sort search query to bins
-		for r in all_results:
-			if r.model_name == "modules":
-				r_modules_returned.append(r)
-			elif r.model_name == "moduledocuments":
-				r_module_documents_returned.append(r)
-			elif r.model_name == "lectures":
-				r_lectures_returned.append(r)
+		# # sort search query to bins
+		# for r in all_results:
+		# 	if r.model_name == "modules":
+		# 		r_modules_returned.append(r)
+		# 	elif r.model_name == "moduledocuments":
+		# 		r_module_documents_returned.append(r)
+		# 	elif r.model_name == "lectures":
+		# 		r_lectures_returned.append(r)
 
-		# concatonate module querysets
-		# first create list of modules
-		module_modules = []
-		module_documents_modules = []
-		lectures_modules = []
+		# # concatonate module querysets
+		# # first create list of modules
+		# module_modules = []
+		# module_documents_modules = []
+		# lectures_modules = []
 		
-		for module in r_modules_returned:
-			if module.object is not None and module.object.title != module_returned.title:
-				module_modules.append(module.object)
+		# for module in r_modules_returned:
+		# 	if module.object is not None and module.object.title != module_returned.title:
+		# 		module_modules.append(module.object)
 
-		for module_document in r_module_documents_returned:
-			if module_document.object is not None and module_document.object.module.title != module_returned.title:
-				module_documents_modules.append(module_document.object.module)
+		# for module_document in r_module_documents_returned:
+		# 	if module_document.object is not None and module_document.object.module.title != module_returned.title:
+		# 		module_documents_modules.append(module_document.object.module)
 
-		for lecture in r_lectures_returned:
-			if lecture.object is not None and lecture.object.module.title != module_returned.title:
-				lectures_modules.append(lecture.object.module)
+		# for lecture in r_lectures_returned:
+		# 	if lecture.object is not None and lecture.object.module.title != module_returned.title:
+		# 		lectures_modules.append(lecture.object.module)
 
-		module_list = list(chain(module_modules, module_documents_modules, lectures_modules))
+		# module_list = list(chain(module_modules, module_documents_modules, lectures_modules))
 
-		# make unique
-		module_set = set(module_list)
-		module_returned.related_modules = list(module_set)
+		# # make unique
+		# module_set = set(module_list)
+		# module_returned.related_modules = list(module_set)
 
 		# pull comments for this module
 		module_returned.comments = modulesComments.objects.filter(module=module_returned).order_by('-created')
