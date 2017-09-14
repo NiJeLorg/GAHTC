@@ -92,7 +92,10 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid="{{ lec.id }}">
-                                    <img src="/media/{{lec.getSlideOne}}" alt="" class="img-responsive">
+                                    {% if lec.getSlideOne %}
+                                        {% thumbnail '400x300' lec.getSlideOne as th %}
+                                        <img src="{{ th.url }}" alt="" class="img-responsive">
+                                    {% endif %}
                                     <h4 class="button-text-ribbon">preview slides</h4>
                                 </a>
                             </div>
