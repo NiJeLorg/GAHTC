@@ -402,13 +402,13 @@ $(document).ready(function() {
 
 
     // pull number for # out of url and open accordian on modules and lectures pages
-    var url_after_hash = window.location.hash.substr(1);
-    if (url_after_hash.search('heading') != -1) {
-        var split = url_after_hash.split("_");
-        var url_num = split[1];
-        // open accordian
-        $('#' + url_num).addClass('in');
-    }
+    // var url_after_hash = window.location.hash.substr(1);
+    // if (url_after_hash.search('heading') != -1) {
+    //     var split = url_after_hash.split("_");
+    //     var url_num = split[1];
+    //     // open accordian
+    //     $('#' + url_num).addClass('in');
+    // }
 
     // close the download modal after download link is clicked
     $(document).on('click', '.downloadLink', function(e) {
