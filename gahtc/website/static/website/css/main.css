@@ -1769,7 +1769,7 @@ main form {
     border: 2px solid #5d0104;
 }
 
-.author-section .non-contributing:nth-child(odd) {
+.user-profiles .non-contributing:nth-child(odd) {
     background: url('images/ocean_currents_light.png');
     background-position: 0;
 }
@@ -1807,7 +1807,6 @@ main form {
 }
 
 .member-profile .description {
-    max-height: 8em;
     margin-bottom: 0;
 }
 

@@ -5,10 +5,11 @@
 	<h3 class="marginBottom100">No Members Found.</h3>
 {% endif %}
 
+<div class="user-profiles">
 {% for user_profile in profiles_returned %}
 	<!-- Anchor by first letter of last name -->
 	<div id="{{ user_profile.first_letter_last_name }}"></div>
-	<section id='heading_{{user_profile.id}}' class="author-section">
+	<section id='heading_{{user_profile.id}}'>
 		{%if user_profile.modules or user_profile.csmodules %}
 		<div class="member">
 			<div class='contributing-member'>
@@ -70,4 +71,4 @@
 		{%endif%} 
 	</section>
 {%endfor%}
-
+</div>
