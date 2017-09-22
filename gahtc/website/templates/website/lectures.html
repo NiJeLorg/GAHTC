@@ -29,11 +29,9 @@
                         </div>
                         <section class="lecture-panel-section col-md-9">
                             <h4>{{lecture_returned.title}}</h4>
-                            <p>{{lecture_returned.description}}
-                                {%if lecture_returned.description|length > 400 %}
-                                    <p>...
-                                        <button class='launchLectureDescription readMore' data-lectureid="{{ lecture_returned.id }}">Read More</button>
-                                    </p>
+                            <p class="author-docs">{{lecture_returned.description|truncatechars:480 }}
+                                {%if lecture_returned.description|length > 479 %}
+                                    <a href="#" class='launchLectureDescription' data-moduleid="{{ module_returned.id }}">continue reading</a>
                                 {%endif%}                                
                             </p>
                             <div class="panel-section-footer">
@@ -55,7 +53,7 @@
                                         {% endif %}
                                         <div class="dropdown">
                                             <button class="btn btn-danger gahtcRed pull-right" type='button' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture_returned.id }}">
                                                 {% include "website/bundle_dropdown.html" %}
@@ -111,7 +109,7 @@
 </div>
 <!-- Back to top button -->
 <button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
-    <span class="glyphicon glyphicon-arrow-up"></span>
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
 </button> 
 <!-- Add bundle alert -->
 <div class="alert alert-success bundle-add-alert" role="alert">
@@ -125,7 +123,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
             </div>
             <div class="modal-body">
@@ -150,7 +148,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Your account is awaiting verification.</h4>
             </div>
             <div class="modal-body">
@@ -172,7 +170,7 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Create New Bundle</h4>
             </div>
             <div class="modal-body">
@@ -181,7 +179,7 @@
                         <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
                     </div>
                     <div id="noBundleTitleAlert" class="alert alert-warning hidden" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Please add a title!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button> Please add a title!
                     </div>
                 </form>
             </div>

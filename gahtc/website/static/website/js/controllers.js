@@ -9,13 +9,13 @@ $(document).ready(function() {
     $(".fadein").fadeIn("slow");
 
     // launch modal to show lectures slides
-    $(document).on('mouseenter', '.btn-img-hover-interaction', function(e) {
-        $(this).children('.button-text-ribbon').css({ opacity: 0.9 });
-    });
+    // $(document).on('mouseenter', '.btn-img-hover-interaction', function(e) {
+    //     $(this).children('.button-text-ribbon').css({ opacity: 0.9 });
+    // });
 
-    $(document).on('mouseleave', '.btn-img-hover-interaction', function(e) {
-        $(this).children('.button-text-ribbon').css({ opacity: 0 });
-    });
+    // $(document).on('mouseleave', '.btn-img-hover-interaction', function(e) {
+    //     $(this).children('.button-text-ribbon').css({ opacity: 0 });
+    // });
 
     // select first in list and populate search result bar
     // $( ".result:first" ).addClass('active');
@@ -312,7 +312,18 @@ $(document).ready(function() {
         $('.downloadLink').attr('href', path);
         $('.filesize').text(filesize);
         $('.filename').text(filename);
-    
+    });    
+
+    // download individual files
+    $(document).on('click', '.downloadStaticFile', function(e) {
+        e.preventDefault();
+        // open modal
+        $('#downloadIndividualFile').modal('show');
+        // pull file path and file name
+        var path = $(this).data("file");
+        var filename = $(this).data("filename");
+        $('.downloadLink').attr('href', path);
+        $('.filename').text(filename);    
     });    
 
     // listening the terms checkbox
@@ -402,6 +413,7 @@ $(document).ready(function() {
     // close the download modal after download link is clicked
     $(document).on('click', '.downloadLink', function(e) {
         $('#downloadModal').modal('hide');
+        $('#downloadIndividualFile').modal('hide');
     });
 
 

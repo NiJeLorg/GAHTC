@@ -20,7 +20,7 @@
         <div class="module">
             <a href="#heading_{{ module_returned.id }}">
                 {% if module_returned.cover_image %}
-                    {% thumbnail '400x250' module_returned.cover_image as th %}
+                    {% thumbnail '320x200' module_returned.cover_image as th %}
                     <div class="image-container" style="background: url('{{ th.url }}')"></div>
                 {% endif %}
             </a>
@@ -37,11 +37,15 @@
     <div class="marginBottom15">
         <div class="panel-group" id='accordion_modules' role='tablist' aria-multiselectable='true'>
             {%for module_returned in modules_returned%}
-            <section id="heading_{{ module_returned.id }}">
+            <section class="mainSection" id="heading_{{ module_returned.id }}">
                 <div class="panel panel-default">
                     <div class="module-title">
-                        <h3>{{ module_returned.title }}</h3>
-                        <button class='launchModuleDescription' data-moduleid="{{ module_returned.id }}">i</button>
+                        <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="{{ module_returned.id }}" class='showMoreHeader'>
+                            <h3>{{ module_returned.title }}</h3>
+                        </a>
+                        <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="{{ module_returned.id }}" class='showMoreHeader'>
+                            <div class="closeShowMore hidden"><i class="fa fa-times-circle fa-2x" aria-hidden="true"></i></div> 
+                        </a>
                     </div>
                     <main class='panel-main'>
                         <div class="row">
@@ -52,11 +56,9 @@
                                 <div class="col-md-4"></div>
                             {% endif %}
                             <section class="col-md-8">
-                                <p>{{ module_returned.description }}
-                                {%if module_returned.description|length > 400 %}
-                                    <p>...
-                                        <button class='launchModuleDescription readMore' data-moduleid="{{ module_returned.id }}">Read More</button>
-                                    </p>
+                                <p class="author-docs">{{ module_returned.description|truncatechars:480 }}
+                                {%if module_returned.description|length > 479 %}
+                                    <a href="#" class='launchModuleDescription' data-moduleid="{{ module_returned.id }}">continue reading</a>
                                 {%endif%}
                                 </p>
                                 <div class="panel-section-footer">
@@ -67,14 +69,26 @@
                                                 {% for authors in module_returned.authors_m2m.all %}
                                                     <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
                                                 {% endfor %}
+                                            </p>
+                                            <p class="supporting-documents">supporting documments: {%for doc in  module_returned.moduleDocs %}
+                                                <span class="supporting-document-type">
+                                                {% if doc.doc_type %}
+                                                    &bull; {{ doc.doc_type }}
+                                                {% else %}
+                                                    &bull; Document
+                                                {% endif %}
+                                                </span> {% endfor %}
+                                            </p>
                                         </div>
                                         <div class="buttons col-md-5 paddingRight0">
-                                            {% if user.is_authenticated %} {% if request.user.userProfile.verified %}
+                                            {% if user.is_authenticated %} 
+                                            {% if request.user.userProfile.verified %}
                                             <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>                                        {% else %}
-                                            <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        {% endif %}
+                                            <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        
+                                            {% endif %}
                                             <div class="dropdown">
                                                 <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
                                                     {% include "website/bundle_dropdown.html" %}
@@ -104,25 +118,30 @@
                                     <div class="title-buttons-group row">
                                         <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
                                         <div class="buttons col-md-4 paddingRight0">
-                                            <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a>                                        {% if user.is_authenticated %}
+                                            <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a>                                        
+                                            {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button> {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button> 
+                                            {% endif %} 
+                                            {% if user.is_authenticated %}
                                             <div class="dropdown">
                                                 <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
                                                     {% include "website/bundle_dropdown.html" %}
                                                 </ul>
                                             </div>
-                                            {% if request.user.userProfile.verified %}
-                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
-                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                                            </button> {% else %}
-                                            <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
-                                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                                            </button> {% endif %} {% endif %}
+
+                                            
+                                            {% endif %}
                                         </div>
                                     </div>
-                                    <p class='lecture-description-text'>{{lec.description}}</p>
+                                    <p class='lecture-description-text'>{{lec.description|truncatechars:480}}</p>
                                     <p class="supporting-documents">supporting documments: {%for doc in lec.lectureDocs %}
                                         <span class="supporting-document-type">
                                         {% if doc.doc_type %}
@@ -184,7 +203,7 @@
 </div>
 <!-- Back to top button -->
 <button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
-    <span class="glyphicon glyphicon-arrow-up"></span>
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
 </button>
 <!-- Add bundle alert -->
 <div class="alert alert-success bundle-add-alert" role="alert">
@@ -198,7 +217,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
             </div>
             <div class="modal-body">
@@ -223,7 +242,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Your account is awaiting verification.</h4>
             </div>
             <div class="modal-body">
@@ -244,7 +263,7 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Create New Bundle</h4>
             </div>
             <div class="modal-body">
@@ -253,7 +272,7 @@
                         <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
                     </div>
                     <div id="noBundleTitleAlert" class="alert alert-warning hidden" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>                        Please add a title!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>                        Please add a title!
                     </div>
                 </form>
             </div>

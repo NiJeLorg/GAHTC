@@ -16,16 +16,19 @@
                     <div class="panel panel-default lecture-panel" id="heading_{{lecture_returned.id}}">
                         <div class="module-title">
                             <h3 class="lecture-title">{{ lecture_returned.title }}</h3>
+                            <a href="{{ request.META.HTTP_REFERER }}" title="Back to the previous page.">
+                                <i class="fa fa-chevron-circle-left fa-2x" aria-hidden="true"></i> 
+                            </a>
                         </div>
                         <main class="panel-main row">
-                            <div class="image-container-parent col-md-3">
+                            <div class="image-container-parent col-md-6">
                                 <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid='{{lecture_returned.id}}'>
                                     <img src="/media/{{lecture_returned.getSlideOne}}" alt="" class="img-responsive">
                                     <h4 class="button-text-ribbon">preview slides</h4>
                                 </a>
                             </div>
-                            <section class="lecture-panel-section col-md-9">
-                                <div class="author-docs col-md-7">
+                            <section class="lecture-panel-section col-md-6">
+                                <div class="author-docs">
                                     <span class="created-by">created by:</span>
                                     <p>
                                         {% for authors in lecture_returned.authors_m2m.all %}
@@ -72,7 +75,7 @@
                                 <!-- Single button -->
                                 <div class="btn-group dropdown">
                                     <button class="btn btn-danger gahtcRed" type='button' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add to Bundle
+                                        <i class="fa fa-plus" aria-hidden="true"></i> Add to Bundle
                                     </button>
                                     <ul class="dropdown-menu bundles" aria-labelledby="" data-itemid="lecture_{{ lecture_returned.id }}">
                                         {% include "website/bundle_dropdown.html" %}
@@ -101,7 +104,7 @@
 
 <!-- Back to top button -->
 <button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
-    <span class="glyphicon glyphicon-arrow-up"></span>
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
 </button> 
 <!-- Add bundle alert -->
 <div class="alert alert-success bundle-add-alert" role="alert">
@@ -115,7 +118,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
             </div>
             <div class="modal-body">
@@ -137,38 +140,37 @@
 </div>
 <!-- Download Individual File Modal -->
 <div class="modal fade" id="downloadIndividualFile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
-                </div>
-                <div class="modal-body">
-                    <h4>Terms and Conditions</h4>
-                    <p>Please review and agree to the following terms and conditions to proceed to your download:</p>
-                    <form>
-                        <div class="checkbox">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Terms and Conditions</h4>
+                <p>Please review and agree to the following terms and conditions to proceed to your download:</p>
+                <form>
+                    <div class="checkbox">
                         <label>
                             <input id="terms" type="checkbox"> I understand that this material is to be used only in class room settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.</strong>
                         </label>
-                        </div>
-                    </form>
-                    <div id="downloadHidden" class="hidden">
-                        <hr />
-                        <h4>Click the link below to download this file!</h4>
-                        <p><a class="downloadLink" href="#"><span class="filename"></span></a> (<span class="filesize"></span>)</p>
                     </div>
+                </form>
+                <div id="downloadHidden" class="hidden">
+                    <hr />
+                    <h4>Click the link below to download this file!</h4>
+                    <p><a class="downloadLink" href="#"><span class="filename"></span></a> (<span class="filesize"></span>)</p>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 <!-- Awaiting verification modal -->
 <div class="modal fade" id="waitingForVerification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Your account is awaiting verification.</h4>
             </div>
             <div class="modal-body">
@@ -190,7 +192,7 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Create New Bundle</h4>
             </div>
             <div class="modal-body">
@@ -199,7 +201,7 @@
                         <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
                     </div>
                     <div id="noBundleTitleAlert" class="alert alert-warning hidden" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> Please add a title!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button> Please add a title!
                     </div>
                 </form>
             </div>

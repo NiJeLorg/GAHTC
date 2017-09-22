@@ -68,6 +68,17 @@ input {
     top: 2px;
 }
 
+/* bootstrap a hover color override */
+
+a {
+    color: #000000; 
+}
+
+a:hover, a:focus {
+    color: #333333;
+    text-decoration: underline;
+}
+
 
 /* justify all conent */
 
@@ -96,18 +107,15 @@ a:focus {
 .scrollToTop {
     position: fixed;
     bottom: 40px;
-    left: 20px;
+    right: 20px;
     background: #BF413E;
     border: none;
-    padding: 10px 8px 10px 7px;
-    border-radius: 5px;
+    padding: 10px;
+    border-radius: 3px;
     display: none;
+    color: #ffffff;
 }
 
-.scrollToTop .glyphicon-arrow-up {
-    font-size: 28Insecure S2 E4px;
-    color: #fff;
-}
 
 body nav {
     background: url('images/oceancurrents.png');
@@ -140,7 +148,7 @@ body nav {
     border: none;
     min-height: auto;
     background-color: #3A3A3C;
-    box-shadow: 2px 3px 30px #969696;
+    box-shadow: 2px 3px 10px #dadada;
 }
 
 .navbar-header-holder {
@@ -163,12 +171,17 @@ body nav {
 }
 
 .user-nav p {
+    display: inline-block;
     font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
-    color: #A1A0A1;
+    color: #fffff;
     margin: 0;
+    vertical-align: top;
+    margin-top: 19px;
+    margin-right: 5px;
 }
 
 .user-nav .user-profile {
+    display: inline-block;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -190,13 +203,13 @@ body nav {
 } */
 
 .navbar-header a img {
-    width: 250px;
+    width: 450px;
     height: auto;
 }
 
 .navbar-header .hamburger-icon {
-    width: 40px;
-    margin-right: 10px;
+    width: 35px;
+    margin-right: 20px;
 }
 
 .uncollapsed-logo {
@@ -206,7 +219,7 @@ body nav {
 
 .collapsed-container {
     position: absolute;
-    top: 15px;
+    top: 18px;
     opacity: 0;
     transition: opacity 250ms;
     display: flex;
@@ -217,13 +230,14 @@ body nav {
 .collapsed-container aside {
     display: none;
     position: absolute;
-    top: 65px;
+    top: 62px;
     background: black;
     left: -30px;
     padding: 20px 30px;
     width: 200%;
     background: url('images/oceancurrents.png');
     background-attachment: fixed;
+    background-size: cover;
     font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
     box-shadow: inset 0 4px 30px #1E1E1E
 }
@@ -271,7 +285,7 @@ body nav {
 }
 
 .navbar-header .collapsed-logo {
-    width: 200px;
+    width: 165px;
 }
 
 .navbar .navigation-links {
@@ -307,10 +321,11 @@ body nav {
 .navbar-header-holder .user-nav {
     display: flex;
     align-items: center;
+    margin-top: 4px;
 }
 
 .navbar-header-holder .nav .dropdown .dropdown-menu {
-    left: -109px;
+    left: -81px;
 }
 
 .navbar-nav .dropdown-menu {
@@ -443,13 +458,13 @@ body nav {
 }
 
 .featured-modules .module {
-    width: 400px;
-    height: 250px;
+    width: 320px;
+    height: 200px;
 }
 
 .featured-modules .image-container {
-    width: 400px;
-    height: 250px;
+    width: 320px;
+    height: 200px;
     background-size: cover !important;
 }
 
@@ -495,7 +510,7 @@ body nav {
     margin: 0 auto;
 }
 
-.all-modules section {
+.all-modules .mainSection {
     padding-top: 100px;
     margin-top: -100px;
 }
@@ -505,7 +520,7 @@ body nav {
     background: #FAFAFA;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    box-shadow: 4px 4px 40px #dadada;
+    box-shadow: 0px 0px 10px #dadada;
 }
 
 .created-by {
@@ -582,7 +597,7 @@ body nav {
 .module-lectures-container .lecture {
     background: #fff;
     padding: 20px 40px;
-    box-shadow: 1px 1px 10px #dadada;
+    box-shadow: 0px 0px 10px #dadada;
     border-radius: 4px;
     display: flex;
 }
@@ -1163,16 +1178,17 @@ blockquote p {
     background: #FAFAFA;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    box-shadow: 4px 4px 40px #dadada;
+    box-shadow: 0px 0px 10px #dadada;
 }
 
 .bundle-add-alert,
 .saved-search-alert {
     display: none;
     position: fixed;
-    bottom: 40px;
-    right: 20px;
+    top: 50%;
+    left: 50%;
     margin-bottom: 0;
+    transform: translate(-50%, -50%);
 }
 
 .remove-from-bundle-link {
@@ -1251,13 +1267,8 @@ blockquote p {
     bottom: 0;
     left: 0;
     right: 0;
-    opacity: 0;
-    z-index: 1;
-    width: 100%;
-}
-
-.button-text-ribbon:hover {
     opacity: 0.9;
+    width: 100%;
 }
 
 .btn-text-ribbon {
@@ -1336,7 +1347,8 @@ ul.as-selections li.as-original input {
     display: flex;
     justify-content: space-between;
     background: #EFEFEF;
-    padding: 20px 40px;
+    padding: 20px 45px;
+    height: 85px;
     align-items: center;
 }
 
@@ -1380,11 +1392,18 @@ ul.as-selections li.as-original input {
 
 .panel-main section p {
     font-size: 18px;
-    line-height: 1.6em;
     max-height: 8em;
-    overflow: hidden;
     color: #383838;
     margin-bottom: 0;
+}
+
+.author-docs .supporting-documents {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.author-docs .supporting-documents .supporting-document-type {
+    padding: 0 10px;
 }
 
 .readMore {
@@ -1392,7 +1411,6 @@ ul.as-selections li.as-original input {
     border: none;
     text-decoration: underline;
     color: #BF413E;
-    font-weight: bold;
 }
 
 .created-by {
@@ -1402,7 +1420,7 @@ ul.as-selections li.as-original input {
     margin-bottom: 2px;
 }
 
-.author-docs a {
+.author-docs a, .document a, .lecture-comments a, a.downloadLink, .authors a {
     color: #BF413E;
 }
 
@@ -1482,7 +1500,7 @@ ul.as-selections li.as-original input {
 
 .panel-expand-item .supporting-documents {
     font-family: sans-serif;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .panel-expand-item .supporting-documents .supporting-document-type {
@@ -1551,7 +1569,7 @@ ul.as-selections li.as-original input {
 .lecture-panel .lecture-documents,
 .lecture-panel .lecture-button-group,
 .lecture-panel .lecture-comment-form {
-    padding: 0px 30px;
+    padding: 0px 45px;
 }
 
 .lecture-panel .lecture-comment-form {
@@ -1559,7 +1577,7 @@ ul.as-selections li.as-original input {
 }
 
 .lecture-panel .lecture-comments {
-    padding: 30px;
+    padding: 30px 45px;
 }
 
 .comment-form label {
@@ -1567,7 +1585,7 @@ ul.as-selections li.as-original input {
 }
 
 .lecture-panel .lecture-description {
-    padding: 30px 30px 0px 30px;
+    padding: 30px 45px 0px 45px;
 }
 
 .lecture-panel .lecture-description p {
@@ -1666,10 +1684,28 @@ ul.as-selections li.as-original input {
     padding-right: 30px; */
 }
 
-.alphabeticalFilterList .letter a {
-    padding: 0 10px;
-    text-decoration: none;
+.alphabeticalFilterList {
+    display: none;   
 }
+
+
+
+@media (min-width: 992px) {
+    .alphabeticalFilterList {
+        display: flex;   
+    }
+    .alphabeticalFilterList .letter a {
+        padding: 0 5px;
+        text-decoration: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .alphabeticalFilterList .letter a {
+        padding: 0 10px;   
+    }    
+}
+
 
 main form {
     margin-bottom: 60px;
@@ -1684,7 +1720,6 @@ main form {
     padding: 10px 15px;
     border-radius: 5px 0 0 5px;
     border: 1px solid #efefef;
-    color: #cacaca;
     border-right: none;
 }
 
@@ -1734,7 +1769,7 @@ main form {
     border: 2px solid #5d0104;
 }
 
-.non-contributing:nth-child(odd) {
+.author-section .non-contributing:nth-child(odd) {
     background: url('images/ocean_currents_light.png');
     background-position: 0;
 }
@@ -1758,7 +1793,7 @@ main form {
 }
 
 .member .member-profile {
-    padding: 15px 30px;
+    padding: 0px 15px 30px;
 }
 
 .member-profile .member-profile-info {
@@ -1772,9 +1807,7 @@ main form {
 }
 
 .member-profile .description {
-    line-height: 1.6em;
     max-height: 8em;
-    overflow: hidden;
     margin-bottom: 0;
 }
 
@@ -1837,7 +1870,7 @@ main form {
 .lecture-container {
     background: #FAFAFA;
     margin-top: 60px;
-    box-shadow: 4px 4px 40px #dadada;
+    box-shadow: 0px 0px 10px #dadada;
 }
 
 .lecture-title {
@@ -1911,4 +1944,13 @@ main form {
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+
+/* modal bootstrap overrides */
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 100%;
+        max-width: 720px;
+    }
 }

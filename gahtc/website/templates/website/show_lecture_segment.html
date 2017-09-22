@@ -58,10 +58,10 @@
             </div>
             <!-- Controls -->
             <a class="left carousel-control" href="#lectureSlidesCarousel" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left"></span>
+                <i class="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
             </a>
             <a class="right carousel-control" href="#lectureSlidesCarousel" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right"></span>
+                <i class="fa fa-chevron-right fa-2x" aria-hidden="true"></i>
             </a>
         </div>
     </div>
@@ -91,7 +91,7 @@
                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
                         {% if comments %} {% for comment in comments %} {% if comment.user == request.user %}
-                        <!--<div id="removeComment" class="pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></div>-->
+                        <!--<div id="removeComment" class="pull-right"><i class="fa fa-trash" aria-hidden="true"></i></div>-->
                         {% endif %}
                         <p>{{ comment.comment }}</p>
                         <p class="pull-right"><small>{{ comment.user }} ({{comment.created|timesince }} ago)</small></p>

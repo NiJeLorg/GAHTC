@@ -179,7 +179,7 @@ gahtcApplication.addToBundle = function (bundle, itemid, title) {
         success: function (data) {
             // success alert message
             window.setTimeout(slowAlert, 10);
-            window.setTimeout(removeAlert, 3000);            
+            window.setTimeout(removeAlert, 5000);            
 
             function slowAlert() {
                 $('.bundle-add-alert').fadeIn( "slow" );
@@ -329,7 +329,7 @@ gahtcApplication.saveSearchString = function (searchString) {
         success: function (data) {
             // success alert message
             window.setTimeout(slowAlert, 10);
-            window.setTimeout(removeAlert, 3000);            
+            window.setTimeout(removeAlert, 5000);            
 
             function slowAlert() {
                 $('.saved-search-alert').fadeIn( "slow" );
