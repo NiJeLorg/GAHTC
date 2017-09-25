@@ -1,513 +1,465 @@
-{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Search Results{% endblock %} {% block css_block %} {% endblock %} {% block head_js_block %} {% endblock %} {% block content %}
+{% extends 'website/base.html' %} 
+{% load staticfiles %} 
+
+{% block title %}Search Results{% endblock %} 
+
+{% block css_block %} 
+{% endblock %} 
+
+{% block head_js_block %} 
+{% endblock %} 
+
+{% block content %}
 <!-- Page Content -->
 <div class="container search-body">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
+            <h2 class="marginBottom15">Search Results</h2>
             <form class="form-horizontal" method="post" action="{% url 'search' %}">
                 {% csrf_token %}
-                <div class="form-group">
-                    <div class="col-xs-2">
-                        <h4 class="searchText">Search</h4>
+                <div class="form-group marginBottom0">
+                    <div class="col-sm-7 noRightPadding">
+                        <input type="text" class="form-control zeroBorderRadiusRight" name="keyword" placeholder="Search again..." />
                     </div>
-                    <div class="col-xs-8">
-                        <input type="text" class="form-control" name="keyword" placeholder="Results for: {{ keyword }}" />
+                    <div class="col-sm-2 noLeftPadding">
+                        <button type="submit" class="btn btn-default zeroBorderRadiusLeft zeroBorderRadiusRight noBorderLeft noBorderRight" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <button id="saveSearchString" class="btn btn-default zeroBorderRadiusLeft marginLeftNegative5" title="Save This Search"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     </div>
-                    <div class="col-xs-1">
-                        <button type="submit" class="btn btn-default pull-right" title="Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                    </div>
-                    <div class="col-xs-1">
-                        <button id="saveSearchString" class="btn btn-default pull-right" title="Save This Search"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                    <div class="col-sm-3 go-to">
+                        <p>
+                            <a href="{% url 'mysavedsearches' %}">go to saved searches</a><br>
+                            <a href="{% url 'mybundles' %}">go to my bundles</a>
+                        </p>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="col-md-6">
-            {% if user.is_authenticated %}
-            <button type="button" class="btn btn-default pull-right switchToBundle">
-                Download Course Bundles
-            </button>
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        {% if user.is_authenticated %}
-        <div id="searchSaved" class="alert alert-success hidden" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            Search saved!
-        </div>
-        {% endif %}
-    </div>
+    </div> 
     <div class="row">
         <div class="col-md-12">
+            {% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 and coming_soon_modules_returned_count == 0 %}
+                <h4 class="marginTop15"><span class="highlight">"{{ keyword }}"</span> is not found.</h4>
+                {% if spelling_suggestion and spelling_suggestion != keyword_compare %}
+                    <h4><small>Did you mean <a href="/search/?keyword={{ spelling_suggestion }}">{{ spelling_suggestion }}</a>?</small></h4>
+                {% endif %}
+            {% else %}
+                <h4 class="marginTop15"><span class="highlight">"{{ keyword }}"</span> is found in {{ modules_and_CS_modules_returned_count }} module{{ modules_and_CS_modules_returned_count|pluralize }} and {{ lectures_returned_count }} lecture{{ lectures_returned_count|pluralize }}.</h4>
+                 {% if spelling_suggestion and spelling_suggestion != keyword_compare %}
+                    <h4><small>Did you mean <a href="/search/?keyword={{ spelling_suggestion }}">{{ spelling_suggestion }}</a>?</small></h4>
+                {% endif %}               
+            {% endif %}
+        </div> 
+    </div> 
+    {% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 and coming_soon_modules_returned_count == 0 %}
+    {% else %}
+    <div class="row">
+        <div class="col-md-12 marginTop30">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#search-results" aria-controls="search" role="tab" data-toggle="tab">Search Results</a></li>
-                {% if user.is_authenticated %}
-                <li role="presentation"><a href="#my-course-bundles" aria-controls="bundles" role="tab" data-toggle="tab">My Course Bundles</a></li>
-                <li role="presentation"><a href="#my-saved-searches" aria-controls="savedsearches" role="tab" data-toggle="tab">My Saved Searches</a></li>
-                <li role="presentation"><a href="#my-profile" aria-controls="profile" role="tab" data-toggle="tab">My Profile</a></li>
-                {% endif %}
+                <li role="presentation" class="active"><a href="#modules-tab" aria-controls="modules" role="tab" data-toggle="tab">{{ modules_and_CS_modules_returned_count }} module{{ modules_and_CS_modules_returned_count|pluralize }}</a></li>
+                <li role="presentation"><a href="#lectures-tab" aria-controls="lectures" role="tab" data-toggle="tab">{{ lectures_returned_count }} lecture{{ lectures_returned_count|pluralize }}</a></li>
+                <li role="presentation"><a href="#documents-tab" aria-controls="otherdocs" role="tab" data-toggle="tab">{{ documents_returned_count }} other doc{{ documents_returned_count|pluralize }}</a></li>
             </ul>
             <!-- Tab panes -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="search-results">
-                    <div class="col-md-6 resultsScroll">
-                        {% if modules_returned_count == 0 and lectures_returned_count == 0 and lecture_segments_returned_count == 0 and lecture_documents_returned_count == 0 and lecture_slides_returned_count == 0 and coming_soon_modules_returned_count == 0 %}
-                        <div class="row selectedAddDropdown">
-                            <div class="col-xs-12">
-                                <p class="text-center marginTop10">
-                                    Your search for <strong>{{ keyword }}</strong> yielded <strong>no</strong> results.
-                                    {% if spelling_suggestion and spelling_suggestion != keyword %}
-                                        <br />Did you mean <a href="/search/?keyword={{ spelling_suggestion }}">{{ spelling_suggestion }}</a>?
+            <div class="tab-content">  
+                <div role="tabpanel" class="tab-pane active" id="modules-tab">
+                    <div class="col-md-12">
+                        {% for module in modules_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <a href="/browse/#heading_{{ module.id }}">
+                                        <p class="content-title">{{ module.title }}</p>
+                                    </a>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadModule pull-right marginRight5" data-moduleid="{{ module.id }}">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% endif %} 
                                     {% endif %}
-                                </p>
+                                </div> 
                             </div>
-                        </div>
-                        {% else %}
-                        <p class="text-center marginTop10">
-                            Your search for <strong>{{ keyword }}</strong> yielded <strong>{{ all_results_count }}</strong> result{%if all_results_count > 1 %}s{% endif %}.
-                            {% if spelling_suggestion and spelling_suggestion != keyword %}
-                                <br />Did you mean <a href="/search/?keyword={{ spelling_suggestion }}">{{ spelling_suggestion }}</a>?
-                            {% endif %}
-                        </p>
-                        <div class="panel-group" id="accordion_results" role="tablist" aria-multiselectable="true">
-                            {% if modules_returned_count > 0 or coming_soon_modules_returned_count > 0 %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="heading_modules_panel">
-                                    <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#modules_panel" aria-expanded="true" aria-controls="modules_panel">
-                                        <h4 class="panel-title">
-							          <span class="label label-primary">{{ modules_returned_count }} Module{{ modules_returned_count|pluralize }}</span>
-							          {% if coming_soon_modules_returned_count > 0 %}
-										<span class="label label-cs">{{ coming_soon_modules_returned_count }} Module{{ coming_soon_modules_returned_count|pluralize }} Coming Soon</span>
-							          {% endif %}
-							      </h4>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <a class="btn btn-default btn-img-hover-interaction" href="/browse/#heading_{{ module.id }}" role="button">
+                                        <img src="/media/{{ module.cover_image }}" class="img-responsive">
+                                        <h4 class="button-text-ribbon">Go to module</h4>
                                     </a>
                                 </div>
-                                <div id="modules_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="modules_panel">
-                                    <div class="panel-body">
-                                        {% for module in modules_returned %}
-                                        <div class="row result module" data-moduleid="{{ module.id }}">
-                                            <div class="col-xs-3">
-                                                <img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-                                            </div>
-                                            <div class="col-xs-9">
-                                                <div class="row">
-                                                    <div class="col-xs-7 resultTitle">
-                                                        <p><strong><span class="label label-primary">Module:</span> {{ module.title }}</strong></p>
-                                                    </div>
-                                                    <div class="col-xs-5">
-                                                        {% if user.is_authenticated %}
-                                                        <div class="dropdown pull-right">
-                                                            <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                Add to Bundle
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module.id }}">
-                                                                {% include "website/bundle_dropdown.html" %}
-                                                            </ul>
-                                                        </div>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <p>
-                                                        {% for keyword in module.keywords.all %}
-                                                        <a href="/search/?keyword={{ keyword.name }}">
-                                                            <span class="label label-default">{{ keyword.name }}</span>
-                                                        </a>
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                            </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in module.authors_m2m.all %}
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
                                         </div>
-                                        {% endfor %} {% for m in coming_soon_modules_returned %}
-                                        <div class="row result">
-                                            <div class="col-xs-3">
-                                                <img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-                                            </div>
-                                            <div class="col-xs-9">
-                                                <div class="row">
-                                                    <div class="col-xs-7 resultTitle">
-                                                        <p><strong><span class="label label-cs">Module Coming Soon:</span> {{ m.object.title }}</strong></p>
-                                                    </div>
-                                                    <div class="col-xs-5">
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <p>
-                                                        {% for keyword in m.object.keywords.all %}
-                                                        <a href="/search/?keyword={{ keyword.name }}">
-                                                            <span class="label label-default">{{ keyword.name }}</span>
-                                                        </a>
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
                                     </div>
+                                    <p class="swapem">
+                                        {% for text in module.flattened_highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>                           
+                        {% endfor %}
+                        {% for module in coming_soon_modules_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="content-title"><span class="gahtcRedText">Coming Soon!</span> {{ module.object.title }}</p>
                                 </div>
                             </div>
-                            {% endif %} {% if lectures_returned_count > 0 %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="heading_lecture_panel">
-                                    <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_panel" aria-expanded="false" aria-controls="lecture_panel">
-                                        <h4 class="panel-title">
-						        	<span class="label label-success">{{ lectures_returned_count }} Lecture{{ lectures_returned_count|pluralize }}</span>
-						        </h4>
-                                    </a>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <img src="/media/{{ module.object.cover_image }}" class="img-responsive"> 
                                 </div>
-                                <div id="lecture_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_panel">
-                                    <div class="panel-body">
-                                        {% for lecture in lectures_returned %}
-                                        <div class="row result lecture" data-lectureid="{{ lecture.object.id }}">
-                                        	{% if user.is_authenticated %}
-                                            <div class="col-xs-3">
-                                                <img class="img-responsive" src="/media/{{ lecture.object.getSlideOne }}" />
-                                            </div>
-                                            {% endif %}
-                                            {% if user.is_authenticated %}
-                                            <div class="col-xs-9">
-                                            	<div class="row">
-                                            		<div class="col-xs-7 resultTitle">
-                                            {% else %}
-                                            <div class="col-xs-12">
-                                            	<div>
-                                            		<div class="col-xs-12 resultTitle">
-                                            {% endif %}
-                                                        <p><strong><span class="label label-success">Lecture:</span> {{ lecture.object.title }}</strong></p>
-                                                    </div>
-                                                    {% if user.is_authenticated %}
-                                                    <div class="col-xs-5">
-                                                        <div class="dropdown pull-right">
-                                                            <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                Add to Bundle
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.object.id }}">
-                                                                {% include "website/bundle_dropdown.html" %}
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    {% endif %}
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p class="swapem">
-                                                        {% for text in lecture.highlighted %} 
-                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
-                                                            {% if forloop.last %} ... {% endif %}
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p><span class="label label-primary">From the module:</span> {{ lecture.object.module.title }}</p>
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p>
-                                                        {% for keyword in lecture.object.keywords.all %}
-                                                        <a href="/search/?keyword={{ keyword.name }}">
-                                                            <span class="label label-default">{{ keyword.name }}</span>
-                                                        </a>
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                            </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in module.object.authors_m2m.all %}
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
                                         </div>
-                                        {% endfor %}
                                     </div>
-                                </div>
-                            </div>
-                            {% endif %} {% if lecture_segments_returned_count > 0 %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="heading_lecture_segments_panel">
-                                    <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_segments_panel" aria-expanded="false" aria-controls="lecture_segments_panel">
-                                        <h4 class="panel-title">
-						          <span class="label label-ls">{{ lecture_segments_returned_count }} Lecture Segment{{ lecture_segments_returned_count|pluralize }}</span>
-						        </h4>
-                                    </a>
-                                </div>
-                                <div id="lecture_segments_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_segments_panel">
-                                    <div class="panel-body">
-                                        {% for lecture_segment in lecture_segments_returned %}
-                                        <div class="row result lecture_segment" data-lecturesegmentid="{{ lecture_segment.object.id }}">
-                                        	{% if user.is_authenticated %}
-                                            <div class="col-xs-3">
-                                                <img class="img-responsive" src="/media/{{ lecture_segment.object.getSlideOne }}" />
-                                            </div>
-                                            {% endif %}
-                                            {% if user.is_authenticated %}
-                                            <div class="col-xs-9">
-                                                <div class="row">
-                                                    <div class="col-xs-7 resultTitle">
-											{% else %}
-                                            <div class="col-xs-12">
-                                                <div>
-                                                    <div class="col-xs-12 resultTitle">
-                                            {% endif %}
-                                                        <p><strong><span class="label label-ls">Lecture Segment:</span> {{ lecture_segment.object.title }}</strong></p>
-                                                    </div>
-                                                    {% if user.is_authenticated %}
-                                                    <div class="col-xs-5">
-                                                        <div class="dropdown pull-right">
-                                                            <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                Add to Bundle
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturesegment_{{ lecture_segment.object.id }}">
-                                                                {% include "website/bundle_dropdown.html" %}
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    {% endif %}
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p class="swapem">
-                                                        {% for text in lecture_segment.highlighted %} 
-                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
-                                                            {% if forloop.last %} ... {% endif %}
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p><span class="label label-success">From the lecture:</span> {{ lecture_segment.object.lecture.title }}</p>
-                                                    <p><span class="label label-primary">From the module:</span> {{ lecture_segment.object.lecture.module.title }}</p>
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p>
-                                                        {% for keyword in lecture_segment.object.keywords.all %}
-                                                        <a href="/search/?keyword={{ keyword.name }}">
-                                                            <span class="label label-default">{{ keyword.name }}</span>
-                                                        </a>
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <p class="swapem">
+                                        {% for text in module.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
                                         {% endfor %}
-                                    </div>
+                                    </p> 
                                 </div>
-                            </div>
-                            {% endif %} {% if lecture_documents_returned_count > 0 %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="heading_lecture_documents_panel">
-                                    <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_documents_panel" aria-expanded="false" aria-controls="lecture_documents_panel">
-                                        <h4 class="panel-title">
-						          <span class="label label-info">{{ lecture_documents_returned_count }} Lecture Document{{ lecture_documents_returned_count|pluralize }}</span>
-						        </h4>
-                                    </a>
-                                </div>
-                                <div id="lecture_documents_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_documents_panel">
-                                    <div class="panel-body">
-                                        {% for lecture_document in lecture_documents_returned %}
-                                        <div class="row result lecture_document" data-lecturedocumentid="{{ lecture_document.object.id }}">
-                                        	{% if user.is_authenticated %}
-                                            <div class="col-xs-3">
-                                                <img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
-                                            </div>
-                                            {% endif %}
-                                            {% if user.is_authenticated %}
-                                            <div class="col-xs-9">
-                                                <div class="row">
-                                                    <div class="col-xs-7 resultTitle">
-											{% else %}
-                                            <div class="col-xs-12">
-                                                <div>
-                                                    <div class="col-xs-12 resultTitle">
-                                            {% endif %}
-                                                        <p><strong><span class="label label-info">Lecture Document:</span> {{ lecture_document.object.title }}</strong></p>
-                                                    </div>
-                                                    {% if user.is_authenticated %}
-                                                    <div class="col-xs-5">
-                                                        <div class="dropdown pull-right">
-                                                            <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                Add to Bundle
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.object.id }}">
-                                                                {% include "website/bundle_dropdown.html" %}
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    {% endif %}
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p class="swapem">
-                                                        {% for text in lecture_document.highlighted %} 
-                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
-                                                            {% if forloop.last %} ... {% endif %}
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p><span class="label label-success">From the lecture:</span> {{ lecture_document.object.lecture.title }}</p>
-                                                    <p><span class="label label-primary">From the module:</span> {{ lecture_document.object.lecture.module.title }}</p>
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p>
-                                                        {% for keyword in lecture_document.object.keywords.all %}
-                                                        <a href="/search/?keyword={{ keyword.name }}">
-                                                            <span class="label label-default">{{ keyword.name }}</span>
-                                                        </a>
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %} {% if lecture_slides_returned_count > 0 %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="heading_lecture_slides_panel">
-                                    <a class="noTextDecoration collapsed" role="button" data-toggle="collapse" data-parent="#accordion_results" href="#lecture_slides_panel" aria-expanded="false" aria-controls="lecture_slides_panel">
-                                        <h4 class="panel-title">
-						          			<span class="label label-warning">{{ lecture_slides_returned_count }} Lecture Slide{{ lecture_slides_returned_count|pluralize }}</span>
-						        		</h4>
-                                    </a>
-                                </div>
-                                <div id="lecture_slides_panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lecture_slides_panel">
-                                    <div class="panel-body">
-                                        {% for lecture_slide in lecture_slides_returned %}
-                                        <div class="row result lecture_slide" data-lectureslideid="{{ lecture_slide.object.id }}">
-                                   			{% if user.is_authenticated %}
-                                            <div class="col-xs-3">
-                                                <img class="img-responsive" src="/media/{{ lecture_slide.object.slide }}" />
-                                            </div>
-                                            {% endif %}
-                                            {% if user.is_authenticated %}
-                                            <div class="col-xs-9">
-                                                <div class="row">
-                                                    <div class="col-xs-7 resultTitle">
-											{% else %}
-                                            <div class="col-xs-12">
-                                                <div>
-                                                    <div class="col-xs-12 resultTitle">
-                                            {% endif %}
-                                                        <p><strong><span class="label label-warning">SLIDE FROM:</span> {{ lecture_slide.object.lecture.title }}</strong></p>
-                                                    </div>
-                                                    {% if user.is_authenticated %}
-                                                    <div class="col-xs-5">
-                                                        <div class="dropdown pull-right">
-                                                            <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                Add to Bundle
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide.object.id }}">
-                                                                {% include "website/bundle_dropdown.html" %}
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    {% endif %}
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-	                                            	<p class="swapem">
-                                                        {% for text in lecture_slide.highlighted %} 
-                                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
-                                                            {% if forloop.last %} ... {% endif %}
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p><span class="label label-primary">From the module:</span> {{ lecture_slide.object.lecture.module.title }}</p>
-                                                </div>
-                                                {% if user.is_authenticated %}
-                                                <div class="row">
-                                                {% else %}
-	                                            <div>
-	                                            {% endif %}
-                                                    <p>
-                                                        {% for keyword in lecture_slide.object.keywords.all %}
-                                                        <a href="/search/?keyword={{ keyword.name }}">
-                                                            <span class="label label-default">{{ keyword.name }}</span>
-                                                        </a>
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="col-md-6 rightSidebar searchSidebar"></div>
-                </div>
-                {% if user.is_authenticated %}
-                <div role="tabpanel" class="tab-pane" id="my-course-bundles">
-                    <div class="col-md-6 resultsScrollBundle">
-                        {% include "website/bundle_list.html" %}
-                    </div>
-                    <div class="col-md-6 rightSidebar bundleSidebar"></div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="my-saved-searches">
-                    <div class="col-md-12 savedSearchList">
-                        {% include "website/saved_searches.html" %}
+                            </div>                           
+                        {% endfor %}
+
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="my-profile">
-                    {% block profile_block %}{% endblock %}
+                <div role="tabpanel" class="tab-pane" id="lectures-tab">
+                    <div class="col-md-12">
+                        {% for lecture in lectures_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <a href="/lecture/{{ lecture.id }}">
+                                        <p class="content-title marginBottom0">{{ lecture.object.title }}</p>
+                                    </a>
+                                    <h4><small>From the module "{{ lecture.object.module.title }}"</small></h4>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecture_{{ lecture.object.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right marginRight5" data-lectureid="{{ lecture.object.id }}">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% endif %} 
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <div>
+                                        <button type="button" class="btn btn-default btn-img-hover-interaction launchModal" data-lectureid="{{ lecture.object.id }}">
+                                            <img src="/media/{{ lecture.object.getSlideOne }}" class="img-responsive">
+                                            <h4 class="button-text-ribbon">Preview slides</h4>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-text-ribbon" href="/lecture/{{ lecture.object.id }}/" role="button">
+                                            <h4 class="button-text-ribbon-opaque">Go to lecture</h4>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-text-ribbon" href="/browse/#heading_{{ lecture.object.module.id }}" role="button">
+                                            <h4 class="button-text-ribbon-opaque">Go to module</h4>
+                                        </a>   
+                                    </div>                                
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in lecture.object.authors_m2m.all %}
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in lecture.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>                           
+                        {% endfor %}
+                    </div>
                 </div>
-                {% endif %}
+                <div role="tabpanel" class="tab-pane" id="documents-tab">
+                    <div class="col-md-12">
+                        {% for module_document in module_documents_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p class="content-title marginBottom0">{{ module_document.object.title }}</p>
+                                    <h4><small>From the module "{{ module_document.object.module.title }}"</small></h4>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_document.object.module.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadModule pull-right marginRight5" data-moduleid="{{ module_document.object.module.id }}">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% endif %} 
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <div>
+                                        <a class="btn btn-default btn-img-hover-interaction" href="/browse/#heading_{{ module_document.object.module.id }}" role="button">
+                                            <img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
+                                            <h4 class="button-text-ribbon">Go to module</h4>
+                                        </a>
+                                    </div>                               
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in module_document.object.module.authors_m2m.all %}
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in module_document.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for lecture_document in lecture_documents_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p class="content-title marginBottom0">{{ lecture_document.object.title }}</p>
+                                    <h4><small>From the lecture "{{ lecture_document.object.lecture.title }}"</small></h4>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lecturedocument_{{ lecture_document.object.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right marginRight5" data-lectureid="{{ lecture_document.object.lecture.id }}">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% endif %} 
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <div>
+                                        <a class="btn btn-default btn-img-hover-interaction" href="/lecture/{{ lecture_document.object.lecture.id }}/" role="button">
+                                            <img class="img-responsive" src="{% static 'website/css/images/doc.png' %}" />
+                                            <h4 class="button-text-ribbon">Go to lecture</h4>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-text-ribbon" href="/browse/#heading_{{ lecture_document.object.lecture.module.id }}" role="button">
+                                            <h4 class="button-text-ribbon-opaque">Go to module</h4>
+                                        </a>   
+                                    </div>                                
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in lecture_document.object.lecture.authors_m2m.all %}
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in lecture_document.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for lecture_slide in lecture_slides_returned %}
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p class="content-title marginBottom0">Slide from "{{ lecture_slide.object.lecture.title }}"</p>
+                                    <h4><small>From the module "{{ lecture_slide.object.lecture.module.title }}"</small></h4>
+                                </div>
+                                <div class="col-sm-3">
+                                    {% if user.is_authenticated %}                                   
+                                        <div class="dropdown">
+                                            <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="lectureslide_{{ lecture_slide.object.id }}">
+                                                {% include "website/bundle_dropdown.html" %}
+                                            </ul>
+                                        </div>
+                                        {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right marginRight5" data-lectureid="{{ lecture_slide.object.lecture.id }}">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right marginRight5" data-toggle="modal" data-target="#waitingForVerification">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button>
+                                        {% endif %} 
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <!-- Module art -->
+                                    <div>
+                                        <a class="btn btn-default btn-img-hover-interaction" href="/lecture/{{ lecture_document.object.lecture.id }}/" role="button">
+                                            <img class="img-responsive" src="/media/{{ lecture_slide.object.slide }}" />
+                                            <h4 class="button-text-ribbon">Go to lecture</h4>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-default btn-text-ribbon" href="/browse/#heading_{{ lecture_slide.object.lecture.module.id }}" role="button">
+                                            <h4 class="button-text-ribbon-opaque">Go to module</h4>
+                                        </a>   
+                                    </div>                                
+                                </div>
+                                <div class="col-sm-9 module-text">
+                                    <!-- Authors and text where search terms appear -->
+                                    <p class='created-by'>created by:</p>
+                                    <div class="authors-docs">
+                                        <div class="authors">
+                                            <p>
+                                            {% for authors in lecture_slide.object.lecture.authors_m2m.all %}
+                                                <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %} 
+                                            {% endfor %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="swapem">
+                                        {% for text in lecture_slide.highlighted %} 
+                                            ... {% autoescape off %}{{ text }}{% endautoescape %} 
+                                            {% if forloop.last %} ... {% endif %}
+                                        {% endfor %}
+                                    </p> 
+                                </div>
+                            </div>                            
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    {% endif %}
+    <div class="row marginBottom100">
+    </div>
 </div>
-{% endblock %} {% block modal_block %}
+<!-- Back to top button -->
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</button> 
+<!-- Add bundle alert -->
+<div class="alert alert-success bundle-add-alert" role="alert">
+    <p>This content has been added to your bundle, <span id="bundle-title"></span>. <a href="{% url 'mybundles' %}">View your bundles</a>.</p>
+</div>
+<!-- Saved search alert -->
+<div class="alert alert-success saved-search-alert" role="alert">
+    <p>Search term saved. <a href="{% url 'mysavedsearches' %}">View your saved search terms</a>.</p>
+</div>
+    
+
+{% endblock %}
+
+{% block modal_block %}
 <!-- Download Course Bundle Modal -->
 <div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Download Course Bundles</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
             </div>
             <div class="modal-body">
                 <div id="downloadFileArea">
@@ -531,7 +483,7 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Create New Bundle</h4>
             </div>
             <div class="modal-body">
@@ -540,7 +492,7 @@
                         <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
                     </div>
                     <div id="noBundleTitleAlert" class="alert alert-warning hidden" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                         Please add a title!
                     </div>
                 </form>
@@ -557,7 +509,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Your account is awaiting verification.</h4>
             </div>
             <div class="modal-body">
@@ -571,7 +523,7 @@
 </div>
 {% endblock %} {% block js_block %}
 <script type="text/javascript">
-var tab = "{{ tab }}";
+//svar tab = "{{ tab }}";
 var keyword = "{{ keyword }}";
 </script>
 <script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>

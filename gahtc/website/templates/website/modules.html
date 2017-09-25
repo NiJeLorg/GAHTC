@@ -1,132 +1,214 @@
 {% extends 'website/base.html' %} 
 {% load staticfiles %} 
-{% block title %}Modules{% endblock %} 
+{% load imagekit %}
 
-{% block css_block %} 
-{% endblock %} 
+{% block title %}Browse{% endblock %} 
 
-{% block head_js_block %} 
-{% endblock %} 
+{% block css_block %} {%endblock%}
+{% block head_js_block %} {% endblock %} 
 
 {% block content %}
 <!-- Page Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Modules</h1>
+<p class="featured-modules-title">featured modules</p>
+<div class="featured-modules-container">
+     <div class='arrows-container'>
+        <div class='arrow-holder'><img src='{% static 'website/css/images/left_arrow.png' %}' class='scrollLeft'></div>
+        <div class='arrow-holder'><img src='{% static 'website/css/images/right_arrow.png' %}' class='scrollRight'></div>
+    </div>
+    <div class="featured-modules">
+        {% for module_returned in modules_returned %} {% if module_returned.featured > 0 %}
+        <div class="module">
+            <a href="#heading_{{ module_returned.id }}">
+                {% if module_returned.cover_image %}
+                    {% thumbnail '320x200' module_returned.cover_image as th %}
+                    <div class="image-container" style="background: url('{{ th.url }}')"></div>
+                {% endif %}
+            </a>
+            <div class="title-container">
+                <h4><a href="#heading_{{ module_returned.id }}">{{ module_returned.title }}</a></h4>
+            </div>
+        </div>
+        {% endif%} {% endfor %}
+
+    </div>
+</div>
+<p class="all-modules-title">all modules</p>
+<div class="all-modules">
+    <div class="marginBottom15">
+        <div class="panel-group" id='accordion_modules' role='tablist' aria-multiselectable='true'>
+            {%for module_returned in modules_returned%}
+            <section class="mainSection" id="heading_{{ module_returned.id }}">
+                <div class="panel panel-default">
+                    <div class="module-title">
+                        <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="{{ module_returned.id }}" class='showMoreHeader'>
+                            <h3>{{ module_returned.title }}</h3>
+                        </a>
+                        <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="{{ module_returned.id }}" class='showMoreHeader'>
+                            <div class="closeShowMore hidden"><i class="fa fa-times-circle fa-2x" aria-hidden="true"></i></div> 
+                        </a>
+                    </div>
+                    <main class='panel-main'>
+                        <div class="row">
+                            {% if module_returned.cover_image %}
+                                {% thumbnail '400x250' module_returned.cover_image as th %}
+                                <img src="{{ th.url }}" alt="" class="img-responsive col-md-4">
+                            {% else %}
+                                <div class="col-md-4"></div>
+                            {% endif %}
+                            <section class="col-md-8">
+                                <p class="author-docs">{{ module_returned.description|truncatechars:480 }}
+                                {%if module_returned.description|length > 479 %}
+                                    <a href="#" class='launchModuleDescription' data-moduleid="{{ module_returned.id }}">continue reading</a>
+                                {%endif%}
+                                </p>
+                                <div class="panel-section-footer">
+                                    <div class="row">
+                                        <div class="author-docs col-md-7">
+                                            <span class="created-by">created by:</span>
+                                            <p>
+                                                {% for authors in module_returned.authors_m2m.all %}
+                                                    <a href="/members/#heading_{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p class="supporting-documents">supporting documments: {%for doc in  module_returned.moduleDocs %}
+                                                <span class="supporting-document-type">
+                                                {% if doc.doc_type %}
+                                                    &bull; {{ doc.doc_type }}
+                                                {% else %}
+                                                    &bull; Document
+                                                {% endif %}
+                                                </span> {% endfor %}
+                                            </p>
+                                        </div>
+                                        <div class="buttons col-md-5 paddingRight0">
+                                            {% if user.is_authenticated %} 
+                                            {% if request.user.userProfile.verified %}
+                                            <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>                                        {% else %}
+                                            <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        
+                                            {% endif %}
+                                            <div class="dropdown">
+                                                <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
+                                                    {% include "website/bundle_dropdown.html" %}
+                                                </ul>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </main>
+                    <div id="{{ module_returned.id }}" class="panel-collapse collapse panel-expand module-expand" role="tabpanel" aria-labelledby="{{ module_returned.id }}">
+                        {% if module_returned.moduleLecs|length > 0 %} {% for lec in module_returned.moduleLecs %}
+                        <div class="panel-expand-item">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <a class="launchModal btn btn-default btn-img-hover-interaction" data-lectureid="{{ lec.id }}">
+                                        {% if lec.getSlideOne %}
+                                            {% thumbnail '200x150' lec.getSlideOne as th %}
+                                            <img src="{{ th.url }}" alt="" class="img-responsive">
+                                        {% endif %}
+                                        <h4 class="button-text-ribbon">preview slides</h4>
+                                    </a>
+                                </div>
+                                <section class="col-md-9">
+                                    <div class="title-buttons-group row">
+                                        <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
+                                        <div class="buttons col-md-4 paddingRight0">
+                                            <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a>                                        
+                                            {% if request.user.userProfile.verified %}
+                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button> {% else %}
+                                            <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </button> 
+                                            {% endif %} 
+                                            {% if user.is_authenticated %}
+                                            <div class="dropdown">
+                                                <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
+                                                    {% include "website/bundle_dropdown.html" %}
+                                                </ul>
+                                            </div>
+
+                                            
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <p class='lecture-description-text'>{{lec.description|truncatechars:480}}</p>
+                                    <p class="supporting-documents">supporting documments: {%for doc in lec.lectureDocs %}
+                                        <span class="supporting-document-type">
+                                        {% if doc.doc_type %}
+                                            &bull; {{ doc.doc_type }}
+                                        {% else %}
+                                            &bull; Document
+                                        {% endif %}
+                                        </span> {% endfor %}
+                                    </p>
+                                </section>
+                            </div>
+                        </div>
+                        {% endfor %} {% endif %}
+                        {% comment %} <div class="panel-expand-container marginTop10">
+                            {% if module_returned.related_modules %}
+                            <h4>related modules: </h4>
+                            <div class="featured-modules-container">
+                                    <div class='arrows-container'>
+                                    <div><img src='{% static 'website/css/images/left_arrow.png' %}' class='scrollLeft'></div>
+                                    <div><img src='{% static 'website/css/images/right_arrow.png' %}' class='scrollRight'></div>
+                                </div>
+                                <div class="featured-modules">
+                                    {% for r_module_returned in module_returned.related_modules %}
+                                    <div class="module">
+                                        <a href="#heading_{{ r_module_returned.id }}">
+                                            <div class="image-container" style="background: url('/media/{{r_module_returned.cover_image}}')">
+                                            </div>
+                                        </a>
+                                        <div class="title-container">
+                                            <h4><a href="#heading_{{ r_module_returned.id }}">{{ r_module_returned.title }}</a></h4>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div> {% endcomment %}
+                        <div id="module_comments_{{ module_returned.id }}" class="module-comments-wrapper">
+                            {% include 'website/module_comments.html' with module_returned=module_returned %}
+                        </div>
+                        <p class="panel-expand-container terms-conditions">
+                            <strong>Instructions</strong>
+                            <br /> You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
+                            <br />
+                            <br />
+                            <strong>Terms and conditions</strong>
+                            <br /> I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
+                        </p>
+                    </div>
+                    <footer>
+                        <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true"
+                            aria-controls="{{ module_returned.id }}" class='showMore'>SHOW MORE</a>
+                    </footer>
+                </div>
+            </section>
+            {% endfor %}
         </div>
     </div>
-    <div class="row marginBottom15">
-        <div class="panel-group" id="accordion_modules" role="tablist" aria-multiselectable="true">
-            {% for module_returned in modules_returned %}
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="heading_{{ module_returned.id }}">
-                    <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_modules" href="#{{ module_returned.id }}" aria-expanded="true" aria-controls="{{ module_returned.id }}">
-                        <h4 class="panel-title">
-								<span class="label label-primary">{{ module_returned.title }}</span>
-							</h4>
-						</a>
-					</div>
-					<div id="{{ module_returned.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{ module_returned.id }}">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-9">
-									<p><strong>Authors:</strong> 
-									{% for authors in module_returned.authors_m2m.all %}
-										<a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
-									{% endfor %}
-									<br />
-									<strong>Description: </strong> {{ module_returned.description }}</p>
-								</div>
-								<div class="col-md-3">
-								{% if user.is_authenticated %}
-					                {% if request.user.userProfile.verified %}
-					                	<button type="button" class="btn btn-default downloadModule pull-right" data-moduleid="{{ module_returned.id }}">Download module</button>
-					                {% else %}
-					                	<button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download module</button>
-					                {% endif %}
-								{% endif %}
-								</div>		
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									{% if module_returned.moduleDocs|length > 0 %}
-										<h5><span class="label label-primary">Documents for this module</span></h5>
-										<ul>				
-										{% for doc in module_returned.moduleDocs %}
-											<li>{{ doc.title }}</li>
-										{% endfor %}
-										</ul>
-									{% endif %}
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									{% if module_returned.moduleLecs|length > 0 %}
-										<h5><span class="label label-success">Lectures</span></h5>
-										{% for lec in module_returned.moduleLecs %}
-											<h4>{{ lec.title }}</h4>
-												{% if user.is_authenticated %}
-													<button type="button" class="btn btn-default btn-xs launchModal" data-lectureid="{{ lec.id }}">Preview lecture</button>
-													{% if request.user.userProfile.verified %}
-					                					<button type="button" class="btn btn-default btn-xs downloadLecture" data-lectureid="{{ lec.id }}">Download this lecture &amp; documents</button>
-					                				{% else %}
-					                					<button type="button" class="btn btn-default btn-xs " data-toggle="modal" data-target="#waitingForVerification">Download this lecture &amp; documents</button>
-					                				{% endif %}
-												{% endif %}
-												{% if lec.lectureDocs|length > 0 %}
-													<h5><span class="label label-info">Documents for this lecture</span></h5>
-													<ul>
-													{% for lecDoc in lec.lectureDocs %}
-														<li>{{ lecDoc.title }}</li>
-													{% endfor %}
-													</ul>
-												{% endif %}
-											{% if not forloop.last %}
-												<hr />
-											{% endif %}
-										{% endfor %}
-									{% endif %}
-								</div>
-							</div>							
-						</div>
-					</div>
-
-				</div>
-
-			{% endfor %}
-            {% for module_returned in coming_soon_modules_returned %}
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="heading_cs{{ module_returned.id }}">
-                    <a class="noTextDecoration" role="button" data-toggle="collapse" data-parent="#accordion_modules" href="#cs_{{ module_returned.id }}" aria-expanded="true" aria-controls="cs_{{ module_returned.id }}">
-                        <h4 class="panel-title">
-								<span class="label label-cs">Coming Soon: {{ module_returned.title }}</span>
-							</h4>
-						</a>
-					</div>
-					<div id="cs_{{ module_returned.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="cs_{{ module_returned.id }}">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-9">
-									<p><strong>Authors:</strong> 
-									{% for authors in module_returned.authors_m2m.all %}
-										<a href="/members/#{{ authors.id }}">{{ authors.first_name }} {{ authors.last_name }}</a>{% if not forloop.last %}, {% endif %}
-									{% endfor %}
-									<br />
-									<strong>Description: </strong> {{ module_returned.description }}</p>
-								</div>	
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-			{% endfor %}
-
-		</div>
-	</div>
-
-</div>				
+</div>
+<!-- Back to top button -->
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</button>
+<!-- Add bundle alert -->
+<div class="alert alert-success bundle-add-alert" role="alert">
+    <p>This content has been added to your bundle, <span id="bundle-title"></span>. <a href="{% url 'mybundles' %}">View your bundles</a>.</p>
+</div>
 {% endblock %}
 
 {% block modal_block %}
@@ -135,7 +217,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
             </div>
             <div class="modal-body">
@@ -160,23 +242,51 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="myModalLabel">Your account is awaiting verification.</h4>
             </div>
             <div class="modal-body">
-                <p>Your account has not yet been verified by a GAHTC administrator. Once your account is verified, you will be able to download course materials. You will be notified by email when your account has been verified. In the meantime, you can continue to search the site and add resources to your bundles. Thank you!</p>
+                <p>Your account has not yet been verified by a GAHTC administrator. Once your account is verified, you will
+                    be able to download course materials. You will be notified by email when your account has been verified.
+                    In the meantime, you can continue to search the site and add resources to your bundles. Thank you!</p>
             </div>
         </div>
     </div>
 </div>
 <!-- Lecture Slides Modal -->
+<div class="modal fade" id="moduleFullDescription" tabindex="-1" role="dialog" aria-labelledby="moduleFullDescription">
+</div>
 <div class="modal fade" id="slideshow" tabindex="-1" role="dialog" aria-labelledby="mySlideshow">
 </div>
-{% endblock %} 
-
-{% block js_block %}
+<!-- Create New Bundle Modal -->
+<div class="modal fade" id="newBundleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <h4 class="modal-title" id="myModalLabel">Create New Bundle</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
+                    </div>
+                    <div id="noBundleTitleAlert" class="alert alert-warning hidden" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>                        Please add a title!
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="createNewBundle">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block js_block %}
 <script type="text/javascript">
-var tab = "none";
+    var tab = "none";
+
 </script>
 <script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>

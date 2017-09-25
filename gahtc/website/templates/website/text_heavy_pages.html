@@ -1,0 +1,36 @@
+{% extends 'website/base.html' %} 
+
+{% load staticfiles %} 
+{% load wagtailcore_tags %} 
+{% load wagtailimages_tags %}
+{% load wagtailuserbar %}
+
+{% block title %} {{ page.title }} {% endblock %} 
+
+{% block css_block %} {%endblock%}
+{% block head_js_block %} {% endblock %} 
+
+{% block content %}
+{% wagtailuserbar %}
+<div class="text-heavy-view marginBottom100">
+    {% image page.splash_image original as background_image %} 
+    {% if background_image.url %}
+        <div class="cover-photo img-responsive" style='background: url({{background_image.url}})'></div>
+    {% endif %}
+    <main>
+        <h1>{{ page.title }}</h1>
+        {{ page.page_content|richtext }}
+    </main>
+</div>
+
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</button> 
+{% endblock %} 
+
+{% block js_block %}
+<script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+{% endblock %}

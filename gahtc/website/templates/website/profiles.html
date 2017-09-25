@@ -1,144 +1,149 @@
-{% extends 'website/base.html' %}
-{% load staticfiles %}
+{% extends 'website/base.html' %} {% load staticfiles %} {% block title %}Modules{% endblock %} {% block css_block %} {%endblock%}
+{% block head_js_block %} {% endblock %} {% block content %}
 
-{% block title %}Modules{% endblock %}
-
-{% block css_block %}
-{% endblock %}
-
-{% block head_js_block %}
-{% endblock %}
-
-
-{% block content %}
-<!-- Page Content -->
-
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<h1>Members</h1>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-8">
-			<p>
-				GAHTC is managed by a project manager and a core team of board members. Together they endeavor to extend the reach of architectural survey and research that supports global knowledge. 
-			</p>
-			<h4>
-				<em>Current board members:</em>
-			</h4>
-			<ul>
-				<li>Robert Cowherd</li>
-				<li>Mark Jarzombek</li>
-				<li>Carla Keyvanian</li>
-				<li>Gail Fenske</li>
-				<li>Suzanne Marchand</li>
-				<li>Adnan Morshed</li>
-				<li>Vikram Prakash</li>
-			</ul>
-			<h4>
-				<em>Project Manager:</em>
-			</h4>
-			<ul>
-				<li>Eliana Hamdi Murchie</li>
-			</ul>
-			<h4>
-				<em>Team Assistant:</em>
-			</h4>
-			<ul>
-				<li>Andre Malan</li>
-			</ul>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<h3>Contributing Members</h3>
-		</div>
-	</div>	
-	{% for user_profile in contributing_profiles_returned %}
-	<div class="row marginBottom15 marginTop30" id="{{ user_profile.id }}">
-		<div class="col-md-3">
-			{% if user_profile.avatar %}
-				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
-			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-			{% endif %}
-		</div>
-		<div class="col-md-6 col-md-offset-1">
-			<div class="row">
-				<p><strong>Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
-				<p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
-				<p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
-				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
-				<p><strong>Contributions:</strong></p>
-				<p>
-					{% if user_profile.modules %}
-						<em>Modules</em>
-						<ul>
-						{% for m in user_profile.modules %}
-							<li><a href="/modules/#heading_{{ m.id }}">{{ m.title }}</a></li>
-						{% endfor %}
-						</ul>
-					{% endif %}
-				</p>
-				<p>
-					{% if user_profile.csmodules %}
-						<em>Modules Coming Soon</em>
-						<ul>
-						{% for m in user_profile.csmodules %}
-							<li><a href="/modules/#heading_cs{{ m.id }}">{{ m.title }}</a></li>
-						{% endfor %}
-						</ul>
-					{% endif %}
-				</p>
-				<p>
-					{% if user_profile.lectures %}
-						<em>Lectures</em>
-						<ul>
-						{% for l in user_profile.lectures %}
-							<li><a href="/lectures/#heading_{{ l.id }}">{{ l.title }}</a></li>
-						{% endfor %}
-						</ul>
-					{% endif %}
-				</p>
-				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
+<div class="members-view">
+	<div class="cover-photo img-responsive" style='background: url("{% static 'website/css/images/qizil_caves.png' %}")'></div>
+	<main>
+		<h1>Current Members</h1>
+		<p>GAHTC membership is based upon the principle of community and collaboration. We currently have over 200 members from all
+			over the world, of various ranks and disciplines. Of those members, 68 are contributing members, with content in the GAHTC
+			library. Over the next three years, the GAHTC's aim is to provide opportunity, through its various grant options, for
+			members to share their research and knowledge with the GAHTC community, and our GAHTC community. As membership continues
+			to grow,, so will our community, and our network. Join GAHTC and receive access to some of the best architectural history
+			survey courses covering a diverse set of topics and regions. GAHTC members are eligible to apply for research funding,
+			travel funding, and workshop funding, as well as funded attendance to the Member's Conference to collaborate, interact
+			and innovate with fellow global scholars. Questions?
+		</p>
+		<p>Contact GAHTC Project Manager, <i>Eliana Hamdi Murchie</i> at <a href="mailto:emurchie@mit.edu">emurchie@mit.edu</a> or
+			click here to <a href="{% url 'howtobecomeamember' %}">apply for membership.</a>
+		</p>
+		<div class="alphabeticalFilterList">
+			<div class='letter'>
+				<a href="#A">A</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#B">B</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#C">C</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#D">D</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#E">E</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#F">F</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#G">G</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#H">H</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#I">I</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#J">J</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#K">K</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#L">L</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#M">M</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#N">N</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#O">O</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#P">P</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#Q">Q</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#R">R</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#S">S</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#T">T</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#U">U</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#V">V</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#W">W</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#X">X</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#Y">Y</a>
+			</div>
+			<div class='letter'>
+				<div class="circle"></div>
+				<a href="#Z">Z</a>
 			</div>
 		</div>
-		<div class="col-md-2"></div>
-	</div>
-	<hr />
-	{% endfor %}
-	<hr />	
-	<div class="row">
-		<div class="col-md-12">
-			<h3></h3>
+
+		<div class="searchForMembers marginBottom100">
+			<input id="memberNameLookup" type="text" placeholder='Search for members...' name='name'>
+			<button>
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</button>
 		</div>
-	</div>	
-	{% for user_profile in profiles_returned %}
-	<div class="row marginBottom15 marginTop30">
-		<div class="col-md-3">
-			{% if user_profile.avatar %}
-				<img class="img-responsive" src="/media/{{ user_profile.avatar }}" />
-			{% else %}
-				<img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-			{% endif %}
+
+		<div class="profiles_returned marginBottom100">
+			{% include 'website/profiles_returned.html' %}
 		</div>
-		<div class="col-md-6 col-md-offset-1">
-			<div class="row">
-				<p><strong>Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
-				<p><strong>Email:</strong> <a href="mailto:{{ user_profile.user.email }}">{{ user_profile.user.email }}</a></p>
-				<p><strong>Professional Title:</strong> {{ user_profile.title }}</p>
-				<p><strong>Institutional Affiliation:</strong> {{ user_profile.institution }}</p>
-				<p><strong>Introduction:</strong><br />{{ user_profile.introduction }}</p>
-			</div>
-		</div>
-		<div class="col-md-2"></div>
-	</div>
-	<hr />
-	{% endfor %}
+	</main>
 </div>
-{% endblock %}
 
-{% block js_block %}
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</button> {% endblock %} {% block modal_block %}
+<div class="modal fade" id="memberFullIntroduction" tabindex="-1" role="dialog" aria-labelledby="memberFullIntroduction">
+</div>
+{% endblock %} {% block js_block %}
+<script type="text/javascript" src="{% static 'website/js/jquery.scrollTo.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
 {% endblock %}
-

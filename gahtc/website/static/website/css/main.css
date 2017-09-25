@@ -9,28 +9,28 @@
 
 @font-face {
     font-family: 'LinuxLibertine';
-    src: url('../fonts/LinLibertine_DR.woff');
+    src: url('../fonts/LinLibertine_DR.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'LinuxLibertine';
-    src: url('../fonts/LinLibertine_I.woff');
+    src: url('../fonts/LinLibertine_I.woff') format('woff');
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'LinuxLibertine';
-    src: url('../fonts/LinLibertine_RI.woff');
+    src: url('../fonts/LinLibertine_RI.woff') format('woff');
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'LinuxLibertine';
-    src: url('../fonts/LinLibertine_RB.woff');
+    src: url('../fonts/LinLibertine_RB.woff') format('woff');
     font-weight: normal;
     font-weight: bold;
 }
@@ -41,17 +41,302 @@ body {
     flex-direction: column;
 }
 
+button {
+    padding: 0;
+    background: none;
+    border: none;
+}
 
-/* bootstrap override on link highlighting */
+button,
+input {
+    outline: none;
+}
 
+.row {
+    margin: 0;
+}
+
+
+/* .glyphicon-search {
+    color: #bebebe;
+} */
+
+
+/* bootstrap override on glyphicon top */
+
+.glyphicon {
+    top: 2px;
+}
+
+/* bootstrap a hover color override */
+
+a {
+    color: #000000; 
+}
+
+a:hover, a:focus {
+    color: #333333;
+    text-decoration: underline;
+}
+
+
+/* justify all conent */
+
+p {
+    text-align: justify;
+    font-family: 'LinuxLibertine';
+}
+
+h1 {
+    font-weight: bold;
+}
+
+h3 {
+    font-family: 'LinuxLibertine';
+    font-size: 28px;
+    font-style: italic;
+}
+
+
+/* a,
 a:hover,
 a:focus {
     text-decoration: none;
+} */
+
+.scrollToTop {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    background: #BF413E;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    display: none;
+    color: #ffffff;
+}
+
+
+body nav {
+    background: url('images/oceancurrents.png');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position-y: -100px;
+}
+
+.main-content {
+    margin-top: 146px;
+    transition: margin-top 250ms;
+}
+
+.navbar-nav .dropdown a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.navbar-nav .dropdown {
+    border-right: 1px solid #636264;
 }
 
 .navbar {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 146px;
+    transition: height 250ms;
     margin-bottom: 0;
+    border: none;
     min-height: auto;
+    background-color: #3A3A3C;
+    box-shadow: 2px 3px 10px #dadada;
+}
+
+.navbar-header-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    min-height: 110px;
+}
+
+.navbar-header-holder .nav a {
+    /*    padding: 0;
+    margin-left: 15px;*/
+    background-color: transparent;
+}
+
+.navbar-header-holder .navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.open>a:focus {
+    background: transparent;
+}
+
+.user-nav p {
+    display: inline-block;
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+    color: #fffff;
+    margin: 0;
+    vertical-align: top;
+    margin-top: 19px;
+    margin-right: 5px;
+}
+
+.user-nav .user-profile {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: border-radius 250ms;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background: #000;
+}
+
+
+/* .user-profile-dropdown-menu {
+    padding: 15px;
+} */
+
+
+/* .main-nav {
+    height: 110px;
+} */
+
+.navbar-header a img {
+    width: 450px;
+    height: auto;
+}
+
+.navbar-header .hamburger-icon {
+    width: 35px;
+    margin-right: 20px;
+}
+
+.uncollapsed-logo {
+    opacity: 1;
+    transition: opacity 250ms;
+}
+
+.collapsed-container {
+    position: absolute;
+    top: 18px;
+    opacity: 0;
+    transition: opacity 250ms;
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.collapsed-container aside {
+    display: none;
+    position: absolute;
+    top: 62px;
+    background: black;
+    left: -30px;
+    padding: 20px 30px;
+    width: 200%;
+    background: url('images/oceancurrents.png');
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+    box-shadow: inset 0 4px 30px #1E1E1E
+}
+
+.sidenav p {
+    color: #ececec;
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    margin-bottom: 0;
+    padding: 5px 0;
+}
+
+.sidenav a {
+    color: #ececec;
+}
+
+.sidenav a:hover {
+    text-decoration: none;
+}
+
+.sidenav ul {
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.sidenav ul li {
+    padding: 5px 0;
+    margin-left: -70px;
+    margin-right: -30px;
+    padding-left: 70px;
+}
+
+.sidenav ul li:hover {
+    background-color: rgba(33, 33, 33, 0.6);
+}
+
+.sidenav .submenu {
+    display: none;
+}
+
+.sidenav .submenu a {
+    color: #ececec;
+    text-decoration: none;
+    padding: 5px 0;
+}
+
+.navbar-header .collapsed-logo {
+    width: 165px;
+}
+
+.navbar .navigation-links {
+    border-top: 1px solid #6A696B;
+    display: flex;
+    visibility: visible;
+    transition: opacity 250ms;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navigation-links>a {
+    color: #fff;
+    margin-right: 40px;
+}
+
+.navigation-links #dropdown-toggle:focus {
+    background-color: rgba(33, 33, 33, 0.6);
+}
+
+.navigation-links .dropdown-menu {
+    border: none;
+}
+
+.dropdown-menu>li>a:hover {
+    background-color: rgba(33, 33, 33, 0.6);
+}
+
+.navigation-links .dropdown-toggle .caret {
+    margin-left: 10px;
+}
+
+.navbar-header-holder .user-nav {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.navbar-header-holder .nav .dropdown .dropdown-menu {
+    left: -81px;
+}
+
+.navbar-nav .dropdown-menu {
+    background: url('images/oceancurrents.png') fixed;
+    background-size: cover;
+    background-position-y: -100px;
+}
+
+.navbar-nav .contact-us {
+    display: none;
 }
 
 .container {
@@ -69,10 +354,468 @@ a:focus {
     width: 90%;
 }
 
+.member-view {
+    width: 100%;
+    padding: 0 5%;
+}
+
+.member-view .heading {
+    margin: 60px 0 40px 0;
+    font-weight: bold;
+}
+
+.members-section .members-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 60px;
+}
+
+.members-group .member {
+    flex-basis: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.member .member-heading {
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.member-heading .name {
+    margin: 0;
+    font-family: 'LinuxLibertine';
+    font-weight: bold;
+}
+
+.member-heading span {
+    font-size: 20px;
+    font-family: 'LinuxLibertine';
+    font-weight: normal;
+    font-style: italic;
+}
+
+.member .member-main {
+    height: 240px;
+    border: 1px solid #878787;
+    display: flex;
+    flex-direction: row;
+}
+
+.member-main .photo {
+    flex-basis: 30%;
+}
+
+.member-main .description {
+    flex-basis: 70%;
+    border-left: 1px solid #878787;
+    padding: 4%;
+    font-family: 'LinuxLibertine';
+}
+
+.member-main .description .contacts p {
+    margin-bottom: 0;
+}
+
+
+/** Browse by Modules Styles **/
+
+.featured-modules-title {
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 0;
+    width: 85%;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #AAAAAA;
+}
+
+.featured-modules-container {
+    position: relative;
+}
+
+.featured-modules-container .arrows-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 21px 0;
+    pointer-events: none;
+}
+
+.arrows-container .arrow-holder {
+    display: flex;
+    align-items: center;
+    background: rgba(43, 43, 44, .6);
+    padding: 0 10px;
+    pointer-events: auto;
+}
+
+.arrow-holder img {
+    cursor: pointer;
+    width: 40px;
+    height: auto;
+}
+
+.featured-modules .module {
+    width: 320px;
+    height: 200px;
+}
+
+.featured-modules .image-container {
+    width: 320px;
+    height: 200px;
+    background-size: cover !important;
+}
+
+.featured-modules .module {
+    margin-right: 20px;
+}
+
+.featured-modules .module .title-container {
+    margin-top: -45px;
+}
+
+.title-container h4 {
+    margin: 0;
+    background: rgba(43, 43, 44, .6);
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.title-container a {
+    color: #fff;
+}
+
+.featured-modules {
+    padding: 20px 0;
+    border: 1px solid #D0D0D0;
+    overflow-x: hidden;
+    white-space: nowrap;
+    display: flex;
+}
+
+.all-modules-title {
+    margin: 0 auto;
+    margin-top: 40px;
+    font-size: 14px;
+    color: #AAAAAA;
+    width: 85%;
+    font-family: sans-serif;
+}
+
+.all-modules {
+    width: 85%;
+    margin: 0 auto;
+}
+
+.all-modules .mainSection {
+    padding-top: 100px;
+    margin-top: -100px;
+}
+
+
+.all-modules .panel {
+    background: #FAFAFA;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 0px 0px 10px #dadada;
+}
+
+.created-by {
+    font-size: 12px;
+    font-family: sans-serif;
+    color: #AAAAAA;
+    margin-bottom: 2px;
+}
+
+
+/* Browswe by Lecture Styles */
+
+.jump-to-module-menu {
+    background: #E4E4E4;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.jump-to-module-menu section {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.jump-to-module-menu h3 {
+    font-family: sans-serif;
+    color: #131313;
+    border-bottom: 1px solid #8C8C8C;
+    padding-left: 20px;
+    font-style: normal;
+}
+
+.lectures-titles {
+    padding: 20px 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    overflow: auto;
+    border-bottom: 1px solid #8C8C8C;
+}
+
+.lectures-titles a {
+    font-size: 22px;
+    color: #424242;
+    font-family: 'LinuxLibertine', serif;
+}
+
+.module-lecture-container {
+    background: #FAFAFA;
+    padding-top: 4%;
+}
+
+.module-lecture-container .module {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.module .lecture-module-title {
+    font-family: "Source Sans Pro", Arial, Helvetica, sans-serif;
+    color: #AAA9AA;
+    font-style: normal;
+}
+
+.module-lectures-container {
+    border-left: 1px solid #CFCFCF;
+    padding-top: 50px;
+}
+
+.module-lectures-container .panel-group {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.module-lectures-container .lecture {
+    background: #fff;
+    padding: 20px 40px;
+    box-shadow: 0px 0px 10px #dadada;
+    border-radius: 4px;
+    display: flex;
+}
+
+.module-comments-wrapper {
+    padding: 30px 45px;
+}
+
+.module-comment-form {
+    width: 50%;
+}
+
+.module-comments {
+    padding-top: 30px;
+}
+
+.lecture .lecture-first-slide-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.lecture-first-slide-container .lecture-first-slide {
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    border: 1px solid #D8D8D8;
+}
+
+.lecture .lecture-first-slide {
+    width: 240px;
+    height: 190px;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.lecture .lecture-description {
+    flex-basis: 80%;
+    margin-left: 50px;
+}
+
+.lecture-description h4 {
+    font-family: 'LinuxLibertine', serif;
+    font-size: 28px;
+    color: #000;
+}
+
+.lecture-description p {
+    color: #898989;
+}
+
+.lecture-description .support {
+    display: flex;
+}
+
+.lecture-description .support p {
+    color: #000;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.lecture-description .support ul {
+    padding-left: 0;
+}
+
+.lecture-description .support ul li {
+    display: inline-block;
+    color: #777777;
+}
+
+.module-lectures-container .lecture-description p {
+    line-height: 1.4em;
+    max-height: 9.8em;
+    overflow: hidden;
+}
+
+
+/* Browse by Lecture Styles*/
+
+
+/*// .module .panel-heading {
+//     background: #EFEFEF;
+//     color: #020202;
+//     padding: 15px 20px;
+// }
+// .panel-title>span {
+//     color: #070707;
+//     font-family: 'LinuxLibertine', serif;
+//     font-weight: normal;
+//     font-size: 24px;
+// }*/
+
+
+/** Browse by Modules Styles mw**/
+
+.lecture-document .image-holder {
+    width: 180px;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-size: contain !important;
+    border: 1px solid #D8D8D8;
+    margin-right: 40px;
+}
+
+.preview-slides {
+    font-family: sans-serif;
+    background: rgba(51, 51, 51, .6);
+    text-align: center;
+    color: #fff;
+    padding: 5px 0;
+    border: none;
+}
+
+.lecture-document .lecture-description {
+    flex-grow: 1;
+}
+
+.lecture-description .title-and-buttons {
+    display: flex;
+    justify-content: space-between
+}
+
+.lecture-description h3 {
+    text-decoration: underline;
+}
+
+.lecture-description .supporting-docs {
+    display: inline-block;
+}
+
+.lecture-description span {
+    color: #777777;
+}
+
+.download-lecture {
+    display: flex;
+}
+
+.download-lecture button {
+    margin-right: 15px;
+}
+
+.download-lecture .dropdown {
+    margin-left: 15px;
+}
+
+.download-lecture .dropdown button {
+    height: 100%;
+}
+
+.related-modules-container {
+    border-bottom: 1px solid #F3F3F3;
+}
+
+.member-comments-container {
+    border-bottom: 1px solid #F3F3F3;
+}
+
+@media (max-width: 1024px) {
+    .member-view {
+        padding: 0 3%;
+    }
+    .members-group .member {
+        flex-basis: 49%;
+    }
+}
+
 @media (min-width: 768px) {
-	.background-holder .main-input {
-	    width: 40%;
-	}
+    .background-holder .main-input {
+        width: 40%;
+    }
+}
+
+@media (max-width: 768px) {
+    .members-group .member {
+        margin-bottom: 40px;
+    }
+    .members-section .members-group {
+        flex-wrap: wrap;
+    }
+    .members-group .member {
+        flex-basis: 100%;
+    }
+    h1 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 425px) {
+    .member .member-main {
+        flex-direction: column;
+        height: auto;
+    }
+    .navbar-header a img {
+        width: 150px;
+        height: auto;
+    }
+    h1 {
+        font-size: 32px;
+    }
+    h3 {
+        font-size: 24px;
+    }
+    .navbar-header-holder {
+        display: block;
+    }
+    .navbar-header-holder .user-nav {
+        display: none;
+    }
+    .navigation-links>a {
+        display: none;
+    }
+    .navbar-nav .contact-us {
+        display: block;
+    }
 }
 
 .main-input form button {
@@ -83,8 +826,9 @@ blockquote p {
     font-size: 18px;
 }
 
-.carousel-inner>.item>img, .carousel-inner>.item>a>img {
-	margin-left: auto;
+.carousel-inner>.item>img,
+.carousel-inner>.item>a>img {
+    margin-left: auto;
     margin-right: auto;
 }
 
@@ -128,10 +872,6 @@ blockquote p {
 
 /* Navbar */
 
-.navbar-header {
-    float: none;
-}
-
 @media (min-width: 1200px) {
     .navbar-right {
         margin-top: -50px;
@@ -142,10 +882,25 @@ blockquote p {
 /* footer */
 
 .footer {
-    position: static !important;
+    position: static;
+    bottom: 20px;
+    right: 20px;
     width: 100%;
-    height: auto;
-    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /*background: transparent;*/
+}
+
+.footer p {
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: right;
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+    margin-right: 20px;
+    padding: 8px 0;
 }
 
 .container-fluid .text-muted {
@@ -189,6 +944,15 @@ blockquote p {
 
 
 /* Search results page */
+
+.go-to {
+    line-height: 1.1;
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+}
+
+.go-to a {
+    color: #BF413E;
+}
 
 .searchText {
     margin-top: 6px;
@@ -239,7 +1003,8 @@ blockquote p {
     margin-right: 10px;
 }
 
-.bundleResult {
+
+/* .bundleResult {
     padding: 10px 0px;
     cursor: pointer;
     border-bottom: 1px solid #ccc;
@@ -256,7 +1021,7 @@ blockquote p {
 .bundleList {
     padding: 10px 0px;
     border-bottom: 1px solid #ccc;
-}
+} */
 
 .rightSidebar {
     padding-top: 15px;
@@ -273,16 +1038,70 @@ blockquote p {
     line-height: 1.4;
 }
 
+.noLeftPadding {
+    padding-left: 0;
+}
+
+.noRightPadding {
+    padding-right: 0;
+}
+
+.zeroBorderRadiusRight {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.zeroBorderRadiusLeft {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.noBorderLeft {
+    border-left-width: 0;
+}
+
+.noBorderRight {
+    border-right-width: 0;
+}
+
+.marginLeftNegative5 {
+    margin-left: -5px;
+}
+
+.marginBottom0 {
+    margin-bottom: 0;
+}
+
 .marginBottom15 {
     margin-bottom: 15px;
+}
+
+.marginBottom30 {
+    margin-bottom: 30px;
+}
+
+.marginBottom50 {
+    margin-bottom: 50px;
+}
+
+.marginBottom100 {
+    margin-bottom: 100px;
 }
 
 .marginRight15 {
     margin-right: 15px;
 }
 
+.marginRight5 {
+    margin-right: 5px;
+}
+
 .marginTop10 {
     margin-top: 10px;
+}
+
+.marginTop15 {
+    margin-top: 15px;
 }
 
 .marginTop30 {
@@ -292,6 +1111,14 @@ blockquote p {
 .marginLeftBottom20 {
     margin-left: 20px;
     margin-bottom: 20px;
+}
+
+.paddingLeft0 {
+    padding-left: 0;
+}
+
+.paddingRight0 {
+    padding-right: 0;
 }
 
 .textbox {
@@ -324,17 +1151,160 @@ blockquote p {
 }
 
 
+/* Browse My Bundles styles */
+
+.details-title {
+    font-size: 14px;
+    color: #AAAAAA;
+    font-family: sans-serif;
+}
+
+.bundle-title {
+    display: flex;
+    flex-direction: row;
+    background: #EFEFEF;
+    padding: 20px 40px;
+    align-items: center;
+}
+
+.bundle-title .title {
+    flex-grow: 1;
+}
+
+.all-bundles {
+    width: 100%;
+}
+
+.all-bundles .panel {
+    background: #FAFAFA;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 0px 0px 10px #dadada;
+}
+
+.bundle-add-alert,
+.saved-search-alert {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-bottom: 0;
+    transform: translate(-50%, -50%);
+}
+
+.remove-from-bundle-link {
+    color: #BF413E;
+    font-size: 14px;
+}
+
+.remove-from-bundle-link:hover,
+.remove-from-bundle-link:focus {
+    color: #BF413E;
+}
+
+.doc-size {
+    color: #AAAAAA;
+    font-size: 14px;
+}
+
+.panel-bundle-footer {
+    padding: 0 0 15px 15px;
+}
+
+.bundle-expand {
+    padding: 0px 30px;
+    background: #FAFAFA;
+}
+
+
+/*highlight text*/
+
+.highlight {
+    background: rgba(255, 230, 0, 0.5);
+    padding: 5px 2px;
+    margin: -5px -2px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+
+/* red button backgrounds and text */
+
+.gahtcRed {
+    background: #BF413E;
+}
+
+.gahtcRedText {
+    color: #BF413E;
+}
+
+
+/*content titles*/
+
+.content-title {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* button css with hover interactions */
+
+.btn-img-hover-interaction {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    position: relative;
+    float: left;
+}
+
+.button-text-ribbon {
+    font-size: 20px;
+    background: #222;
+    color: #fff;
+    margin: -32px 0px 0px 0px;
+    padding: 5px 0px;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.9;
+    width: 100%;
+}
+
+.btn-text-ribbon {
+    margin-top: 5px;
+    padding: 0;
+    border-radius: 0;
+    width: 100%;
+}
+
+.button-text-ribbon-opaque {
+    font-size: 20px;
+    background: #222;
+    color: #fff;
+    margin: 0;
+    padding: 5px;
+    opacity: 0.9;
+}
+
+.button-text-ribbon-opaque:hover {
+    opacity: 1;
+}
+
+
 /* Add bottom padding to all containers */
 
 .container {
     padding-bottom: 30px;
 }
 
+
 /* Add some padding to the top of the search template container */
+
 .container.search-body {
     padding-top: 30px;
 }
-
 
 
 /* Feedback Form */
@@ -374,3 +1344,613 @@ ul.as-selections li.as-original input {
     height: 39px !important;
 }
 
+.module-title {
+    display: flex;
+    justify-content: space-between;
+    background: #EFEFEF;
+    padding: 20px 45px;
+    height: 85px;
+    align-items: center;
+}
+
+.module-title button {
+    border-radius: 50%;
+    background: #333333;
+    width: 30px;
+    align-items: center;
+    height: 30px;
+    color: #fff;
+    border: none;
+}
+
+.panel-group .panel {
+    margin-bottom: 50px;
+}
+
+.panel h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    background: #EFEFEF;
+    color: #000000;
+    font-style: normal;
+}
+
+.panel .row {
+    margin: 0;
+}
+
+.panel-main {
+    padding: 40px 30px;
+    background: #FAFAFA;
+}
+
+.panel-main section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.panel-main section p {
+    font-size: 18px;
+    max-height: 8em;
+    color: #383838;
+    margin-bottom: 0;
+}
+
+.author-docs .supporting-documents {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.author-docs .supporting-documents .supporting-document-type {
+    padding: 0 10px;
+}
+
+.readMore {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: #BF413E;
+}
+
+.created-by {
+    font-size: 14px;
+    font-family: sans-serif;
+    color: #AAAAAA;
+    margin-bottom: 2px;
+}
+
+.author-docs a, .document a, .lecture-comments a, a.downloadLink, .authors a {
+    color: #BF413E;
+}
+
+.panel-section-footer {
+    margin-top: 30px;
+}
+
+.panel-section-footer .row {
+    display: flex;
+    align-items: center;
+}
+
+.panel-section-footer .author-docs {
+    padding-left: 0;
+}
+
+.panel-section-footer .buttons {
+    display: flex;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.buttons button {
+    margin-left: 5px;
+}
+
+.panel footer a {
+    text-align: center;
+    background: #FAFAFA;
+    font-family: 'LinuxLibertine', serif;
+    padding: 10px 0;
+    width: 100%;
+    display: inline-block;
+    border-top: 1px solid #E4E4E4;
+    color: #B0B0B0;
+    font-size: 14px;
+}
+
+.panel-expand {
+    background: #FAFAFA;
+}
+
+.panel-expand-item {
+    width: 90%;
+    background: #fff;
+    margin: 0 auto;
+    padding: 30px 35px;
+    display: flex;
+    border: 1px solid #ece9e9;
+}
+
+.panel-expand-item .image-container {
+    width: 180px;
+    height: 130px;
+    background-size: contain !important;
+    border: 1px solid #cdcdcd;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.panel-expand-item section {
+    flex-grow: 1;
+}
+
+.panel-expand-item section h4 {
+    font-family: 'LinuxLibertine', serif;
+    text-decoration: underline;
+    font-size: 22px;
+    font-style: italic;
+}
+
+.panel-expand-item .lecture-description-text {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.panel-expand-item .supporting-documents {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.panel-expand-item .supporting-documents .supporting-document-type {
+    padding: 0 10px;
+}
+
+.panel-expand-container {
+    padding: 0 20px;
+}
+
+.panel-expand-container h4 {
+    border-bottom: 1px solid #ece9e9;
+    margin-top: 0;
+}
+
+.title-buttons-group .buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.lecture-panel .panel-main {
+    background: #fff;
+    padding: 30px 30px;
+}
+
+
+/*.lecture-panel .image-container-parent {
+    margin-top: 60px;
+}*/
+
+.lecture-panel .image-container {
+    width: 240px;
+    height: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    border: 1px solid #cdcdcd;
+}
+
+.lecture-panel .panel-main section {
+    flex-basis: 80%;
+}
+
+.lecture-panel-section h4 {
+    font-family: 'LinuxLibertine', serif;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.lecture-panel .lecture-panel-section p {
+    font-size: 18px;
+    color: #9C9C9C;
+}
+
+.lecture-panel footer a {
+    background: #fff;
+}
+
+.lecture-panel .panel-expand {
+    background: #fff;
+}
+
+.lecture-panel .lecture-documents,
+.lecture-panel .lecture-button-group,
+.lecture-panel .lecture-comment-form {
+    padding: 0px 45px;
+}
+
+.lecture-panel .lecture-comment-form {
+    width: 50%;
+}
+
+.lecture-panel .lecture-comments {
+    padding: 30px 45px;
+}
+
+.comment-form label {
+    font-weight: normal;
+}
+
+.lecture-panel .lecture-description {
+    padding: 30px 45px 0px 45px;
+}
+
+.lecture-panel .lecture-description p {
+    color: #383838;
+}
+
+.lecture-panel .lecture-documents p,
+.lecture-panel .lecture-comments p {
+    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+    color: #383838;
+}
+
+.lecture-documents .document {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: baseline;
+}
+
+.lecture-documents p {
+    margin: 0;
+}
+
+.lecture-documents .dotted-effect {
+    flex-grow: 1;
+    border-bottom: 1px dotted #000;
+}
+
+.see-details {
+    background: #333333;
+    color: #fff;
+}
+
+.see-details:hover {
+    color: #fff;
+}
+
+.terms-conditions {
+    font-family: sans-serif;
+    color: #b5b5b5;
+    margin: 0;
+    line-height: 24px;
+    font-size: 14px;
+    line-height: 19px;
+    margin-bottom: 20px;
+}
+
+
+/* Profiles/Member Page Styles */
+
+.members-view .cover-photo {
+    width: 100%;
+    height: 360px;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: 0 !important;
+}
+
+.members-view main {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.members-view main h1 {
+    margin: 0;
+    padding: 30px 0;
+}
+
+.members-view main a {
+    color: #5d0104;
+    text-decoration: underline;
+}
+
+.alphabeticalFilterList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ad7f80;
+    border-bottom: 1px solid #ad7f80;
+    margin: 20px 0;
+    padding: 10px 0;
+}
+
+.alphabeticalFilterList .letter {
+    display: flex;
+    align-items: center;
+}
+
+.alphabeticalFilterList .letter .circle {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #5d0104;
+    /* float: left;
+    padding-right: 30px; */
+}
+
+.alphabeticalFilterList {
+    display: none;   
+}
+
+
+
+@media (min-width: 992px) {
+    .alphabeticalFilterList {
+        display: flex;   
+    }
+    .alphabeticalFilterList .letter a {
+        padding: 0 5px;
+        text-decoration: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .alphabeticalFilterList .letter a {
+        padding: 0 10px;   
+    }    
+}
+
+
+main form {
+    margin-bottom: 60px;
+}
+
+.searchForMembers {
+    display: flex;
+}
+
+.searchForMembers input {
+    width: 60%;
+    padding: 10px 15px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #efefef;
+    border-right: none;
+}
+
+.searchForMembers button {
+    padding: 10px 15px;
+    border: 1px solid #efefef;
+    border-radius: 0 5px 5px 0;
+    background: none;
+    border-left: none;
+    display: flex;
+}
+
+.members-view .member {
+    border-bottom: 1px solid #7f7f7f;
+    margin-bottom: 20px;
+}
+
+.member .member-contributions {
+    padding: 20px 30px;
+    background: #5d0104;
+    color: #fff;
+    font-family: 'LinuxLibertine', serif;
+}
+
+.member .member-contributions ul {
+    list-style-type: none;
+}
+
+.member .member-contributions p:nth-child(1) {
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
+
+.member .member-contributions p {
+    margin-bottom: 0;
+}
+
+.member .member-contributions a {
+    color: #fff;
+    font-style: italic;
+    text-decoration: none;
+}
+
+.member .contributing-member {
+    background: url('images/ocean_currents_light.png');
+    background-position: 0;
+    border: 2px solid #5d0104;
+}
+
+.profiles_returned section:nth-of-type(odd) .non-contributing {
+    background: url('images/ocean_currents_light.png');
+    background-position: 0;
+}
+
+.non-contributing h3 {
+    border-top: 1px solid #7f7f7f;
+}
+
+.member h3 {
+    font-family: "LinuxLibertine", serif;
+    font-style: normal;
+    font-weight: bold;
+    margin: 0;
+    border-bottom: 1px solid #efefef;
+    padding: 15px 30px;
+}
+
+.member .institution-affiliation {
+    font-style: italic;
+    font-weight: normal;
+}
+
+.member .member-profile {
+    padding: 0px 15px 30px;
+}
+
+.member-profile .member-profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.member-profile .member-profile-info p {
+    margin-bottom: 0;
+}
+
+.member-profile .description {
+    margin-bottom: 0;
+}
+
+.member-profile .contact-info {
+    margin-top: 20px;
+}
+
+.member-profile .contact-info p {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+.member-profile .contact-info p:nth-child(2) {
+    font-weight: bold;
+}
+
+.member-profile .contact-info p:nth-child(3) {
+    font-style: italic;
+}
+
+.authored-contributions {
+    color: #aaa;
+}
+
+.authored-contributions a {
+    color: #aaa;
+}
+
+.profiles_returned section {
+    padding-top: 100px;
+    margin-top: -100px;
+}
+
+
+/* .members-view main p {
+
+} */
+
+
+/* Profiles/Member Page Styles */
+
+
+/* Library index styles */
+
+.index-heading {
+    font-family: 'LinuxLibertine', serif;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    padding: 10px 0px;
+    margin-top: 30px;
+}
+
+.index-list a {
+    color: #383838;
+}
+
+
+/* Single lecture view styles */
+
+.lecture-container {
+    background: #FAFAFA;
+    margin-top: 60px;
+    box-shadow: 0px 0px 10px #dadada;
+}
+
+.lecture-title {
+    font-family: 'LinuxLibertine', serif;
+    text-decoration: underline;
+    font-size: 22px !important;
+    font-style: italic !important;
+}
+
+.download-link {
+    color: #BF413E;
+    font-size: 14px;
+}
+
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+
+/* text heavy page styles */
+.text-heavy-view .cover-photo {
+    width: 100%;
+    height: 360px;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: 0 !important;
+}
+
+.text-heavy-view main {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.text-heavy-view main h1 {
+    margin: 0;
+    padding: 30px 0;
+}
+
+.text-heavy-view main h4 {
+    font-family: 'LinuxLibertine', serif;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    padding: 10px 0px;
+    margin-top: 30px;
+}
+
+.text-heavy-view main a {
+    color: #5d0104;
+    text-decoration: underline;
+}
+
+.rich-text .richtext-image.left {
+    margin: 20px 20px 20px 0;
+    float: left;
+}
+
+.rich-text .richtext-image.right {
+    margin: 20px 0 20px 20px;
+    float: right;
+}
+
+
+.responsive-object {
+    position: relative;
+}
+.responsive-object iframe,
+.responsive-object object {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* modal bootstrap overrides */
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 100%;
+        max-width: 720px;
+    }
+}

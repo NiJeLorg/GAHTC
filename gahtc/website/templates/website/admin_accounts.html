@@ -17,6 +17,7 @@
                 <thead>
                     <th>Name</th>
                     <th>Edit</th>
+                    <th>User Name</th>
                     <th>Email Address</th>
                     <th>Institution</th>
                     <th>Professional Title</th>
@@ -28,6 +29,7 @@
                         <td>
                             <a class="btn btn-default" href="/admin_update_profile/{{ a.user.id }}/" role="button">Edit</a>
                         </td>
+                        <td>{{ a.user }}</td>
                         <td>{{ a.user.email }}</td>
                         <td>{{ a.institution }}</td>
                         <td>{{ a.title }}</td>
@@ -50,6 +52,7 @@
                     <th>Name</th>
                     <th>Edit</th>
                     <th>Verify</th>
+                    <th>User Name</th>
                     <th>Email Address</th>
                     <th>Institution</th>
                     <th>Professional Title</th>
@@ -64,6 +67,7 @@
                         <td>
                             <a class="btn btn-primary" href="/admin_verify_user/{{ a.user.id }}/" role="button">Verify</a>
                         </td>
+                        <td>{{ a.user }}</td>
                         <td>{{ a.user.email }}</td>
                         <td>{{ a.institution }}</td>
                         <td>{{ a.title }}</td>
@@ -85,6 +89,7 @@
                 <thead>
                     <th>Name</th>
                     <th>Edit</th>
+                    <th>User Name</th>
                     <th>Email Address</th>
                     <th>Institution</th>
                     <th>Professional Title</th>
@@ -96,6 +101,7 @@
                         <td>
                             <a class="btn btn-default" href="/admin_update_profile/{{ a.user.id }}/" role="button">Edit</a>
                         </td>
+                        <td>{{ a.user }}</td>
                         <td>{{ a.user.email }}</td>
                         <td>{{ a.institution }}</td>
                         <td>{{ a.title }}</td>

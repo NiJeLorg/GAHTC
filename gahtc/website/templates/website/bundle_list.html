@@ -1,24 +1,159 @@
-{% load staticfiles %} {% for bundle in bundles_returned %}
-<div class="row bundleResult" data-bundleid="{{ bundle.id }}">
-    <div class="col-xs-3">
-        <img class="img-responsive" src="{% static 'website/css/images/gahtc-logo.png' %}" />
-    </div>
-    <div class="col-xs-9">
-        <div class="row">
-            <div class="col-xs-7 resultTitle">
-                <p><strong>{{ bundle.title }}</strong></p>
+{% extends 'website/base.html' %} 
+{% load staticfiles %} 
+
+{% block title %}My Bundles{% endblock %} 
+
+{% block css_block %} 
+{% endblock %} 
+
+{% block head_js_block %} 
+{% endblock %} 
+
+
+{% block content %}
+<!-- Page Content -->
+<div class="container search-body">
+    <div class="row">
+        <div class="col-md-12 marginTop30">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a href="#profile-tab" aria-controls="profile" role="tab" data-toggle="tab">My Profile</a></li>
+                <li role="presentation"><a href="#bundles-tab" aria-controls="bundles" role="tab" data-toggle="tab">My Course Bundles</a></li>
+                <li role="presentation"><a href="#searches-tab" aria-controls="searches" role="tab" data-toggle="tab">My Saved Searches</a></li>
+            </ul>            
+        </div>
+        <div class="tab-content">  
+            <div role="tabpanel" class="tab-pane" id="profile-tab">
+                <div class="all-bundles col-md-12">
+                    <div class="marginBottom15">
+                        {% include 'website/profile.html' %}
+                    </div>
+                </div>
             </div>
-            <div class="col-xs-5">
-                {% if request.user.userProfile.verified %}
-                <button type="button" class="btn btn-default downloadBundle pull-right" data-bundleid="{{ bundle.id }}">Download</button>
-                {% else %}
-                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#waitingForVerification">Download</button>
-                {% endif %}
+            <div role="tabpanel" class="tab-pane" id="bundles-tab">
+                <div class="all-bundles col-md-12">
+                    <div class="marginTop30 marginBottom15">
+                        <div class="panel-group" id='accordion_bundles' role='tablist' aria-multiselectable='true'>
+                            {% for bundle in bundles_returned %}
+                            <div id="bundle_{{ bundle.id }}">
+                                {% include 'website/show_bundle.html' with bundle_returned=bundle %}
+                            </div>
+                            {% empty %}
+                            <h4>No Bundles Yet Created!</h4>
+                            <p><a href="#" class="create-new-bundle">Create a new bundle here</a> and then search for course materials using the search box above. Once you find the course materials you're looking for, you can add them to your bundle and download them from here. </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="searches-tab">
+                <div class="all-bundles col-md-12">
+                    <div class="marginBottom15 savedSearchList">
+                        {% include 'website/current_saved_searches.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row marginBottom100">
+    </div>
+</div>
+
+<button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+</button> 
+{% endblock %}
+
+{% block modal_block %}
+<!-- Download Course Bundle Modal -->
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <h4 class="modal-title" id="myModalLabel">Download Course Materials</h4>
+            </div>
+            <div class="modal-body">
+                <div id="downloadFileArea">
+                    <div class="containter">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img class="img-responsive pull-right" src="{% static 'website/css/images/spiffygif_114x114.gif' %}" />
+                            </div>
+                            <div class="col-md-9">
+                                <h2>Zipping Up Your Bundle!</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-{% empty %}
-<h4>No Bundles Yet Created!</h4>
-<p><a href="#" class="create-new-bundle">Create a new bundle here</a> and then search for course materials using the search box above. Once you find the course materials you're looking for, you can add them to your bundle and download them from here. </p>
-{% endfor %}
+<!-- Create New Bundle Modal -->
+<div class="modal fade" id="newBundleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <h4 class="modal-title" id="myModalLabel">Create New Bundle</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="newBundleName" placeholder="Name your bundle here.">
+                    </div>
+                    <div id="noBundleTitleAlert" class="alert alert-warning hidden" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        Please add a title!
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="createNewBundle">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Awaiting verification modal -->
+<div class="modal fade" id="waitingForVerification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <h4 class="modal-title" id="myModalLabel">Your account is awaiting verification.</h4>
+            </div>
+            <div class="modal-body">
+                <p>Your account has not yet been verified by a GAHTC administrator. Once your account is verified, you will be able to download course materials. You will be notified by email when your account has been verified. In the meantime, you can continue to search the site and add resources to your bundles. Thank you!</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Lecture Slides Modal -->
+<div class="modal fade" id="slideshow" tabindex="-1" role="dialog" aria-labelledby="mySlideshow">
+</div>
+<div class="modal fade" id="moduleFullDescription" tabindex="-1" role="dialog" aria-labelledby="moduleFullDescription">
+</div>
+<div class="modal fade" id="lectureFullDescription" tabindex="-1" role="dialog" aria-labelledby="lectureFullDescription">
+</div>
+{% endblock %} 
+
+{% block js_block %}
+<script type="text/javascript">
+    var tab = '{{ tab }}';
+    // check for the existence of tab
+    if (tab == "profile") {
+        $('.nav-tabs a[href="#profile-tab"]').tab('show');
+    } else if (tab == "bundle") {
+        $('.nav-tabs a[href="#bundles-tab"]').tab('show');
+    } else if (tab == "searches") {
+        $('.nav-tabs a[href="#searches-tab"]').tab('show');
+    }
+</script>
+<script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/controllers.js' %}"></script>
+{% endblock %}

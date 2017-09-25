@@ -25,17 +25,15 @@ class profileForm(RegistrationForm):
     """
     first_name = forms.CharField(required=True, widget=forms.TextInput(), label="First Name")
     last_name = forms.CharField(required=True, widget=forms.TextInput(), label="Last Name")
-    title = forms.CharField(required=True, widget=forms.TextInput(), label="Professional Title")
+    title = forms.CharField(required=True, widget=forms.TextInput(), label="Title/Academic Rank", help_text="(ex: Assistant Professor, Lecturer, Post-Doc)")
     institution = forms.CharField(required=True, widget=forms.TextInput(), label="Institutional Affiliation")
-    institution_address = forms.CharField(required=False, widget=forms.TextInput(), label="Institution's Street Address")
-    institution_city = forms.CharField(required=False, widget=forms.TextInput(), label="City")
-    institution_country = forms.CharField(required=False, widget=forms.TextInput(), label="Country")
-    institution_postal_code = forms.CharField(required=False, widget=forms.TextInput(), label="Postal Code")
-    teaching = forms.CharField(required=True, widget=forms.Textarea(), label="Please describe your teaching responsibilities at your institution.")
-    website = forms.URLField(required=False, widget=forms.TextInput(attrs={'placeholder': 'http://example.com/'}), label="If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.")
-    instutution_document = forms.FileField(required=False, label="")
-    introduction = forms.CharField(required=True, widget=forms.Textarea(), label="Please introduce yourself to your GAHTC colleagues.")
-    avatar = forms.ImageField(required=False, label="Please upload a bio picture for others to view on the GAHTC website.")
+    institution_address = forms.CharField(required=True, widget=forms.TextInput(), label="Institution's Street Address")
+    institution_city = forms.CharField(required=True, widget=forms.TextInput(), label="City")
+    institution_country = forms.CharField(required=True, widget=forms.TextInput(), label="Country")
+    institution_postal_code = forms.CharField(required=True, widget=forms.TextInput(), label="Postal Code")
+    introduction = forms.CharField(required=False, widget=forms.Textarea(), label="Please provide a brief bio", help_text="(written in third person, describing your professional experience and teaching responsibilities at your current institution)")
+    website = forms.URLField(required=False, widget=forms.TextInput(attrs={'placeholder': 'http://example.com/'}), label="Please provide a URL for a website that demonstrates your institutional affiliation")
+    avatar = forms.ImageField(required=True, label="Please upload a profile picture")
 
 
 # allow users to edit their email address in the profile form
@@ -49,21 +47,19 @@ class UserInfoForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('first_name', 'last_name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar',)
+        fields = ('first_name', 'last_name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'introduction', 'website', 'avatar',)
         labels = {
             'first_name': 'First Name',
             'last_name': 'Last Name',
-            'title': 'Professional Title',
+            'title': 'Title/Academic Rank',
             'institution': 'Institutional Affiliation',
             'institution_address': 'Institution\'s Street Address',
             'institution_city': 'City',
             'institution_country': 'Country',
             'institution_postal_code': 'Postal Code',
-            'teaching': 'Please describe your teaching responsibilities at your institution.',
-            'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
-            'instutution_document': '',
-            'introduction': 'Please introduce yourself to your GAHTC colleagues.',
-            'avatar': 'Please upload a bio picture for others to view on the GAHTC website.',
+            'website': 'Please provide a URL for a website that demonstrates your institutional affiliation',
+            'introduction': 'Please provide a brief bio',
+            'avatar': 'Please upload a profile picture',
         }
         widgets = {
             'first_name': forms.TextInput(),
@@ -73,30 +69,31 @@ class UserProfileForm(forms.ModelForm):
             'institution_city': forms.TextInput(),
             'institution_country': forms.TextInput(),
             'institution_postal_code': forms.TextInput(),
-            'teaching': forms.Textarea(),
             'introduction': forms.Textarea(),
             'website': forms.TextInput(attrs={'placeholder': 'http://example.com/'}),
+        }
+        help_texts = {
+            'title': '(ex: Assistant Professor, Lecturer, Post-Doc)',
+            'introduction': '(written in third person, describing your professional experience and teaching responsibilities at your current institution)',
         }
 
 # user profile edit form
 class AdminUserProfileForm(forms.ModelForm):
     class Meta:
         model = profile
-        fields = ('first_name', 'last_name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'teaching', 'website', 'instutution_document', 'introduction', 'avatar', 'verified', 'public')
+        fields = ('first_name', 'last_name', 'title', 'institution', 'institution_address', 'institution_city', 'institution_country', 'institution_postal_code', 'introduction', 'website', 'avatar', 'verified', 'public')
         labels = {
             'first_name': 'First Name',
             'last_name': 'Last Name',
-            'title': 'Professional Title',
+            'title': 'Title/Academic Rank',
             'institution': 'Institutional Affiliation',
             'institution_address': 'Institution\'s Street Address',
             'institution_city': 'City',
             'institution_country': 'Country',
             'institution_postal_code': 'Postal Code',
-            'teaching': 'Please describe your teaching responsibilities at your institution.',
-            'website': 'If you are not a GAHTC Member, please provide a website link or a document that demonstrates your institutional affiliation.',
-            'instutution_document': '',
-            'introduction': 'Please introduce yourself to your GAHTC colleagues.',
-            'avatar': 'Please upload a bio picture for others to view on the GAHTC website.',
+            'website': 'Please provide a URL for a website that demonstrates your institutional affiliation',
+            'introduction': 'Please provide a brief bio',
+            'avatar': 'Please upload a profile picture',
             'verified': 'Please select the verification status for this user.',
             'public': 'Should this user have a public profile?',
         }
@@ -108,12 +105,15 @@ class AdminUserProfileForm(forms.ModelForm):
             'institution_city': forms.TextInput(),
             'institution_country': forms.TextInput(),
             'institution_postal_code': forms.TextInput(),
-            'teaching': forms.Textarea(),
             'introduction': forms.Textarea(),
             'website': forms.TextInput(attrs={'placeholder': 'http://example.com/'}),
             'instutution_document': forms.ClearableFileInput(),
             'verified': forms.Select(choices=Null_Boolean_Choices),
             'public': forms.Select(choices=YES_NO),
+        }
+        help_texts = {
+            'title': '(ex: Assistant Professor, Lecturer, Post-Doc)',
+            'introduction': '(written in third person, describing your professional experience and teaching responsibilities at your current institution)',
         }
 
 # verify users
@@ -133,17 +133,20 @@ class AdminVerifyUserForm(forms.ModelForm):
 class modulesForm(forms.ModelForm):
     class Meta:
         model = modules
-        fields = ('title', 'authors_m2m', 'description', 'keywords')
+        fields = ('title', 'authors_m2m', 'description', 'cover_image', 'featured', 'keywords')
         labels = {
             'title': 'Title (Required)',
             'authors_m2m': 'Authors (Required)',
             'description': 'Description',
+            'cover_image': 'Cover Image',
+            'featured': 'Is this a featured module?',
             'keywords': 'Keywords',
         }
         widgets = {
             'title': forms.TextInput(),
             'authors_m2m': FilteredSelectMultiple("authors", is_stacked=False),
             'description': forms.Textarea(),
+            'featured': forms.Select(choices=YES_NO),
         }
 
 class modulesRemoveForm(forms.ModelForm):
@@ -254,6 +257,9 @@ class modulesCommentsForm(forms.ModelForm):
     class Meta:
         model = modulesComments
         fields = ('comment',)
+        labels = {
+            'comment': 'member comments:',
+        }
         widgets = {
             'comment': forms.widgets.Textarea(attrs={'rows': 2}),
         }
@@ -262,6 +268,9 @@ class lecturesCommentsForm(forms.ModelForm):
     class Meta:
         model = lecturesComments
         fields = ('comment',)
+        labels = {
+            'comment': 'member comments:',
+        }
         widgets = {
             'comment': forms.widgets.Textarea(attrs={'rows': 2}),
         }
@@ -295,11 +304,12 @@ class lectureSlidesCommentsForm(forms.ModelForm):
 class CSmodulesForm(forms.ModelForm):
     class Meta:
         model = comingSoonModules
-        fields = ('title', 'authors_m2m', 'description', 'keywords')
+        fields = ('title', 'authors_m2m', 'description', 'cover_image', 'keywords')
         labels = {
             'title': 'Title (Required)',
             'authors_m2m': 'Authors (Required)',
             'description': 'Description',
+            'cover_image': 'Cover Image',
             'keywords': 'Keywords',
         }
         widgets = {
