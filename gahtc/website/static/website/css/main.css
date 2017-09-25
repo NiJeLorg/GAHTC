@@ -339,7 +339,7 @@ body nav {
     display: none;
 }
 
-.container {
+.container, .text-heavy-view {
     flex-grow: 100;
 }
 
