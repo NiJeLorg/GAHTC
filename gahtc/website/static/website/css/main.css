@@ -1770,7 +1770,7 @@ main form {
     border: 2px solid #5d0104;
 }
 
-.profiles_returned .non-contributing:nth-child(odd) {
+.profiles_returned section:nth-of-type(odd) .non-contributing {
     background: url('images/ocean_currents_light.png');
     background-position: 0;
 }
