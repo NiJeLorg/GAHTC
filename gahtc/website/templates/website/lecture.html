@@ -59,8 +59,10 @@
                                     {% else %}
                                         <p>Document</p>
                                     {% endif %}
-                                    <div class="dotted-effect"></div>
-                                    <a href="#" class="downloadFile" type='button' data-file="{{ lecDoc.document }}" data-filesize="{{lecDoc.document.size|filesizeformat}}" data-filename="{{ lecDoc.documentName }}"><span class="download-link">download ({{lecDoc.document.size|filesizeformat}})</span></a>
+                                    {% if user.is_authenticated and request.user.userProfile.verified %}
+                                        <div class="dotted-effect"></div>
+                                        <a href="#" class="downloadFile" type='button' data-file="{{ lecDoc.document }}" data-filesize="{{lecDoc.document.size|filesizeformat}}" data-filename="{{ lecDoc.documentName }}"><span class="download-link">download ({{lecDoc.document.size|filesizeformat}})</span></a>
+                                    {% endif %} 
                                 </div>
                                 {% endfor %}
                             </div>
@@ -83,10 +85,11 @@
                                 </div>
                                 {% endif %}                                
                             </div>
-                            <div class="lecture-comments-wrapper">
-                                {% include 'website/lecture_comments.html' with lecture_returned=lecture_returned %}
-                            </div>
-                            <p class="panel-expand-container terms-conditions">
+                            {% if user.is_authenticated and request.user.userProfile.verified %}
+                                <div class="lecture-comments-wrapper">
+                                    {% include 'website/lecture_comments.html' with lecture_returned=lecture_returned %}
+                                </div>
+                                <p class="panel-expand-container terms-conditions">
                                     <strong>Instructions</strong>
                                     <br /> You can download individual files by selecting them from the list. Or download the entire lecture and all its accompanying documents by clicking the 'Download Lecture' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
                                     <br />
@@ -94,6 +97,7 @@
                                     <strong>Terms and conditions</strong>
                                     <br /> I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
                                 </p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
