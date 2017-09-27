@@ -148,7 +148,7 @@ body nav {
     border: none;
     min-height: auto;
     background-color: #3A3A3C;
-    box-shadow: 2px 3px 10px #dadada;
+    /* box-shadow: 2px 3px 10px #dadada; */
 }
 
 .navbar-header-holder {
