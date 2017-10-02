@@ -234,7 +234,10 @@ def mainSearchCode(request, keyword, tab):
 				#readd item in the front of the list
 				unique_module_list.insert(0, module)
 
-			module.flattened_highlighted = [val for sublist in module.highlighted for val in sublist]
+			try:
+				module.flattened_highlighted = [val for sublist in module.highlighted for val in sublist]
+			except AttributeError:
+				module.flattened_highlighted = []
 			
 		#reorder lectures if title or author is in the keyword
 		for lec in lectures_returned:
