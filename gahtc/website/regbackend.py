@@ -17,10 +17,8 @@ class MyRegistrationView(RegistrationView):
         user_profile.institution_city = form_class.cleaned_data['institution_city']
         user_profile.institution_country = form_class.cleaned_data['institution_country']
         user_profile.institution_postal_code = form_class.cleaned_data['institution_postal_code']
-        user_profile.teaching = form_class.cleaned_data['teaching']
-        user_profile.website = form_class.cleaned_data['website']
-        user_profile.instutution_document = form_class.cleaned_data['instutution_document']
         user_profile.introduction = form_class.cleaned_data['introduction']
+        user_profile.website = form_class.cleaned_data['website']
         user_profile.avatar = form_class.cleaned_data['avatar']
         user_profile.save()
         return user_profile

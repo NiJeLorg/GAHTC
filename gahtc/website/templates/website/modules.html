@@ -82,18 +82,19 @@
                                         </div>
                                         <div class="buttons col-md-5 paddingRight0">
                                             {% if user.is_authenticated %} 
-                                            {% if request.user.userProfile.verified %}
-                                            <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>                                        {% else %}
-                                            <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        
-                                            {% endif %}
-                                            <div class="dropdown">
-                                                <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
-                                                    {% include "website/bundle_dropdown.html" %}
-                                                </ul>
-                                            </div>
+                                                {% if request.user.userProfile.verified %}
+                                                    <a class="btn btn-danger gahtcRed pull-right downloadModule" role='button' data-moduleid="{{ module_returned.id }}">Download Module</a>                 
+                                                {% else %}
+                                                    <a class="btn btn-danger gahtcRed pull-right" role='button' data-toggle="modal" data-target="#waitingForVerification">Download Module</a>                                        
+                                                {% endif %}
+                                                <div class="dropdown">
+                                                    <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
+                                                        {% include "website/bundle_dropdown.html" %}
+                                                    </ul>
+                                                </div>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -116,28 +117,27 @@
                                 </div>
                                 <section class="col-md-9">
                                     <div class="title-buttons-group row">
-                                        <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
+                                        <h4 class="col-md-8 paddingLeft0"><a href="/lecture/{{lec.id}}/">{{lec.title}}</a></h4>
                                         <div class="buttons col-md-4 paddingRight0">
-                                            <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a>                                        
-                                            {% if request.user.userProfile.verified %}
-                                            <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
-                                                <i class="fa fa-download" aria-hidden="true"></i>
-                                            </button> {% else %}
-                                            <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
-                                                <i class="fa fa-download" aria-hidden="true"></i>
-                                            </button> 
-                                            {% endif %} 
-                                            {% if user.is_authenticated %}
-                                            <div class="dropdown">
-                                                <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
-                                                    {% include "website/bundle_dropdown.html" %}
-                                                </ul>
-                                            </div>
-
-                                            
+                                            <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a> 
+                                            {% if user.is_authenticated %}                                       
+                                                {% if request.user.userProfile.verified %}
+                                                    <button type="button" class="btn btn-danger gahtcRed downloadLecture pull-right" data-lectureid="{{ lec.id }}">
+                                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                                    </button> 
+                                                {% else %}
+                                                    <button type="button" class="btn btn-danger gahtcRed pull-right" data-toggle="modal" data-target="#waitingForVerification">
+                                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                                    </button> 
+                                                {% endif %} 
+                                                <div class="dropdown">
+                                                    <button class="btn btn-danger gahtcRed pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right bundles" aria-labelledby="" data-itemid="module_{{ module_returned.id }}">
+                                                        {% include "website/bundle_dropdown.html" %}
+                                                    </ul>
+                                                </div>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -179,17 +179,19 @@
                             </div>
                             {% endif %}
                         </div> {% endcomment %}
-                        <div id="module_comments_{{ module_returned.id }}" class="module-comments-wrapper">
-                            {% include 'website/module_comments.html' with module_returned=module_returned %}
-                        </div>
-                        <p class="panel-expand-container terms-conditions">
-                            <strong>Instructions</strong>
-                            <br /> You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
-                            <br />
-                            <br />
-                            <strong>Terms and conditions</strong>
-                            <br /> I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
-                        </p>
+                        {% if user.is_authenticated and request.user.userProfile.verified %}
+                            <div id="module_comments_{{ module_returned.id }}" class="module-comments-wrapper">
+                                {% include 'website/module_comments.html' with module_returned=module_returned %}
+                            </div>
+                            <p class="panel-expand-container terms-conditions">
+                                <strong>Instructions</strong>
+                                <br /> You can download individual files by selecting them from the list. Or download the entire module by clicking the 'Download Module' button above. Please read the terms and conditions before downloading any content. By downloading content from GAHTC.org you hereby agree to our terms and conditions.
+                                <br />
+                                <br />
+                                <strong>Terms and conditions</strong>
+                                <br /> I understand that this material is to be used only in classroom settings. You are free to make changes to fit your constraints or teaching goals. However, this material cannot be used directly or indirectly, in whole or in part, for publication, in any form.
+                            </p>
+                        {% endif %}
                     </div>
                     <footer>
                         <a href="#{{ module_returned.id }}" data-parent="#accordion_modules" data-toggle="collapse" role="button" aria-expanded="true"

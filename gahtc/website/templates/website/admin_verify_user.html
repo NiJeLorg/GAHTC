@@ -16,24 +16,22 @@
                 <br>
                 <strong>Institutional affiliation:</strong> {{ user_profile.institution }}
                 <br>
-                <strong>Professional title:</strong> {{ user_profile.title }}
+                <strong>Title/Academic Rank:</strong> {{ user_profile.title }}
                 <br>
-                <strong>GAHTC member:</strong> {% if user_profile.member %}Yes{% else %}No{% endif %}
+                <strong>Institution address:</strong> {{ user_profile.institution_address }}
+                <br>
+                <strong>City:</strong> {{ user_profile.institution_city }}
+                <br>
+                <strong>Country:</strong> {{ user_profile.institution_country }}
+                <br>
+                <strong>Postal Code:</strong> {{ user_profile.institution_postal_code }}
+                <br>
+                <strong>Website:</strong> {{ user_profile.website }}
                 <br>
             </p>
             <p>
-                <strong>Teaching responsibilities</strong>
-                <br> {{ user_profile.teaching }}
-            </p>
-            <p>
-                <strong>Introduction to GAHTC colleagues</strong>
+                <strong>Bio</strong>
                 <br> {{ user_profile.introduction }}
-            </p>
-            <p>
-                <strong>Institutional Documentation</strong>
-                <br> {% if user_profile.website %}
-                <a href="{{ user_profile.website }}">{{ user_profile.website }}</a> {% endif %} {% if user_profile.instutution_document %}
-                <a href="/media/{{ user_profile.instutution_document }}">{{ user_profile.instutution_document.name }}</a> {% endif %}
             </p>
         </div>
         {% if user_profile.avatar %}
