@@ -117,7 +117,7 @@
                                 </div>
                                 <section class="col-md-9">
                                     <div class="title-buttons-group row">
-                                        <h4 class="col-md-8 paddingLeft0">{{lec.title}}</h4>
+                                        <h4 class="col-md-8 paddingLeft0"><a href="/lecture/{{lec.id}}/">{{lec.title}}</a></h4>
                                         <div class="buttons col-md-4 paddingRight0">
                                             <a class='btn pull-right see-details' href="/lecture/{{lec.id}}/">see details</a> 
                                             {% if user.is_authenticated %}                                       

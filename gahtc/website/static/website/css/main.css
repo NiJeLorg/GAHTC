@@ -1368,7 +1368,9 @@ ul.as-selections li.as-original input {
 }
 
 .panel h3 {
+    padding: 28px 0px;
     margin: 0;
+    width: 70vw;
     font-size: 24px;
     font-weight: bold;
     background: #EFEFEF;
@@ -1423,6 +1425,16 @@ ul.as-selections li.as-original input {
 
 .author-docs a, .document a, .lecture-comments a, a.downloadLink, .authors a {
     color: #BF413E;
+}
+
+.author-docs a {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.author-docs .launchModuleDescription {
+    color: #AAAAAA;
+    font-weight: normal;
 }
 
 .panel-section-footer {
