@@ -241,27 +241,30 @@ def mainSearchCode(request, keyword, tab):
 			
 		#reorder lectures if title or author is in the keyword
 		for lec in lectures_returned:
-			if lec.object.title.lower().find(keyword.lower()) != -1 or lec.object.authors.lower().find(keyword.lower()) != -1:
-				#remove item
-				lectures_returned.remove(lec)
-				#readd item in the front of the list
-				lectures_returned.insert(0, lec)
+			if lec.object is not None:
+				if lec.object.title.lower().find(keyword.lower()) != -1 or lec.object.authors.lower().find(keyword.lower()) != -1:
+					#remove item
+					lectures_returned.remove(lec)
+					#readd item in the front of the list
+					lectures_returned.insert(0, lec)
 
 		#reorder lectures if title or author is in the keyword
 		for lecdoc in lecture_documents_returned:
-			if lecdoc.object.title.lower().find(keyword.lower()) != -1 or lecdoc.object.lecture.authors.lower().find(keyword.lower()) != -1:
-				#remove item
-				lecture_documents_returned.remove(lecdoc)
-				#readd item in the front of the list
-				lecture_documents_returned.insert(0, lecdoc)
+			if lecdoc.object is not None:
+				if lecdoc.object.title.lower().find(keyword.lower()) != -1 or lecdoc.object.lecture.authors.lower().find(keyword.lower()) != -1:
+					#remove item
+					lecture_documents_returned.remove(lecdoc)
+					#readd item in the front of the list
+					lecture_documents_returned.insert(0, lecdoc)
 
 		#reorder lectures if title or author is in the keyword
 		for lecslide in lecture_slides_returned:
-			if lecslide.object.lecture.title.lower().find(keyword.lower()) != -1 or lecslide.object.lecture.authors.lower().find(keyword.lower()) != -1:
-				#remove item
-				lecture_slides_returned.remove(lecslide)
-				#readd item in the front of the list
-				lecture_slides_returned.insert(0, lecslide)
+			if lecslide.object is not None:
+				if lecslide.object.lecture.title.lower().find(keyword.lower()) != -1 or lecslide.object.lecture.authors.lower().find(keyword.lower()) != -1:
+					#remove item
+					lecture_slides_returned.remove(lecslide)
+					#readd item in the front of the list
+					lecture_slides_returned.insert(0, lecslide)
 
 
 		#set for template
