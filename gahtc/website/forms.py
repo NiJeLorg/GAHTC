@@ -31,7 +31,7 @@ class profileForm(RegistrationForm):
     institution_city = forms.CharField(required=True, widget=forms.TextInput(), label="City")
     institution_country = forms.CharField(required=True, widget=forms.TextInput(), label="Country")
     institution_postal_code = forms.CharField(required=True, widget=forms.TextInput(), label="Postal Code")
-    introduction = forms.CharField(required=False, widget=forms.Textarea(), label="Please provide a brief bio", help_text="(written in third person, describing your professional experience and teaching responsibilities at your current institution)")
+    introduction = forms.CharField(required=True, widget=forms.Textarea(), label="Please provide a brief bio", help_text="(written in third person, describing your professional experience and teaching responsibilities at your current institution)")
     website = forms.URLField(required=False, widget=forms.TextInput(attrs={'placeholder': 'http://example.com/'}), label="Please provide a URL for a website that demonstrates your institutional affiliation")
     avatar = forms.ImageField(required=True, label="Please upload a profile picture")
 
