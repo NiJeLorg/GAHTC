@@ -769,8 +769,12 @@ body nav {
 }
 
 @media (min-width: 768px) {
+    .background-holder {
+        justify-content: space-between;
+    }
     .background-holder .main-input {
         width: 40%;
+        margin-left: 14%;
     }
 }
 
@@ -786,6 +790,9 @@ body nav {
     }
     h1 {
         font-size: 36px;
+    }
+    .c-fbpage {
+        display: none !important;
     }
 }
 
