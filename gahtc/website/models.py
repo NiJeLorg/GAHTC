@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
 
 # import User model
 from django.contrib.auth.models import User
@@ -19,6 +20,7 @@ from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtailembeds.blocks import EmbedBlock
 from wagtail.wagtaildocs.blocks import DocumentChooserBlock
 from wagtail.wagtailsearch import index
+from wagtail.wagtailsnippets.models import register_snippet
 
 # #thumbnails using imagekit
 # from imagekit import ImageSpec, register
@@ -332,3 +334,18 @@ class TextHeavyPages(Page):
 #     options = {'quality': 90}
 
 # register.generator('website:thumbnail', Thumbnail)
+
+#wagtail snippet model for sidebar content
+@register_snippet
+@python_2_unicode_compatible  # provide equivalent __unicode__ and __str__ methods on Python 2
+class sidebarContent(models.Model):
+	header = models.CharField(max_length=255, default='', null=False, blank=False)
+	text = RichTextField(blank=True)
+	
+	panels = [
+		FieldPanel('header'),
+        FieldPanel('text', classname="full"),
+    ]
+	
+	def __str__(self):
+		return self.header

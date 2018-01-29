@@ -4,6 +4,7 @@
 {% load wagtailcore_tags %} 
 {% load wagtailimages_tags %}
 {% load wagtailuserbar %}
+{% load wagtailcore_tags sidebar_tags %}
 
 {% block title %} {{ page.title }} {% endblock %} 
 
@@ -17,10 +18,15 @@
     {% if background_image.url %}
         <div class="cover-photo img-responsive" style='background: url({{background_image.url}})'></div>
     {% endif %}
-    <main>
-        <h1>{{ page.title }}</h1>
-        {{ page.page_content|richtext }}
-    </main>
+    <div class="l-flex-space-between">
+        <main>
+            <h1>{{ page.title }}</h1>
+            {{ page.page_content|richtext }}
+        </main>
+        <div class="c-sidebar">
+            {% sidebarcontent %}    
+        </div>
+    </div>
 </div>
 
 <button class="scrollToTop" data-toggle='tooltip' data-placement='right' title='Scroll back to top'>
