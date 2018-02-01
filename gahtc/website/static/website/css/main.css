@@ -354,6 +354,12 @@ body nav {
     width: 90%;
 }
 
+.c-fbpage {
+    position: absolute !important;
+    bottom: 35px;
+    right: 0;
+}
+
 .member-view {
     width: 100%;
     padding: 0 5%;
