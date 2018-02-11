@@ -1,0 +1,7 @@
+{% load wagtailcore_tags %} 
+
+{% for content in sidebarcontent %}
+    <hr />
+    <h4>{{ content.header }}</h4>
+    {{ content.text|richtext }}
+{% endfor %}
