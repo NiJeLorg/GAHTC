@@ -1995,7 +1995,7 @@ main form {
     font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
 }
 
-.c-sidebar p {
+.c-sidebar p, .c-sidebar li {
     font-size: 14px;
     line-height: 1.3;
     font-family: 'LinuxLibertine';
