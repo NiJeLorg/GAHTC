@@ -51,3 +51,6 @@ gahtc/website/media/
 gahtc/gahtc/settings.py
 gahtc/gahtc/whoosh_index/
 Backup-codes-gahtcweb.txt
+
+*/.vscode/
+
