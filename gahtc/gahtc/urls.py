@@ -29,7 +29,7 @@ from wagtail.wagtailcore import urls as wagtail_urls
 
 urlpatterns = [
 	url(r'^', include(website_urls)),
-    url(r'^mapbuilder/',  include(mapbuilder_urls)),
+    url(r'^mapbuilder/',  include(mapbuilder_urls, namespace="mapbuilder")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/register/$', regbackend.MyRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
