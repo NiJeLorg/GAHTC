@@ -37,11 +37,9 @@
     width: 33.33%;
     font-weight: normal;
 }
-
-.layer-buttons:hover {
-    font-weight: bold;
+.button-active {
     background: #F5F5F5;
-
+    font-weight: bold;
 }
 .mapbuilder {
     margin-bottom: auto;

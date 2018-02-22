@@ -25,18 +25,17 @@
   </div>
   <div id="map"></div>
     <div class="layer-switcher">
-      <button class="layer-buttons">Terrain</button>
-      <button class="layer-buttons">Political</button>
-      <button class="layer-buttons">Satellite</button>
+      <button class="layer-buttons" id="btn1">Terrain</button>
+      <button class="layer-buttons button-active" id="btn2">Political</button>
+      <button class="layer-buttons" id="btn3">Satellite</button>
     </div>
   <script>
   // initialize the map
   var map = L.map('map').setView([51.505, -0.09], 13);
   
-  // load a tile layer
   var roads = L.gridLayer.googleMutant({
-    type: 'roadmap' // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-  }).addTo(map);
+        type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
+      }).addTo(map);
 
 
 // Add GeorSearch 
@@ -51,6 +50,26 @@ key:'{{ GOOGLE_MAPS_API }}',
 });
 
 map.addControl(searchControl)
+
+// Toggle Between layers
+$('.layer-buttons').click(function(e) {       
+    $('.layer-buttons').removeClass('button-active');    
+    $(this).addClass('button-active');
+    if (this.id == 'btn1') {
+      $(this).addClass('button-active');
+      var roads = L.gridLayer.googleMutant({
+        type: 'terrain'
+      }).addTo(map);
+    } else if (this.id == 'btn2'){
+      var roads = L.gridLayer.googleMutant({
+        type: 'roadmap'
+      }).addTo(map);
+    } else {
+      var roads = L.gridLayer.googleMutant({
+        type: 'satellite'
+      }).addTo(map);
+    }
+});
 
   </script>
 {% endblock%}
