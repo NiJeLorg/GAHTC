@@ -17,7 +17,7 @@ p {
  }
 
  .create-button {
-    height:25px;
+    /* height:25px;
     width:150px;
     font-size: 14px;
     font-weight: normal;
@@ -26,10 +26,30 @@ p {
     background: none;
     margin-bottom : 40px;
     color:#D4D6D7;
-    box-sizing: content-box;
+    
     border-color:#D1D1D1;
     border: 1px solid;
+    text-decoration: none; */
+    display: block;
+    width: 150px;
+    height: 25px;
+    background: none;
+    padding: 5px;
+    text-align: center;
+    color:#D4D6D7;
+    font-size: 14px;
+    border-color:#D1D1D1;
+    border: 1px solid;
+    font-weight: normal;
+    margin-bottom : 40px;
+    cursor:pointer;
+    box-sizing: content-box;
  }
+ .create-button:hover, .create-button:focus {
+    color:none;
+    text-decoration: none;
+}
+
 
  .btn-next {
     margin-left: 25px;

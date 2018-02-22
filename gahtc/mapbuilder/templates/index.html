@@ -12,14 +12,15 @@
         Map Builder
     </h3>
     <p>Map Builder is a tool to help create historical maps using web mapping technology. </p>
-    <input type="button"  class="create-button" value="Create A New Map" >
+    <a class="create-button" href="{% url 'mapbuilder:searchmap' %}">Create A New Map</a>
     <div>
         <span>Map Index</span>
         <div class="search-bar">
             <input type="text" class="search-input">
-            <button class="btn btn-default pull-right search-button">
-                <i class="fa fa-search search-icon" ></i>
-            </button>
+                <button class="btn btn-default pull-right search-button">
+                    <i class="fa fa-search search-icon" ></i>
+                </button>
+            </form>
         </div>
     </div>
         
