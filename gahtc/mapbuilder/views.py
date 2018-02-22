@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.shortcuts import render
 
 from django.http import HttpResponse
+
 
 
 
@@ -32,4 +34,4 @@ def startmap(request):
 	  start page
 	"""
 
-	return render(request, 'start-map.html')
+	return render(request, 'start-map.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})

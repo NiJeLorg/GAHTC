@@ -5,7 +5,44 @@
     text-transform: none;
     font-size: 40px;
 }
+.map-header {
+    padding: 10px 50px ;
+    position: relative;
+}
+.map-header-text {
+    color: black;
+    font-style: normal;
+    text-transform: none;
+}
+.layer-switcher {
+    position: absolute;
+    height: 50px;
+    width: 300px;
+    top:250px;
+    right: 55px;
+    z-index: 2;
+    background: white;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 5px;
+    display: flex;
+    overflow: hidden;
+}
 
+.layer-buttons {
+    display: block;
+    color: black;
+    font-size: 14px;
+    height: 100%;
+    width: 33.33%;
+    font-weight: normal;
+}
+
+.layer-buttons:hover {
+    font-weight: bold;
+    background: #F5F5F5;
+
+}
 .mapbuilder {
     margin-bottom: auto;
     padding: 50px;
@@ -17,19 +54,6 @@ p {
  }
 
  .create-button {
-    /* height:25px;
-    width:150px;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 5px;
-    cursor:pointer;
-    background: none;
-    margin-bottom : 40px;
-    color:#D4D6D7;
-    
-    border-color:#D1D1D1;
-    border: 1px solid;
-    text-decoration: none; */
     display: block;
     width: 150px;
     height: 25px;
@@ -44,15 +68,27 @@ p {
     margin-bottom : 40px;
     cursor:pointer;
     box-sizing: content-box;
+    display: inline-block;
+    text-align: center;
  }
  .create-button:hover, .create-button:focus {
-    color:none;
+    color:#D4D6D7;
     text-decoration: none;
 }
 
 
  .btn-next {
     margin-left: 25px;
+ }
+
+ .step-button {
+    position: absolute;
+    top: 25px;
+    right: 45px;
+    color: black;
+ }
+ .step-button:hover, .step-button:focus {
+    color: black;
  }
 
  span {
@@ -104,6 +140,7 @@ p {
 
 #map {
     height: calc(100vh - 146px);
+    z-index: 1;
 }
 
 .search-map {
