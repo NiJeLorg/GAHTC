@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from website import urls as website_urls
+from mapbuilder import urls as mapbuilder_urls
 from website import regbackend
 from django.conf import settings
 from django.conf.urls.static import static
@@ -28,6 +29,7 @@ from wagtail.wagtailcore import urls as wagtail_urls
 
 urlpatterns = [
 	url(r'^', include(website_urls)),
+    url(r'^mapbuilder/',  include(mapbuilder_urls, namespace="mapbuilder")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/register/$', regbackend.MyRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
