@@ -127,6 +127,9 @@ body nav {
 .main-content {
     margin-top: 146px;
     transition: margin-top 250ms;
+    display: flex; 
+    flex-direction: column; 
+    flex-grow: 100;
 }
 
 .navbar-nav .dropdown a {

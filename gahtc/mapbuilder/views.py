@@ -26,7 +26,7 @@ def searchmap(request):
 	  search page
 	"""
 
-	return render(request, 'search-map.html')
+	return render(request, 'search-map.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})
 def startmap(request):
 
 

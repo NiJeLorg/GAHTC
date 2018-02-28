@@ -2,9 +2,14 @@
 {% load staticfiles %}
 {% load bootstrap_tags %}
 
+{% block head_js_block %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API }}&libraries=places"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
+{% endblock %}
 {% block css_block %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 {% endblock %}
+
 
 {% block content %}
 <div class="search-map">
@@ -13,17 +18,28 @@
         <p class="search-text">Map builder is a new tool to create maps for your lectures. Select from recent projects or create a new map by searching for a location below</p>
         <div class="search-holder">
             <div class="search-bar longbar">
-                <input type="text" class="search-input">
-                <button class="btn btn-default pull-right search-button">
+                <input type="text" class="search-input" autocomplete="off" id="search-value" >
+                <button class="btn btn-default pull-right search-button" >
                     <i class="fa fa-search search-icon" ></i>
                 </button>
             </div>
             <div>
-                <a href="{% url 'mapbuilder:startmap' %}" class="create-button btn-next">Start A New Map</a>
+                <a href="{% url 'mapbuilder:startmap' %}" class="create-button btn-next"  id="submit-search" >Start A New Map</a>
             </div>
         </div>
     </div>
-    
 </div>
+<script> 
+$("input").geocomplete();
+
+window.onload = function(){
+    document.getElementById('submit-search').addEventListener('click', function() {
+        var searchValue = document.getElementById('search-value').value;
+        localStorage.setItem('searchValue', searchValue);
+        console.log(localStorage.searchValue);
+    });
+};
+</script>
+
 {% endblock %}
 

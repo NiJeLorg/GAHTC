@@ -47,9 +47,22 @@ const searchControl = new z.GeoSearchControl({
 provider:provider,
 style: 'button',
 key:'{{ GOOGLE_MAPS_API }}',
+autoClose: true,
+showMarker: true,
+marker: {                                           // optional: L.Marker    - default L.Icon.Default
+    icon: new L.Icon.Default(),
+    draggable: false,
+  },
 });
 
 map.addControl(searchControl)
+
+window.onload = function() {
+  var searchBox = document.getElementsByClassName('glass');
+  searchBox.value = localStorage.getItem('searchValue');
+  console.log(searchBox);
+
+}
 
 // Toggle Between layers
 $('.layer-buttons').click(function(e) {       

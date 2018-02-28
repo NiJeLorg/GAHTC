@@ -162,6 +162,10 @@ h3 {
     text-transform: none;
 }
 
+h1 {
+    font-weight: bold;
+}
+
 .searchbar {
     width:250px;
 }
@@ -171,3 +175,10 @@ h3 {
   
 }
 
+.pac-container {
+    font-size: 14px;
+}
+
+.pac-container .pac-item{
+    font-size: 12px;
+}
