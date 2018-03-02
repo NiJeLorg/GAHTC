@@ -66,7 +66,8 @@
     display: flex;
 }
 .search-bar {
-    display: inline-flex;
+    position: relative;
+    display: inline-block;
     width: 306px;
     height: 50px;
     margin-left: 20px;
@@ -80,17 +81,24 @@
 
 .search-button {
     width: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
 }
 search-icon{
     color: #969696;
     font-weight: bold;
 }
 .search-input {
-    flex-grow: 1;
     border: 0;
     padding-left: 0;
     font-size: 18px;
     color: #969696;
+    width: 100%;
+    height: 100%;
+    padding-left: 50px;
+    font-weight: normal;
 }
 
 .start-map {
