@@ -94,12 +94,11 @@ search-icon{
 }
 
 .start-map {
-    margin-bottom: auto;
     height: 100%;
-    padding: 120px 368px 0px 460px;
+    width: 42vw;
+    margin: 70px auto auto;
 }
 .main-title {
-    /* width: 601px; */
     font-family: LinLibertineZ;
     font-size: 87px;
     font-weight: normal;
@@ -113,7 +112,6 @@ search-icon{
 }
 .sub-title {
     text-transform: none;
-    /* width: 601px; */
     font-family: LinLibertineZ;
     margin-top: 0;
     font-size: 65px;
@@ -135,8 +133,14 @@ search-icon{
   text-align: left;
   align-items: center;
   color: #323232;
+  margin: 25px 0;
 }
 
 .start-btn {
     margin-left: 20px;
+}
+
+.start-bar {
+    margin-left: 0;
+    width: 70%;
 }

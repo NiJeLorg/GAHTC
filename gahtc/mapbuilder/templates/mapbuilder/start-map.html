@@ -2,6 +2,11 @@
 {% load staticfiles %}
 {% load bootstrap_tags %}
 
+<!-- {% block head_js_block %}
+<script src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
+<script src="jquery.geocomplete.js"></script>
+{% endblock %} -->
+
 {% block css_block %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 {% endblock %}
@@ -13,14 +18,17 @@
     <p class="start-content">Map builder is a new tool to create maps for your lectures. Select to start from your 
     recent projects or create a new map by searching for a location below.</p>
     <div class="index-content">
-        <div class="search-bar">
-        <button class="search-button">
+        <div class="search-bar start-bar">
+        <button class="search-button ">
             <i class="fa fa-search search-icon"></i>
         </button>
         <input type="text" class="search-input" placeholder="Search for a map">  
         </div>
         <a class="button btn-next start-btn">Start A New Map</a>
     </div> 
+    <script>
+        
+    </script>
 </div>
 
 {% endblock %}
