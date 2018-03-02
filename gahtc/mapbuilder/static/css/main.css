@@ -92,3 +92,51 @@ search-icon{
     font-size: 18px;
     color: #969696;
 }
+
+.start-map {
+    margin-bottom: auto;
+    height: 100%;
+    padding: 120px 368px 0px 460px;
+}
+.main-title {
+    /* width: 601px; */
+    font-family: LinLibertineZ;
+    font-size: 87px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 0.92;
+    letter-spacing: normal;
+    text-align: center;
+    color: #323232;
+    margin-bottom: 0;
+}
+.sub-title {
+    text-transform: none;
+    /* width: 601px; */
+    font-family: LinLibertineZ;
+    margin-top: 0;
+    font-size: 65px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 0.92;
+    letter-spacing: normal;
+    text-align: center;
+    color: #323232;
+}
+.start-content {
+  font-family: SourceSansPro;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  align-items: center;
+  color: #323232;
+}
+
+.start-btn {
+    margin-left: 20px;
+}

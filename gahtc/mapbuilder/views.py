@@ -13,10 +13,16 @@ from django.http import HttpResponse
 
 def index(request):
 
-
 	"""
 	  Index page
 	"""
 
 	return render(request, 'mapbuilder/index.html')
 
+def startmap(request):
+
+	"""
+	  Index page
+	"""
+
+	return render(request, 'mapbuilder/start-map.html')
