@@ -1,0 +1,30 @@
+{% extends "website/base.html" %}
+{% load staticfiles %}
+{% load bootstrap_tags %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mapbuilder">
+    <h3 class="map-header">
+        GAHTC Map Builder
+    </h3>
+    <p id="map-page-content">Map Builder is a tool to help create historical maps using web mapping technology, we can fill this space with more content to help a user learn how it works. </p>
+    <div class="button-holder">
+        <a class="button" >Create A New Map</a>
+        <a class="button btn-next">Edit An Existing Map</a>
+    </div>
+    <div class="index-content">
+        <span class="map-index">Community Map Index</span>
+        <div class="search-bar">
+        <button class="search-button">
+            <i class="fa fa-search search-icon"></i>
+        </button>
+        <input type="text" class="search-input" placeholder="Search for a map">  
+        </div>
+    </div> 
+    
+</div>
+{% endblock %}
