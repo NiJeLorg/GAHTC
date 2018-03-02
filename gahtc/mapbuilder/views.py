@@ -25,4 +25,4 @@ def startmap(request):
 	  Index page
 	"""
 
-	return render(request, 'mapbuilder/start-map.html')
+	return render(request, 'mapbuilder/start-map.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})

@@ -2,10 +2,10 @@
 {% load staticfiles %}
 {% load bootstrap_tags %}
 
-<!-- {% block head_js_block %}
-<script src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
-<script src="jquery.geocomplete.js"></script>
-{% endblock %} -->
+{% block head_js_block %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API }}&libraries=places"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
+{% endblock %}
 
 {% block css_block %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
@@ -22,12 +22,19 @@
         <button class="search-button ">
             <i class="fa fa-search search-icon"></i>
         </button>
-        <input type="text" class="search-input" placeholder="Search for a map">  
+        <input type="text" class="search-input" placeholder="Search for a your location" id="search-value">  
         </div>
-        <a class="button btn-next start-btn">Start A New Map</a>
+        <a class="button btn-next start-btn" id="submit-search">Start A New Map</a>
     </div> 
     <script>
-        
+       $("input").geocomplete();
+        window.onload = function(){
+        document.getElementById('submit-search').addEventListener('click', function() {
+        var searchValue = document.getElementById('search-value').value;
+        localStorage.setItem('searchValue', searchValue);
+        console.log(localStorage.searchValue);
+            });
+        }; 
     </script>
 </div>
 
