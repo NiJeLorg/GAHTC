@@ -57,12 +57,23 @@ marker: {                                           // optional: L.Marker    - d
 
 map.addControl(searchControl)
 
-window.onload = function() {
-  var searchBox = document.getElementsByClassName('glass');
-  searchBox.value = localStorage.getItem('searchValue');
-  console.log(searchBox);
+// window.onload = function() {
+//   var searchBox = document.getElementsByClassName('glass')[0];
+//   searchBox.value = localStorage.getItem('searchValue');
+//   $('.geosearch').click();
+//   console.log(searchBox);
 
-}
+// }
+
+$(document).ready(function(){
+  var searchBox = document.getElementsByClassName('glass')[0];
+  searchBox.value = localStorage.getItem('searchValue');
+  
+  $('.geosearch').addClass('active');
+  $('.geosearch > form').addClass('active');
+  $('.leaflet-control-geosearch').click();
+  $(searchBox).focus().trigger('keypress');
+});
 
 // Toggle Between layers
 $('.layer-buttons').click(function(e) {       

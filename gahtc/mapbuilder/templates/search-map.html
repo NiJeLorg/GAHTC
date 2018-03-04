@@ -33,9 +33,11 @@
 $("input").geocomplete();
 
 window.onload = function(){
-    document.getElementById('submit-search').addEventListener('click', function() {
+    document.getElementById('submit-search').addEventListener('click', function(event) {
+        event.preventDefault();
         var searchValue = document.getElementById('search-value').value;
         localStorage.setItem('searchValue', searchValue);
+        window.location = $(event.target).attr('href');
         console.log(localStorage.searchValue);
     });
 };
