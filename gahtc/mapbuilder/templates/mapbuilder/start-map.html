@@ -24,17 +24,14 @@
         </button>
         <input type="text" class="search-input" placeholder="Search for a your location" id="search-value">  
         </div>
-        <a class="button btn-next start-btn" id="submit-search">Start A New Map</a>
-    </div> 
+        <a  href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New Map</a>
     <script>
-       $("input").geocomplete();
-        window.onload = function(){
-        document.getElementById('submit-search').addEventListener('click', function() {
-        var searchValue = document.getElementById('search-value').value;
-        localStorage.setItem('searchValue', searchValue);
-        console.log(localStorage.searchValue);
-            });
-        }; 
+       $("input").geocomplete().bind("geocode:result", function(event, result){
+           var lat = result.geometry.location.lat()
+           var long = result.geometry.location.lng()
+           localStorage.setItem('lat',lat)
+           localStorage.setItem('long', long)
+       })
     </script>
 </div>
 
