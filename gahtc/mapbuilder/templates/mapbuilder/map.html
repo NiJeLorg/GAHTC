@@ -35,21 +35,20 @@
       var long = localStorage.getItem('long');
 
   // initialize the map
-  var map = L.map('map').setView([lat, long], 5);
-  
+  var map = L.map('map').setView([lat, long], 10);
+  var marker = L.marker([lat, long]).addTo(map);
+
   var roads = L.gridLayer.googleMutant({
         type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
       }).addTo(map);
 
-  // Add GeorSearch 
+  // Add GeoSearch 
   var z = window.GeoSearch;
   const provider = new z.GoogleProvider();
   const searchControl = new z.GeoSearchControl({
     provider:provider,
     style: 'button',
     key:'{{ GOOGLE_MAPS_API }}',
-    autoClose: true,
-    showMarker: true,
   });
 
 
