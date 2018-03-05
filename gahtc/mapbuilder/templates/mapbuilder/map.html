@@ -35,7 +35,7 @@
       var long = localStorage.getItem('long');
 
   // initialize the map
-  var map = L.map('map').setView([lat, long], 10);
+  var map = L.map('map').setView([lat, long],6);
   var marker = L.marker([lat, long]).addTo(map);
 
   var roads = L.gridLayer.googleMutant({
