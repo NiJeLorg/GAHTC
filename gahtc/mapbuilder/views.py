@@ -35,12 +35,3 @@ def map(request):
 	"""
 
 	return render(request, 'mapbuilder/map.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})
-
-def mapextent(request):
-
-
-	"""
-	  map extent page
-	"""
-
-	return render(request, 'mapbuilder/map-extent.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})
