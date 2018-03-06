@@ -13,10 +13,25 @@ from django.http import HttpResponse
 
 def index(request):
 
-
 	"""
 	  Index page
 	"""
 
 	return render(request, 'mapbuilder/index.html')
 
+def startmap(request):
+
+	"""
+	  Index page
+	"""
+
+	return render(request, 'mapbuilder/start-map.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})
+
+def map(request):
+
+
+	"""
+	  map page
+	"""
+
+	return render(request, 'mapbuilder/map.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})
