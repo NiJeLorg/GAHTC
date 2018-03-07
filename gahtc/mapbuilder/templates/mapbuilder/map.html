@@ -12,6 +12,7 @@
  <script type="text/javascript" src="https://unpkg.com/leaflet-geosearch@2.6.0/dist/bundle.min.js"></script>
  <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
  <link  href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" rel="stylesheet" />
+
 {% endblock %}
 
 {% block css_block %}
@@ -21,7 +22,7 @@
 {% block content%}
   <div class="map-header">
     <h3 class="map-header-text"><strong>Step 1: </strong>Refine Your Location Search</h3>
-    <a class="button step-button" >Next</a>
+    <a class="button step-button" href="{% url 'mapbuilder:map-extent' %}">Next</a>
   </div>
   <div id="map"></div>
     <div class="layer-switcher">
@@ -31,17 +32,20 @@
     </div>
   <script>
 
-      var lat = localStorage.getItem('lat');
-      var long = localStorage.getItem('long');
+  var lat = localStorage.getItem('lat');
+  var long = localStorage.getItem('long');
+  var center = [lat, long]
 
   // initialize the map
-  var map = L.map('map').setView([lat, long],6);
+  var map = L.map('map', {
+          center: center,
+          zoom:5,
+      })
   var marker = L.marker([lat, long]).addTo(map);
-
   var roads = L.gridLayer.googleMutant({
-        type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-      }).addTo(map);
-
+      type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
+    }).addTo(map);
+  
   // Add GeoSearch 
   var z = window.GeoSearch;
   const provider = new z.GoogleProvider();
@@ -73,5 +77,6 @@ $('.layer-buttons').click(function(e) {
       }).addTo(map);
     }
 });
+
   </script>
 {% endblock%}
