@@ -14,6 +14,7 @@
  <link  href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" rel="stylesheet" />
  <script type="text/javascript" src="http://heyman.github.io/leaflet-areaselect/src/leaflet-areaselect.js"></script>
  <link rel="stylesheet" href="https://heyman.github.io/leaflet-areaselect/src/leaflet-areaselect.css">
+ <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.4/leaflet-image.js'></script>
 {% endblock %}
 
 {% block css_block %}
@@ -22,8 +23,8 @@
   
 {% block content%}
   <div class="map-header">
-    <h3 class="map-header-text"><strong>Step 2: </strong>Set Your Map Canvas Extent</h3>
-    <a class="button step-button" >Done</a>
+    <h3 class="map-header-text"><strong>Pre historic Australia </strong></h3>
+    <a class="button step-button"  href="{% url 'mapbuilder:map-export' %}" >Done</a>
   </div>
   <div id="map"></div>
     <div class="layer-switcher">
@@ -49,15 +50,16 @@
         }).addTo(map);
         
     // Add it to the map
-    var areaSelect = L.areaSelect({width:200, height:300});
+    var areaSelect = L.areaSelect({width:300, height:200});
     areaSelect.addTo(map);
 
     // Read the bounding box
     var bounds = areaSelect.getBounds();
     
-    // Get a callback when the bounds change
     areaSelect.on("change", function() {
-        this.getBounds();
+        var bounds=this.getBounds();
+        localStorage.setItem('zoom', map.getZoom());
+        localStorage.setItem('bounds', JSON.stringify(bounds));
     });
 
     // Toggle Between layers
@@ -79,6 +81,5 @@
         }).addTo(map);
         }
     });
-
   </script>
 {% endblock%}

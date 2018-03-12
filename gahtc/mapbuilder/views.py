@@ -44,3 +44,12 @@ def mapextent(request):
 	"""
 
 	return render(request, 'mapbuilder/map-extent.html')
+
+def mapexport(request):
+
+
+	"""
+	  map page
+	"""
+
+	return render(request, 'mapbuilder/map-export.html')
