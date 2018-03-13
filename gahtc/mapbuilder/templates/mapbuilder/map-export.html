@@ -37,21 +37,20 @@
     var center = [lat, long]
     var zoom = localStorage.getItem('zoom');
     var mapBound = JSON.parse(localStorage.getItem('bounds'));
-    var southWest = L.LatLng(mapBound._southWest.lat, mapBound._southWest.lng),
-        northEast = L.LatLng(mapBound._northEast.lat, mapBound._northEast.lng),
-        mapBounds = L.LatLngBounds(southWest, northEast);
+    var southWest = [mapBound._southWest.lat, mapBound._southWest.lng],
+        northEast = [mapBound._northEast.lat, mapBound._northEast.lng],
+        mapBounds = [southWest, northEast];
 
 // initialize the map
 var map = L.map('map', {
     center: center,
     zoom: zoom,
-    maxBounds: mapBounds,
 });
 var marker = L.marker(center).addTo(map);
 var roads = L.gridLayer.googleMutant({
     type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
 }).addTo(map);
-
+map.fitBounds(mapBounds);
 </script>
 
 {% endblock%}
