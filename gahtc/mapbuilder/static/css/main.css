@@ -162,6 +162,7 @@ search-icon{
     padding: 10px 50px ;
     position: relative;
     background: #EFE493;
+    border: solid 1px #979797;
 }
 
 .map-header-text {
@@ -224,3 +225,48 @@ search-icon{
      background: #FFFFFF;
  }
 
+ .modal {
+    display:block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 340px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+}
+
+.modal-content {
+    background-color:rgba(251, 237, 144, 0.6);
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+}
+
+.close-button {
+    color: #999999;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.ok-button {
+    display: block;
+    margin: 10px auto;
+}
+#project-title {
+    width: 255px;
+    height: 53px;
+    padding: 20px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    border: solid 1px #b7bbc0;
+}

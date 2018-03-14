@@ -14,7 +14,8 @@
  <link  href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" rel="stylesheet" />
  <script type="text/javascript" src="http://heyman.github.io/leaflet-areaselect/src/leaflet-areaselect.js"></script>
  <link rel="stylesheet" href="https://heyman.github.io/leaflet-areaselect/src/leaflet-areaselect.css">
- <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.4/leaflet-image.js'></script>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.0/dist/leaflet.draw.css" />
+ <script src="https://unpkg.com/leaflet-draw@0.4.0/dist/leaflet.draw.js"></script>
 {% endblock %}
 
 {% block css_block %}
@@ -31,6 +32,17 @@
     </div>
   </div>
   <div id="map"></div>
+  <div id="map-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Lets Make Your Map</h3>
+        <label for="">Name Your Project</label>
+        <input  id="project-title" type="text" placeholder="prehistoric australia">
+        <a class="button ok-button">OK</a>
+    </div>
+    
+ </div>
+
 <script>
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
@@ -43,6 +55,7 @@
 
 // initialize the map
 var map = L.map('map', {
+    drawControl: true,
     center: center,
     zoom: zoom,
 });
@@ -51,6 +64,20 @@ var roads = L.gridLayer.googleMutant({
     type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
 }).addTo(map);
 map.fitBounds(mapBounds);
+
+
+
+$('.close-button').click(function(e){
+    $('.modal').css("display","none");
+});
+$('.ok-button').click(function(e){
+    $('.modal').css("display","none");
+});
+
+$(window).click(function(e){
+    $('.modal').css("display","none"); 
+})
+
 </script>
 
 {% endblock%}
