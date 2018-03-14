@@ -240,9 +240,22 @@ search-icon{
 .modal-content {
     background-color:rgba(251, 237, 144, 0.6);
     margin: auto;
-    padding: 20px;
+    padding: 20px 75px;
     border: 1px solid #888;
     width: 40%;
+}
+.modal-title {
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    text-transform: none;
+    font-size: 27px;
+    margin-bottom: 37px;
+}
+
+.label-title {
+    font-weight: normal;
+    margin-right: 10px;
 }
 
 .close-button {
@@ -260,7 +273,7 @@ search-icon{
 }
 .ok-button {
     display: block;
-    margin: 10px auto;
+    margin: 24px auto;
 }
 #project-title {
     width: 255px;
