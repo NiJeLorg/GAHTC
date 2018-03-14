@@ -25,7 +25,7 @@ def startmap(request):
 	  Index page
 	"""
 
-	return render(request, 'mapbuilder/start-map.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})
+	return render(request, 'mapbuilder/start-map.html')
 
 def map(request):
 
@@ -34,7 +34,7 @@ def map(request):
 	  map page
 	"""
 
-	return render(request, 'mapbuilder/map.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})
+	return render(request, 'mapbuilder/map.html')
 
 def mapextent(request):
 
@@ -43,4 +43,13 @@ def mapextent(request):
 	  map page
 	"""
 
-	return render(request, 'mapbuilder/map-extent.html', context={'GOOGLE_MAPS_API': settings.GOOGLE_MAPS_API})
+	return render(request, 'mapbuilder/map-extent.html')
+
+def mapexport(request):
+
+
+	"""
+	  map page
+	"""
+
+	return render(request, 'mapbuilder/map-export.html')

@@ -208,4 +208,19 @@ search-icon{
  .step-button:hover, .step-button:focus {
     color: #ffffff;
  }
- 
+
+ .step-button-holder {
+     display: flex;
+     position: absolute;
+     top: 25px;
+     right: 108px;
+ }
+
+ .button-group {
+     width: 150px;
+     margin: 0 5px;
+ }
+ .white-header {
+     background: #FFFFFF;
+ }
+
