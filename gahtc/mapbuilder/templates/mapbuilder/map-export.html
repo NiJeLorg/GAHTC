@@ -31,7 +31,7 @@
     <div class="step-button-holder">
         <a class="button button-group" >My Maps</a>
         <a class="button button-group" >Save</a>
-        <a class="button button-group" >Publish</a>
+        <a class="button button-group" id="publish" >Publish</a>
     </div>
   </div>
   <div id="map"></div>
@@ -46,6 +46,34 @@
     
  </div>
 
+  <div class="publish-modal">
+        <div class="publish-modal-content">
+            <div class="title-holder">Publish Your Map!</h3></div>
+            <div class="content-holder">
+                <div class="img-holder" >
+                </div>
+                <div class="publish-image">
+                    <h4 class="modal-sub">File Size</h4>
+                    <div class="button-switcher"> 
+                        <button class="size-btn">Small</button>
+                        <button class="size-btn">Medium</button>
+                        <button class="size-btn">Large</button>
+                    </div>
+                    <div class="publish-options">
+                        <h4 class="modal-sub">File Format</h4>
+                        <input type="radio" > JPEG<br>
+                        <input type="radio" > PNG<br>
+                        <input type="radio" > PDF
+                        <a class="button download" >Download</a>
+                        <input type="checkbox" name="" id="">Share your map with the
+                        GAHTC community in the
+                        Map Index?
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+  </div>
 <script>
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
@@ -102,6 +130,12 @@ $('#editIcon').click(function(e){
 });
 
 
+map.fitBounds(mapBounds);
+
+// publish modal
+$('#publish').click(function(e){
+    $('.publish-modal').css("display","block");
+});
 </script>
 
 {% endblock%}

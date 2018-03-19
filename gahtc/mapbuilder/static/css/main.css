@@ -297,3 +297,90 @@ search-icon{
     cursor: pointer;
 }
 
+.publish-modal {
+    display:none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 230px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.5);
+    /* overflow: auto;  */
+}
+
+.publish-modal-content {
+    background-color: #ffffff;
+    margin: auto;
+    padding: 0 75px;
+    border: 1px solid #888;
+    width: 75%;
+    height: 80%;
+    box-shadow: 0 1px 20px rgba(0,0,0,0.5);
+}
+.title-holder {
+    font-size: 24px;
+    font-style: normal;
+    font-stretch: normal;
+    font-weight: bold;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #323232;
+    padding: 19px 0;
+}
+.content-holder {
+    display: flex;
+}
+
+.img-holder {
+    display: inline-block;
+    margin-bottom: 8px;
+    border: 1px dashed;
+    margin-right: 10px;
+    flex: 2;
+
+}
+
+.publish-image {
+    display: inline-block;
+    margin-left: 25px;
+    flex: 1;
+}
+.modal-sub {
+    height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    text-transform: none;
+}
+.button-switcher {
+    height: 38px;
+    width: 250px;
+    background: white;
+    border: 1px solid;
+    border-color: black;
+    display: flex;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.size-btn {
+    width: 93px;
+    height: 36px;
+    display: block;
+    color: black;
+    font-size: 14px;
+}
+.size-btn:hover, .size-btn:focus {
+   background:#fbed90cc;
+ }
+ .download {
+    width: 100px;
+    height: 40px;
+    margin: 10px 0;
+    display: block;
+    line-height: 40px;
+    font-size: 16px;
+}
