@@ -56,10 +56,13 @@
 // initialize the map
 var map = L.map('map', {
     center: center,
-    zoom: zoom,
+    minZoom: zoom,
+    maxBounds: mapBounds,
 });
 
 map.fitBounds(mapBounds);
+
+
 var marker = L.marker(center).addTo(map);
 var roads = L.gridLayer.googleMutant({
     type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
