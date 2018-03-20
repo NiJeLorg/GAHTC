@@ -315,7 +315,7 @@ search-icon{
     margin: auto;
     padding: 0 75px;
     border: 1px solid #888;
-    width: 75%;
+    width: 60%;
     height: 80%;
     box-shadow: 0 1px 20px rgba(0,0,0,0.5);
 }
@@ -328,7 +328,7 @@ search-icon{
     letter-spacing: normal;
     text-align: left;
     color: #323232;
-    padding: 19px 0;
+    padding: 40px 0;
 }
 .content-holder {
     display: flex;
@@ -341,6 +341,11 @@ search-icon{
     margin-right: 10px;
     flex: 2;
 
+}
+
+img {
+    height: 100%; 
+    width: 100%;
 }
 
 .publish-image {
