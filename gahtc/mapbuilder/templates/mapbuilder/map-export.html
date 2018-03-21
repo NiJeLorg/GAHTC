@@ -24,7 +24,10 @@
   
 {% block content%}
   <div class="map-header white-header">
-    <h3 class="map-header-text" id="projectname">Prehistoric Australia</h3>
+    <div>
+        <h3 class="map-header-text" id="projectname">Prehistoric Australia</h3>
+        <span class="glyphicon glyphicon-pencil edit-icon" id="editIcon"></span></p>
+    </div>
     <div class="step-button-holder">
         <a class="button button-group" >My Maps</a>
         <a class="button button-group" >Save</a>
@@ -94,6 +97,9 @@ $('.ok-button').click(function(e){
     $("#projectname").html(val);
 });
 
+$('#editIcon').click(function(e){
+    $('.modal').css("display","block");
+});
 
 
 </script>
