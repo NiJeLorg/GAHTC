@@ -24,7 +24,7 @@
   
 {% block content%}
   <div class="map-header white-header">
-    <h3 class="map-header-text">Prehistoric Australia</h3>
+    <h3 class="map-header-text" id="projectname">Prehistoric Australia</h3>
     <div class="step-button-holder">
         <a class="button button-group" >My Maps</a>
         <a class="button button-group" >Save</a>
@@ -90,11 +90,11 @@ $('.close-button').click(function(e){
 });
 $('.ok-button').click(function(e){
     $('.modal').css("display","none");
+    var val = $("#project-title").val()
+    $("#projectname").html(val);
 });
 
-$(window).click(function(e){
-    $('.modal').css("display","none"); 
-})
+
 
 </script>
 
