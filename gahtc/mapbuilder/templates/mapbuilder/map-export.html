@@ -97,11 +97,13 @@ var map = L.map('map', {
 
 map.fitBounds(mapBounds);
 
-
-var marker = L.marker(center).addTo(map);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
 }).addTo(map);
+var marker = L.marker(center).addTo(map);
 
 // FeatureGroup is to store editable layers
 var drawnItems = new L.FeatureGroup();
@@ -133,8 +135,6 @@ $('#editIcon').click(function(e){
     $('.modal').css("display","block");
 });
 
-
-map.fitBounds(mapBounds);
 
 // publish modal
 $('#publish').click(function(e){

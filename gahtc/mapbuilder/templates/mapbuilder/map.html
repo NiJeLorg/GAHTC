@@ -42,10 +42,15 @@
           zoom:5,
       })
   var marker = L.marker([lat, long]).addTo(map);
-  var roads = L.gridLayer.googleMutant({
-      type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
-    }).addTo(map);
+
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+}).addTo(map);
   
+
   // Add GeoSearch 
   var z = window.GeoSearch;
   const provider = new z.GoogleProvider();
