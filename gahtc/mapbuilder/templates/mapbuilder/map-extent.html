@@ -55,13 +55,12 @@
 
     // Read the bounding box
     var bounds = areaSelect.getBounds();
-    console.log("bounds1", bounds)
     localStorage.setItem('zoom', map.getZoom());
     localStorage.setItem('bounds', JSON.stringify(bounds));
-
+    
+   
     areaSelect.on("change", function() {
         var bounds=this.getBounds();
-        console.log(bounds)
         localStorage.setItem('zoom', map.getZoom());
         localStorage.setItem('bounds', JSON.stringify(bounds));
         
