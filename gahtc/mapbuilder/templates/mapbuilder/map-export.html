@@ -143,10 +143,13 @@ $('#publish').click(function(e){
 
 // leaflet image
 leafletImage(map, function(err, canvas) {
-    var img = document.createElement('img');
-    img.src = canvas.toDataURL();
-    document.getElementById('images').innerHTML = '';
-    document.getElementById('images').appendChild(img);
+    // var img = document.createElement('img');
+    // img.src = canvas.toDataURL();
+    const url = canvas.toDataURL();
+    document.getElementById('images').style['background']="url(" + url +  ") no-repeat center" ;
+
+    // document.getElementById('images').appendChild(img);
+    
 });
 </script>
 
