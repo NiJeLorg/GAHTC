@@ -14,7 +14,8 @@
  <link  href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" rel="stylesheet" />
  <script type="text/javascript" src="http://heyman.github.io/leaflet-areaselect/src/leaflet-areaselect.js"></script>
  <link rel="stylesheet" href="https://heyman.github.io/leaflet-areaselect/src/leaflet-areaselect.css">
- <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.4/leaflet-image.js'></script>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.0/dist/leaflet.draw.css" />
+ <script src="https://unpkg.com/leaflet-draw@0.4.0/dist/leaflet.draw.js"></script>
 {% endblock %}
 
 {% block css_block %}
@@ -23,7 +24,10 @@
   
 {% block content%}
   <div class="map-header white-header">
-    <h3 class="map-header-text">Prehistoric Australia</h3>
+    <div>
+        <h3 class="map-header-text" id="projectname">Prehistoric Australia</h3>
+        <span class="glyphicon glyphicon-pencil edit-icon" id="editIcon"></span></p>
+    </div>
     <div class="step-button-holder">
         <a class="button button-group" >My Maps</a>
         <a class="button button-group" >Save</a>
@@ -31,6 +35,17 @@
     </div>
   </div>
   <div id="map"></div>
+  <div id="map-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3 class="modal-title">Lets Make Your Map!</h3>
+        <label class="label-title" for="">Name Your Project</label>
+        <input  id="project-title" type="text" placeholder="prehistoric australia">
+        <a class="button ok-button">OK</a>
+    </div>
+    
+ </div>
+
 <script>
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
@@ -44,13 +59,49 @@
 // initialize the map
 var map = L.map('map', {
     center: center,
-    zoom: zoom,
+    minZoom: zoom,
+    maxBounds: mapBounds,
 });
+
+map.fitBounds(mapBounds);
+
+
 var marker = L.marker(center).addTo(map);
 var roads = L.gridLayer.googleMutant({
     type: 'roadmap', // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
 }).addTo(map);
-map.fitBounds(mapBounds);
+
+// FeatureGroup is to store editable layers
+var drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+var drawControl = new L.Control.Draw({
+    edit: {
+        featureGroup: drawnItems
+         }
+});
+map.addControl(drawControl);
+
+
+map.on('draw:created', function (e) {
+   var type = e.layerType,
+       layer = e.layer;
+   drawnItems.addLayer(layer);
+});
+
+$('.close-button').click(function(e){
+    $('.modal').css("display","none");
+});
+$('.ok-button').click(function(e){
+    $('.modal').css("display","none");
+    var val = $("#project-title").val()
+    $("#projectname").html(val);
+});
+
+$('#editIcon').click(function(e){
+    $('.modal').css("display","block");
+});
+
+
 </script>
 
 {% endblock%}

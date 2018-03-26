@@ -55,11 +55,15 @@
 
     // Read the bounding box
     var bounds = areaSelect.getBounds();
+    localStorage.setItem('zoom', map.getZoom());
+    localStorage.setItem('bounds', JSON.stringify(bounds));
     
+   
     areaSelect.on("change", function() {
         var bounds=this.getBounds();
         localStorage.setItem('zoom', map.getZoom());
         localStorage.setItem('bounds', JSON.stringify(bounds));
+        
     });
 
     // Toggle Between layers
