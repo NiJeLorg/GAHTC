@@ -14,12 +14,9 @@
  <link  href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" rel="stylesheet" />
  <script type="text/javascript" src="http://heyman.github.io/leaflet-areaselect/src/leaflet-areaselect.js"></script>
  <link rel="stylesheet" href="https://heyman.github.io/leaflet-areaselect/src/leaflet-areaselect.css">
-<<<<<<< HEAD
  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.0/dist/leaflet.draw.css" />
  <script src="https://unpkg.com/leaflet-draw@0.4.0/dist/leaflet.draw.js"></script>
-=======
  <script src="https://cdn.rawgit.com/dbazile/leaflet-image/gh-pages/leaflet-image.js"></script>
->>>>>>> feat(mapbuilder): add map image to modal
 {% endblock %}
 
 {% block css_block %}
@@ -52,6 +49,7 @@
 
   <div class="publish-modal">
         <div class="publish-modal-content">
+            <span class="close-button">&times;</span>
             <div class="title-holder">Publish Your Map!</h3></div>
             <div class="content-holder">
                 <div class="img-holder" id="images" >
@@ -97,13 +95,14 @@ var map = L.map('map', {
 
 map.fitBounds(mapBounds);
 
+var marker = L.marker(center).addTo(map);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 18,
+    // maxZoom: 18,
     id: 'mapbox.streets',
     accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
 }).addTo(map);
-var marker = L.marker(center).addTo(map);
+
 
 // FeatureGroup is to store editable layers
 var drawnItems = new L.FeatureGroup();

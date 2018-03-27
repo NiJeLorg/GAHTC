@@ -47,7 +47,7 @@
       var marker = L.marker(center).addTo(map);
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
+        // maxZoom: 18,
         id: 'mapbox.streets',
         accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
     }).addTo(map);
@@ -58,7 +58,6 @@
     var areaSelect = L.areaSelect({width:300, height:200});
     areaSelect.addTo(map);
 
-    console.log({ MAPBOX_ACCESS_TOKEN })
     // Read the bounding box
     var bounds = areaSelect.getBounds();
     localStorage.setItem('zoom', map.getZoom());
@@ -69,10 +68,8 @@
         var bounds=this.getBounds();
         localStorage.setItem('zoom', map.getZoom());
         localStorage.setItem('bounds', JSON.stringify(bounds));
-        
     });
    
-
 
 
     // Toggle Between layers
