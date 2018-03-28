@@ -38,7 +38,7 @@
   <div id="map"></div>
   <div id="map-modal" class="modal">
     <div class="modal-content">
-        <span class="close-button">&times;</span>
+        <span class="close-button" id="close-button">&times;</span>
         <h3 class="modal-title">Lets Make Your Map!</h3>
         <label class="label-title" for="">Name Your Project</label>
         <input  id="project-title" type="text" placeholder="prehistoric australia">
@@ -49,7 +49,7 @@
 
   <div class="publish-modal">
         <div class="publish-modal-content">
-            <span class="close-button">&times;</span>
+            <span class="close-button close-icon" id="close-icon">&times;</span>
             <div class="title-holder">Publish Your Map!</h3></div>
             <div class="content-holder">
                 <div class="img-holder" id="images" >
@@ -121,7 +121,7 @@ map.on('draw:created', function (e) {
    drawnItems.addLayer(layer);
 });
 
-$('.close-button').click(function(e){
+$('#close-button').click(function(e){
     $('.modal').css("display","none");
 });
 $('.ok-button').click(function(e){
@@ -138,6 +138,10 @@ $('#editIcon').click(function(e){
 // publish modal
 $('#publish').click(function(e){
     $('.publish-modal').css("display","block");
+});
+
+$('#close-icon').click(function(e){
+    $('.publish-modal').css("display","none");
 });
 
 // leaflet image
