@@ -35,20 +35,15 @@
   var lat = localStorage.getItem('lat');
   var long = localStorage.getItem('long');
   var center = [lat, long]
-
+  var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
+  var mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
+  
   // initialize the map
   var map = L.map('map', {
           center: center,
           zoom:5,
       })
   var marker = L.marker([lat, long]).addTo(map);
-
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox.streets',
-    accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
-}).addTo(map);
   
 
   // Add GeoSearch 
@@ -63,25 +58,33 @@
 
 map.addControl(searchControl)
 
+var streets = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution, maxZoom: 18, id: 'mapbox.streets',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'}),
+    terrain = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution,maxZoom: 18, id: 'mapbox.outdoors',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'}),
+    satellite = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution,maxZoom: 18, id: 'mapbox.satellite',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'})
+
 // Toggle Between layers
 $('.layer-buttons').click(function(e) {       
     $('.layer-buttons').removeClass('button-active');    
     $(this).addClass('button-active');
     if (this.id == 'btn1') {
-      $(this).addClass('button-active');
-      var roads = L.gridLayer.googleMutant({
-        type: 'terrain'
-      }).addTo(map);
+      map.removeLayer(streets, satellite);
+      map.addLayer(terrain);
+      layerId = 'terrain';
     } else if (this.id == 'btn2'){
-      var roads = L.gridLayer.googleMutant({
-        type: 'roadmap'
-      }).addTo(map);
+      map.removeLayer(terrain, satellite);
+      map.addLayer(streets);
+      layerId = 'streets';
     } else {
-      var roads = L.gridLayer.googleMutant({
-        type: 'satellite'
-      }).addTo(map);
+      map.removeLayer(streets, terrain);
+      map.addLayer(satellite);
+      layerId = 'satellite';
     }
+    localStorage.setItem('layerId', layerId);
+    console.log(localStorage.getItem('layerId'))
 });
 
+$(document).ready(function() {
+   $("#btn2").trigger('click');
+});
   </script>
 {% endblock%}

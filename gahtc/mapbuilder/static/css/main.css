@@ -379,7 +379,7 @@ img {
     color: black;
     font-size: 14px;
 }
-.size-btn:hover, .size-btn:focus {
+.size-btn-active {
    background:#fbed90cc;
  }
  .download {

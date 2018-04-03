@@ -57,16 +57,16 @@
                 <div class="publish-image">
                     <h4 class="modal-sub">File Size</h4>
                     <div class="button-switcher"> 
-                        <button class="size-btn">Small</button>
-                        <button class="size-btn">Medium</button>
-                        <button class="size-btn">Large</button>
+                        <button class="size-btn" id="small" >Small</button>
+                        <button class="size-btn size-btn-active" id="medium" >Medium</button>
+                        <button class="size-btn" id="large" >Large</button>
                     </div>
                     <div class="publish-options">
                         <h4 class="modal-sub">File Format</h4>
-                        <input type="radio" name="fileFormat"> JPEG<br>
-                        <input type="radio" name="fileFormat" > PNG<br>
-                        <input type="radio" name="fileFormat"> PDF
-                        <a class="button download" >Download</a>
+                        <input type="radio" name="fileFormat" id="jpeg"> JPEG<br>
+                        <input type="radio" name="fileFormat" id="png"> PNG<br>
+                        <input type="radio" name="fileFormat" id="pdf"> PDF
+                        <a class="button download" id="download" >Download</a>
                         <input type="checkbox" name="" id="">Share your map with the
                         GAHTC community in the
                         Map Index?
@@ -80,6 +80,7 @@
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
     var center = [lat, long]
+    var layerId = localStorage.getItem('layerId')
     var zoom = localStorage.getItem('zoom');
     var mapBound = JSON.parse(localStorage.getItem('bounds'));
     var southWest = [mapBound._southWest.lat, mapBound._southWest.lng],
@@ -99,7 +100,7 @@ var marker = L.marker(center).addTo(map);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
     // maxZoom: 18,
-    id: 'mapbox.streets',
+    id: layerId,
     accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
 }).addTo(map);
 
@@ -119,6 +120,7 @@ map.on('draw:created', function (e) {
    var type = e.layerType,
        layer = e.layer;
    drawnItems.addLayer(layer);
+   map.addLayer(drawnItems);
 });
 
 $('#close-button').click(function(e){
@@ -146,14 +148,48 @@ $('#close-icon').click(function(e){
 
 // leaflet image
 leafletImage(map, function(err, canvas) {
-    // var img = document.createElement('img');
-    // img.src = canvas.toDataURL();
     const url = canvas.toDataURL();
     document.getElementById('images').style['background']="url(" + url +  ") no-repeat center" ;
-
-    // document.getElementById('images').appendChild(img);
-    
 });
+
+function downloadImage(err, canvas) {
+    var link = document.createElement('a');
+    if (document.getElementById('png').checked) {
+        link.download = "mymap.png";
+        link.href = canvas.toDataURL('image/png')
+        link.click()
+    } else {
+        link.download = "mymap.jpg";
+        link.href = canvas.toDataURL('image/jpeg')
+        link.click()
+    }
+    
+}
+
+$('#download').click(function(e) {
+    if (document.getElementById('pdf').checked) {
+        console.log('pdf loading')
+    } else {
+    leafletImage(map,downloadImage);
+    }  
+})
+
+
+
+// Toggle Between image size
+$('.button-switcher button').click(function() {       
+    $(this).siblings().removeClass('size-btn-active');    
+    $(this).addClass('size-btn-active');
+    if (this.id == 'small') {
+        imageQuality = 'small'
+    } else if(this.id == 'medium') {
+        imageQuality = 'medium'
+    } else {
+        imageQuality = 'large'
+    }
+})
+
+
 </script>
 
 {% endblock%}
