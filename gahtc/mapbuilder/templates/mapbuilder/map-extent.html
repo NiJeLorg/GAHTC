@@ -92,16 +92,17 @@
         if (this.id == 'btn1') {
         map.removeLayer(streets, satellite);
         map.addLayer(terrain);
-        layerId = 'terrain';
+        layerId = 'mapbox.outdoors';
         } else if (this.id == 'btn2'){
         map.removeLayer(terrain, satellite);
         map.addLayer(streets);
-        layerId = 'streets';
+        layerId = 'mapbox.streets';
         } else {
         map.removeLayer(streets, terrain);
         map.addLayer(satellite);
-        layerId = 'satellite';
+        layerId = 'mapbox.satellite';
         }
+
         localStorage.setItem('layerId', layerId);
         console.log(localStorage.getItem('layerId'))
     });
