@@ -297,6 +297,24 @@ search-icon{
     color: #000;
     cursor: pointer;
 }
+.leaflet-draw{
+    display: flex;
+}
+.leaflet-draw-toolbar {
+    display: flex;
+    border: 1px solid #979797;
+}
+.leaflet-draw-toolbar{
+    margin-top: 0 !important;
+}
+
+.leaflet-draw-actions{
+    z-index: 99999;
+}
+.leaflet-top .leaflet-control{
+    margin-top: -2px !important;
+    margin-left: 0 !important;
+}
 
 .publish-modal {
     display:none; 
@@ -393,3 +411,4 @@ img {
 .close-icon {
     font-size: 40px;
 }
+
