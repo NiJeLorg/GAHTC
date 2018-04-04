@@ -101,11 +101,19 @@ search-icon{
     font-weight: normal;
 }
 
+.start-map-container {
+    background-image: url('images/style.png');
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .start-map {
-    height: 100%;
-    width: 42vw;
-    margin: 70px auto auto;
-    /* background-image: url('images/style.png')  */
+    width: 40%;
 }
 .main-title {
     font-family: LinLibertineZ;

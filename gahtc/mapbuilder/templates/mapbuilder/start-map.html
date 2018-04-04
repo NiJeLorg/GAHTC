@@ -12,27 +12,30 @@
 {% endblock %}
 
 {% block content %}
-<div class="start-map">
-    <h1 class="main-title">GAHTC</h1>
-    <h2 class="sub-title">Map Builder</h2>
-    <p class="start-content">Map builder is a new tool to create maps for your lectures. Select to start from your 
-    recent projects or create a new map by searching for a location below.</p>
-    <div class="index-content">
-        <div class="search-bar start-bar">
-        <button class="search-button ">
-            <i class="fa fa-search search-icon"></i>
-        </button>
-        <input type="text" class="search-input" placeholder="Search for a your location" id="search-value">  
-        </div>
-        <a  href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New Map</a>
-    <script>
-       $("input").geocomplete().bind("geocode:result", function(event, result){
-           var lat = result.geometry.location.lat()
-           var long = result.geometry.location.lng()
-           localStorage.setItem('lat',lat)
-           localStorage.setItem('long', long)
-       })
-    </script>
-</div>
+<div class="start-map-container">
+    <div class="start-map">
+        <h1 class="main-title">GAHTC</h1>
+        <h2 class="sub-title">Map Builder</h2>
+        <p class="start-content">Map builder is a new tool to create maps for your lectures. Select to start from your 
+        recent projects or create a new map by searching for a location below.</p>
+        <div class="index-content">
+            <div class="search-bar start-bar">
+            <button class="search-button ">
+                <i class="fa fa-search search-icon"></i>
+            </button>
+            <input type="text" class="search-input" placeholder="Search for a your location" id="search-value">  
+            </div>
+            <a  href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New Map</a>
+        <script>
+           $("input").geocomplete().bind("geocode:result", function(event, result){
+               var lat = result.geometry.location.lat()
+               var long = result.geometry.location.lng()
+               localStorage.setItem('lat',lat)
+               localStorage.setItem('long', long)
+           })
+        </script>
+    </div>
+    
 
+</div>
 {% endblock %}
