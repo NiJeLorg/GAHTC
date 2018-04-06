@@ -270,9 +270,11 @@ search-icon{
 
 .close-button {
     color: #999999;
-    float: right;
     font-size: 28px;
     font-weight: bold;
+    position: absolute;
+    right: 35px;
+    top: 25px;
 }
 
 .close-button:hover,
@@ -340,11 +342,12 @@ search-icon{
 .publish-modal-content {
     background-color: #ffffff;
     margin: auto;
-    padding: 0 75px;
+    padding: 40px 75px;
     border: 1px solid #888;
     width: 60%;
     height: 80%;
     box-shadow: 0 1px 20px rgba(0,0,0,0.5);
+    position: relative;
 }
 .title-holder {
     font-size: 24px;
@@ -355,7 +358,7 @@ search-icon{
     letter-spacing: normal;
     text-align: left;
     color: #323232;
-    padding: 40px 0;
+    margin-bottom: 10px;
 }
 .content-holder {
     display: flex;
