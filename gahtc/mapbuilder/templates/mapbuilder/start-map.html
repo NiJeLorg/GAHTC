@@ -1,15 +1,4 @@
-{% extends 'website/base.html'%}
-{% load staticfiles %}
-{% load bootstrap_tags %}
-
-{% block head_js_block %}
-<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
-{% endblock %}
-
-{% block css_block %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-{% endblock %}
+{% extends "mapbuilder/base.html" %}
 
 {% block content %}
 <div class="start-map-container">
