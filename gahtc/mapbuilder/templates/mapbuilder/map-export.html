@@ -122,7 +122,7 @@
 
 
     const drawImage = (err, canvas) => {
-        const url = canvas.toDataURL();
+        const url = canvas.toDataURL('image/png');
         document.getElementById('images').style['background'] = "url(" + url + ") no-repeat center";
         const img = new Image
         img.src = url
@@ -161,9 +161,18 @@
 
     }
 
+    const downloadPdf = (err, canvas) => {
+        const url = canvas.toDataURL("image/svg+xml", 1.0);
+        var dimensions = map.getSize();
+        var pdf = new jsPDF('l', 'pt', 'letter');
+        pdf.addImage(url, 'PNG', 10, 10, dimensions.x * 0.5, dimensions.y * 0.5);
+        pdf.save("download.pdf");
+        
+    }
+
     $('#download').click(function (e) {
         if (document.getElementById('pdf').checked) {
-            console.log('pdf loading')
+            leafletImage(map, downloadPdf);
         } else {
             leafletImage(map, downloadImage);
         }
