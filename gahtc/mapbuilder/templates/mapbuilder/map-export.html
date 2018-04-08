@@ -30,10 +30,10 @@
         <span class="close-button close-icon" id="close-icon">&times;</span>
         <div class="title-holder">Publish Your Map!</h3>
         </div>
-        <h3>Preview</h3>
+        <h3 id="preview" >Preview</h3>
         <div class="content-holder">
             <div class="img-holder" id="images">
-                <!-- <div class="loader"></div> -->
+                <i class="fa fa-spinner fa-pulse" id="loader" ></i>
             </div>
             <div class="publish-image">
                 <h4 class="modal-sub">File Size</h4>
@@ -122,11 +122,16 @@
 
 
     const drawImage = (err, canvas) => {
-        console.log("here");
         const url = canvas.toDataURL();
-        console.log(url, 'URL');
         document.getElementById('images').style['background'] = "url(" + url + ") no-repeat center";
+        const img = new Image
+        img.src = url
+        img.onload = function(){
+            $('#loader').hide();
+        }
     }
+
+   
 
     // publish modal
     $('#publish').click(function (e) {
@@ -163,7 +168,6 @@
             leafletImage(map, downloadImage);
         }
     })
-
 
 
     // Toggle Between image size

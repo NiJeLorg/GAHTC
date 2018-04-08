@@ -370,7 +370,7 @@ search-icon{
     border: 1px dashed;
     margin-right: 10px;
     flex: 2;
-
+    text-align: center
 }
 
 img {
@@ -422,4 +422,16 @@ img {
 .close-icon {
     font-size: 40px;
 }
+
+#preview {
+    font-size: 18px;
+    font-style: normal;
+}
+
+#loader {
+    font-size: 75px;
+    margin: 95px;
+    color: #999999;
+}
+
 
