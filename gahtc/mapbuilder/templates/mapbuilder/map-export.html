@@ -166,7 +166,7 @@
         var dimensions = map.getSize();
         var pdf = new jsPDF('l', 'pt', 'letter');
         pdf.addImage(url, 'PNG', 10, 10, dimensions.x * 0.5, dimensions.y * 0.5);
-        pdf.save("download.pdf");
+        pdf.save("mymap.pdf");
         
     }
 
