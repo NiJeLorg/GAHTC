@@ -122,6 +122,47 @@ search-icon {
     width: 40%;
 }
 
+.start-map .maps-nav{
+    display: flex;
+    justify-content: space-between;
+}
+.start-map .maps-nav .nav-component{
+    display: flex;
+    flex-direction: column;
+}
+.start-map .maps-nav .nav-component .title{
+    /* My Recent Maps: */
+    font-size: 28px;
+    color: #323232;
+    text-align: left;
+}
+.start-map .maps-nav .nav-component .nav-link{
+    /* My Recent Maps: */
+    /* Line 6: */
+    text-decoration: none;
+    /*opacity: 0.4;*/
+    border-bottom: 8px solid rgba(251,237,144,0.40);
+    font-size: 18px;
+    color: #323232;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.start-map .maps-nav .nav-component .nav-action{
+    /* Rectangle 122 Copy 3: */
+    text-decoration: none;
+    background: rgba(255,255,255,0.50);
+    border: 2px solid #323232;
+    border-radius: 3px;
+    font-size: 18px;
+    color: #323232;
+    text-align: left;
+    padding: 14px;
+    margin-top: 18px;
+}
+.start-map .maps-nav .nav-component .nav-action img{
+    margin-left: 10px;
+}
 .main-title {
     font-family: LinLibertineZ;
     font-size: 87px;
