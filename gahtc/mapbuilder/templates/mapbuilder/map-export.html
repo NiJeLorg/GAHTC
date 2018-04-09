@@ -61,7 +61,7 @@
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
     var center = [lat, long]
-    var layerId = localStorage.getItem('layerId')
+    var layerId = localStorage.getItem('layerId');
     var zoom = localStorage.getItem('zoom');
     var mapBound = JSON.parse(localStorage.getItem('bounds'));
     var southWest = [mapBound._southWest.lat, mapBound._southWest.lng],
@@ -124,8 +124,8 @@
     const drawImage = (err, canvas) => {
         const url = canvas.toDataURL('image/png');
         document.getElementById('images').style['background'] = "url(" + url + ") no-repeat center";
-        const img = new Image
-        img.src = url
+        const img = new Image;
+        img.src = url;
         img.onload = function(){
             $('#loader').hide();
         }
@@ -151,11 +151,11 @@
         var link = document.createElement('a');
         if (document.getElementById('png').checked) {
             link.download = "mymap.png";
-            link.href = canvas.toDataURL('image/png')
+            link.href = canvas.toDataURL('image/png');
             link.click()
         } else {
             link.download = "mymap.jpg";
-            link.href = canvas.toDataURL('image/jpeg')
+            link.href = canvas.toDataURL('image/jpeg');
             link.click()
         }
 
