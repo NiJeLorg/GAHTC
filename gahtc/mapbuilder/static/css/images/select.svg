@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="21px" viewBox="0 0 15 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>ic/near_me/grey600 copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Name-Project" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-333.000000, -189.000000)">
+        <g id="ic/near_me/grey600" transform="translate(338.984118, 200.984118) rotate(-73.000000) translate(-338.984118, -200.984118) translate(326.984118, 188.984118)">
+            <g id="ic_near_me_24px">
+                <polygon id="Shape" points="0 0 24 0 24 24 0 24"></polygon>
+                <polygon id="Shape" fill="#999999" fill-rule="nonzero" points="21 3 3 10.53 3 11.51 9.84 14.16 12.48 21 13.46 21"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

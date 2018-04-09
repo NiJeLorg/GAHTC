@@ -1,38 +1,53 @@
-{% extends 'website/base.html'%}
-{% load staticfiles %}
-{% load bootstrap_tags %}
-
-{% block head_js_block %}
-<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
-{% endblock %}
-
-{% block css_block %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-{% endblock %}
+{% extends "mapbuilder/base.html" %}
 
 {% block content %}
-<div class="start-map">
-    <h1 class="main-title">GAHTC</h1>
-    <h2 class="sub-title">Map Builder</h2>
-    <p class="start-content">Map builder is a new tool to create maps for your lectures. Select to start from your 
-    recent projects or create a new map by searching for a location below.</p>
-    <div class="index-content">
-        <div class="search-bar start-bar">
-        <button class="search-button ">
-            <i class="fa fa-search search-icon"></i>
-        </button>
-        <input type="text" class="search-input" placeholder="Search for a your location" id="search-value">  
-        </div>
-        <a  href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New Map</a>
-    <script>
-       $("input").geocomplete().bind("geocode:result", function(event, result){
-           var lat = result.geometry.location.lat()
-           var long = result.geometry.location.lng()
-           localStorage.setItem('lat',lat)
-           localStorage.setItem('long', long)
-       })
-    </script>
-</div>
+{% load static %}
+<div class="start-map-container">
+    <div class="start-map">
+        <h1 class="main-title">GAHTC</h1>
+        <h2 class="sub-title">Map Builder</h2>
+        <p class="start-content">Map builder is a new tool to create maps for your lectures. Select to start from your
+            recent projects or create a new map by searching for a location below.</p>
+        <div class="index-content">
+            <div class="search-bar start-bar">
+                <button class="search-button ">
+                    <i class="fa fa-search search-icon"></i>
+                </button>
+                <input type="text" class="search-input" placeholder="Search for a your location" id="search-value">
+            </div>
+            <div class="step-button-holder">
+                <a href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New
+                Map</a>
+            </div>
 
-{% endblock %}
+            <script>
+                $("input").geocomplete().bind("geocode:result", function (event, result) {
+                    var lat = result.geometry.location.lat();
+                    var long = result.geometry.location.lng();
+                    localStorage.setItem('lat', lat);
+                    localStorage.setItem('long', long);
+                })
+            </script>
+        </div>
+        <div class="maps-nav">
+            <div class="nav-component">
+                <span class="title">My Recent Maps</span>
+                <a href="#" class="nav-link">
+                    <span>AUSTRALIA</span>&nbsp;&nbsp;&nbsp;
+                    <span>Created 1/22/2018</span>
+                </a>
+                <a href="#" class="nav-action">View all My Maps
+                    <img src="{% static 'css/images/arr.svg' %}" alt="">
+                </a>
+            </div>
+            <div class="nav-component">
+                <span class="title">Community Maps</span>
+                <a href="#" class="nav-link">View Map Index</a>
+                <a href="#" class="nav-action">Edit an Existing Map</a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+    {% endblock %}

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse
 
@@ -10,7 +11,7 @@ from django.http import HttpResponse
 
 
 # Create your views here.
-
+@login_required
 def index(request):
 
 	"""
@@ -19,6 +20,7 @@ def index(request):
 
 	return render(request, 'mapbuilder/index.html')
 
+@login_required
 def startmap(request):
 
 	"""
@@ -27,6 +29,7 @@ def startmap(request):
 
 	return render(request, 'mapbuilder/start-map.html')
 
+@login_required
 def map(request):
 
 
@@ -36,6 +39,7 @@ def map(request):
 
 	return render(request, 'mapbuilder/map.html')
 
+@login_required
 def mapextent(request):
 
 
@@ -45,6 +49,7 @@ def mapextent(request):
 
 	return render(request, 'mapbuilder/map-extent.html')
 
+@login_required
 def mapexport(request):
 
 

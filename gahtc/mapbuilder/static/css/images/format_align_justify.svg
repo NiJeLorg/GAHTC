@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>ic/format_align_justify/grey600 copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Name-Project" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1048.000000, -192.000000)">
+        <g id="ic/format_align_justify/grey600" transform="translate(1045.000000, 189.000000)">
+            <g id="ic_format_align_justify_24px">
+                <path d="M3,21 L21,21 L21,19 L3,19 L3,21 Z M3,17 L21,17 L21,15 L3,15 L3,17 Z M3,13 L21,13 L21,11 L3,11 L3,13 Z M3,9 L21,9 L21,7 L3,7 L3,9 Z M3,3 L3,5 L21,5 L21,3 L3,3 Z" id="Shape" fill="#999999" fill-rule="nonzero"></path>
+                <polygon id="Shape" points="0 0 24 0 24 24 0 24"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

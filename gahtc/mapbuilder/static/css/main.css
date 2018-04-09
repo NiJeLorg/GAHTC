@@ -5,18 +5,17 @@
     position: relative;
     margin-bottom: auto;
 }
-.mapbuilder-header {
- text-transform: none;
-  font-size: 36px;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: left;
-  color: #323232;
-  font-weight:bold;
-}
 
+.mapbuilder-header {
+    text-transform: none;
+    font-size: 36px;
+    font-style: normal;
+    /* /font-stretch: normal; */
+    line-height: normal;
+    /* letter-spacing: normal; */
+    text-align: left;
+    color: #323232;
+}
 
 #map-page-content {
     height: 60px;
@@ -29,42 +28,60 @@
 
 }
 
+.modal .button{
+    color: #ffffff;
+    background: #323232;
+    border: 1px solid #323232;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
 .button {
     display: inline-block;
     width: 220px;
     height: 50px;
     border-radius: 3px;
-    background-color: #323232;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #323232;
     text-align: center;
     cursor: pointer;
     box-sizing: content-box;
     font-size: 18px;
     line-height: 50px;
     vertical-align: middle;
-    margin-bottom: 50px;
-} 
-.button:hover , .button:focus {
-    color: #ffffff;
+    border: 2px solid #323232;
     text-decoration: none;
 }
+
+
+.button:hover, .button:focus {
+    color: #ffffff;
+    background: #323232;
+    border: 1px solid #323232;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
 .btn-next {
     margin-left: 50px;
 }
+
 .map-index {
     text-transform: none;
     font-size: 36px;
-    font-style: normal;
+    /* font-style: normal;
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
-    text-align: left;
+    text-align: left; */
     color: #323232;
-    font-weight: bold;
 }
+
 .index-content {
+    margin-top:80px;
     display: flex;
 }
+
 .search-bar {
     position: relative;
     display: inline-block;
@@ -77,7 +94,7 @@
     color: #969696;
     overflow: hidden;
     font-weight: bold;
-} 
+}
 
 .search-button {
     width: 50px;
@@ -86,10 +103,12 @@
     left: 0;
     height: 100%;
 }
-search-icon{
+
+search-icon {
     color: #969696;
     font-weight: bold;
 }
+
 .search-input {
     border: 0;
     padding-left: 0;
@@ -101,10 +120,60 @@ search-icon{
     font-weight: normal;
 }
 
+.start-map-container {
+    background-image: url('images/style.png');
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .start-map {
-    height: 100%;
-    width: 42vw;
-    margin: 70px auto auto;
+    width: 40%;
+}
+
+.start-map .maps-nav{
+    display: flex;
+    justify-content: space-between;
+}
+.start-map .maps-nav .nav-component{
+    display: flex;
+    flex-direction: column;
+}
+.start-map .maps-nav .nav-component .title{
+    /* My Recent Maps: */
+    font-size: 28px;
+    color: #323232;
+    text-align: left;
+}
+.start-map .maps-nav .nav-component .nav-link{
+    /* My Recent Maps: */
+    /* Line 6: */
+    text-decoration: none;
+    /*opacity: 0.4;*/
+    border-bottom: 8px solid rgba(251,237,144,0.40);
+    font-size: 18px;
+    color: #323232;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.start-map .maps-nav .nav-component .nav-action{
+    /* Rectangle 122 Copy 3: */
+    text-decoration: none;
+    background: rgba(255,255,255,0.50);
+    border: 2px solid #323232;
+    border-radius: 3px;
+    font-size: 18px;
+    color: #323232;
+    text-align: left;
+    padding: 14px;
+    margin-top: 18px;
+}
+.start-map .maps-nav .nav-component .nav-action img{
+    margin-left: 10px;
 }
 .main-title {
     font-family: LinLibertineZ;
@@ -118,6 +187,7 @@ search-icon{
     color: #323232;
     margin-bottom: 0;
 }
+
 .sub-title {
     text-transform: none;
     font-family: LinLibertineZ;
@@ -131,17 +201,18 @@ search-icon{
     text-align: center;
     color: #323232;
 }
+
 .start-content {
-  font-family: SourceSansPro;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: left;
-  align-items: center;
-  color: #323232;
-  margin: 25px 0;
+    font-family: SourceSansPro;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    align-items: center;
+    color: #323232;
+    margin: 25px 0;
 }
 
 .start-btn {
@@ -159,27 +230,34 @@ search-icon{
     font-style: normal;
     text-transform: none;
     font-size: 40px;
-    padding: 10px 50px ;
+    padding: 15px 50px;
     position: relative;
     background: #EFE493;
     border: solid 1px #979797;
+    display: flex;
+    justify-content: space-between;
 }
-
+h3.map-header-text{
+    margin: 0;
+}
 .map-header-text {
     color: black;
     font-style: normal;
     text-transform: none;
     display: inline-block;
+    align-self: flex-end;
 }
+
 #map {
     height: calc(100vh - 146px);
     z-index: 1;
 }
+
 .layer-switcher {
     position: absolute;
     height: 50px;
     width: 300px;
-    top:250px;
+    top: 250px;
     right: 55px;
     z-index: 2;
     background: white;
@@ -198,36 +276,31 @@ search-icon{
     width: 33.33%;
     font-weight: normal;
 }
+
 .button-active {
     background: #EFE493;
     font-weight: bold;
 }
-.step-button {
-    position: absolute;
-    top: 25px;
-    right: 45px;
- }
- .step-button:hover, .step-button:focus {
+
+.step-button:hover, .step-button:focus {
     color: #ffffff;
- }
+}
 
- .step-button-holder {
-     display: flex;
-     position: absolute;
-     top: 25px;
-     right: 108px;
- }
+.step-button-holder {
+    display: flex;
+}
 
- .button-group {
-     width: 150px;
-     margin: 0 5px;
- }
- .white-header {
-     background: #FFFFFF;
- }
+.button-group {
+    width: 150px;
+    margin: 0 5px;
+}
 
- .modal {
-    display:block; /* Hidden by default */
+.white-header {
+    background: #FFFFFF;
+}
+
+.modal {
+    display: block; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     padding-top: 340px; /* Location of the box */
@@ -239,12 +312,13 @@ search-icon{
 }
 
 .modal-content {
-    background-color:rgba(251, 237, 144, 0.6);
+    background-color: rgba(251, 237, 144, 0.6);
     margin: auto;
     padding: 20px 75px;
     border: 1px solid #888;
     width: 40%;
 }
+
 .modal-title {
     font-style: normal;
     font-weight: bold;
@@ -261,9 +335,11 @@ search-icon{
 
 .close-button {
     color: #999999;
-    float: right;
     font-size: 28px;
     font-weight: bold;
+    position: absolute;
+    right: 35px;
+    top: 25px;
 }
 
 .close-button:hover,
@@ -272,10 +348,12 @@ search-icon{
     text-decoration: none;
     cursor: pointer;
 }
+
 .ok-button {
     display: block;
     margin: 24px auto;
 }
+
 #project-title {
     width: 255px;
     height: 53px;
@@ -297,3 +375,207 @@ search-icon{
     cursor: pointer;
 }
 
+.leaflet-draw {
+    display: flex;
+}
+
+.leaflet-draw-toolbar {
+    display: flex;
+    border: 1px solid #979797;
+}
+
+.leaflet-draw-toolbar {
+    margin-top: 0 !important;
+}
+
+.leaflet-draw-actions {
+    z-index: 99999;
+}
+
+.leaflet-top .leaflet-control {
+    margin-top: -2px !important;
+    margin-left: 0 !important;
+}
+
+.publish-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 230px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* overflow: auto;  */
+}
+
+.publish-modal-content {
+    background-color: #ffffff;
+    margin: auto;
+    padding: 40px 75px;
+    border: 1px solid #888;
+    width: 60%;
+    height: 80%;
+    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.title-holder {
+    font-size: 24px;
+    font-style: normal;
+    font-stretch: normal;
+    font-weight: bold;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #323232;
+    margin-bottom: 10px;
+}
+
+.content-holder {
+    display: flex;
+}
+
+.img-holder {
+    display: inline-block;
+    margin-bottom: 8px;
+    border: 1px dashed;
+    margin-right: 10px;
+    flex: 2;
+    text-align: center
+}
+
+/*img {*/
+/*height: 100%; */
+/*width: 100%;*/
+/*}*/
+
+.publish-image {
+    display: inline-block;
+    margin-left: 25px;
+    flex: 1;
+}
+
+.modal-sub {
+    height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    text-transform: none;
+}
+
+.button-switcher {
+    height: 38px;
+    width: 250px;
+    background: white;
+    border: 1px solid;
+    border-color: black;
+    display: flex;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.size-btn {
+    width: 93px;
+    height: 36px;
+    display: block;
+    color: black;
+    font-size: 14px;
+}
+
+.size-btn-active {
+    background: #fbed90cc;
+}
+
+.download {
+    width: 100px;
+    height: 40px;
+    margin: 10px 0;
+    display: block;
+    line-height: 40px;
+    font-size: 16px;
+}
+
+.close-icon {
+    font-size: 40px;
+}
+
+#preview {
+    font-size: 18px;
+    font-style: normal;
+}
+
+#loader {
+    font-size: 75px;
+    margin: 95px;
+    color: #999999;
+}
+
+
+/* List component */
+.list {
+    list-style: none;
+}
+
+.list .list-item {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+/*list item image wrapper*/
+.list .list-item__image {
+    flex-shrink: 0;
+
+}
+
+.list .list-item__image img {
+    width: 90px;
+    height: 65px;
+}
+.list-wrapper .list-header{
+    margin-top: 10px;
+}
+.list-wrapper .list-header span{
+    /* Below is a list of a: */
+    font-size: 18px;
+    color: #323232;
+    text-align: left;
+}
+.list-wrapper .list-header hr{
+    /* Line 6: */
+    border: 1px solid #323232;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+/*list item content*/
+.list .list-item__content {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+.list .list-item__content .map-info {
+    font-size: 18px;
+    color: #323232;
+    text-align: left;
+}
+.list .list-item__content a {
+    /* Rectangle 14 Copy 2: */
+    text-decoration: none;
+    background: #FFFFFF;
+    border: 1px solid #323232;
+    border-radius: 3px;
+    padding: 4px;
+    /* Download Copy: */
+    font-size: 14px;
+    color: #323232;
+    text-align: left;
+}
+.leaflet-control-container .leaflet-top .leaflet-control-geosearch {
+    margin-top: 17px !important;
+
+}
+.leaflet-control-container .leaflet-top .leaflet-control-zoom {
+    margin-top: 75px !important;
+    margin-right: 56px !important;
+}
