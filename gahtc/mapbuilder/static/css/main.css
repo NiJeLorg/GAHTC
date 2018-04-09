@@ -10,12 +10,11 @@
     text-transform: none;
     font-size: 36px;
     font-style: normal;
-    font-stretch: normal;
+    /* /font-stretch: normal; */
     line-height: normal;
-    letter-spacing: normal;
+    /* letter-spacing: normal; */
     text-align: left;
     color: #323232;
-    font-weight: bold;
 }
 
 #map-page-content {
@@ -57,13 +56,12 @@
 .map-index {
     text-transform: none;
     font-size: 36px;
-    font-style: normal;
+    /* font-style: normal;
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
-    text-align: left;
+    text-align: left; */
     color: #323232;
-    font-weight: bold;
 }
 
 .index-content {
@@ -435,7 +433,7 @@ search-icon {
     border: 1px dashed;
     margin-right: 10px;
     flex: 2;
-
+    text-align: center
 }
 
 /*img {*/
@@ -493,6 +491,18 @@ search-icon {
 .close-icon {
     font-size: 40px;
 }
+
+#preview {
+    font-size: 18px;
+    font-style: normal;
+}
+
+#loader {
+    font-size: 75px;
+    margin: 95px;
+    color: #999999;
+}
+
 
 /* List component */
 .list {

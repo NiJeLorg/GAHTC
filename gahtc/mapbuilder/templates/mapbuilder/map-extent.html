@@ -1,17 +1,17 @@
 {% extends "mapbuilder/base.html" %}
 
 {% block content%}
-<div class="map-header">
-    <h3 class="map-header-text"><strong>Pre historic Australia </strong></h3>
-    <a class="button step-button" href="{% url 'mapbuilder:map-export' %}">Done</a>
-</div>
-<div id="map"></div>
-<div class="layer-switcher">
-    <button class="layer-buttons" id="btn1">Terrain</button>
-    <button class="layer-buttons button-active" id="btn2">Political</button>
-    <button class="layer-buttons" id="btn3">Satellite</button>
-</div>
-<script>
+  <div class="map-header">
+    <h3 class="map-header-text"><strong>Step 2: </strong>Set Your Map Canvas Extents</h3>
+    <a class="button step-button"  href="{% url 'mapbuilder:map-export' %}" >Done</a>
+  </div>
+  <div id="map"></div>
+    <div class="layer-switcher">
+      <button class="layer-buttons" id="btn1">Terrain</button>
+      <button class="layer-buttons button-active" id="btn2">Political</button>
+      <button class="layer-buttons" id="btn3">Satellite</button>
+    </div>
+  <script>
 
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
