@@ -15,8 +15,11 @@
                 </button>
                 <input type="text" class="search-input" placeholder="Search for a your location" id="search-value">
             </div>
-            <a href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New
+            <div class="step-button-holder">
+                <a href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New
                 Map</a>
+            </div>
+
             <script>
                 $("input").geocomplete().bind("geocode:result", function (event, result) {
                     var lat = result.geometry.location.lat();
