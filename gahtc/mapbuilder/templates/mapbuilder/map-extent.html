@@ -1,89 +1,109 @@
 {% extends "mapbuilder/base.html" %}
 
 {% block content%}
-  <div class="map-header">
+<div class="map-header">
     <h3 class="map-header-text"><strong>Pre historic Australia </strong></h3>
-    <a class="button step-button"  href="{% url 'mapbuilder:map-export' %}" >Done</a>
-  </div>
-  <div id="map"></div>
-    <div class="layer-switcher">
-      <button class="layer-buttons" id="btn1">Terrain</button>
-      <button class="layer-buttons button-active" id="btn2">Political</button>
-      <button class="layer-buttons" id="btn3">Satellite</button>
-    </div>
-  <script>
+    <a class="button step-button" href="{% url 'mapbuilder:map-export' %}">Done</a>
+</div>
+<div id="map"></div>
+<div class="layer-switcher">
+    <button class="layer-buttons" id="btn1">Terrain</button>
+    <button class="layer-buttons button-active" id="btn2">Political</button>
+    <button class="layer-buttons" id="btn3">Satellite</button>
+</div>
+<script>
 
-      var lat = localStorage.getItem('lat');
-      var long = localStorage.getItem('long');
-      var layerId = localStorage.getItem('layerId')
-      var center = [lat, long]
-      var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
-      var mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
+    var lat = localStorage.getItem('lat');
+    var long = localStorage.getItem('long');
+    var layerId = localStorage.getItem('layerId')
+    var center = [lat, long]
+    var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
+    var mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
-      // initialize the map
-      var map = L.map('map', {
-          center: center,
-          zoom:5,
-      })
-      
-      var marker = L.marker(center).addTo(map);
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    // initialize the map
+    var map = L.map('map', {
+        center: center,
+        zoom: 5,
+        zoomControl: false
+    });
+
+    L.control.zoom({
+        position: 'topright'
+    }).addTo(map);
+
+    var marker = L.marker(center).addTo(map);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         // maxZoom: 18,
         id: layerId,
         accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
     }).addTo(map);
 
-    $(document).ready(function() {
-        if (layerId == 'streets'){
+    $(document).ready(function () {
+        if (layerId == 'streets') {
             $("#btn2").trigger('click');
-        } else if (layerId == 'terrain'){
+        } else if (layerId == 'terrain') {
             $("#btn1").trigger('click');
         } else {
             $("#btn3").trigger('click');
         }
     });
-        
+
     // Add it to the map
-    var areaSelect = L.areaSelect({width:300, height:200});
+    var areaSelect = L.areaSelect({width: 300, height: 200});
     areaSelect.addTo(map);
 
     // Read the bounding box
     var bounds = areaSelect.getBounds();
     localStorage.setItem('zoom', map.getZoom());
     localStorage.setItem('bounds', JSON.stringify(bounds));
-    
-   
-    areaSelect.on("change", function() {
-        var bounds=this.getBounds();
+
+
+    areaSelect.on("change", function () {
+        var bounds = this.getBounds();
         localStorage.setItem('zoom', map.getZoom());
         localStorage.setItem('bounds', JSON.stringify(bounds));
     });
-   
-    var streets = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution, maxZoom: 18, id: 'mapbox.streets',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'}),
-        terrain = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution,maxZoom: 18, id: 'mapbox.outdoors',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'}),
-        satellite = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution,maxZoom: 18, id: 'mapbox.satellite',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'})
+
+    var streets = L.tileLayer(mapBoxURL, {
+            attribution: mapBoxAttribution,
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+        }),
+        terrain = L.tileLayer(mapBoxURL, {
+            attribution: mapBoxAttribution,
+            maxZoom: 18,
+            id: 'mapbox.outdoors',
+            accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+        }),
+        satellite = L.tileLayer(mapBoxURL, {
+            attribution: mapBoxAttribution,
+            maxZoom: 18,
+            id: 'mapbox.satellite',
+            accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+        })
 
     // Toggle Between layers
-    $('.layer-buttons').click(function(e) {       
-        $('.layer-buttons').removeClass('button-active');    
+    $('.layer-buttons').click(function (e) {
+        $('.layer-buttons').removeClass('button-active');
         $(this).addClass('button-active');
         if (this.id == 'btn1') {
-        map.removeLayer(streets, satellite);
-        map.addLayer(terrain);
-        layerId = 'mapbox.outdoors';
-        } else if (this.id == 'btn2'){
-        map.removeLayer(terrain, satellite);
-        map.addLayer(streets);
-        layerId = 'mapbox.streets';
+            map.removeLayer(streets, satellite);
+            map.addLayer(terrain);
+            layerId = 'mapbox.outdoors';
+        } else if (this.id == 'btn2') {
+            map.removeLayer(terrain, satellite);
+            map.addLayer(streets);
+            layerId = 'mapbox.streets';
         } else {
-        map.removeLayer(streets, terrain);
-        map.addLayer(satellite);
-        layerId = 'mapbox.satellite';
+            map.removeLayer(streets, terrain);
+            map.addLayer(satellite);
+            layerId = 'mapbox.satellite';
         }
 
         localStorage.setItem('layerId', layerId);
         console.log(localStorage.getItem('layerId'))
     });
-  </script>
+</script>
 {% endblock%}

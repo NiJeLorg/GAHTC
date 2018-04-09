@@ -551,3 +551,11 @@ search-icon {
     color: #323232;
     text-align: left;
 }
+.leaflet-control-container .leaflet-top .leaflet-control-geosearch {
+    margin-top: 17px !important;
+
+}
+.leaflet-control-container .leaflet-top .leaflet-control-zoom {
+    margin-top: 75px !important;
+    margin-right: 56px !important;
+}

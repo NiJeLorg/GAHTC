@@ -1,70 +1,90 @@
 {% extends "mapbuilder/base.html" %}
 {% block content%}
-  <div class="map-header">
+<div class="map-header">
     <h3 class="map-header-text"><strong>Step 1: </strong>Refine Your Location Search</h3>
     <a class="button step-button" href="{% url 'mapbuilder:map-extent' %}">Next</a>
-  </div>
-  <div id="map"></div>
-    <div class="layer-switcher">
-      <button class="layer-buttons" id="btn1">Terrain</button>
-      <button class="layer-buttons button-active" id="btn2">Political</button>
-      <button class="layer-buttons" id="btn3">Satellite</button>
-    </div>
-  <script>
+</div>
+<div id="map"></div>
+<div class="layer-switcher">
+    <button class="layer-buttons" id="btn1">Terrain</button>
+    <button class="layer-buttons button-active" id="btn2">Political</button>
+    <button class="layer-buttons" id="btn3">Satellite</button>
+</div>
+<script>
 
-  var lat = localStorage.getItem('lat');
-  var long = localStorage.getItem('long');
-  var center = [lat, long]
-  var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
-  var mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
-  
-  // initialize the map
-  var map = L.map('map', {
-          center: center,
-          zoom:5,
-      })
-  var marker = L.marker([lat, long]).addTo(map);
-  
+    var lat = localStorage.getItem('lat');
+    var long = localStorage.getItem('long');
+    var center = [lat, long]
+    var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
+    var mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
-  // Add GeoSearch 
-  var z = window.GeoSearch;
-  const provider = new z.GoogleProvider();
-  const searchControl = new z.GeoSearchControl({
-    provider:provider,
-    style: 'button',
-    key:'{{ GOOGLE_API_KEY }}',
-  });
+    // initialize the map
+    var map = L.map('map', {
+        center: center,
+        zoom: 5,
+        zoomControl: false
+    });
 
 
-map.addControl(searchControl)
+    var marker = L.marker([lat, long]).addTo(map);
 
-var streets = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution, maxZoom: 18, id: 'mapbox.streets',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'}),
-    terrain = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution,maxZoom: 18, id: 'mapbox.outdoors',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'}),
-    satellite = L.tileLayer(mapBoxURL, {attribution: mapBoxAttribution,maxZoom: 18, id: 'mapbox.satellite',accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'})
 
-// Toggle Between layers
-$('.layer-buttons').click(function(e) {       
-    $('.layer-buttons').removeClass('button-active');    
-    $(this).addClass('button-active');
-    if (this.id == 'btn1') {
-      map.removeLayer(streets, satellite);
-      map.addLayer(terrain);
-      layerId = 'terrain';
-    } else if (this.id == 'btn2'){
-      map.removeLayer(terrain, satellite);
-      map.addLayer(streets);
-      layerId = 'streets';
-    } else {
-      map.removeLayer(streets, terrain);
-      map.addLayer(satellite);
-      layerId = 'satellite';
-    }
-    localStorage.setItem('layerId', layerId);
-    console.log(localStorage.getItem('layerId'))
-});
+    // Add GeoSearch
+    var z = window.GeoSearch;
+    const provider = new z.GoogleProvider();
+    const searchControl = new z.GeoSearchControl({
+        provider: provider,
+        style: 'button',
+        key: '{{ GOOGLE_API_KEY }}',
+    });
 
-$(document).ready(function() {
-   $("#btn2").trigger('click');
-});
-  </script>
+
+    map.addControl(searchControl);
+
+    var streets = L.tileLayer(mapBoxURL, {
+            attribution: mapBoxAttribution,
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+        }),
+        terrain = L.tileLayer(mapBoxURL, {
+            attribution: mapBoxAttribution,
+            maxZoom: 18,
+            id: 'mapbox.outdoors',
+            accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+        }),
+        satellite = L.tileLayer(mapBoxURL, {
+            attribution: mapBoxAttribution,
+            maxZoom: 18,
+            id: 'mapbox.satellite',
+            accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+        });
+    L.control.zoom({
+        position: 'topright'
+    }).addTo(map);
+    // Toggle Between layers
+    $('.layer-buttons').click(function (e) {
+        $('.layer-buttons').removeClass('button-active');
+        $(this).addClass('button-active');
+        if (this.id == 'btn1') {
+            map.removeLayer(streets, satellite);
+            map.addLayer(terrain);
+            layerId = 'terrain';
+        } else if (this.id == 'btn2') {
+            map.removeLayer(terrain, satellite);
+            map.addLayer(streets);
+            layerId = 'streets';
+        } else {
+            map.removeLayer(streets, terrain);
+            map.addLayer(satellite);
+            layerId = 'satellite';
+        }
+        localStorage.setItem('layerId', layerId);
+        console.log(localStorage.getItem('layerId'))
+    });
+
+    $(document).ready(function () {
+        $("#btn2").trigger('click');
+    });
+</script>
 {% endblock%}
