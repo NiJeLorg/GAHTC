@@ -306,6 +306,10 @@ h3.map-header-text {
     display: flex;
 }
 
+.step-button-holder a {
+    box-sizing: border-box;
+}
+
 .button-group {
     width: 150px;
     margin: 0 5px;
