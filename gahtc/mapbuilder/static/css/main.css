@@ -579,3 +579,9 @@ h3.map-header-text{
     margin-top: 75px !important;
     margin-right: 56px !important;
 }
+
+#images {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

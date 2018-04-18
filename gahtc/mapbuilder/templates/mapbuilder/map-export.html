@@ -1,6 +1,4 @@
-{% extends "mapbuilder/base.html" %}
-
-{% block content%}
+{% extends "mapbuilder/base.html" %} {% block content%}
 <div class="map-header white-header">
     <div>
         <h3 class="map-header-text" id="projectname">Name Your Project</h3>
@@ -30,10 +28,10 @@
         <span class="close-button close-icon" id="close-icon">&times;</span>
         <div class="title-holder">Publish Your Map!</h3>
         </div>
-        <h3 id="preview" >Preview</h3>
+        <h3 id="preview">Preview</h3>
         <div class="content-holder">
             <div class="img-holder" id="images">
-                <i class="fa fa-spinner fa-pulse" id="loader" ></i>
+                <i class="fa fa-spinner fa-pulse" id="loader"></i>
             </div>
             <div class="publish-image">
                 <h4 class="modal-sub">File Size</h4>
@@ -123,15 +121,20 @@
 
     const drawImage = (err, canvas) => {
         const url = canvas.toDataURL('image/png');
-        document.getElementById('images').style['background'] = "url(" + url + ") no-repeat center";
-        const img = new Image;
+        const imageBackgroundUrl = "url(" + url + ")";
+        const img  = new Image;
+        $('#images').css({
+            'background': imageBackgroundUrl,
+            'background-repeat': 'no-repeat',
+            'background-size': 'cover'
+        })
         img.src = url;
-        img.onload = function(){
+        img.onload = function () {
             $('#loader').hide();
         }
     }
 
-   
+
 
     // publish modal
     $('#publish').click(function (e) {
@@ -167,7 +170,7 @@
         var pdf = new jsPDF('l', 'pt', 'letter');
         pdf.addImage(url, 'PNG', 10, 10, dimensions.x * 0.5, dimensions.y * 0.5);
         pdf.save("mymap.pdf");
-        
+
     }
 
     $('#download').click(function (e) {
