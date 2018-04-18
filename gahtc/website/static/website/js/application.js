@@ -260,3 +260,10 @@ $(document).ready(function () {
     horizontalScroll();
 
 });
+
+
+$('#btn2').hover(() => {
+    $('.layer-tooltip').css('display', 'flex')
+}, () => [
+    $('.layer-tooltip').css('display', 'none')
+])
