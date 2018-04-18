@@ -26,24 +26,11 @@
     var map = L.map('map', {
         center: center,
         zoom: 5,
-        zoomControl: false
     });
 
 
     var marker = L.marker([lat, long]).addTo(map);
 
-
-    // Add GeoSearch
-    var z = window.GeoSearch;
-    const provider = new z.GoogleProvider();
-    const searchControl = new z.GeoSearchControl({
-        provider: provider,
-        style: 'button',
-        key: '{{ GOOGLE_API_KEY }}',
-    });
-
-
-    map.addControl(searchControl);
 
     var streets = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
@@ -63,10 +50,7 @@
             id: 'mapbox.satellite',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
         });
-    L.control.zoom({
-        position: 'topright'
-    }).addTo(map);
-    // Toggle Between layers
+    
     $('.layer-buttons').click(function (e) {
         $('.layer-buttons').removeClass('button-active');
         $(this).addClass('button-active');
@@ -88,7 +72,6 @@
             layerId = 'satellite';
         }
         localStorage.setItem('layerId', layerId);
-        console.log(localStorage.getItem('layerId'))
     });
 
     $(document).ready(function () {
@@ -99,5 +82,8 @@
         var bounds = map.getBounds();
         localStorage.setItem('bounds', JSON.stringify(bounds));
     });
+    map.on('move', function(e) {
+        marker.setLatLng(map.getCenter())
+    })
 </script>
 {% endblock%}

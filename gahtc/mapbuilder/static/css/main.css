@@ -56,8 +56,6 @@
 .button:focus {
     color: #ffffff;
     background: #323232;
-    border: 1px solid #323232;
-    border-radius: 3px;
     text-decoration: none;
 }
 
@@ -136,6 +134,7 @@ search-icon {
 .start-map .maps-nav {
     display: flex;
     justify-content: space-between;
+    margin-top: 40px;
 }
 
 .start-map .maps-nav .nav-component {
@@ -613,6 +612,12 @@ h3.map-header-text {
     font-size: 14px;
     color: #323232;
     text-align: left;
+}
+
+.list .list-item__content a:hover, .list .list-item__content a:focus {
+    color: #ffffff;
+    background: #323232;
+    text-decoration: none;
 }
 
 .leaflet-control-container .leaflet-top .leaflet-control-geosearch {

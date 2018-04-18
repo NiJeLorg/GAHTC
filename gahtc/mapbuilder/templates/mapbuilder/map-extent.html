@@ -73,6 +73,10 @@
         localStorage.setItem('bounds', JSON.stringify(bounds));
     });
 
+    map.on('move', function(e) {
+        marker.setLatLng(map.getCenter())
+    })
+
     var streets = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
