@@ -33,6 +33,11 @@ $(document).ready(function () {
         $('footer').css('position', 'static');
     }
 
+    if (window.location.href.indexOf('mapbuilder') > -1) {
+        $('.navbar').css('height', '110px');
+        $('.main-content').css('margin-top', '110px');
+    }
+
     // truncateElementText($('.lecture-description-text'));
 
 
@@ -71,7 +76,7 @@ $(document).ready(function () {
         });
         $('.navbar-header-holder').css({
             'min-height': '0'
-        });            
+        });
     }
 
     $(window).scroll(() => {
@@ -96,10 +101,12 @@ $(document).ready(function () {
             });
             $('.user-nav p').css({
                 'color': '#a1a0a1'
-            }); 
+            });
             $('.navbar-header-holder').css({
                 'min-height': '0'
-            }); 
+            });
+        } else if (window.location.href.indexOf('mapbuilder') > -1) {
+
         } else {
             $('.collapsed-container aside').css({
                 'display': 'none'
@@ -127,10 +134,10 @@ $(document).ready(function () {
             });
             $('.main-content').css({
                 'margin-top': '146px'
-            }); 
+            });
             $('.navbar-header-holder').css({
                 'min-height': '110px'
-            }); 
+            });
             isAsideNavOpen = false;
         }
 
@@ -200,7 +207,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.hamburger-icon').mouseenter(() => {    
+    $('.hamburger-icon').mouseenter(() => {
         $('.hamburger-icon').attr('src', '/static/website/css/images/hamburger_icon.svg');
     });
 
