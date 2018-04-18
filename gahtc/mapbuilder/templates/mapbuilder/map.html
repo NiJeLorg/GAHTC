@@ -1,22 +1,26 @@
-{% extends "mapbuilder/base.html" %}
-{% block content%}
+{% extends "mapbuilder/base.html" %} {% block content%}
 <div class="map-header">
-    <h3 class="map-header-text"><strong>Step 1: </strong>Refine Your Location Search</h3>
+    <h3 class="map-header-text">
+        <strong>Step 1: </strong>Refine Your Location Search</h3>
     <a class="button step-button" href="{% url 'mapbuilder:map-extent' %}">Next</a>
 </div>
 <div id="map"></div>
 <div class="layer-switcher">
     <button class="layer-buttons" id="btn1">Terrain</button>
-    <button class="layer-buttons button-active" id="btn2" data-balloon-length="small" data-balloon="Modern Political" data-balloon-pos="right">Political</button>
+    <button class="layer-buttons button-active" id="btn2">Political</button>
     <button class="layer-buttons" id="btn3">Satellite</button>
+    <div class='layer-tooltip'>
+        <span>Modern Political</span>
+    </div>
 </div>
-<script>
 
+<script>
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
     var center = [lat, long]
     var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
-    var mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
+    var mapBoxAttribution =
+        'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
     // initialize the map
     var map = L.map('map', {
@@ -67,16 +71,20 @@
         $('.layer-buttons').removeClass('button-active');
         $(this).addClass('button-active');
         if (this.id == 'btn1') {
-            map.removeLayer(streets, satellite);
             map.addLayer(terrain);
+            map.removeLayer(streets);
+            map.removeLayer(satellite)
             layerId = 'terrain';
         } else if (this.id == 'btn2') {
-            map.removeLayer(terrain, satellite);
             map.addLayer(streets);
+            map.removeLayer(terrain);
+            map.removeLayer(satellite)
+
             layerId = 'streets';
         } else {
-            map.removeLayer(streets, terrain);
             map.addLayer(satellite);
+            map.removeLayer(streets);
+            map.removeLayer(terrain)
             layerId = 'satellite';
         }
         localStorage.setItem('layerId', layerId);
@@ -87,9 +95,9 @@
         $("#btn2").trigger('click');
     });
 
-    map.on('moveend', function(e) {
+    map.on('moveend', function (e) {
         var bounds = map.getBounds();
-       localStorage.setItem('bounds', JSON.stringify(bounds));
+        localStorage.setItem('bounds', JSON.stringify(bounds));
     });
 </script>
 {% endblock%}
