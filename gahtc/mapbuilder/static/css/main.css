@@ -252,9 +252,22 @@ h3.map-header-text {
     text-transform: none;
 }
 
+#map-canvas {
+    height: calc(100vh - 220px);
+    z-index: 1;
+    border-top: 1px solid red;
+}
 #map {
     height: calc(100vh - 146px);
     z-index: 1;
+}
+#lmap {
+    width: 100%;
+    height: 100%
+}
+#c {
+    width: 100%;
+    height: 100%;
 }
 
 .layer-switcher {
@@ -315,6 +328,7 @@ h3.map-header-text {
 
 .white-header {
     background: #FFFFFF;
+    border-bottom: solid 1px #323232;
 }
 
 .white-header div {
@@ -634,4 +648,50 @@ h3.map-header-text {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+.draw-toolbar {
+  background-color: #ffffff;
+  display: flex;
+
+}
+
+.toolbar-icon {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+}
+
+.toolbar-section {
+    display: inline-block;
+}
+.draw-icons {
+    border-right: 1px solid black;
+}
+.edit-icons {
+    border-right: 1px solid black;
+}
+
+.toolbar-btn {
+    display: inline-block;
+    width: 100px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    color: #323232;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: content-box;
+    font-size: 18px;
+    border: 2px solid #323232;
+    text-decoration: none;
+}
+
+.toolbar-btn-holder {
+    margin: 20px;
+}
+.canvas-container {
+    height: calc(100vh - 146px);
+    width:100%;
+    /* background: red; */
 }

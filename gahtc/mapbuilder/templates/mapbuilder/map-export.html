@@ -11,7 +11,48 @@
         <a class="button button-group" id="publish">Publish</a>
     </div>
 </div>
-<div id="map"></div>
+<div class="draw-toolbar" >
+    <div class="toolbar-section draw-icons">
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/freedraw.svg') no-repeat "></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/line.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/star.svg') no-repeat"></a>
+        <a href="#" id="rect" class="toolbar-icon" style="background: url('../../static/css/images/rectangle.svg ') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/circle.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/pin.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/type.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/insert_img.svg') no-repeat"></a>
+    </div>
+    <div class="toolbar-section edit-icons">
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/select.svg') no-repeat "></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/rotate.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_color_fill.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/stroke_color.svg ') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/opacity.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/stroke_weight.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/stroke_style.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/left_arrow.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/right_arrow.svg') no-repeat"></a>
+    </div>
+    <div class="toolbar-section format-icons">
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_color_text.svg') no-repeat "></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_bold.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_italic.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_underlined.svg ') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_align_left.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_align_right.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_align_justify.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" style="background: url('../../static/css/images/format_align_center.svg') no-repeat"></a>
+    </div>
+    <div class="toolbar-btn-holder">
+        <a href="" class="toolbar-btn">Legend</a>
+        <a href="" class="toolbar-btn">Layers</a>
+    </div>
+</div>
+<div id="map-canvas">
+    <div id="lmap"></div>
+    <canvas id="c"></canvas>
+</div>
+
 <div id="map-modal" class="modal">
     <div class="modal-content">
         <span class="close-button" id="close-button">&times;</span>
@@ -67,44 +108,47 @@
         mapBounds = [southWest, northEast];
 
     // initialize the map
-    var map = L.map('map', {
+    var map = L.map('lmap', {
         center: center,
         minZoom: zoom,
+        maxZoom: zoom,
         zoomControl: false,
         maxBounds: mapBounds,
         preferCanvas: true
     });
 
     map.fitBounds(mapBounds);
-    var marker = L.marker(center).addTo(map);
+   
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         id: layerId,
         accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
     }).addTo(map);
 
-    L.control.zoom({
-        position: 'bottomleft'
-    }).addTo(map);
+    var canvasF = new fabric.Canvas('c');
+    const mapCanvas = $('#map-canvas');
+    canvasF.setHeight(mapCanvas.height());
+    canvasF.setWidth(mapCanvas.width());
 
-    // FeatureGroup is to store editable layers
-    var drawnItems = new L.FeatureGroup();
-    map.addLayer(drawnItems);
-    var drawControl = new L.Control.Draw({
-        edit: {
-            featureGroup: drawnItems
-        }
+    
+
+
+    $( document ).ready(function() {
+        leafletImage(map, function(err, canvas) {
+        var url = canvas.toDataURL('image/png');
+        const img  = new Image;
+        var dimensions = map.getSize();
+        img.width = dimensions.x;
+        img.height = dimensions.y;
+        img.src = url;
+        img.onload = function () {
+            $('#lmap').remove();
+            const imageBackgroundUrl = "" + url + "";
+            canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
+            }
+        })
     });
-    map.addControl(drawControl);
-
-
-    map.on('draw:created', function (e) {
-        var type = e.layerType,
-            layer = e.layer;
-        drawnItems.addLayer(layer);
-        map.addLayer(drawnItems);
-    });
-
+    
     $('#close-button').click(function (e) {
         $('.modal').css("display", "none");
     });
@@ -133,6 +177,8 @@
             $('#loader').hide();
         }
     }
+
+
 
 
 
