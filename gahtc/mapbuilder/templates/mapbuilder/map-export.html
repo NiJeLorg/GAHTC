@@ -15,7 +15,7 @@
     <div class="toolbar-section draw-icons">
         <a href="#" id="freedraw" class="toolbar-icon" style="background: url('../../static/mapbuilder/css/images/freedraw.svg') no-repeat "></a>
         <a href="#" id="line" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/line.svg') no-repeat"></a>
-        <a href="#" id="star" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/star.svg') no-repeat"></a>
+        <a href="#" id="poly" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/star.svg') no-repeat"></a>
         <a href="#" id="rect" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/rectangle.svg ') no-repeat"></a>
         <a href="#" id="circle" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/circle.svg') no-repeat"></a>
         <a href="#" id="pin" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/pin.svg') no-repeat"></a>
@@ -126,132 +126,7 @@
         accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
     }).addTo(map);
 
-    var canvasF = new fabric.Canvas('c');
-    const mapCanvas = $('#map-canvas');
-    canvasF.setHeight(mapCanvas.height());
-    canvasF.setWidth(mapCanvas.width());
-    
-    $('#rect').click(function(){
-        var rect = new fabric.Rect({
-        left: 100,
-        top: 100,
-        fill: 'blue',
-        width: 100,
-        height: 100,
-        opacity: 0.5
-        });
-    canvasF.add(rect).setActiveObject(rect);
-    })
-    $('#freedraw').click(function(){
-        canvasF.isDrawingMode = true;
-        canvasF.freeDrawingBrush.width = 10;
-    })
-    $('#line').click(function(){
-        var line = new fabric.Line([50, 100, 200, 200], {
-        left: 170,
-        top: 150,
-        stroke: 'blue',
-        strokeWidth: 5,
-        originX: 'center',
-        originY: 'center',
-        hasControls: true,
-        hasBorders: false,
-        });
-        canvasF.add(line).setActiveObject(line)
-    })
-
-    $('#star').click(function(){
-
-    })
-
-    $('#circle').click(function(){
-        var circle = new fabric.Circle({ 
-            radius: 50, 
-            fill: 'blue',
-            top: 100, 
-            left: 100,
-            opacity:0.5
-        });
-        canvasF.add(circle).setActiveObject(circle);
-    })
-
-    $('#pin').click(function(){
-        fabric.Image.fromURL('../../static/mapbuilder/css/images/marker-icon.png', function(oImg) {
-            oImg.scale(0.2).set('flipX', true);
-            canvasF.add(oImg);
-        });
-    })
-
-    $('#text').click(function(){
-        var text = new fabric.IText('Insert Text', {
-            left: 150,
-            top: 50,
-            fontWeight: 'normal',
-            fontFamily: 'Arial',
-            fontSize: 20
-        });
-        canvasF.add(text).setActiveObject(text);
-        
-    })
-
-    $('#image').click(function(){
-        $('#file-image').trigger('click')
-    });
-
-    $('#file-image').change(function(e){
-    
-        var fileType = e.target.files[0].type;
-        var url = URL.createObjectURL(e.target.files[0]);
-
-        if (fileType === 'image/png') { //check if png
-            fabric.Image.fromURL(url, function(img) {
-                img.set({
-                    width: 180,
-                    height: 180
-                });
-                canvasF.add(img);
-            });
-        } else if (fileType === 'image/svg+xml') { //check if svg
-            fabric.loadSVGFromURL(url, function(objects, options) {
-                var svg = fabric.util.groupSVGElements(objects, options);
-                svg.scaleToWidth(180);
-                svg.scaleToHeight(180);
-                canvasF.add(svg);
-            });
-        }
-})
-
-    
-    $('#f-bold').click(function(e){
-        canvasF.getActiveObject().set('fontWeight', 'bold');
-        canvasF.renderAll();
-    })
-    $('#f-italic').click(function(e){
-        canvasF.getActiveObject().set('fontWeight', 'italic');
-        canvasF.renderAll();
-    })
-
-    $('#underline').click(function(e){
-        canvasF.getActiveObject().setTextDecoration('underline');
-        canvasF.renderAll();
-    })
-    $('#align-left').click(function(e){
-        canvasF.getActiveObject().set('textAlign', 'left');
-        canvasF.renderAll();
-    })
-    $('#align-right').click(function(e){
-        canvasF.getActiveObject().set('textAlign', 'right');
-        canvasF.renderAll();
-    })
-    $('#align-center').click(function(e){
-        canvasF.getActiveObject().set('textAlign', 'center');
-        canvasF.renderAll();
-    })
-    $('#justify').click(function(e){
-        canvasF.getActiveObject().set('textAlign', 'justify');
-        canvasF.renderAll();
-    })
-
+   
     $( document ).ready(function() {
         leafletImage(map, function(err, canvas) {
         var url = canvas.toDataURL('image/png');
