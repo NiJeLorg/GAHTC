@@ -11,7 +11,48 @@
         <a class="button button-group" id="publish">Publish</a>
     </div>
 </div>
-<div id="map"></div>
+<div class="draw-toolbar" >
+    <div class="toolbar-section draw-icons">
+        <a href="#" id="freedraw" class="toolbar-icon" style="background: url('../../static/mapbuilder/css/images/freedraw.svg') no-repeat "></a>
+        <a href="#" id="line" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/line.svg') no-repeat"></a>
+        <a href="#" id="star" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/star.svg') no-repeat"></a>
+        <a href="#" id="rect" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/rectangle.svg ') no-repeat"></a>
+        <a href="#" id="circle" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/circle.svg') no-repeat"></a>
+        <a href="#" id="pin" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/pin.svg') no-repeat"></a>
+        <a href="#" id="text" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/type.svg') no-repeat"></a>
+        <a href="#" id="image" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/insert_img.svg') no-repeat"></a>
+    </div>
+    <div class="toolbar-section edit-icons">
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/select.svg') no-repeat "></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/rotate.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_color_fill.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/stroke_color.svg ') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/opacity.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/stroke_weight.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/stroke_style.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/left_arrow.svg') no-repeat"></a>
+            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/right_arrow.svg') no-repeat"></a>
+    </div>
+    <div class="toolbar-section format-icons">
+        <a href="#" id="f-color" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_color_text.svg') no-repeat "></a>
+        <a href="#" id="f-bold" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_bold.svg') no-repeat"></a>
+        <a href="#" id="f-italic" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_italic.svg') no-repeat"></a>
+        <a href="#" id="underline" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_underlined.svg ') no-repeat"></a>
+        <a href="#" id="align-left" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_align_left.svg') no-repeat"></a>
+        <a href="#" id="align-right" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_align_right.svg') no-repeat"></a>
+        <a href="#" id="justify" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_align_justify.svg') no-repeat"></a>
+        <a href="#" id="align-center" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_align_center.svg') no-repeat"></a>
+    </div>
+    <div class="toolbar-btn-holder">
+        <a href="" class="toolbar-btn">Legend</a>
+        <a href="" class="toolbar-btn">Layers</a>
+    </div>
+</div>
+<div id="map-canvas">
+    <div id="lmap"></div>
+    <canvas id="c"></canvas>
+</div>
+
 <div id="map-modal" class="modal">
     <div class="modal-content">
         <span class="close-button" id="close-button">&times;</span>
@@ -67,44 +108,137 @@
         mapBounds = [southWest, northEast];
 
     // initialize the map
-    var map = L.map('map', {
+    var map = L.map('lmap', {
         center: center,
         minZoom: zoom,
+        maxZoom: zoom,
         zoomControl: false,
         maxBounds: mapBounds,
         preferCanvas: true
     });
 
     map.fitBounds(mapBounds);
-    var marker = L.marker(center).addTo(map);
+   
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         id: layerId,
         accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
     }).addTo(map);
 
-    L.control.zoom({
-        position: 'bottomleft'
-    }).addTo(map);
+    var canvasF = new fabric.Canvas('c');
+    const mapCanvas = $('#map-canvas');
+    canvasF.setHeight(mapCanvas.height());
+    canvasF.setWidth(mapCanvas.width());
+    
+    $('#rect').click(function(){
+        var rect = new fabric.Rect({
+        left: 100,
+        top: 100,
+        fill: 'blue',
+        width: 100,
+        height: 100,
+        opacity: 0.5
+        });
+    canvasF.add(rect).setActiveObject(rect);
+    })
+    $('#freedraw').click(function(){
+        canvasF.isDrawingMode = true;
+        canvasF.freeDrawingBrush.width = 10;
+    })
+    $('#line').click(function(){
+        var line = new fabric.Line([50, 100, 200, 200], {
+        left: 170,
+        top: 150,
+        stroke: 'blue',
+        strokeWidth: 5,
+        originX: 'center',
+        originY: 'center',
+        hasControls: true,
+        hasBorders: false,
+        });
+        canvasF.add(line).setActiveObject(line)
+    })
 
-    // FeatureGroup is to store editable layers
-    var drawnItems = new L.FeatureGroup();
-    map.addLayer(drawnItems);
-    var drawControl = new L.Control.Draw({
-        edit: {
-            featureGroup: drawnItems
-        }
+    $('#star').click(function(){
+
+    })
+
+    $('#circle').click(function(){
+        var circle = new fabric.Circle({ 
+            radius: 50, 
+            fill: 'blue',
+            top: 100, 
+            left: 100,
+            opacity:0.5
+        });
+        canvasF.add(circle).setActiveObject(circle);
+    })
+
+    $('#pin').click(function(){
+
+    })
+    $('#text').click(function(){
+        var text = new fabric.IText('Insert Text', {
+            left: 150,
+            top: 50,
+            fontWeight: 'normal',
+            fontFamily: 'Arial',
+            fontSize: 20
+        });
+        canvasF.add(text).setActiveObject(text);
+        
+    })
+
+    $('#image').click(function(e){
+
+    })
+    
+    $('#f-bold').click(function(e){
+        canvasF.getActiveObject().set('fontWeight', 'bold');
+        canvasF.renderAll();
+    })
+    $('#f-italic').click(function(e){
+        canvasF.getActiveObject().set('fontWeight', 'italic');
+        canvasF.renderAll();
+    })
+
+    $('#underline').click(function(e){
+        canvasF.getActiveObject().setTextDecoration('underline');
+        canvasF.renderAll();
+    })
+    $('#align-left').click(function(e){
+        canvasF.getActiveObject().set('textAlign', 'left');
+        canvasF.renderAll();
+    })
+    $('#align-right').click(function(e){
+        canvasF.getActiveObject().set('textAlign', 'right');
+        canvasF.renderAll();
+    })
+    $('#align-center').click(function(e){
+        canvasF.getActiveObject().set('textAlign', 'center');
+        canvasF.renderAll();
+    })
+    $('#justify').click(function(e){
+        canvasF.getActiveObject().set('textAlign', 'justify');
+        canvasF.renderAll();
+    })
+
+    $( document ).ready(function() {
+        leafletImage(map, function(err, canvas) {
+        var url = canvas.toDataURL('image/png');
+        const img  = new Image;
+        var dimensions = map.getSize();
+        img.width = dimensions.x;
+        img.height = dimensions.y;
+        img.src = url;
+        img.onload = function () {
+            $('#lmap').remove();
+            const imageBackgroundUrl = "" + url + "";
+            canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
+            }
+        })
     });
-    map.addControl(drawControl);
-
-
-    map.on('draw:created', function (e) {
-        var type = e.layerType,
-            layer = e.layer;
-        drawnItems.addLayer(layer);
-        map.addLayer(drawnItems);
-    });
-
+    
     $('#close-button').click(function (e) {
         $('.modal').css("display", "none");
     });
@@ -117,6 +251,7 @@
     $('#editIcon').click(function (e) {
         $('.modal').css("display", "block");
     });
+
 
 
     const drawImage = (err, canvas) => {
@@ -148,6 +283,8 @@
     $('#close-icon').click(function (e) {
         $('.publish-modal').css("display", "none");
     });
+
+
 
 
     function downloadImage(err, canvas) {
