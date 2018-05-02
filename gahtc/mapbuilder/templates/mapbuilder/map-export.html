@@ -21,6 +21,7 @@
         <a href="#" id="pin" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/pin.svg') no-repeat"></a>
         <a href="#" id="text" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/type.svg') no-repeat"></a>
         <a href="#" id="image" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/insert_img.svg') no-repeat"></a>
+        <input type="file" id="file-image" style="display: none;">
     </div>
     <div class="toolbar-section edit-icons">
             <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/select.svg') no-repeat "></a>
@@ -175,8 +176,12 @@
     })
 
     $('#pin').click(function(){
-
+        fabric.Image.fromURL('../../static/mapbuilder/css/images/marker-icon.png', function(oImg) {
+            oImg.scale(0.2).set('flipX', true);
+            canvasF.add(oImg);
+        });
     })
+
     $('#text').click(function(){
         var text = new fabric.IText('Insert Text', {
             left: 150,
@@ -189,9 +194,33 @@
         
     })
 
-    $('#image').click(function(e){
+    $('#image').click(function(){
+        $('#file-image').trigger('click')
+    });
 
-    })
+    $('#file-image').change(function(e){
+    
+        var fileType = e.target.files[0].type;
+        var url = URL.createObjectURL(e.target.files[0]);
+
+        if (fileType === 'image/png') { //check if png
+            fabric.Image.fromURL(url, function(img) {
+                img.set({
+                    width: 180,
+                    height: 180
+                });
+                canvasF.add(img);
+            });
+        } else if (fileType === 'image/svg+xml') { //check if svg
+            fabric.loadSVGFromURL(url, function(objects, options) {
+                var svg = fabric.util.groupSVGElements(objects, options);
+                svg.scaleToWidth(180);
+                svg.scaleToHeight(180);
+                canvasF.add(svg);
+            });
+        }
+})
+
     
     $('#f-bold').click(function(e){
         canvasF.getActiveObject().set('fontWeight', 'bold');
@@ -253,7 +282,6 @@
     });
 
 
-
     const drawImage = (err, canvas) => {
         const url = canvas.toDataURL('image/png');
         const imageBackgroundUrl = "url(" + url + ")";
@@ -269,8 +297,6 @@
         }
     }
 
-
-
     // publish modal
     $('#publish').click(function (e) {
         $('.publish-modal').css("display", "flex");
@@ -278,13 +304,9 @@
         leafletImage(map, drawImage)
     });
 
-
-
     $('#close-icon').click(function (e) {
         $('.publish-modal').css("display", "none");
     });
-
-
 
 
     function downloadImage(err, canvas) {
@@ -331,6 +353,7 @@
             imageQuality = 'large'
         }
     })
+
 </script>
 
 {% endblock%}
