@@ -171,7 +171,6 @@ $('#file-image').change(function(e){
 
 $('select').click(function(){
     canvasF.selection = true;
-    console.log('hey you', canvasF.selection)
 })
 
 
