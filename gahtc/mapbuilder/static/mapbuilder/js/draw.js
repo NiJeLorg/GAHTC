@@ -1,7 +1,3 @@
-var canvasF = new fabric.Canvas('c');
-const mapCanvas = $('#map-canvas');
-canvasF.setHeight(mapCanvas.height());
-canvasF.setWidth(mapCanvas.width());
 
 $('#rect').click(function(){
     var rect = new fabric.Rect({
@@ -14,8 +10,6 @@ $('#rect').click(function(){
     });
 canvasF.add(rect).setActiveObject(rect);
 })
-
-
 
 
 $('#freedraw').click(function(){
@@ -63,40 +57,39 @@ $('#poly').click(function(){
             finalize();    
         }
       });
-      canvasF.on('mouse:down', function (evt) {
+    canvasF.on('mouse:down', function (evt) {
         if (isDrawing) {
-          var _mouse = this.getPointer(evt.e);    
-          var _x = _mouse.x;
-          var _y = _mouse.y;
-          var line = new fabric.Line([_x, _y, _x, _y], {
+            var _mouse = this.getPointer(evt.e);    
+            var _x = _mouse.x;
+            var _y = _mouse.y;
+            var line = new fabric.Line([_x, _y, _x, _y], {
             strokeWidth: 1,
             selectable: false,
             stroke: 'red'
-          });
-      
-          polygonPoints.push(new fabric.Point(_x, _y));
-          lines.push(line);
-          
-          this.add(line);
-          this.selection = false;
+            });
+            polygonPoints.push(new fabric.Point(_x, _y));
+            lines.push(line);
+            
+            this.add(line);
+            this.selection = false;
         }
       });
       canvasF.on('mouse:move', function (evt) {
         if (lines.length && isDrawing) {  
             var _mouse = this.getPointer(evt.e);    
-          lines[lines.length-1].set({
+            lines[lines.length-1].set({
             x2: _mouse.x,
             y2: _mouse.y
           }).setCoords();
           this.renderAll();
         }
-      }); 
-      function finalize () {
-        isDrawing = false;
+        }); 
+        function finalize () {
+            isDrawing = false;
     
-      lines.forEach(function (line) {
-        line.remove();
-      });
+        lines.forEach(function (line) {
+            line.remove();
+        });
     
       canvasF.add(makePolygon()).renderAll();
       canvasF.selection = true;
@@ -174,6 +167,11 @@ $('#file-image').change(function(e){
             canvasF.add(svg);
         });
     }
+});
+
+$('select').click(function(){
+    canvasF.selection = true;
+    console.log('hey you', canvasF.selection)
 })
 
 

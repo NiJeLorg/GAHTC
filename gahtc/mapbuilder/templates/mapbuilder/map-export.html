@@ -24,7 +24,7 @@
         <input type="file" id="file-image" style="display: none;">
     </div>
     <div class="toolbar-section edit-icons">
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/select.svg') no-repeat "></a>
+            <a href="#" class="toolbar-icon" id="select" style="background: url('../../static//mapbuilder/css/images/select.svg') no-repeat "></a>
             <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/rotate.svg') no-repeat"></a>
             <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_color_fill.svg') no-repeat"></a>
             <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/stroke_color.svg ') no-repeat"></a>
@@ -127,6 +127,11 @@
     }).addTo(map);
 
    
+    var canvasF = new fabric.Canvas('c');
+    const mapCanvas = $('#map-canvas');
+    canvasF.setHeight(mapCanvas.height());
+    canvasF.setWidth(mapCanvas.width());
+    canvasF.selection = false;
     $( document ).ready(function() {
         leafletImage(map, function(err, canvas) {
         var url = canvas.toDataURL('image/png');
