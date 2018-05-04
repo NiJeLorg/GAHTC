@@ -39,7 +39,7 @@
         <a href="#" id="image" class="toolbar-icon" title="Image">
             <img src="{% static 'mapbuilder/css/images/insert_img.svg' %}" alt="">
         </a>
-
+        <input type="file" id="file-image" style="display: none;">
     </div>
     <div class="toolbar-section edit-icons">
         <a href="#" class="toolbar-icon" title="Select">
@@ -300,8 +300,8 @@
     $('#editIcon').click(function (e) {
         $('.modal').css("display", "block");
     });
-    const drawImage = (err, canvas) => {
-        const url = canvas.toDataURL('image/png');
+    const drawImage = (canvasF) => {
+        const url = canvasF.toDataURL('image/png');
         const imageBackgroundUrl = "url(" + url + ")";
         const img  = new Image;
         $('#images').css({
@@ -318,38 +318,54 @@
     // publish modal
     $('#publish').click(function (e) {
         $('.publish-modal').css("display", "flex");
-        // leaflet image       
-        leafletImage(map, drawImage)
+        drawImage(canvasF);
     });
     $('#close-icon').click(function (e) {
         $('.publish-modal').css("display", "none");
     });
-    function downloadImage(err, canvas) {
-        var link = document.createElement('a');
-        if (document.getElementById('png').checked) {
-            link.download = "mymap.png";
-            link.href = canvas.toDataURL('image/png');
-            link.click()
-        } else {
-            link.download = "mymap.jpg";
-            link.href = canvas.toDataURL('image/jpeg');
-            link.click()
-        }
 
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+       while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+       }
+        return new Blob([u8arr], {type:mime});
     }
 
-    const downloadPdf = (err, canvas) => {
-        const url = canvas.toDataURL("image/svg+xml", 1.0);
+    function downloadImage(err, canvas) {
+        var link = document.createElement('a');
+         if (document.getElementById('png').checked) {
+            link.download = "mymap.png";
+            var strDataUrl = canvasF.toDataURL('image/png');
+            var blob = dataURLtoBlob(strDataUrl);
+            var objectUrl = URL.createObjectURL(blob)
+            link.href = objectUrl
+             link.click()
+         } else {
+            link.download = "mymap.jpg";
+            var strDataUrl = canvasF.toDataURL('image/jpeg');
+            var blob = dataURLtoBlob(strDataUrl);
+            var objectUrl = URL.createObjectURL(blob)
+            link.href = objectUrl
+            link.click()
+         }
+    }
+
+    function downloadPdf (canvasF) {
+        const url = canvasF.toDataURL("image/svg+xml", 1.0);
         var dimensions = map.getSize();
         var pdf = new jsPDF('l', 'pt', 'letter');
         pdf.addImage(url, 'PNG', 10, 10, dimensions.x * 0.5, dimensions.y * 0.5);
         pdf.save("mymap.pdf");
-    }
+ 
+     }
+
     $('#download').click(function (e) {
         if (document.getElementById('pdf').checked) {
-            leafletImage(map, downloadPdf);
+            downloadPdf(canvasF);
         } else {
-            leafletImage(map, downloadImage);
+            downloadImage(canvasF);
         }
     })
     // Toggle Between image size

@@ -1,8 +1,11 @@
  // mapbuilder toolbar event handlers
-  $("#freedraw").click(function() {
-    canvasF.isDrawingMode = true;
-    canvasF.freeDrawingBrush.width = 10;
+ $('#freedraw').click(function(){
+  canvasF.isDrawingMode = true;
+  canvasF.freeDrawingBrush.width = 6;
+  canvasF.on('mouse:up', function () {
+      canvasF.isDrawingMode = false;
   });
+})
 
   $("#rect").click(function() {
     var rect = new fabric.Rect({
@@ -11,7 +14,10 @@
       fill: "red",
       width: 100,
       height: 100,
-      opacity: 0.5
+      opacity: 0.5,
+      hasBorder: true,
+      strokeWidth: 3,
+      stroke: 'black'
     });
     canvasF.add(rect).setActiveObject(rect);
   });
@@ -42,8 +48,8 @@
     var line = new fabric.Line([50, 100, 200, 200], {
       left: 170,
       top: 150,
-      stroke: "blue",
-      strokeWidth: 5,
+      stroke: 'black',
+      strokeWidth: 8,
       originX: "center",
       originY: "center",
       hasControls: true,
@@ -82,9 +88,10 @@
             var _x = _mouse.x;
             var _y = _mouse.y;
             var line = new fabric.Line([_x, _y, _x, _y], {
-            strokeWidth: 1,
-            selectable: false,
-            stroke: 'red'
+              strokeWidth: 5,
+              stroke: 'black',
+              selectable: false,
+              stroke: 'red'
             });
             polygonPoints.push(new fabric.Point(_x, _y));
             lines.push(line);
@@ -143,10 +150,8 @@ $('#image').click(function(){
 });
 
 $('#file-image').change(function(e){
-
     var fileType = e.target.files[0].type;
     var url = URL.createObjectURL(e.target.files[0]);
-
     if (fileType === 'image/png') { //check if png
         fabric.Image.fromURL(url, function(img) {
             img.set({
