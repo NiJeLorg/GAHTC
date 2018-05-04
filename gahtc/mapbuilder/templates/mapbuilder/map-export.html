@@ -1,4 +1,5 @@
-{% extends "mapbuilder/base.html" %} {% block content%}
+{% extends "mapbuilder/base.html" %} {% block content%} {% load staticfiles %}
+
 <div class="map-header white-header">
     <div>
         <h3 class="map-header-text" id="projectname">Name Your Project</h3>
@@ -11,60 +12,148 @@
         <a class="button button-group" id="publish">Publish</a>
     </div>
 </div>
-<div class="draw-toolbar" >
+<div class="draw-toolbar">
     <div class="toolbar-section draw-icons">
-        <a href="#" id="freedraw" class="toolbar-icon" style="background: url('../../static/mapbuilder/css/images/freedraw.svg') no-repeat "></a>
-        <a href="#" id="line" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/line.svg') no-repeat"></a>
-        <a href="#" id="poly" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/star.svg') no-repeat"></a>
-        <a href="#" id="rect" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/rectangle.svg ') no-repeat"></a>
-        <a href="#" id="circle" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/circle.svg') no-repeat"></a>
-        <a href="#" id="pin" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/pin.svg') no-repeat"></a>
-        <a href="#" id="text" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/type.svg') no-repeat"></a>
-        <a href="#" id="image" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/insert_img.svg') no-repeat"></a>
-        <input type="file" id="file-image" style="display: none;">
+        <a href="#" id="freedraw" class="toolbar-icon" title="Free Draw">
+            <img src="{% static 'mapbuilder/css/images/freedraw.svg' %}" alt="">
+        </a>
+        <a href="#" id="line" class="toolbar-icon" title="Line">
+            <img src="{%static 'mapbuilder/css/images/line.svg' %}" alt="">
+        </a>
+        <a href="#" id="poly" class="toolbar-icon" title="Star">
+            <img src="{%static 'mapbuilder/css/images/star.svg' %}" alt="">
+        </a>
+        <a href="#" id="rect" class="toolbar-icon" title="Rectangle">
+            <img src="{% static 'mapbuilder/css/images/rectangle.svg' %}" alt="">
+        </a>
+        <a href="#" id="circle" class="toolbar-icon" title="Cirlce">
+            <img src="{%static 'mapbuilder/css/images/circle.svg' %}" alt="">
+        </a>
+        <a href="#" id="pin" class="toolbar-icon" title="Pin">
+            <img src="{% static 'mapbuilder/css/images/pin.svg' %}" alt="">
+        </a>
+        <a href="#" id="text" class="toolbar-icon" title="Text">
+            <img src="{% static 'mapbuilder/css/images/type.svg' %}" alt="">
+        </a>
+        <a href="#" id="image" class="toolbar-icon" title="Image">
+            <img src="{% static 'mapbuilder/css/images/insert_img.svg' %}" alt="">
+        </a>
+
     </div>
     <div class="toolbar-section edit-icons">
-            <a href="#" class="toolbar-icon" id="select" style="background: url('../../static//mapbuilder/css/images/select.svg') no-repeat "></a>
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/rotate.svg') no-repeat"></a>
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_color_fill.svg') no-repeat"></a>
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/stroke_color.svg ') no-repeat"></a>
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/opacity.svg') no-repeat"></a>
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/stroke_weight.svg') no-repeat"></a>
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/stroke_style.svg') no-repeat"></a>
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/left_arrow.svg') no-repeat"></a>
-            <a href="#" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/right_arrow.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" title="Select">
+            <img src="{% static 'mapbuilder/css/images/select.svg' %}" alt="">
+        </a>
+        <input type="text" id="fillColorPicker">
+        <a href="#" class="toolbar-icon" title="Fill" id='fillColor'>
+            <img src="{% static 'mapbuilder/css/images/format_color_fill.svg' %}" alt="">
+        </a>
+        <input type="text" id="strokeColorPicker">
+        <a href="#" class="toolbar-icon" title="Stroke Color" id="strokeColor">
+            <img src="{% static 'mapbuilder/css/images/stroke_color.svg' %}" alt="">
+        </a>
+        <a href="#" class="toolbar-icon" title="Opacity">
+            <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
+        </a>
+        <a href="#" class="toolbar-icon" title="Stroke Weight">
+            <img src="{% static 'mapbuilder/css/images/stroke_weight.svg' %}" alt="">
+            <ul class="toolbar-icon-dropdown">
+                <li class='stroke-weight-option'>1px</li>
+                <li class="stroke-weight-option">2px</li>
+                <li class="stroke-weight-option">3px</li>
+                <li class="stroke-weight-option">4px</li>
+                <li class="stroke-weight-option">8px</li>
+                <li class="stroke-weight-option">12px</li>
+            </ul>
+        </a>
+        <a href="#" class="toolbar-icon" title="Stroke Style">
+            <img src="{% static 'mapbuilder/css/images/stroke_style.svg' %}" alt="">
+            <ul class="toolbar-icon-dropdown">
+                <li class="stroke-style-option">
+                    <div class=" stroke-style-solid"></div>
+                </li>
+                <li class="stroke-style-option">
+                    <div class=" stroke-style-dashed"></div>
+                </li>
+            </ul>
+        </a>
+        <a href="#" class="toolbar-icon" title="Arrow">
+            <img src="{% static 'mapbuilder/css/images/right_arrow.svg' %}" alt="">
+        </a>
+        <a href="#" class="toolbar-icon delete-shape-icon">
+            <i class="fa fa-trash"></i>
+        </a>
     </div>
     <div class="toolbar-section format-icons">
-        <a href="#" id="f-color" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_color_text.svg') no-repeat "></a>
-        <a href="#" id="f-bold" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_bold.svg') no-repeat"></a>
-        <a href="#" id="f-italic" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_italic.svg') no-repeat"></a>
-        <a href="#" id="underline" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_underlined.svg ') no-repeat"></a>
-        <a href="#" id="align-left" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_align_left.svg') no-repeat"></a>
-        <a href="#" id="align-right" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_align_right.svg') no-repeat"></a>
-        <a href="#" id="justify" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_align_justify.svg') no-repeat"></a>
-        <a href="#" id="align-center" class="toolbar-icon" style="background: url('../../static//mapbuilder/css/images/format_align_center.svg') no-repeat"></a>
+        <a href="#" class="toolbar-icon" title="Font Family">
+            <i class="fa fa-font"></i>
+            <ul class="toolbar-icon-dropdown">
+                <li class="font-family-option">Source Sans Pro</li>
+                <li class="font-family-option" >Raleway</li>
+                <li class="font-family-option">Indie Flower</li>
+                <li class="font-family-option">Lobster</li>
+                <li class="font-family-option">Pacifico</li>
+            </ul>
+        </a>
+        <a href="#" class="toolbar-icon" title="Font Size">
+            <i class="fa fa-text-height"></i>
+            <ul class="toolbar-icon-dropdown">
+                <li class="font-size-option">8</li>
+                <li class="font-size-option">10</li>
+                <li class="font-size-option">12</li>
+                <li class="font-size-option">14</li>
+                <li class="font-size-option">18</li>
+                <li class="font-size-option">24</li>
+                <li class="font-size-option">30</li>
+                <li class="font-size-option">36</li>
+                <li class="font-size-option">38</li>
+            </ul>
+        </a>
+        <input type="text" id="fontColorPicker">
+        <a href="#" id="fontColor" class="toolbar-icon" id="fontColor">
+            <img src="{% static 'mapbuilder/css/images/format_color_text.svg' %}" alt="">
+        </a>
+        <a href="#" id="f-bold" class="toolbar-icon">
+            <img src="{% static 'mapbuilder/css/images/format_bold.svg' %}" alt="">
+        </a>
+        <a href="#" id="f-italic" class="toolbar-icon">
+            <img src="{% static '/mapbuilder/css/images/format_italic.svg' %}" alt="">
+        </a>
+        <a href="#" id="underline" class="toolbar-icon">
+            <img src="{% static 'mapbuilder/css/images/format_underlined.svg' %}" alt="">
+        </a>
+        <a href="#" id="align-left" class="toolbar-icon">
+            <img src="{% static 'mapbuilder/css/images/format_align_left.svg' %}" alt="">
+        </a>
+        <a href="#" id="align-right" class="toolbar-icon">
+            <img src="{% static 'mapbuilder/css/images/format_align_right.svg' %}" alt="">
+        </a>
+        <a href="#" id="justify" class="toolbar-icon">
+            <img src="{% static 'mapbuilder/css/images/format_align_justify.svg'%}" alt="">
+        </a>
+        <a href="#" id="align-center" class="toolbar-icon">
+            <img src="{% static 'mapbuilder/css/images/format_align_center.svg' %}" alt="">
+        </a>
     </div>
+    {% comment %}
     <div class="toolbar-btn-holder">
         <a href="" class="toolbar-btn">Legend</a>
         <a href="" class="toolbar-btn">Layers</a>
-    </div>
+    </div> {% endcomment %}
 </div>
 <div id="map-canvas">
     <div id="lmap"></div>
     <canvas id="c"></canvas>
 </div>
-
 <div id="map-modal" class="modal">
     <div class="modal-content">
         <span class="close-button" id="close-button">&times;</span>
         <h3 class="modal-title">Lets Make A Map!</h3>
         <label class="label-title" for="">Name Your Project</label>
-        <input id="project-title" type="text" >
+        <input id="project-title" type="text">
         <a class="button ok-button">OK</a>
     </div>
-
 </div>
-
 <div class="publish-modal">
     <div class="publish-modal-content">
         <span class="close-button close-icon" id="close-icon">&times;</span>

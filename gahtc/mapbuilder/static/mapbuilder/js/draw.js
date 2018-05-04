@@ -1,39 +1,110 @@
+$(document).ready(() => {
+  // event handlers spectrum
+  let fillColor, strokeColor, strokeWidth, fontColor, fontSize, fontFamily;
 
-$('#rect').click(function(){
-    var rect = new fabric.Rect({
-    left: 100,
-    top: 100,
-    fill: 'blue',
-    width: 100,
-    height: 100,
-    opacity: 0.5
-    });
-canvasF.add(rect).setActiveObject(rect);
-})
+  $("#fillColor").on("click", () => {
+    $("#fillColorPicker").spectrum("toggle");
+    return false;
+  });
+
+  $("#strokeColor").on("click", function() {
+    $("#strokeColorPicker").spectrum("toggle");
+    return false;
+  });
+
+  $("#fontColor").on("click", function() {
+    $("#fontColorPicker").spectrum("toggle");
+    return false;
+  });
+
+  $("#fillColorPicker").spectrum({
+    color: "#f00",
+    change: color => {
+      fillColor = color.toHexString();
+      canvasF.getActiveObject().set("fill", fillColor);
+      canvasF.renderAll();
+    }
+  });
+
+  $("#strokeColorPicker").spectrum({
+    color: "#f00",
+    change: color => {
+      strokeColor = color.toHexString();
+      canvasF.getActiveObject().set({
+        strokeWidth: strokeWidth || 1,
+        stroke: strokeColor
+      });
+      canvasF.renderAll();
+    }
+  });
+
+  $("#fontColorPicker").spectrum({
+    color: "#f00",
+    change: color => {
+      fontColor = color.toHexString();
+      canvasF.getActiveObject().set({
+        fill: fontColor
+      });
+      canvasF.renderAll();
+    }
+  });
 
 
-$('#freedraw').click(function(){
+  // mapbuilder toolbar event handlers
+  $("#freedraw").click(function() {
     canvasF.isDrawingMode = true;
-    canvasF.freeDrawingBrush.width = 6;
-    canvasF.on('mouse:up', function () {
-        canvasF.isDrawingMode = false;
-    });
-})
-$('#line').click(function(){
-    var line = new fabric.Line([50, 100, 200, 200], {
-    left: 170,
-    top: 150,
-    stroke: 'blue',
-    strokeWidth: 5,
-    originX: 'center',
-    originY: 'center',
-    hasControls: true,
-    hasBorders: false,
-    });
-    canvasF.add(line).setActiveObject(line)
-})
+    canvasF.freeDrawingBrush.width = 10;
+  });
 
-$('#poly').click(function(){
+  $("#rect").click(function() {
+    var rect = new fabric.Rect({
+      left: 100,
+      top: 100,
+      fill: "red",
+      width: 100,
+      height: 100,
+      opacity: 0.5
+    });
+    canvasF.add(rect).setActiveObject(rect);
+  });
+
+  $("#circle").click(function() {
+    var circle = new fabric.Circle({
+      radius: 50,
+      fill: "blue",
+      top: 100,
+      left: 100,
+      opacity: 0.5
+    });
+    canvasF.add(circle).setActiveObject(circle);
+  });
+
+  $("#text").click(function() {
+    var text = new fabric.IText("Insert Text", {
+      left: 150,
+      top: 50,
+      fontWeight: "normal",
+      fontFamily: "Source Sans Pro",
+      fontSize: 20
+    });
+    canvasF.add(text).setActiveObject(text);
+  });
+
+  $("#line").click(function() {
+    var line = new fabric.Line([50, 100, 200, 200], {
+      left: 170,
+      top: 150,
+      stroke: "blue",
+      strokeWidth: 5,
+      originX: "center",
+      originY: "center",
+      hasControls: true,
+      hasBorders: false
+    });
+    canvasF.add(line).setActiveObject(line);
+  });
+
+  $('#poly').click(function(){
     var startPoint = new fabric.Point(0, 0);
     var polygonPoints = [];
     var lines = [];
@@ -112,34 +183,11 @@ $('#poly').click(function(){
       }
 });
 
-$('#circle').click(function(){
-    var circle = new fabric.Circle({ 
-        radius: 50, 
-        fill: 'blue',
-        top: 100, 
-        left: 100,
-        opacity:0.5
-    });
-    canvasF.add(circle).setActiveObject(circle);
-})
-
 $('#pin').click(function(){
     fabric.Image.fromURL('../../static/mapbuilder/css/images/marker-icon.png', function(oImg) {
         oImg.scale(0.2).set('flipX', true);
         canvasF.add(oImg);
     });
-})
-
-$('#text').click(function(){
-    var text = new fabric.IText('Insert Text', {
-        left: 150,
-        top: 50,
-        fontWeight: 'normal',
-        fontFamily: 'Arial',
-        fontSize: 20
-    });
-    canvasF.add(text).setActiveObject(text);
-    
 })
 
 $('#image').click(function(){
@@ -173,35 +221,59 @@ $('select').click(function(){
     canvasF.selection = true;
 })
 
+  // font formating
 
-$('#f-bold').click(function(e){
-    canvasF.getActiveObject().set('fontWeight', 'bold');
+  $("#f-bold").click(function(e) {
+    canvasF.getActiveObject().set("fontWeight", "bold");
     canvasF.renderAll();
-})
-$('#f-italic').click(function(e){
-    canvasF.getActiveObject().set('fontWeight', 'italic');
+  });
+  $("#f-italic").click(function(e) {
+    canvasF.getActiveObject().set("fontWeight", "italic");
     canvasF.renderAll();
-})
+  });
 
-$('#underline').click(function(e){
-    canvasF.getActiveObject().setTextDecoration('underline');
+  $("#underline").click(function(e) {
+    canvasF.getActiveObject().setTextDecoration("underline");
     canvasF.renderAll();
-})
+  });
+  $("#align-left").click(function(e) {
+    canvasF.getActiveObject().set("textAlign", "left");
+    canvasF.renderAll();
+  });
+  $("#align-right").click(function(e) {
+    canvasF.getActiveObject().set("textAlign", "right");
+    canvasF.renderAll();
+  });
+  $("#align-center").click(function(e) {
+    canvasF.getActiveObject().set("textAlign", "center");
+    canvasF.renderAll();
+  });
+  $("#justify").click(function(e) {
+    canvasF.getActiveObject().set("textAlign", "justify");
+    canvasF.renderAll();
+  });
 
+  // mapbuilder dropdown menu event handlers
+  $(".stroke-weight-option").on("click", function() {
+    strokeWidth = parseInt(/\d+/g.exec($(this).text())[0]);
+    canvasF.getActiveObject().set("strokeWidth", strokeWidth);
+    canvasF.renderAll();
+    strokeWidth = 1;
+  });
 
-$('#align-left').click(function(e){
-    canvasF.getActiveObject().set('textAlign', 'left');
+  $(".font-size-option").on("click", function() {
+    fontSize = parseInt(/\d+/g.exec($(this).text())[0]);
+    canvasF.getActiveObject().set("fontSize", fontSize);
     canvasF.renderAll();
-})
-$('#align-right').click(function(e){
-    canvasF.getActiveObject().set('textAlign', 'right');
+  });
+
+  $(".delete-shape-icon").on("click", function() {
+    canvasF.remove(canvasF.getActiveObject());
+  });
+
+  $(".font-family-option").on("click", function() {
+    fontFamily = $(this).text();
+    canvasF.getActiveObject().set("fontFamily", fontFamily);
     canvasF.renderAll();
-})
-$('#align-center').click(function(e){
-    canvasF.getActiveObject().set('textAlign', 'center');
-    canvasF.renderAll();
-})
-$('#justify').click(function(e){
-    canvasF.getActiveObject().set('textAlign', 'justify');
-    canvasF.renderAll();
-})
+  });
+});
