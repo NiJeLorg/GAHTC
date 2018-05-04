@@ -185,7 +185,7 @@
         </div>
 
     </div>
-</div>
+</div> 
 <script>
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
@@ -215,7 +215,6 @@
         accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
     }).addTo(map);
 
-   
     var canvasF = new fabric.Canvas('c');
     const mapCanvas = $('#map-canvas');
     canvasF.setHeight(mapCanvas.height());
@@ -245,12 +244,9 @@
         var val = $("#project-title").val()
         $("#projectname").html(val);
     });
-
     $('#editIcon').click(function (e) {
         $('.modal').css("display", "block");
     });
-
-
     const drawImage = (err, canvas) => {
         const url = canvas.toDataURL('image/png');
         const imageBackgroundUrl = "url(" + url + ")";
@@ -272,12 +268,9 @@
         // leaflet image       
         leafletImage(map, drawImage)
     });
-
     $('#close-icon').click(function (e) {
         $('.publish-modal').css("display", "none");
     });
-
-
     function downloadImage(err, canvas) {
         var link = document.createElement('a');
         if (document.getElementById('png').checked) {
@@ -292,15 +285,14 @@
 
     }
 
+
     const downloadPdf = (err, canvas) => {
         const url = canvas.toDataURL("image/svg+xml", 1.0);
         var dimensions = map.getSize();
         var pdf = new jsPDF('l', 'pt', 'letter');
         pdf.addImage(url, 'PNG', 10, 10, dimensions.x * 0.5, dimensions.y * 0.5);
         pdf.save("mymap.pdf");
-
     }
-
     $('#download').click(function (e) {
         if (document.getElementById('pdf').checked) {
             leafletImage(map, downloadPdf);
@@ -308,8 +300,6 @@
             leafletImage(map, downloadImage);
         }
     })
-
-
     // Toggle Between image size
     $('.button-switcher button').click(function () {
         $(this).siblings().removeClass('size-btn-active');
@@ -322,7 +312,6 @@
             imageQuality = 'large'
         }
     })
-
 </script>
 
 {% endblock%}

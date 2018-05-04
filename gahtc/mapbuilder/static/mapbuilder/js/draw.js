@@ -49,7 +49,6 @@ $(document).ready(() => {
     }
   });
 
-
   // mapbuilder toolbar event handlers
   $("#freedraw").click(function() {
     canvasF.isDrawingMode = true;
