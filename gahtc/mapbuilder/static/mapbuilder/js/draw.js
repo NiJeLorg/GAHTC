@@ -6,7 +6,10 @@ $('#rect').click(function(){
     fill: 'blue',
     width: 100,
     height: 100,
-    opacity: 0.5
+    // opacity: 0.5,
+    hasBorder: true,
+    strokeWidth: 3,
+    stroke: 'black'
     });
 canvasF.add(rect).setActiveObject(rect);
 })
@@ -23,8 +26,8 @@ $('#line').click(function(){
     var line = new fabric.Line([50, 100, 200, 200], {
     left: 170,
     top: 150,
-    stroke: 'blue',
-    strokeWidth: 5,
+    stroke: 'black',
+    strokeWidth: 8,
     originX: 'center',
     originY: 'center',
     hasControls: true,
@@ -63,9 +66,10 @@ $('#poly').click(function(){
             var _x = _mouse.x;
             var _y = _mouse.y;
             var line = new fabric.Line([_x, _y, _x, _y], {
-            strokeWidth: 1,
-            selectable: false,
-            stroke: 'red'
+                strokeWidth: 3,
+                stroke: 'black',
+                selectable: false,
+                stroke: 'red'
             });
             polygonPoints.push(new fabric.Point(_x, _y));
             lines.push(line);
@@ -172,6 +176,7 @@ $('#file-image').change(function(e){
 $('select').click(function(){
     canvasF.selection = true;
 })
+
 
 
 $('#f-bold').click(function(e){
