@@ -241,7 +241,7 @@ h3.map-header-text {
 }
 
 #map-canvas {
-  height: calc(100vh - 220px);
+  height: calc(100vh - 240px);
   z-index: 1;
 }
 #map {

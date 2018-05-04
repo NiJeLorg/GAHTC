@@ -1,55 +1,4 @@
-$(document).ready(() => {
-  // event handlers spectrum
-  let fillColor, strokeColor, strokeWidth, fontColor, fontSize, fontFamily;
-
-  $("#fillColor").on("click", () => {
-    $("#fillColorPicker").spectrum("toggle");
-    return false;
-  });
-
-  $("#strokeColor").on("click", function() {
-    $("#strokeColorPicker").spectrum("toggle");
-    return false;
-  });
-
-  $("#fontColor").on("click", function() {
-    $("#fontColorPicker").spectrum("toggle");
-    return false;
-  });
-
-  $("#fillColorPicker").spectrum({
-    color: "#f00",
-    change: color => {
-      fillColor = color.toHexString();
-      canvasF.getActiveObject().set("fill", fillColor);
-      canvasF.renderAll();
-    }
-  });
-
-  $("#strokeColorPicker").spectrum({
-    color: "#f00",
-    change: color => {
-      strokeColor = color.toHexString();
-      canvasF.getActiveObject().set({
-        strokeWidth: strokeWidth || 1,
-        stroke: strokeColor
-      });
-      canvasF.renderAll();
-    }
-  });
-
-  $("#fontColorPicker").spectrum({
-    color: "#f00",
-    change: color => {
-      fontColor = color.toHexString();
-      canvasF.getActiveObject().set({
-        fill: fontColor
-      });
-      canvasF.renderAll();
-    }
-  });
-
-  // mapbuilder toolbar event handlers
+ // mapbuilder toolbar event handlers
   $("#freedraw").click(function() {
     canvasF.isDrawingMode = true;
     canvasF.freeDrawingBrush.width = 10;
@@ -275,4 +224,4 @@ $('select').click(function(){
     canvasF.getActiveObject().set("fontFamily", fontFamily);
     canvasF.renderAll();
   });
-});
+

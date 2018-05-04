@@ -1,4 +1,5 @@
-{% extends "mapbuilder/base.html" %} {% block content%} {% load staticfiles %}
+{% extends "mapbuilder/base.html" %} {% block content%} 
+{% load staticfiles %}
 
 <div class="map-header white-header">
     <div>
@@ -220,7 +221,8 @@
     canvasF.setHeight(mapCanvas.height());
     canvasF.setWidth(mapCanvas.width());
     canvasF.selection = false;
-    $( document ).ready(function() {
+
+    $(document).ready(() => {
         leafletImage(map, function(err, canvas) {
         var url = canvas.toDataURL('image/png');
         const img  = new Image;
@@ -234,8 +236,59 @@
             canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
             }
         })
+
+    // event handlers spectrum
+    let fillColor, strokeColor, strokeWidth, fontColor, fontSize, fontFamily;
+
+    $("#fillColor").on("click", () => {
+        $("#fillColorPicker").spectrum("toggle");
+        return false;
     });
-    
+
+    $("#strokeColor").on("click", function() {
+        $("#strokeColorPicker").spectrum("toggle");
+        return false;
+    });
+
+    $("#fontColor").on("click", function() {
+        $("#fontColorPicker").spectrum("toggle");
+        return false;
+    });
+
+    $("#fillColorPicker").spectrum({
+        color: "#f00",
+        change: color => {
+        fillColor = color.toHexString();
+        canvasF.getActiveObject().set("fill", fillColor);
+        canvasF.renderAll();
+        }
+    });
+
+    $("#strokeColorPicker").spectrum({
+        color: "#f00",
+        change: color => {
+        strokeColor = color.toHexString();
+        canvasF.getActiveObject().set({
+            strokeWidth: strokeWidth || 1,
+            stroke: strokeColor
+        });
+        canvasF.renderAll();
+        }
+  });
+
+  $("#fontColorPicker").spectrum({
+    color: "#f00",
+    change: color => {
+      fontColor = color.toHexString();
+      canvasF.getActiveObject().set({
+        fill: fontColor
+      });
+      canvasF.renderAll();
+    }
+  });
+
+});
+ 
     $('#close-button').click(function (e) {
         $('.modal').css("display", "none");
     });
@@ -284,7 +337,6 @@
         }
 
     }
-
 
     const downloadPdf = (err, canvas) => {
         const url = canvas.toDataURL("image/svg+xml", 1.0);
