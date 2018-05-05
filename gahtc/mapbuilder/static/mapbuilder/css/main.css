@@ -245,8 +245,8 @@ h3.map-header-text {
   z-index: 1;
 }
 #map {
-  height: 100%;
-  z-index: 1;
+  height: calc(100vh - 146px);
+     z-index: 1;
 }
 #lmap {
   width: 100%;
