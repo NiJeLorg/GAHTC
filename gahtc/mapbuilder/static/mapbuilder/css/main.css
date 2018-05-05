@@ -661,7 +661,7 @@ h3.map-header-text {
 
 .toolbar-icon .toolbar-icon-dropdown {
   position: absolute;
-  top: 2.7em;
+  top: 2.4em;
   list-style-type: none;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
   padding: 10px 0;
@@ -670,6 +670,7 @@ h3.map-header-text {
   transform: scale(0);
   min-width: 150px;
   z-index: 5;
+  background-color: #ffffff;
 }
 
 .toolbar-icon-dropdown li {
