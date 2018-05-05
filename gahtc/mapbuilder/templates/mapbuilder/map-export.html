@@ -300,6 +300,7 @@
     $('#editIcon').click(function (e) {
         $('.modal').css("display", "block");
     });
+
     const drawImage = (canvasF) => {
         const url = canvasF.toDataURL('image/png');
         const imageBackgroundUrl = "url(" + url + ")";
@@ -307,7 +308,8 @@
         $('#images').css({
             'background': imageBackgroundUrl,
             'background-repeat': 'no-repeat',
-            'background-size': 'cover'
+            'background-size': 100% 100%
+            back
         })
         img.src = url;
         img.onload = function () {
