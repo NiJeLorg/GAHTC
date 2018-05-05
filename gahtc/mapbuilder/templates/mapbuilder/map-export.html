@@ -55,6 +55,9 @@
         </a>
         <a href="#" class="toolbar-icon" title="Opacity">
             <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
+            <ul class="toolbar-icon-dropdown opacity">
+                <input type="range"  max="100" min="0" step="1" value="100" orient="vertical" >   
+            </ul>
         </a>
         <a href="#" class="toolbar-icon" title="Stroke Weight">
             <img src="{% static 'mapbuilder/css/images/stroke_weight.svg' %}" alt="">
@@ -70,15 +73,18 @@
         <a href="#" class="toolbar-icon" title="Stroke Style">
             <img src="{% static 'mapbuilder/css/images/stroke_style.svg' %}" alt="">
             <ul class="toolbar-icon-dropdown">
-                <li class="stroke-style-option">
+                <li class="stroke-style-option" id="solid">
                     <div class=" stroke-style-solid"></div>
                 </li>
-                <li class="stroke-style-option">
-                    <div class=" stroke-style-dashed"></div>
+                <li class="stroke-style-option" id="dashed">
+                    <div class="stroke-style-dashed" ></div>
+                </li>
+                <li class="stroke-style-option" id="dotted">
+                    <div class=" stroke-style-dotted"></div>
                 </li>
             </ul>
         </a>
-        <a href="#" class="toolbar-icon" title="Arrow">
+        <a href="#" class="toolbar-icon" title="Arrow" id="arrow">
             <img src="{% static 'mapbuilder/css/images/right_arrow.svg' %}" alt="">
         </a>
         <a href="#" class="toolbar-icon delete-shape-icon">
@@ -146,7 +152,7 @@
     <div id="lmap"></div>
     <canvas id="c"></canvas>
 </div>
-<div id="map-modal" class="modal">
+<!-- <div id="map-modal" class="modal">
     <div class="modal-content">
         <span class="close-button" id="close-button">&times;</span>
         <h3 class="modal-title">Lets Make A Map!</h3>
@@ -154,7 +160,7 @@
         <input id="project-title" type="text">
         <a class="button ok-button">OK</a>
     </div>
-</div>
+</div> -->
 <div class="publish-modal">
     <div class="publish-modal-content">
         <span class="close-button close-icon" id="close-icon">&times;</span>
