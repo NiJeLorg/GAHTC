@@ -39,7 +39,7 @@
         <a href="#" id="image" class="toolbar-icon" title="Image">
             <img src="{% static 'mapbuilder/css/images/insert_img.svg' %}" alt="">
         </a>
-        <input type="file" id="file-image" style="display: none;">
+        <input type="file" id="file-image" style="display: none;" accept="image/*" >
     </div>
     <div class="toolbar-section edit-icons">
         <a href="#" class="toolbar-icon" title="Select">
@@ -53,11 +53,11 @@
         <a href="#" class="toolbar-icon" title="Stroke Color" id="strokeColor">
             <img src="{% static 'mapbuilder/css/images/stroke_color.svg' %}" alt="">
         </a>
-        <a href="#" class="toolbar-icon" title="Opacity">
+        <a class="toolbar-icon" title="Opacity" id="opacity">
             <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
-            <ul class="toolbar-icon-dropdown opacity">
-                <input type="range" >   
-            </ul>
+            <div class="slider-container">
+                <input class="opacity-slider" type="range" max="100"  min="0" step="1" value="100"> 
+            </div>
         </a>
         <a href="#" class="toolbar-icon" title="Stroke Weight">
             <img src="{% static 'mapbuilder/css/images/stroke_weight.svg' %}" alt="">
@@ -292,9 +292,15 @@
       canvasF.renderAll();
     }
   });
-
 });
  
+$(document).on("change", ".opacity-slider", function (){
+    var opacity = $(".opacity-slider").val();
+    opacity = opacity / 100;
+    canvasF.getActiveObject().setOpacity(opacity)
+    canvasF.renderAll();
+});
+
     $('#close-button').click(function (e) {
         $('.modal').css("display", "none");
     });

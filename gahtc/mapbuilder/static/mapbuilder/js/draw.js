@@ -150,24 +150,20 @@ $('#image').click(function(){
 });
 
 $('#file-image').change(function(e){
-    var fileType = e.target.files[0].type;
-    var url = URL.createObjectURL(e.target.files[0]);
-    if (fileType === 'image/png') { //check if png
-        fabric.Image.fromURL(url, function(img) {
-            img.set({
-                width: 180,
-                height: 180
-            });
-            canvasF.add(img);
-        });
-    } else if (fileType === 'image/svg+xml') { //check if svg
-        fabric.loadSVGFromURL(url, function(objects, options) {
-            var svg = fabric.util.groupSVGElements(objects, options);
-            svg.scaleToWidth(180);
-            svg.scaleToHeight(180);
-            canvasF.add(svg);
-        });
-    }
+  var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function (f) {
+    var data = f.target.result;
+    fabric.Image.fromURL(data, function (img) {
+        var oImg = img.set({
+            width: 125,
+            height: 170
+        })
+        canvasF.add(oImg).renderAll();
+        var a = canvasF.setActiveObject(oImg);
+    });
+};
+    reader.readAsDataURL(file);
 });
 
 $('select').click(function(){

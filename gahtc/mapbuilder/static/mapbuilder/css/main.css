@@ -647,8 +647,20 @@ input[type="range"] {
   -webkit-appearance: slider-vertical; 
 }
 
-.opacity {
-    min-width: 50px !important;
+.slider-container {
+  position: absolute;
+  top: 2.4em;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  padding: 10px 0;
+  z-index: 5;
+  box-sizing: border-box;
+  min-width: 40px;
+  display: none;
+}
+
+#opacity:hover .slider-container {
+  display: block;
 }
 
 .toolbar-icon-dropdown li {
