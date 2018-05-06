@@ -56,7 +56,7 @@
         <a href="#" class="toolbar-icon" title="Opacity">
             <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
             <ul class="toolbar-icon-dropdown opacity">
-                <input type="range"  max="100" min="0" step="1" value="100" orient="vertical" >   
+                <input type="range" >   
             </ul>
         </a>
         <a href="#" class="toolbar-icon" title="Stroke Weight">
@@ -307,7 +307,7 @@
         $('.modal').css("display", "block");
     });
 
-    const drawImage = (canvasF) => {
+    const createImage = (canvasF) => {
         const url = canvasF.toDataURL('image/png');
         const imageBackgroundUrl = "url(" + url + ")";
         const img  = new Image;
@@ -325,7 +325,7 @@
     // publish modal
     $('#publish').click(function (e) {
         $('.publish-modal').css("display", "flex");
-        drawImage(canvasF);
+        createImage(canvasF);
     });
     $('#close-icon').click(function (e) {
         $('.publish-modal').css("display", "none");
@@ -340,30 +340,41 @@
         return new Blob([u8arr], {type:mime});
     }
 
+    function resizeImage(img, width, height) {
+        var result = new Image();
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        result.src = canvas.toDataURL();
+        return result;
+    }
+
     function downloadImage(err, canvas) {
         var link = document.createElement('a');
-         if (document.getElementById('png').checked) {
+        var fabricImage = new Image();
+        if (document.getElementById('png').checked) {
+            fabricImage.src = canvasF.toDataURL('image/png');
+            var resizedImage = resizeImage(fabricImage, width, height);
+            var blob = dataURLtoBlob(resizedImage.src);
+            var objectUrl = URL.createObjectURL(blob)
+            link.href = objectUrl
             link.download = "mymap.png";
-            var strDataUrl = canvasF.toDataURL('image/png');
-            var blob = dataURLtoBlob(strDataUrl);
+        } else {
+            fabricImage.src = canvasF.toDataURL('image/jpeg');
+            var resizedImage = resizeImage(fabricImage, width, height);
+            var blob = dataURLtoBlob(resizedImage.src);
             var objectUrl = URL.createObjectURL(blob)
             link.href = objectUrl
-             link.click()
-         } else {
             link.download = "mymap.jpg";
-            var strDataUrl = canvasF.toDataURL('image/jpeg');
-            var blob = dataURLtoBlob(strDataUrl);
-            var objectUrl = URL.createObjectURL(blob)
-            link.href = objectUrl
-            link.click()
-         }
+        }
+        link.click()
     }
 
     function downloadPdf (canvasF) {
         const url = canvasF.toDataURL("image/svg+xml", 1.0);
-        var dimensions = map.getSize();
-        var pdf = new jsPDF('l', 'pt', 'letter');
-        pdf.addImage(url, 'PNG', 10, 10, dimensions.x * 0.5, dimensions.y * 0.5);
+        var pdf = new jsPDF();
+        pdf.addImage(url, 'PNG', 15, 30, 180, 160);
         pdf.save("mymap.pdf");
  
      }
@@ -374,7 +385,8 @@
         } else {
             downloadImage(canvasF);
         }
-    })
+    });
+
     // Toggle Between image size
     $('.button-switcher button').click(function () {
         $(this).siblings().removeClass('size-btn-active');
