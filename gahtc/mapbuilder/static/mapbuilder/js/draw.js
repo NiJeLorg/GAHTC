@@ -28,7 +28,8 @@
       fill: "blue",
       top: 100,
       left: 100,
-      opacity: 0.5
+      opacity: 0.5,
+      stroke: 'black'
     });
     canvasF.add(circle).setActiveObject(circle);
   });
