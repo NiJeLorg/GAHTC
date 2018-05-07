@@ -259,8 +259,8 @@ h3.map-header-text {
 
 .layer-switcher {
   position: absolute;
-  top: 250px;
-  right: 55px;
+  top: 201px;
+  right: 13px;
   z-index: 2;
   background: white;
   border: 1px solid;
@@ -405,28 +405,6 @@ h3.map-header-text {
 .edit-icon:focus {
   color: #000;
   cursor: pointer;
-}
-
-.leaflet-draw {
-  display: flex;
-}
-
-.leaflet-draw-toolbar {
-  display: flex;
-  border: 1px solid #979797;
-}
-
-.leaflet-draw-toolbar {
-  margin-top: 0 !important;
-}
-
-.leaflet-draw-actions {
-  z-index: 99999;
-}
-
-.leaflet-top .leaflet-control {
-  margin-top: -2px !important;
-  margin-left: 0 !important;
 }
 
 .publish-modal {
@@ -615,14 +593,6 @@ h3.map-header-text {
   text-decoration: none;
 }
 
-.leaflet-control-container .leaflet-top .leaflet-control-geosearch {
-  margin-top: 17px !important;
-}
-
-.leaflet-control-container .leaflet-top .leaflet-control-zoom {
-  margin-top: 75px !important;
-  margin-right: 56px !important;
-}
 
 #images {
   background-position: center center;
@@ -671,6 +641,26 @@ h3.map-header-text {
   min-width: 150px;
   z-index: 5;
   background-color: #ffffff;
+}
+
+input[type="range"] {
+  -webkit-appearance: slider-vertical; 
+}
+
+.slider-container {
+  position: absolute;
+  top: 2.4em;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  padding: 10px 0;
+  z-index: 5;
+  box-sizing: border-box;
+  min-width: 40px;
+  display: none;
+}
+
+#opacity:hover .slider-container {
+  display: block;
 }
 
 .toolbar-icon-dropdown li {
@@ -732,6 +722,9 @@ h3.map-header-text {
 
 .stroke-style-dashed {
     border-bottom: 2px dashed #000;
+}
+.stroke-style-dotted {
+  border-bottom: 5px dotted #000;
 }
 
 .fa-trash, .fa-text-height, .fa-font {

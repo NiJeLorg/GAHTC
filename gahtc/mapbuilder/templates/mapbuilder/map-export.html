@@ -39,7 +39,7 @@
         <a href="#" id="image" class="toolbar-icon" title="Image">
             <img src="{% static 'mapbuilder/css/images/insert_img.svg' %}" alt="">
         </a>
-        <input type="file" id="file-image" style="display: none;">
+        <input type="file" id="file-image" style="display: none;" accept="image/*" >
     </div>
     <div class="toolbar-section edit-icons">
         <a href="#" class="toolbar-icon" title="Select">
@@ -53,8 +53,11 @@
         <a href="#" class="toolbar-icon" title="Stroke Color" id="strokeColor">
             <img src="{% static 'mapbuilder/css/images/stroke_color.svg' %}" alt="">
         </a>
-        <a href="#" class="toolbar-icon" title="Opacity">
+        <a class="toolbar-icon" title="Opacity" id="opacity">
             <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
+            <div class="slider-container">
+                <input class="opacity-slider" type="range" max="100"  min="0" step="1" value="100"> 
+            </div>
         </a>
         <a href="#" class="toolbar-icon" title="Stroke Weight">
             <img src="{% static 'mapbuilder/css/images/stroke_weight.svg' %}" alt="">
@@ -70,15 +73,18 @@
         <a href="#" class="toolbar-icon" title="Stroke Style">
             <img src="{% static 'mapbuilder/css/images/stroke_style.svg' %}" alt="">
             <ul class="toolbar-icon-dropdown">
-                <li class="stroke-style-option">
+                <li class="stroke-style-option" id="solid">
                     <div class=" stroke-style-solid"></div>
                 </li>
-                <li class="stroke-style-option">
-                    <div class=" stroke-style-dashed"></div>
+                <li class="stroke-style-option" id="dashed">
+                    <div class="stroke-style-dashed" ></div>
+                </li>
+                <li class="stroke-style-option" id="dotted">
+                    <div class=" stroke-style-dotted"></div>
                 </li>
             </ul>
         </a>
-        <a href="#" class="toolbar-icon" title="Arrow">
+        <a href="#" class="toolbar-icon" title="Arrow" id="arrow">
             <img src="{% static 'mapbuilder/css/images/right_arrow.svg' %}" alt="">
         </a>
         <a href="#" class="toolbar-icon delete-shape-icon">
@@ -146,7 +152,7 @@
     <div id="lmap"></div>
     <canvas id="c"></canvas>
 </div>
-<div id="map-modal" class="modal">
+<!-- <div id="map-modal" class="modal">
     <div class="modal-content">
         <span class="close-button" id="close-button">&times;</span>
         <h3 class="modal-title">Lets Make A Map!</h3>
@@ -154,7 +160,7 @@
         <input id="project-title" type="text">
         <a class="button ok-button">OK</a>
     </div>
-</div>
+</div> -->
 <div class="publish-modal">
     <div class="publish-modal-content">
         <span class="close-button close-icon" id="close-icon">&times;</span>
@@ -286,9 +292,15 @@
       canvasF.renderAll();
     }
   });
-
 });
  
+$(document).on("change", ".opacity-slider", function (){
+    var opacity = $(".opacity-slider").val();
+    opacity = opacity / 100;
+    canvasF.getActiveObject().setOpacity(opacity)
+    canvasF.renderAll();
+});
+
     $('#close-button').click(function (e) {
         $('.modal').css("display", "none");
     });
@@ -301,7 +313,7 @@
         $('.modal').css("display", "block");
     });
 
-    const drawImage = (canvasF) => {
+    const createImage = (canvasF) => {
         const url = canvasF.toDataURL('image/png');
         const imageBackgroundUrl = "url(" + url + ")";
         const img  = new Image;
@@ -319,7 +331,7 @@
     // publish modal
     $('#publish').click(function (e) {
         $('.publish-modal').css("display", "flex");
-        drawImage(canvasF);
+        createImage(canvasF);
     });
     $('#close-icon').click(function (e) {
         $('.publish-modal').css("display", "none");
@@ -334,30 +346,41 @@
         return new Blob([u8arr], {type:mime});
     }
 
+    function resizeImage(img, width, height) {
+        var result = new Image();
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        result.src = canvas.toDataURL();
+        return result;
+    }
+
     function downloadImage(err, canvas) {
         var link = document.createElement('a');
-         if (document.getElementById('png').checked) {
+        var fabricImage = new Image();
+        if (document.getElementById('png').checked) {
+            fabricImage.src = canvasF.toDataURL('image/png');
+            var resizedImage = resizeImage(fabricImage, width, height);
+            var blob = dataURLtoBlob(resizedImage.src);
+            var objectUrl = URL.createObjectURL(blob)
+            link.href = objectUrl
             link.download = "mymap.png";
-            var strDataUrl = canvasF.toDataURL('image/png');
-            var blob = dataURLtoBlob(strDataUrl);
+        } else {
+            fabricImage.src = canvasF.toDataURL('image/jpeg');
+            var resizedImage = resizeImage(fabricImage, width, height);
+            var blob = dataURLtoBlob(resizedImage.src);
             var objectUrl = URL.createObjectURL(blob)
             link.href = objectUrl
-             link.click()
-         } else {
             link.download = "mymap.jpg";
-            var strDataUrl = canvasF.toDataURL('image/jpeg');
-            var blob = dataURLtoBlob(strDataUrl);
-            var objectUrl = URL.createObjectURL(blob)
-            link.href = objectUrl
-            link.click()
-         }
+        }
+        link.click()
     }
 
     function downloadPdf (canvasF) {
         const url = canvasF.toDataURL("image/svg+xml", 1.0);
-        var dimensions = map.getSize();
-        var pdf = new jsPDF('l', 'pt', 'letter');
-        pdf.addImage(url, 'PNG', 10, 10, dimensions.x * 0.5, dimensions.y * 0.5);
+        var pdf = new jsPDF();
+        pdf.addImage(url, 'PNG', 15, 30, 180, 160);
         pdf.save("mymap.pdf");
  
      }
@@ -368,7 +391,8 @@
         } else {
             downloadImage(canvasF);
         }
-    })
+    });
+
     // Toggle Between image size
     $('.button-switcher button').click(function () {
         $(this).siblings().removeClass('size-btn-active');

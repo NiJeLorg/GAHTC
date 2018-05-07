@@ -28,7 +28,8 @@
       fill: "blue",
       top: 100,
       left: 100,
-      opacity: 0.5
+      opacity: 0.5,
+      stroke: 'black'
     });
     canvasF.add(circle).setActiveObject(circle);
   });
@@ -150,29 +151,50 @@ $('#image').click(function(){
 });
 
 $('#file-image').change(function(e){
-    var fileType = e.target.files[0].type;
-    var url = URL.createObjectURL(e.target.files[0]);
-    if (fileType === 'image/png') { //check if png
-        fabric.Image.fromURL(url, function(img) {
-            img.set({
-                width: 180,
-                height: 180
-            });
-            canvasF.add(img);
-        });
-    } else if (fileType === 'image/svg+xml') { //check if svg
-        fabric.loadSVGFromURL(url, function(objects, options) {
-            var svg = fabric.util.groupSVGElements(objects, options);
-            svg.scaleToWidth(180);
-            svg.scaleToHeight(180);
-            canvasF.add(svg);
-        });
-    }
+  var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function (f) {
+    var data = f.target.result;
+    fabric.Image.fromURL(data, function (img) {
+        var oImg = img.set({
+            width: 125,
+            height: 170
+        })
+        canvasF.add(oImg).renderAll();
+        var a = canvasF.setActiveObject(oImg);
+    });
+};
+    reader.readAsDataURL(file);
 });
 
 $('select').click(function(){
     canvasF.selection = true;
 })
+
+$('#arrow').click(function(){
+    event.preventDefault();
+    var triangle = new fabric.Triangle({
+        width: 10, 
+        height: 15, 
+        fill: 'red', 
+        left: 235, 
+        top: 65,
+        angle: 90
+    });
+
+    var line = new fabric.Line([50, 100, 200, 100], {
+        left: 75,
+        top: 70,
+        stroke: 'red'
+    });
+
+    var objs = [line, triangle];
+
+    var alltogetherObj = new fabric.Group(objs);
+    canvasF.add(alltogetherObj);
+
+});
+
 
   // font formating
 
@@ -229,4 +251,20 @@ $('select').click(function(){
     canvasF.getActiveObject().set("fontFamily", fontFamily);
     canvasF.renderAll();
   });
+
+  $(".stroke-style-option").on("click", function() {
+    console.log($(this).attr('id'));
+    var dashedStyle = $(this).attr('id');
+    if (dashedStyle == 'solid') {
+      canvasF.getActiveObject().set('strokeDashArray', [0, 0]);
+    } else if (dashedStyle == 'dashed') {
+      canvasF.getActiveObject().set('strokeDashArray', [10, 5]);
+    }
+    else if (dashedStyle == 'dotted'){
+      canvasF.getActiveObject().set('strokeDashArray', [1, 10]);
+      canvasF.getActiveObject().set('strokeLineCap', 'round');
+    }
+    canvasF.renderAll();
+  });
+
 
