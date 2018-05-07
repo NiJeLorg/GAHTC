@@ -117,5 +117,10 @@
 
         localStorage.setItem('layerId', layerId);
     });
+
+    setTimeout(function(){
+        map.invalidateSize();
+    }, 1000);
+
 </script>
 {% endblock%}

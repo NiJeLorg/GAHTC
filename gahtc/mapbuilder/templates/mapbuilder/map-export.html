@@ -56,7 +56,7 @@
         <a class="toolbar-icon" title="Opacity" id="opacity">
             <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
             <div class="slider-container">
-                <input class="opacity-slider" type="range" max="100"  min="0" step="1" value="100"> 
+                <input class="opacity-slider" type="range" max="100"  min="0" step="1" value="50"> 
             </div>
         </a>
         <a href="#" class="toolbar-icon" title="Stroke Weight">
@@ -152,7 +152,7 @@
     <div id="lmap"></div>
     <canvas id="c"></canvas>
 </div>
-<!-- <div id="map-modal" class="modal">
+<div id="map-modal" class="modal">
     <div class="modal-content">
         <span class="close-button" id="close-button">&times;</span>
         <h3 class="modal-title">Lets Make A Map!</h3>
@@ -160,7 +160,7 @@
         <input id="project-title" type="text">
         <a class="button ok-button">OK</a>
     </div>
-</div> -->
+</div>
 <div class="publish-modal">
     <div class="publish-modal-content">
         <span class="close-button close-icon" id="close-icon">&times;</span>
@@ -386,6 +386,17 @@ $(document).on("change", ".opacity-slider", function (){
      }
 
     $('#download').click(function (e) {
+        console.log(imageQuality);
+        if (imageQuality == 'small'){
+            width = 854;
+            height = 480;
+        } else if(imageQuality == 'medium') {
+            width = 1280;
+            height = 720;
+        } else if (imageQuality == 'large'){
+            width = 1920;
+            height = 1080;
+        }
         if (document.getElementById('pdf').checked) {
             downloadPdf(canvasF);
         } else {
@@ -404,7 +415,10 @@ $(document).on("change", ".opacity-slider", function (){
         } else {
             imageQuality = 'large'
         }
+        console.log(imageQuality)
     })
+
+   
 </script>
 
 {% endblock%}
