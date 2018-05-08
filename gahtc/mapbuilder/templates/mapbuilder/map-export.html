@@ -228,6 +228,12 @@
     canvasF.setWidth(mapCanvas.width());
     canvasF.selection = false;
 
+    fabric.Object.prototype.set({
+        transparentCorners: false,
+        borderColor: '#3D95F6',
+        cornerColor: '#3D95F6'
+    });
+
     $(document).ready(() => {
         leafletImage(map, function(err, canvas) {
         var url = canvas.toDataURL('image/png');
