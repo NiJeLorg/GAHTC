@@ -1,21 +1,19 @@
-{% extends "mapbuilder/base.html" %}
-
-{% block content%}
-  <div class="map-header">
-    <h3 class="map-header-text"><strong>Step 2: </strong>Set Your Map Canvas Extents</h3>
-    <a class="button step-button"  href="{% url 'mapbuilder:map-export' %}" >Done</a>
-  </div>
-  <div id="map"></div>
-    <div class="layer-switcher">
-      <button class="layer-buttons" id="btn1">Terrain</button>
-      <button class="layer-buttons button-active" id="btn2">Political</button>
-      <button class="layer-buttons" id="btn3">Satellite</button>
-      <div class='layer-tooltip'>
-            <span>Modern Political</span>
-        </div>
+{% extends "mapbuilder/base.html" %} {% block content%}
+<div class="map-header">
+    <h3 class="map-header-text">
+        <strong>Step 2 of 3 </strong>Set Your Map Canvas Extents</h3>
+    <a class="button step-button" href="{% url 'mapbuilder:map-export' %}">Done</a>
+</div>
+<div id="map"></div>
+<div class="layer-switcher">
+    <button class="layer-buttons" id="btn1">Terrain</button>
+    <button class="layer-buttons button-active" id="btn2">Political</button>
+    <button class="layer-buttons" id="btn3">Satellite</button>
+    <div class='layer-tooltip'>
+        <span>Modern Political</span>
     </div>
-  <script>
-
+</div>
+<script>
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
     var layerId = localStorage.getItem('layerId')
@@ -25,19 +23,13 @@
         northEast = [mapBound._northEast.lat, mapBound._northEast.lng],
         mapBounds = [southWest, northEast];
     var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
-    var mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
+    var mapBoxAttribution =
+        'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
     // initialize the map
-    var map = L.map('map', {
-        center: center,
-        zoom: 5,
-        zoomControl: false
-    });
+    var map = L.map('map').setView([38, 0], 2)
 
     map.fitBounds(mapBounds);
-    L.control.zoom({
-        position: 'topleft'
-    }).addTo(map);
 
     var marker = L.marker(center).addTo(map);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -52,14 +44,17 @@
             $("#btn2").trigger('click');
         } else if (layerId == 'terrain') {
             $("#btn1").trigger('click');
-        } else  if(layerId == 'satellite'){
+        } else if (layerId == 'satellite') {
             $("#btn3").trigger('click');
 
         }
     });
 
     // Add it to the map
-    var areaSelect = L.areaSelect({width: 300, height: 200});
+    var areaSelect = L.areaSelect({
+        width: 300,
+        height: 200
+    });
     areaSelect.addTo(map);
 
     // Read the bounding box
@@ -74,7 +69,7 @@
         localStorage.setItem('bounds', JSON.stringify(bounds));
     });
 
-    map.on('move', function(e) {
+    map.on('move', function (e) {
         marker.setLatLng(map.getCenter())
     })
 
@@ -117,10 +112,6 @@
 
         localStorage.setItem('layerId', layerId);
     });
-
-    setTimeout(function(){
-        map.invalidateSize();
-    }, 1000);
 
 </script>
 {% endblock%}
