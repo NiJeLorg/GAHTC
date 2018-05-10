@@ -4,6 +4,7 @@
 <div class="map-header white-header">
     <div>
         <h3 class="map-header-text" id="projectname">Name Your Project</h3>
+        <h3 class="hidden" id="projectid"></h3>
         <span class="glyphicon glyphicon-pencil edit-icon" id="editIcon"></span>
         </p>
     </div>
@@ -392,7 +393,6 @@ $(document).on("change", ".opacity-slider", function (){
      }
 
     $('#download').click(function (e) {
-        console.log(imageQuality);
         if (imageQuality == 'small'){
             width = 854;
             height = 480;
@@ -423,8 +423,34 @@ $(document).on("change", ".opacity-slider", function (){
         }
         console.log(imageQuality)
     })
+    $('#save').click(function(){
+        var mapData = JSON.stringify(canvasF);
+        var map_id = $("#projectid").text();
+        var map_name = $("#projectname").text();
+        var csrftoken = Cookies.get('csrftoken');
 
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "/mapbuilder/map-export/",
+            success: function(data){
+                var projectid = data.map_id;
+                $("#projectid").text(projectid);
+            }
+        });
+    })
    
+
 </script>
 
 {% endblock%}
