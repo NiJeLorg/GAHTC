@@ -4,11 +4,12 @@
 <div class="map-header white-header">
     <div>
         <h3 class="map-header-text" id="projectname">Name Your Project</h3>
+        <h3 class="hidden" id="projectid"></h3>
         <span class="glyphicon glyphicon-pencil edit-icon" id="editIcon"></span>
         </p>
     </div>
     <div class="step-button-holder">
-        <a class="button button-group">My Maps</a>
+        <a class="button button-group" href="{% url 'mapbuilder:mymaps' %}">My Maps</a>
         <a class="button button-group" id="save">Save</a>
         <a class="button button-group" id="publish">Publish</a>
     </div>
@@ -186,7 +187,7 @@
                     <br>
                     <input type="radio" name="fileFormat" id="pdf"> PDF
                     <a class="button download" id="download">Download</a>
-                    <input type="checkbox" checked>Share your map with the GAHTC community in the Map Index?
+                    <input type="checkbox" id="public-check" checked>Share your map with the GAHTC community in the Map Index?
                 </div>
             </div>
         </div>
@@ -392,7 +393,6 @@ $(document).on("change", ".opacity-slider", function (){
      }
 
     $('#download').click(function (e) {
-        console.log(imageQuality);
         if (imageQuality == 'small'){
             width = 854;
             height = 480;
@@ -408,6 +408,45 @@ $(document).on("change", ".opacity-slider", function (){
         } else {
             downloadImage(canvasF);
         }
+        if (document.getElementById('public-check').checked){
+            // var map_data = JSON.stringify(canvasF);
+            var map_id = $("#projectid").text();
+            var map_name = $("#projectname").text();
+            var csrftoken = Cookies.get('csrftoken');
+            var map_image = canvasF.toDataURL('image/png').replace("data:image/jpeg;base64,", "");
+            var public_map = 'True';
+
+            console.log(map_image);
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "/mapbuilder/map-export/",
+                // contentType: 'multipart/form-data; boundary=multipartformboundary1352769538973',
+                data: {
+                    map_id: map_id,
+                    map_name: map_name,
+                    public_map: public_map,
+                    map_image: map_image
+                },
+                success: function(data){
+                    var projectid = data.map_id;
+                    $("#projectid").text(projectid);
+                },
+                error: function(e) {
+                    console.log(e, "ERROR");
+                }
+            });
+            }
     });
 
     // Toggle Between image size
@@ -423,8 +462,44 @@ $(document).on("change", ".opacity-slider", function (){
         }
         console.log(imageQuality)
     })
-
+    $('#save').click(function(){
+        var map_data = JSON.stringify(canvasF);
+        var map_id = $("#projectid").text();
+        var map_name = $("#projectname").text();
+        var csrftoken = Cookies.get('csrftoken');
+        var map_image = canvasF.toDataURL('image/png').replace("data:image/jpeg;base64,", "");
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "/mapbuilder/map-export/",
+            // contentType: 'multipart/form-data; boundary=multipartformboundary1352769538973',
+            data: {
+                map_id: map_id,
+                map_name: map_name,
+                map_data: map_data,
+                map_image: map_image
+            },
+            success: function(data){
+                var projectid = data.map_id;
+                $("#projectid").text(projectid);
+            },
+            error: function(e) {
+                console.log(e, "ERROR");
+            }
+        });
+    })
    
+
 </script>
 
 {% endblock%}
