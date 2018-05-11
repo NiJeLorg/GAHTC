@@ -9,15 +9,17 @@
         fill this space with more content to help a user learn how it works. </p>
     <div class="button-holder">
         <a class="button" href="{% url 'mapbuilder:startmap' %}">Create A New Map</a>
-        <a class="button btn-next">Edit An Existing Map</a>
+        <a class="button btn-next" id="edit-map" href="{% url 'mapbuilder:startmap' %}">Edit An Existing Map</a>
     </div>
     <div class="index-content">
         <span class="map-index">Community Map Index</span>
         <div class="search-bar">
-            <button class="search-button">
-                <i class="fa fa-search search-icon"></i>
-            </button>
-            <input type="text" class="search-input" placeholder="Search for a map">
+            <form  action="." method="GET" accept-charset="utf-8">
+                <button class="search-button">
+                    <i class="fa fa-search search-icon"></i>
+                </button>
+                <input type="text" class="search-input" placeholder="Search for a map" name='q' value="{{ request.GET.q }}">
+            </form>
         </div>
     </div>
     <div class="list-wrapper">
@@ -33,7 +35,7 @@
                     <img src="{{ MEDIA_URL }}{{ map.image }}" alt="{{ map.name }}">
                 </div>
                 <div class="list-item__content">
-                    <span class="map-info"> {{ map.name }}  Created {{ map.date_created }} by {{ map.user }}</span>
+                    <span class="map-info"> {{ map.name }}  Created {{ map.created_date }} by {{ map.user }}</span>
                     <div class="list-item__actions">
                         <a href="#" >Download</a>
                         <a href="#" >Edit</a>
@@ -45,4 +47,9 @@
     </div>
 
 </div>
+<script>
+    $('#edit-map').click(function(){
+        localStorage.setItem('edit','edit')
+    })
+</script>
 {% endblock %}

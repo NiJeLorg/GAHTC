@@ -9,7 +9,7 @@
         </p>
     </div>
     <div class="step-button-holder">
-        <a class="button button-group">My Maps</a>
+        <a class="button button-group" href="{% url 'mapbuilder:mymaps' %}">My Maps</a>
         <a class="button button-group" id="save">Save</a>
         <a class="button button-group" id="publish">Publish</a>
     </div>
@@ -428,7 +428,14 @@ $(document).on("change", ".opacity-slider", function (){
         var map_id = $("#projectid").text();
         var map_name = $("#projectname").text();
         var csrftoken = Cookies.get('csrftoken');
-
+        var map_image = new Image;
+        map_image.src = canvasF.toDataURL('image/png')
+        // var formdata = new FormData();
+        // formdata.append("map_image", map_image);
+        // formdata.append("mapData", mapData);
+        // formdata.append("map_id", map_id);
+        // formdata.append("map_name", map_name);
+        console.log(map_name);
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -443,9 +450,20 @@ $(document).on("change", ".opacity-slider", function (){
         $.ajax({
             type: "POST",
             url: "/mapbuilder/map-export/",
+            processData: false,
+            contentType: false,
+            data: {
+                map_id: map_id,
+                map_name: map_name,
+                mapData: mapData,
+                map_image: map_image
+            },
             success: function(data){
                 var projectid = data.map_id;
                 $("#projectid").text(projectid);
+            },
+            error: function(e) {
+                console.log(e, "ERROR");
             }
         });
     })
