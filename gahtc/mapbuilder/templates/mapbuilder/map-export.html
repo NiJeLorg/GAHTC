@@ -16,41 +16,80 @@
     <div class="toolbar-section draw-icons">
         <a href="#" id="freedraw" class="toolbar-icon" title="Free Draw">
             <img src="{% static 'mapbuilder/css/images/freedraw.svg' %}" alt="">
+            <span class="tooltip">
+                Free Draw
+            </span>
         </a>
         <a href="#" id="line" class="toolbar-icon" title="Line">
             <img src="{%static 'mapbuilder/css/images/line.svg' %}" alt="">
+            <span class="tooltip">
+                Line
+            </span>
+        </a>
+        <a href="#" class="toolbar-icon" title="Arrow" id="arrow">
+            <img src="{% static 'mapbuilder/css/images/right_arrow.svg' %}" alt="">
+            <span class="tooltip">
+                Arrow
+            </span>
         </a>
         <a href="#" id="poly" class="toolbar-icon" title="Star">
             <img src="{%static 'mapbuilder/css/images/star.svg' %}" alt="">
+            <span class="tooltip">
+                Star
+            </span>
         </a>
         <a href="#" id="rect" class="toolbar-icon" title="Rectangle">
             <img src="{% static 'mapbuilder/css/images/rectangle.svg' %}" alt="">
+            <span class="tooltip">
+                Rectangle
+            </span>
         </a>
         <a href="#" id="circle" class="toolbar-icon" title="Cirlce">
             <img src="{%static 'mapbuilder/css/images/circle.svg' %}" alt="">
+            <span class="tooltip">
+                Circle
+            </span>
         </a>
         <a href="#" id="pin" class="toolbar-icon" title="Pin">
             <img src="{% static 'mapbuilder/css/images/pin.svg' %}" alt="">
+            <span class="tooltip">
+                Pin
+            </span>
         </a>
         <a href="#" id="text" class="toolbar-icon" title="Text">
             <img src="{% static 'mapbuilder/css/images/type.svg' %}" alt="">
+            <span class="tooltip">
+                Text
+            </span>
         </a>
         <a href="#" id="image" class="toolbar-icon" title="Image">
             <img src="{% static 'mapbuilder/css/images/insert_img.svg' %}" alt="">
+            <span class="tooltip">
+                Image
+            </span>
         </a>
         <input type="file" id="file-image" style="display: none;" accept="image/*">
     </div>
     <div class="toolbar-section edit-icons">
         <a href="#" class="toolbar-icon" title="Select">
             <img src="{% static 'mapbuilder/css/images/select.svg' %}" alt="">
+            <span class="tooltip">
+                Select
+            </span>
         </a>
         <input type="text" id="fillColorPicker">
         <a href="#" class="toolbar-icon" title="Fill" id='fillColor'>
             <img src="{% static 'mapbuilder/css/images/format_color_fill.svg' %}" alt="">
+            <span class="tooltip">
+                Fill
+            </span>
         </a>
         <input type="text" id="strokeColorPicker">
         <a href="#" class="toolbar-icon" title="Stroke Color" id="strokeColor">
             <img src="{% static 'mapbuilder/css/images/stroke_color.svg' %}" alt="">
+            <span class="tooltip">
+                Stroke Color
+            </span>
         </a>
         <a class="toolbar-icon" title="Opacity" id="opacity">
             <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
@@ -68,6 +107,9 @@
                 <li class="stroke-weight-option">8px</li>
                 <li class="stroke-weight-option">12px</li>
             </ul>
+            <span class="tooltip">
+                Stroke Weight
+            </span>
         </a>
         <a href="#" class="toolbar-icon" title="Stroke Style">
             <img src="{% static 'mapbuilder/css/images/stroke_style.svg' %}" alt="">
@@ -82,12 +124,16 @@
                     <div class=" stroke-style-dotted"></div>
                 </li>
             </ul>
+            <span class="tooltip">
+                Stroke Style
+            </span>
         </a>
-        <a href="#" class="toolbar-icon" title="Arrow" id="arrow">
-            <img src="{% static 'mapbuilder/css/images/right_arrow.svg' %}" alt="">
-        </a>
+
         <a href="#" class="toolbar-icon delete-shape-icon">
             <i class="fa fa-trash"></i>
+            <span class="tooltip">
+                Delete
+            </span>
         </a>
     </div>
     <div class="toolbar-section format-icons">
@@ -97,6 +143,9 @@
                 <li class="font-family-option">Source Sans Pro</li>
                 <li class="font-family-option">LinuxLibertine</li>
             </ul>
+            <span class="tooltip">
+                Font Family
+            </span>
         </a>
         <a href="#" class="toolbar-icon" title="Font Size">
             <i class="fa fa-text-height"></i>
@@ -111,31 +160,58 @@
                 <li class="font-size-option">36</li>
                 <li class="font-size-option">38</li>
             </ul>
+            <span class="tooltip">
+                Font Size
+            </span>
         </a>
         <input type="text" id="fontColorPicker">
         <a href="#" id="fontColor" class="toolbar-icon" id="fontColor">
             <img src="{% static 'mapbuilder/css/images/format_color_text.svg' %}" alt="">
+            <span class="tooltip">
+                Font Color
+            </span>
         </a>
         <a href="#" id="f-bold" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_bold.svg' %}" alt="">
+            <span class="tooltip">
+                Bold Text
+            </span>
         </a>
         <a href="#" id="f-italic" class="toolbar-icon">
             <img src="{% static '/mapbuilder/css/images/format_italic.svg' %}" alt="">
+            <span class="tooltip">
+                Italic
+            </span>
         </a>
         <a href="#" id="underline" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_underlined.svg' %}" alt="">
+            <span class="tooltip">
+                Text Underline
+            </span>
         </a>
         <a href="#" id="align-left" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_align_left.svg' %}" alt="">
+            <span class="tooltip">
+                Left Align
+            </span>
         </a>
         <a href="#" id="align-right" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_align_right.svg' %}" alt="">
+            <span class="tooltip">
+                Right Align
+            </span>
         </a>
         <a href="#" id="justify" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_align_justify.svg'%}" alt="">
+            <span class="tooltip">
+                Justify Text
+            </span>
         </a>
         <a href="#" id="align-center" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_align_center.svg' %}" alt="">
+            <span class="tooltip">
+                Align Center
+            </span>
         </a>
     </div>
     {% comment %}
@@ -145,7 +221,7 @@
     </div> {% endcomment %}
 </div>
 <div id="map-canvas">
-    <div id="lmap" style="display:none"></div>
+    <div id="lmap"></div>
     <canvas id="c"></canvas>
 </div>
 <div id="map-modal" class="modal" style="display:none">
@@ -190,35 +266,10 @@
     </div>
 </div>
 <script>
-    function intializeMap() {
-        const layerId = localStorage.getItem('layerId');
-        const zoom = localStorage.getItem('zoom');
-        const mapBound = JSON.parse(localStorage.getItem('bounds'));
-        const southWest = [mapBound._southWest.lat, mapBound._southWest.lng],
-            northEast = [mapBound._northEast.lat, mapBound._northEast.lng],
-            mapBounds = [southWest, northEast];
-
-        // initialize the map
-        const map = L.map('lmap', {
-            center: [localStorage.getItem('lat'), localStorage.getItem('long')],
-            minZoom: zoom,
-            maxZoom: zoom,
-            zoomControl: false,
-            maxBounds: mapBounds,
-            preferCanvas: true
-        });
-
-        map.fitBounds(mapBounds);
-
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-            id: layerId,
-            accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
-        }).addTo(map);
-    }
-    intializeMap();
+    window.MAPBOX_ACCESS_TOKEN = '{{ MAPBOX_ACCESS_TOKEN }}';
 </script>
 <script type="text/javascript" src="{% static 'mapbuilder/js/draw.js' %}"></script>
+
 
 
 {% endblock%}

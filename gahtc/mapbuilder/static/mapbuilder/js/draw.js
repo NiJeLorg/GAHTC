@@ -1,6 +1,77 @@
 // global variables
 let canvasF;
+const layerId = localStorage.getItem('layerId');
+const zoom = localStorage.getItem('zoom');
+const mapBound = JSON.parse(localStorage.getItem('bounds'));
+const southWest = [
+    mapBound._southWest.lat, mapBound._southWest.lng
+  ],
+  northEast = [
+    mapBound._northEast.lat, mapBound._northEast.lng
+  ],
+  mapBounds = [southWest, northEast];
 
+// initialize the map
+const map = L.map('lmap', {
+  center: [
+    localStorage.getItem('lat'),
+    localStorage.getItem('long')
+  ],
+  minZoom: zoom,
+  maxZoom: zoom,
+  zoomControl: false,
+  downloadable: true,
+  printable: true,
+  maxBounds: mapBounds,
+  preferCanvas: true
+}).on('load', function(event){
+  const tileLayer = L
+  .tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
+      's, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
+      'y © <a href="http://mapbox.com">Mapbox</a>',
+  id: layerId,
+  accessToken: window.MAPBOX_ACCESS_TOKEN
+})
+  .addTo(map);
+tileLayer.on('load', function () {
+  // $(".canvas-container").css('display', 'none');
+  leafletImage(map, function(err, canvas) {
+    console.log("EXPORTN")
+    var url = canvas.toDataURL('image/png');
+    const img  = new Image;
+    var dimensions = map.getSize();
+    img.width = dimensions.x;
+    img.height = dimensions.y;
+    img.src = url;
+    img.onload = function () {
+        $('#lmap').remove();
+        $(".canvas-container").css('display', 'block');
+        const imageBackgroundUrl = "" + url + "";
+        canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
+
+        }
+    })
+  // const downloadOptions = {
+  //   container: map._container,
+  //   exclude: [
+  //     '.leaflet-control-zoom', '.leaflet-control-attribution'
+  //   ],
+  //   format: 'image/png',
+  //   fileName: 'Map.png'
+  // };
+  // let promise = map.downloadExport(downloadOptions);
+  // promise.then(function (result) {
+  //   $("#lmap").css('display', 'none');
+  //   const img = new Image;
+  //   img.src = result.data;
+  //   img.onload = function () {
+  //     canvasF.setBackgroundImage(result.data, canvasF.renderAll.bind(canvasF));
+  //   }
+  // });
+
+});
+})
 function initializeFabric() {
   canvasF = new fabric.Canvas("c");
   canvasF.setHeight($("#map-canvas").height());
@@ -11,6 +82,12 @@ function initializeFabric() {
     .Object
     .prototype
     .set({transparentCorners: false, borderColor: "#3D95F6", cornerColor: "#3D95F6"});
+}
+
+function intializeMap() {
+ 
+  map.fitBounds(mapBounds);
+
 }
 
 function mapbuilderShapeEventHandlers() {
@@ -386,7 +463,7 @@ function initializeSpectrum() {
       canvasF
         .getActiveObject()
         .set({
-          strokeWidth: strokeWidth || 1,
+          strokeWidth: strokeWidth || 3,
           stroke: strokeColor
         });
       canvasF.renderAll();
@@ -405,10 +482,39 @@ function initializeSpectrum() {
   });
 }
 
+function mapActionHandlers() {
+
+  $('#publish')
+    .on('click', function () {
+      console.log('yoo');
+      const downloadOptions = {
+        container: map._container,
+        exclude: [
+          '.leaflet-control-zoom', '.leaflet-control-attribution'
+        ],
+        format: 'image/png',
+        fileName: 'Map.png'
+      };
+      let promise = map.downloadExport(downloadOptions);
+      var data = promise.then(function (result) {
+        // $("#lmap").css('display', 'none');
+        // canvasF.setBackgroundImage(imageBackgroundUrl,
+        // canvasF.renderAll.bind(canvasF));
+      });
+    })
+
+  $('#close-icon').click(function (e) {
+    $('.publish-modal').css("display", "none");
+  });
+
+}
+
+intializeMap();
 initializeFabric();
 mapbuilderShapeEventHandlers();
 mapbuilderShapeFormattingEventHandlers();
 mapbuilderFontFormattingEventHandlers();
+mapActionHandlers();
 initializeSpectrum();
 
 $(document).ready(function () {
@@ -418,4 +524,15 @@ $(document).ready(function () {
         canvasF.remove(canvasF.getActiveObject());
       }
     })
+  // disable event handling
+  $('.edit-icons,.format-icons ').css('pointer-events', 'none');
+
+  $('#text').on('click', function () {
+    $('.format-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+  });
+  $('.draw-icons a')
+    .not('#text')
+    .on('click', function () {
+      $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+    });
 })
