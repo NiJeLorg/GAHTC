@@ -41,7 +41,7 @@
 
     </div>
 </div>
-<div class="edit-map-modal">
+<!-- <div class="edit-map-modal">
     <div class="edit-map-modal-content">
         <span class="close-button close-icon" id="close-icon">&times;</span>
         <div class="edit-map-title-holder">Edit An Existing Map</h3>
@@ -58,15 +58,15 @@
                     {% for map in maps %}
                     <a href="#" class="nav-link map-link">
                         <span>{{ map.name }}</span>
-                        <span>Created {{ map.created_date }}</span>
-                    </a>
-                    {% endfor %}
-                </div>
+                        <!-- <span>Created {{ map.created_date|date:"m/d/Y" }}</span> -->
+                    <!-- </a> -->
+                    <!-- {% endfor %} -->
+                <!-- </div>
             </div>
         
         </div>
     </div>
-</div> 
+</div>  -->
 
 <script>
     $("input").geocomplete().bind("geocode:result", function (event, result) {

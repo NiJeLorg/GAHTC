@@ -749,7 +749,7 @@ input[type="range"] {
   margin: 0 auto;
   padding: 80px 75px;
   border: 1px solid #888;
-  width: 30%;
+  width: 35%;
   box-shadow: 0 1px 20px rgba(0, 0, 0, 0.5);
   position: relative;
   top: 6%;
@@ -787,4 +787,9 @@ input[type="range"] {
 .modal-search{
   width: 100%;
   margin: 0 auto;
+}
+
+.data-form{
+  width: 306px;
+  height: 50px;
 }

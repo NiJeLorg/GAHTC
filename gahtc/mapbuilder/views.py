@@ -56,10 +56,13 @@ def mapexport(request):
 				map_name = request.POST.get('map_name')
 				map_data = request.POST.get('map_data')
 				map_image = request.POST.get('map_image')
+				public_map = request.POST.get('public_map')
 				params, map_image = map_image.split(',', 1)
 				img_data = b64decode(map_image)
 				file_name_string = format_filename(map_name) + '.png'
 				map, created = Map.objects.get_or_create(id=map_id, user=request.user)
+				if public_map :
+					map.public =True
 				map.data = map_data
 				map.name = file_name_string
 				map.image =  ContentFile(img_data, file_name_string)
