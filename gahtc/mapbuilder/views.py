@@ -7,9 +7,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Map
 
 from django.http import HttpResponse
-
-
-
+import string
+from base64 import b64decode
+from django.core.files.base import ContentFile
 
 # Create your views here.
 @login_required
@@ -45,7 +45,6 @@ def mapextent(request):
 @login_required
 def mapexport(request):
 		# import pdb
-		print request.POST
 		# pdb.set_trace()
 		if request.method == 'POST' and request.is_ajax():
 				# import pdb; pdb.set_trace()
@@ -54,15 +53,16 @@ def mapexport(request):
 					map_id = None
 				else:
 					map_id =int(map_id)
-				print request.POST
-				map_data = request.POST.get('map_data')
 				map_name = request.POST.get('map_name')
-				map_image = request.FILES.get('map_image')
+				map_data = request.POST.get('map_data')
+				map_image = request.POST.get('map_image')
+				params, map_image = map_image.split(',', 1)
+				img_data = b64decode(map_image)
+				file_name_string = format_filename(map_name) + '.png'
 				map, created = Map.objects.get_or_create(id=map_id, user=request.user)
 				map.data = map_data
-				map.name = map_name
-				map.image = map_image
-				# import pdb; pdb.set_trace()
+				map.name = file_name_string
+				map.image =  ContentFile(img_data, file_name_string)
 				map.save()
 				return HttpResponse(json.dumps({'map_id': map.id}), content_type="application/json")
 		return render(request, 'mapbuilder/map-export.html')
@@ -71,3 +71,22 @@ def mapexport(request):
 def mymaps(request):
 	mymaps = Map.objects.filter(user=request.user)
 	return render(request, 'mapbuilder/mymaps.html', {'mymaps':mymaps})
+
+
+def format_filename(s):
+	"""Take a string and return a valid filename constructed from the string.
+Uses a whitelist approach: any characters not present in valid_chars are
+removed. Also spaces are replaced with underscores.
+
+Note: this method may produce invalid filenames such as ``, `.` or `..`
+When I use this method I prepend a date string like '2009_01_15_19_46_32_'
+and append a file extension like '.txt', so I avoid the potential of using
+an invalid filename.
+
+"""
+	valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+	filename = ''.join(c for c in s if c in valid_chars)
+	filename = filename.replace(' ', '_')  # I don't like spaces in filenames.
+
+
+	return filename

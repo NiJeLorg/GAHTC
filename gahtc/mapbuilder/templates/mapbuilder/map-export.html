@@ -424,12 +424,11 @@ $(document).on("change", ".opacity-slider", function (){
         console.log(imageQuality)
     })
     $('#save').click(function(){
-        var mapData = JSON.stringify(canvasF);
+        var map_data = JSON.stringify(canvasF);
         var map_id = $("#projectid").text();
         var map_name = $("#projectname").text();
         var csrftoken = Cookies.get('csrftoken');
-        var map_image = new Image;
-        map_image.src = canvasF.toDataURL('image/png')
+        var map_image = canvasF.toDataURL('image/png').replace("data:image/jpeg;base64,", "");
         // var formdata = new FormData();
         // formdata.append("map_image", map_image);
         // formdata.append("mapData", mapData);
@@ -450,12 +449,11 @@ $(document).on("change", ".opacity-slider", function (){
         $.ajax({
             type: "POST",
             url: "/mapbuilder/map-export/",
-            processData: false,
-            contentType: false,
+//            contentType: 'multipart/form-data; boundary=multipartformboundary1352769538973',
             data: {
                 map_id: map_id,
                 map_name: map_name,
-                mapData: mapData,
+                map_data: map_data,
                 map_image: map_image
             },
             success: function(data){
