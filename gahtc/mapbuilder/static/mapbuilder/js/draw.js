@@ -60,10 +60,12 @@ function intializeMap() {
             img.src = url;
             img.onload = function () {
                 $('#lmap').remove();
+                $('.canvas-container').css('display', 'block');
                 const imageBackgroundUrl = "" + url + "";
                 canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
                 }
             })
+
         })
     });
 

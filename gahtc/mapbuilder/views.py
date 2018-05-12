@@ -11,8 +11,10 @@ import string
 from base64 import b64decode
 from django.core.files.base import ContentFile
 import os
-
+from datetime import datetime
 # Create your views here.
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 @login_required
 def index(request):
 
@@ -21,6 +23,17 @@ def index(request):
 		maps = Map.objects.filter(public=True, name__icontains=query)
 	else:
 		maps = Map.objects.filter(public=True).order_by('created_date')
+
+	paginator = Paginator(maps, 1)
+	page = request.GET.get('page')
+	try:
+		maps = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		maps = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		maps = paginator.page(paginator.num_pages)
 
 	return render(request, 'mapbuilder/index.html',{'maps':maps})
 
@@ -57,6 +70,8 @@ def mapexport(request):
 				else:
 					map_id =int(map_id)
 				map_name = request.POST.get('map_name')
+				if not map_name:
+					map_name = 'untitled' + datetime.now().strftime('%Y-%m-%d')
 				map_data = request.POST.get('map_data')
 				map_image = request.POST.get('map_image')
 				public_map = request.POST.get('public_map')
