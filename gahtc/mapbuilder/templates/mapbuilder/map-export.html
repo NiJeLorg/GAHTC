@@ -1,5 +1,4 @@
-{% extends "mapbuilder/base.html" %} {% block content%} 
-{% load staticfiles %}
+{% extends "mapbuilder/base.html" %} {% block content%} {% load staticfiles %}
 
 <div class="map-header white-header">
     <div>
@@ -18,46 +17,85 @@
     <div class="toolbar-section draw-icons">
         <a href="#" id="freedraw" class="toolbar-icon" title="Free Draw">
             <img src="{% static 'mapbuilder/css/images/freedraw.svg' %}" alt="">
+            <span class="tooltip">
+                Free Draw
+            </span>
         </a>
         <a href="#" id="line" class="toolbar-icon" title="Line">
             <img src="{%static 'mapbuilder/css/images/line.svg' %}" alt="">
+            <span class="tooltip">
+                Line
+            </span>
+        </a>
+        <a href="#" class="toolbar-icon" title="Arrow" id="arrow">
+            <img src="{% static 'mapbuilder/css/images/right_arrow.svg' %}" alt="">
+            <span class="tooltip">
+                Arrow
+            </span>
         </a>
         <a href="#" id="poly" class="toolbar-icon" title="Star">
             <img src="{%static 'mapbuilder/css/images/star.svg' %}" alt="">
+            <span class="tooltip">
+                Star
+            </span>
         </a>
         <a href="#" id="rect" class="toolbar-icon" title="Rectangle">
             <img src="{% static 'mapbuilder/css/images/rectangle.svg' %}" alt="">
+            <span class="tooltip">
+                Rectangle
+            </span>
         </a>
         <a href="#" id="circle" class="toolbar-icon" title="Cirlce">
             <img src="{%static 'mapbuilder/css/images/circle.svg' %}" alt="">
+            <span class="tooltip">
+                Circle
+            </span>
         </a>
         <a href="#" id="pin" class="toolbar-icon" title="Pin">
             <img src="{% static 'mapbuilder/css/images/pin.svg' %}" alt="">
+            <span class="tooltip">
+                Pin
+            </span>
         </a>
         <a href="#" id="text" class="toolbar-icon" title="Text">
             <img src="{% static 'mapbuilder/css/images/type.svg' %}" alt="">
+            <span class="tooltip">
+                Text
+            </span>
         </a>
         <a href="#" id="image" class="toolbar-icon" title="Image">
             <img src="{% static 'mapbuilder/css/images/insert_img.svg' %}" alt="">
+            <span class="tooltip">
+                Image
+            </span>
         </a>
-        <input type="file" id="file-image" style="display: none;" accept="image/*" >
+        <input type="file" id="file-image" style="display: none;" accept="image/*">
     </div>
     <div class="toolbar-section edit-icons">
         <a href="#" class="toolbar-icon" title="Select">
             <img src="{% static 'mapbuilder/css/images/select.svg' %}" alt="">
+            <span class="tooltip">
+                Select
+            </span>
         </a>
         <input type="text" id="fillColorPicker">
         <a href="#" class="toolbar-icon" title="Fill" id='fillColor'>
             <img src="{% static 'mapbuilder/css/images/format_color_fill.svg' %}" alt="">
+            <span class="tooltip">
+                Fill
+            </span>
         </a>
         <input type="text" id="strokeColorPicker">
         <a href="#" class="toolbar-icon" title="Stroke Color" id="strokeColor">
             <img src="{% static 'mapbuilder/css/images/stroke_color.svg' %}" alt="">
+            <span class="tooltip">
+                Stroke Color
+            </span>
         </a>
         <a class="toolbar-icon" title="Opacity" id="opacity">
             <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
             <div class="slider-container">
-                <input class="opacity-slider" type="range" max="100"  min="0" step="1" value="50"> 
+                <input class="opacity-slider" type="range" max="100" min="0" step="1" value="50">
             </div>
         </a>
         <a href="#" class="toolbar-icon" title="Stroke Weight">
@@ -70,6 +108,9 @@
                 <li class="stroke-weight-option">8px</li>
                 <li class="stroke-weight-option">12px</li>
             </ul>
+            <span class="tooltip">
+                Stroke Weight
+            </span>
         </a>
         <a href="#" class="toolbar-icon" title="Stroke Style">
             <img src="{% static 'mapbuilder/css/images/stroke_style.svg' %}" alt="">
@@ -78,18 +119,22 @@
                     <div class=" stroke-style-solid"></div>
                 </li>
                 <li class="stroke-style-option" id="dashed">
-                    <div class="stroke-style-dashed" ></div>
+                    <div class="stroke-style-dashed"></div>
                 </li>
                 <li class="stroke-style-option" id="dotted">
                     <div class=" stroke-style-dotted"></div>
                 </li>
             </ul>
+            <span class="tooltip">
+                Stroke Style
+            </span>
         </a>
-        <a href="#" class="toolbar-icon" title="Arrow" id="arrow">
-            <img src="{% static 'mapbuilder/css/images/right_arrow.svg' %}" alt="">
-        </a>
+
         <a href="#" class="toolbar-icon delete-shape-icon">
             <i class="fa fa-trash"></i>
+            <span class="tooltip">
+                Delete
+            </span>
         </a>
     </div>
     <div class="toolbar-section format-icons">
@@ -97,11 +142,11 @@
             <i class="fa fa-font"></i>
             <ul class="toolbar-icon-dropdown">
                 <li class="font-family-option">Source Sans Pro</li>
-                <li class="font-family-option" >Raleway</li>
-                <li class="font-family-option">Indie Flower</li>
-                <li class="font-family-option">Lobster</li>
-                <li class="font-family-option">Pacifico</li>
+                <li class="font-family-option">LinuxLibertine</li>
             </ul>
+            <span class="tooltip">
+                Font Family
+            </span>
         </a>
         <a href="#" class="toolbar-icon" title="Font Size">
             <i class="fa fa-text-height"></i>
@@ -116,31 +161,58 @@
                 <li class="font-size-option">36</li>
                 <li class="font-size-option">38</li>
             </ul>
+            <span class="tooltip">
+                Font Size
+            </span>
         </a>
         <input type="text" id="fontColorPicker">
         <a href="#" id="fontColor" class="toolbar-icon" id="fontColor">
             <img src="{% static 'mapbuilder/css/images/format_color_text.svg' %}" alt="">
+            <span class="tooltip">
+                Font Color
+            </span>
         </a>
         <a href="#" id="f-bold" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_bold.svg' %}" alt="">
+            <span class="tooltip">
+                Bold Text
+            </span>
         </a>
         <a href="#" id="f-italic" class="toolbar-icon">
             <img src="{% static '/mapbuilder/css/images/format_italic.svg' %}" alt="">
+            <span class="tooltip">
+                Italic
+            </span>
         </a>
         <a href="#" id="underline" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_underlined.svg' %}" alt="">
+            <span class="tooltip">
+                Text Underline
+            </span>
         </a>
         <a href="#" id="align-left" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_align_left.svg' %}" alt="">
+            <span class="tooltip">
+                Left Align
+            </span>
         </a>
         <a href="#" id="align-right" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_align_right.svg' %}" alt="">
+            <span class="tooltip">
+                Right Align
+            </span>
         </a>
         <a href="#" id="justify" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_align_justify.svg'%}" alt="">
+            <span class="tooltip">
+                Justify Text
+            </span>
         </a>
         <a href="#" id="align-center" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/format_align_center.svg' %}" alt="">
+            <span class="tooltip">
+                Align Center
+            </span>
         </a>
     </div>
     {% comment %}
@@ -153,7 +225,7 @@
     <div id="lmap"></div>
     <canvas id="c"></canvas>
 </div>
-<div id="map-modal" class="modal">
+<div id="map-modal" class="modal" style="display:none">
     <div class="modal-content">
         <span class="close-button" id="close-button">&times;</span>
         <h3 class="modal-title">Lets Make A Map!</h3>
@@ -193,312 +265,14 @@
         </div>
 
     </div>
-</div> 
+</div>
 <script>
-    var lat = localStorage.getItem('lat');
-    var long = localStorage.getItem('long');
-    var center = [lat, long]
-    var layerId = localStorage.getItem('layerId');
-    var zoom = localStorage.getItem('zoom');
-    var mapBound = JSON.parse(localStorage.getItem('bounds'));
-    var southWest = [mapBound._southWest.lat, mapBound._southWest.lng],
-        northEast = [mapBound._northEast.lat, mapBound._northEast.lng],
-        mapBounds = [southWest, northEast];
+    window.MAPBOX_ACCESS_TOKEN = '{{ MAPBOX_ACCESS_TOKEN }}';
+</script>
+<script type="text/javascript" src="{% static 'mapbuilder/js/draw.js' %}"></script>
 
-    // initialize the map
-    var map = L.map('lmap', {
-        center: center,
-        minZoom: zoom,
-        maxZoom: zoom,
-        zoomControl: false,
-        maxBounds: mapBounds,
-        preferCanvas: true
-    });
+<script>
 
-    map.fitBounds(mapBounds);
-   
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        id: layerId,
-        accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
-    }).addTo(map);
-
-    var canvasF = new fabric.Canvas('c');
-    const mapCanvas = $('#map-canvas');
-    canvasF.setHeight(mapCanvas.height());
-    canvasF.setWidth(mapCanvas.width());
-    canvasF.selection = false;
-
-    fabric.Object.prototype.set({
-        transparentCorners: false,
-        borderColor: '#3D95F6',
-        cornerColor: '#3D95F6'
-    });
-
-    $(document).ready(() => {
-        leafletImage(map, function(err, canvas) {
-        var url = canvas.toDataURL('image/png');
-        const img  = new Image;
-        var dimensions = map.getSize();
-        img.width = dimensions.x;
-        img.height = dimensions.y;
-        img.src = url;
-        img.onload = function () {
-            $('#lmap').remove();
-            const imageBackgroundUrl = "" + url + "";
-            canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
-            }
-        })
-
-    // event handlers spectrum
-    let fillColor, strokeColor, strokeWidth, fontColor, fontSize, fontFamily;
-
-    $("#fillColor").on("click", () => {
-        $("#fillColorPicker").spectrum("toggle");
-        return false;
-    });
-
-    $("#strokeColor").on("click", function() {
-        $("#strokeColorPicker").spectrum("toggle");
-        return false;
-    });
-
-    $("#fontColor").on("click", function() {
-        $("#fontColorPicker").spectrum("toggle");
-        return false;
-    });
-
-    $("#fillColorPicker").spectrum({
-        color: "#f00",
-        change: color => {
-        fillColor = color.toHexString();
-        canvasF.getActiveObject().set("fill", fillColor);
-        canvasF.renderAll();
-        }
-    });
-
-    $("#strokeColorPicker").spectrum({
-        color: "#f00",
-        change: color => {
-        strokeColor = color.toHexString();
-        canvasF.getActiveObject().set({
-            strokeWidth: strokeWidth || 1,
-            stroke: strokeColor
-        });
-        canvasF.renderAll();
-        }
-  });
-
-  $("#fontColorPicker").spectrum({
-    color: "#f00",
-    change: color => {
-      fontColor = color.toHexString();
-      canvasF.getActiveObject().set({
-        fill: fontColor
-      });
-      canvasF.renderAll();
-    }
-  });
-});
- 
-$(document).on("change", ".opacity-slider", function (){
-    var opacity = $(".opacity-slider").val();
-    opacity = opacity / 100;
-    canvasF.getActiveObject().setOpacity(opacity)
-    canvasF.renderAll();
-});
-
-    $('#close-button').click(function (e) {
-        $('.modal').css("display", "none");
-    });
-    $('.ok-button').click(function (e) {
-        $('.modal').css("display", "none");
-        var val = $("#project-title").val()
-        $("#projectname").html(val);
-    });
-    $('#editIcon').click(function (e) {
-        $('.modal').css("display", "block");
-    });
-
-    const createImage = (canvasF) => {
-        const url = canvasF.toDataURL('image/png');
-        const imageBackgroundUrl = "url(" + url + ")";
-        const img  = new Image;
-        $('#images').css({
-            'background': imageBackgroundUrl,
-            'background-repeat': 'no-repeat',
-            'background-size': '100% 100%'
-        })
-        img.src = url;
-        img.onload = function () {
-            $('#loader').hide();
-        }
-    }
-
-    // publish modal
-    $('#publish').click(function (e) {
-        $('.publish-modal').css("display", "flex");
-        createImage(canvasF);
-    });
-    $('#close-icon').click(function (e) {
-        $('.publish-modal').css("display", "none");
-    });
-
-    function dataURLtoBlob(dataurl) {
-        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-       while(n--){
-            u8arr[n] = bstr.charCodeAt(n);
-       }
-        return new Blob([u8arr], {type:mime});
-    }
-
-    function resizeImage(img, width, height) {
-        var result = new Image();
-        var canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-        result.src = canvas.toDataURL();
-        return result;
-    }
-
-    function downloadImage(err, canvas) {
-        var link = document.createElement('a');
-        var fabricImage = new Image();
-        if (document.getElementById('png').checked) {
-            fabricImage.src = canvasF.toDataURL('image/png');
-            var resizedImage = resizeImage(fabricImage, width, height);
-            var blob = dataURLtoBlob(resizedImage.src);
-            var objectUrl = URL.createObjectURL(blob)
-            link.href = objectUrl
-            link.download = "mymap.png";
-        } else {
-            fabricImage.src = canvasF.toDataURL('image/jpeg');
-            var resizedImage = resizeImage(fabricImage, width, height);
-            var blob = dataURLtoBlob(resizedImage.src);
-            var objectUrl = URL.createObjectURL(blob)
-            link.href = objectUrl
-            link.download = "mymap.jpg";
-        }
-        link.click()
-    }
-
-    function downloadPdf (canvasF) {
-        const url = canvasF.toDataURL("image/svg+xml", 1.0);
-        var pdf = new jsPDF();
-        pdf.addImage(url, 'PNG', 15, 30, 180, 160);
-        pdf.save("mymap.pdf");
- 
-     }
-
-    $('#download').click(function (e) {
-        if (imageQuality == 'small'){
-            width = 854;
-            height = 480;
-        } else if(imageQuality == 'medium') {
-            width = 1280;
-            height = 720;
-        } else if (imageQuality == 'large'){
-            width = 1920;
-            height = 1080;
-        }
-        if (document.getElementById('pdf').checked) {
-            downloadPdf(canvasF);
-        } else {
-            downloadImage(canvasF);
-        }
-        if (document.getElementById('public-check').checked){
-            // var map_data = JSON.stringify(canvasF);
-            var map_id = $("#projectid").text();
-            var map_name = $("#projectname").text();
-            var csrftoken = Cookies.get('csrftoken');
-            var map_image = canvasF.toDataURL('image/png').replace("data:image/jpeg;base64,", "");
-            var public_map = 'True';
-
-            console.log(map_image);
-            function csrfSafeMethod(method) {
-                // these HTTP methods do not require CSRF protection
-                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
-            $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-            $.ajax({
-                type: "POST",
-                url: "/mapbuilder/map-export/",
-                // contentType: 'multipart/form-data; boundary=multipartformboundary1352769538973',
-                data: {
-                    map_id: map_id,
-                    map_name: map_name,
-                    public_map: public_map,
-                    map_image: map_image
-                },
-                success: function(data){
-                    var projectid = data.map_id;
-                    $("#projectid").text(projectid);
-                },
-                error: function(e) {
-                    console.log(e, "ERROR");
-                }
-            });
-            }
-    });
-
-    // Toggle Between image size
-    $('.button-switcher button').click(function () {
-        $(this).siblings().removeClass('size-btn-active');
-        $(this).addClass('size-btn-active');
-        if (this.id == 'small') {
-            imageQuality = 'small'
-        } else if (this.id == 'medium') {
-            imageQuality = 'medium'
-        } else {
-            imageQuality = 'large'
-        }
-        console.log(imageQuality)
-    })
-    $('#save').click(function(){
-        var map_data = JSON.stringify(canvasF);
-        var map_id = $("#projectid").text();
-        var map_name = $("#projectname").text();
-        var csrftoken = Cookies.get('csrftoken');
-        var map_image = canvasF.toDataURL('image/png').replace("data:image/jpeg;base64,", "");
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
-        $.ajax({
-            type: "POST",
-            url: "/mapbuilder/map-export/",
-            // contentType: 'multipart/form-data; boundary=multipartformboundary1352769538973',
-            data: {
-                map_id: map_id,
-                map_name: map_name,
-                map_data: map_data,
-                map_image: map_image
-            },
-            success: function(data){
-                var projectid = data.map_id;
-                $("#projectid").text(projectid);
-            },
-            error: function(e) {
-                console.log(e, "ERROR");
-            }
-        });
-    })
-   
 
 </script>
 

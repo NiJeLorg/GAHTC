@@ -303,7 +303,7 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-    <span style='display: flex; flex-direction: column; flex-grow: 100' class='main-content'>
+    <div style='display: flex; flex-direction: column; flex-grow: 100' class='main-content'>
         {% block content %} {% endblock %}
 
         <!-- <footer class="footer">
@@ -313,11 +313,12 @@
     </footer> -->
 
 
-    </span> {% block modal_block %} {% endblock %}
+    </div> {% block modal_block %} {% endblock %}
     <!--  javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="{% static 'website/js/bootstrap.min.js' %}"></script>
+    
+    <script type="text/javascript" src="{% static 'website/js/bootstrap.min.js' %}"></script>    
     <script type="text/javascript" src="{% static 'website/js/gahtcApplication.js' %}"></script>
     <script type="text/javascript" src="{% static 'website/js/application.js' %}"></script>
     {% block js_block %} {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "mapbuilder/base.html" %}
-
+{% load bootstrap_pagination %}
 {% block content %}
 <div class="mapbuilder">
     <h3 class="mapbuilder-header">
@@ -32,18 +32,19 @@
             <!--Flexbox list item-->
             <li class="list-item">
                 <div class="list-item__image">
-                    <img src="{{ MEDIA_URL }}{{ map.image }}" alt="{{ map.name }}">
+                    <img src="/media/{{ map.image }}" alt="{{ map.name }}">
                 </div>
                 <div class="list-item__content">
                     <span class="map-info"> {{ map.name }}  Created {{ map.created_date|date:"m/d/Y" }} by {{ map.user }}</span>
                     <div class="list-item__actions">
-                        <a href="#" >Download</a>
+                        <a download="{{ map.image }}" target="_blank" href="/media/{{ map.image }}" >Download</a>
                         <a href="#" >Edit</a>
                     </div>
                 </div>
             </li>
             {% endfor %}
         </ul>
+        {% bootstrap_paginate maps range=10 show_prev_next="false" show_first_last="true" %}
     </div>
 
 </div>
@@ -51,5 +52,7 @@
     // $('#edit-map').click(function(){
     //     localStorage.setItem('edit','edit')
     // })
+
+//});
 </script>
 {% endblock %}

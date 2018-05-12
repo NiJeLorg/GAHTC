@@ -1,7 +1,7 @@
 {% extends "mapbuilder/base.html" %} {% block content%}
 <div class="map-header">
     <h3 class="map-header-text">
-        <strong>Step 1: </strong>Refine Your Location Search</h3>
+        <strong>Step 1 of 3: </strong>Refine Your Location Search</h3>
     <a class="button step-button" href="{% url 'mapbuilder:map-extent' %}">Next</a>
 </div>
 <div id="map"></div>
@@ -35,7 +35,7 @@
     var streets = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
-            id: 'mapbox.streets',
+            id: 'mapbox.run-bike-hike',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
         }),
         terrain = L.tileLayer(mapBoxURL, {
@@ -50,7 +50,7 @@
             id: 'mapbox.satellite',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
         });
-    
+
     $('.layer-buttons').click(function (e) {
         $('.layer-buttons').removeClass('button-active');
         $(this).addClass('button-active');
@@ -82,7 +82,7 @@
         var bounds = map.getBounds();
         localStorage.setItem('bounds', JSON.stringify(bounds));
     });
-    map.on('move', function(e) {
+    map.on('move', function (e) {
         marker.setLatLng(map.getCenter())
     })
 </script>
