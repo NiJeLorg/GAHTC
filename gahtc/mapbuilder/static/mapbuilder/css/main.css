@@ -239,15 +239,22 @@ h3.map-header-text {
   font-style: normal;
   text-transform: none;
 }
-
 #map-canvas {
-  height: 100%;
-}
-
-#map {
-  height: 100vh;
+  height: calc(100vh - 240px);
   z-index: 1;
 }
+#map {
+  height: calc(100vh - 146px);
+     z-index: 1;
+}
+/*#map-canvas {*/
+  /*height: 100%;*/
+/*}*/
+
+/*#map {*/
+  /*height: 100vh;*/
+  /*z-index: 1;*/
+/*}*/
 
 #lmap {
   width: 100%;

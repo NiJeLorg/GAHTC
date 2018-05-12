@@ -47,8 +47,8 @@ def mapextent(request):
 def mapexport(request):
 		# import pdb
 		# pdb.set_trace()
-		if not os.path.exists(os.path.join(settings.MEDIA_URL, 'mapbuilder')):
-			os.makedirs(os.path.join(settings.MEDIA_URL, 'mapbuilder'))
+		# if not os.path.exists(os.path.join(settings.MEDIA_URL, 'mapbuilder')):
+		# 	os.makedirs(os.path.join(settings.MEDIA_URL, 'mapbuilder'))
 		if request.method == 'POST' and request.is_ajax():
 				# import pdb; pdb.set_trace()
 				map_id = request.POST.get('map_id')
