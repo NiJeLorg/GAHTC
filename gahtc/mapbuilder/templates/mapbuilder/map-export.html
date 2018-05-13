@@ -72,7 +72,7 @@
         <input type="file" id="file-image" style="display: none;" accept="image/*">
     </div>
     <div class="toolbar-section edit-icons">
-        <a href="#" class="toolbar-icon" title="Select">
+        <a href="#" class="toolbar-icon" id="select" title="Select">
             <img src="{% static 'mapbuilder/css/images/select.svg' %}" alt="">
             <span class="tooltip">
                 Select
@@ -269,6 +269,7 @@
 <script>
     window.MAPBOX_ACCESS_TOKEN = '{{ MAPBOX_ACCESS_TOKEN }}';
 </script>
+<!--<script type="text/javascript" src="{% static 'mapbuilder/js/circle.js' %}"></script>-->
 <script type="text/javascript" src="{% static 'mapbuilder/js/draw.js' %}"></script>
 
 <script>

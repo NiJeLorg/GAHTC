@@ -12,7 +12,7 @@ const southWest = [
     mapBounds = [southWest, northEast];
 var imageQuality = 'medium';
 // initialize the map
-var map;
+var map, isDown;
 
 
 function initializeFabric() {
@@ -51,6 +51,12 @@ function intializeMap() {
         })
         .addTo(map);
         tileLayer.on('load', function() {
+            $('.map-canvas').LoadingOverlay("show", {
+                image       : "",
+                fontawesome : "fa fa-cog fa-spin",
+                text: "Generating you map canvas"
+            });
+
             leafletImage(map, function(err, canvas) {
             var url = canvas.toDataURL('image/png');
             const img  = new Image;
@@ -64,6 +70,7 @@ function intializeMap() {
                 const imageBackgroundUrl = "" + url + "";
                 canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
                 }
+                 $('.map-canvas').LoadingOverlay("hide");
             })
 
         })
@@ -110,7 +117,20 @@ function saveMapDetails() {
         }
     });
 }
+function changeObjectSelection(value) {
+  canvasF.forEachObject(function (obj) {
+    obj.selectable = value;
+  });
+  canvasF.renderAll();
+}
 
+function removeEvents() {
+  canvasF.isDrawingMode = false;
+  canvasF.selection = true;
+  canvasF.off('mouse:down');
+  canvasF.off('mouse:up');
+  canvasF.off('mouse:move');
+}
 function mapbuilderShapeEventHandlers() {
     // mapbuilder toolbar event handlers
     $("#freedraw")
@@ -123,33 +143,103 @@ function mapbuilderShapeEventHandlers() {
         });
 
     $("#rect").click(function () {
-        var rect = new fabric.Rect({
-            left: 100,
-            top: 100,
-            fill: "rgba(233,116,81,0.5)",
-            width: 100,
-            height: 100,
-            hasBorder: true,
-            strokeWidth: 3,
-            stroke: "#000"
+
+        removeEvents();
+        changeObjectSelection(false);
+
+        canvasF.on('mouse:down', function (o) {
+            isDown = true;
+            var pointer = canvasF.getPointer(o.e);
+            origX = pointer.x;
+            origY = pointer.y;
+            var pointer = canvasF.getPointer(o.e);
+            rect = new fabric.Rect({
+                left: origX,
+                top: origY,
+                originX: 'left',
+                originY: 'top',
+                width: pointer.x - origX,
+                height: pointer.y - origY,
+                angle: 0,
+                strokeWidth: 3,
+                selectable: false,
+                fill: "rgba(233,116,81,0.5)",
+                stroke: 'black',
+                transparentCorners: false
+            });
+            canvasF.add(rect);
         });
-        canvasF
-            .add(rect)
-            .setActiveObject(rect);
+
+        canvasF.on('mouse:move', function (o) {
+            if (!isDown) return;
+            var pointer = canvasF.getPointer(o.e);
+
+            if (origX > pointer.x) {
+                rect.set({
+                    left: Math.abs(pointer.x)
+                });
+            }
+            if (origY > pointer.y) {
+                rect.set({
+                    top: Math.abs(pointer.y)
+                });
+            }
+
+            rect.set({
+                width: Math.abs(origX - pointer.x)
+            });
+            rect.set({
+                height: Math.abs(origY - pointer.y)
+            });
+
+
+            canvasF.renderAll();
+        });
+
+        canvasF.on('mouse:up', function (o) {
+            isDown = false;
+            rect.setCoords();
+        });
     });
 
     $("#circle").click(function () {
-        var circle = new fabric.Circle({
-            radius: 50,
-            fill: "rgba(233,116,81,0.5)",
-            top: 100,
-            left: 100,
-            strokeWidth: 3,
-            stroke: "black"
-        });
-        canvasF
-            .add(circle)
-            .setActiveObject(circle);
+          var circle, isDown, origX, origY;
+          removeEvents();
+          changeObjectSelection(true);
+          canvasF.on('mouse:down', function(o) {
+            isDown = true;
+            var pointer = canvasF.getPointer(o.e);
+            origX = pointer.x;
+            origY = pointer.y;
+            circle = new fabric.Circle({
+              left: pointer.x,
+              top: pointer.y,
+              radius: 1,
+              strokeWidth: 3,
+              fill: "rgba(233,116,81,0.5)",
+              stroke: 'black',
+              selectable: false,
+              originX: 'center',
+              originY: 'center'
+            });
+            canvasF.add(circle);
+          });
+
+          canvasF.on('mouse:move', function(o) {
+            if (!isDown) return;
+            var pointer = canvasF.getPointer(o.e);
+            circle.set({
+              radius: Math.abs(origX - pointer.x)
+            });
+            canvasF.renderAll();
+          });
+
+          canvasF.on('mouse:up', function(o) {
+            isDown = false;
+            circle.setCoords();
+          });
+
+
     });
 
     $("#text").click(function () {
@@ -166,21 +256,35 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#line").click(function () {
-        var line = new fabric.Line([
-            50, 100, 200, 200
-        ], {
-            left: 170,
-            top: 150,
-            stroke: "black",
-            strokeWidth: 8,
-            originX: "center",
-            originY: "center",
-            hasControls: true,
-            hasBorders: false
-        });
-        canvasF
-            .add(line)
-            .setActiveObject(line);
+          removeEvents();
+          changeObjectSelection(false);
+          canvasF.on('mouse:down', function(o) {
+            isDown = true;
+            var pointer = canvasF.getPointer(o.e);
+            var points = [pointer.x, pointer.y, pointer.x, pointer.y];
+            line = new fabric.Line(points, {
+              strokeWidth: 8,
+              stroke: 'black',
+              originX: 'center',
+              originY: 'center',
+              selectable: false
+            });
+            canvasF.add(line);
+          });
+          canvasF.on('mouse:move', function(o) {
+            if (!isDown) return;
+            var pointer = canvasF.getPointer(o.e);
+            line.set({
+              x2: pointer.x,
+              y2: pointer.y
+            });
+            canvasF.renderAll();
+          });
+
+          canvasF.on('mouse:up', function(o) {
+            isDown = false;
+            line.setCoords();
+          });
     });
 
     $("#poly").click(function () {
@@ -312,7 +416,9 @@ function mapbuilderShapeEventHandlers() {
         reader.readAsDataURL(file);
     });
 
-    $("select").click(function () {
+    $("#select").click(function () {
+        removeEvents();
+        changeObjectSelection(true);
         canvasF.selection = true;
     });
 
