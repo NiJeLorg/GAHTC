@@ -135,6 +135,8 @@ function mapbuilderShapeEventHandlers() {
     // mapbuilder toolbar event handlers
     $("#freedraw")
         .click(function () {
+             removeEvents();
+        changeObjectSelection(false);
             canvasF.isDrawingMode = true;
             canvasF.freeDrawingBrush.width = 6;
             canvasF.on("mouse:up", function () {
@@ -288,6 +290,8 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#poly").click(function () {
+        removeEvents();
+          changeObjectSelection(false);
         var startPoint = new fabric.Point(0, 0);
         var polygonPoints = [];
         var lines = [];
@@ -384,6 +388,8 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#pin").click(function () {
+        removeEvents();
+          changeObjectSelection(false);
         fabric
             .Image
             .fromURL("../../static/mapbuilder/css/images/marker-icon.png", function (oImg) {
@@ -395,10 +401,13 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#image").click(function () {
+        removeEvents();
+          changeObjectSelection(false);
         $("#file-image").trigger("click");
     });
 
     $("#file-image").change(function (e) {
+
         var file = e.target.files[0];
         var reader = new FileReader();
         reader.onload = function (f) {
@@ -423,6 +432,8 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#arrow").click(function () {
+        removeEvents();
+          changeObjectSelection(false);
         event.preventDefault();
         var triangle = new fabric.Triangle({
             width: 10,
