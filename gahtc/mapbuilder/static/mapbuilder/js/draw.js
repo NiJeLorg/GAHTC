@@ -28,6 +28,11 @@ function initializeFabric() {
 }
 
 function intializeMap() {
+    $.LoadingOverlay("show", {
+                image: "",
+                fontawesome: "fa fa-cog fa-spin",
+                text: "Generating you map canvas"
+            });
     map = L.map('lmap', {
         center: [
             localStorage.getItem('lat'),
@@ -51,11 +56,6 @@ function intializeMap() {
             })
             .addTo(map);
         tileLayer.on('load', function () {
-            $.LoadingOverlay("show", {
-                image: "",
-                fontawesome: "fa fa-cog fa-spin",
-                text: "Generating you map canvas"
-            });
 
             leafletImage(map, function (err, canvas) {
                 var url = canvas.toDataURL('image/png');
