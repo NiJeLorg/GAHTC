@@ -51,7 +51,7 @@ function intializeMap() {
             })
             .addTo(map);
         tileLayer.on('load', function () {
-            $('.map-canvas').LoadingOverlay("show", {
+            $.LoadingOverlay("show", {
                 image: "",
                 fontawesome: "fa fa-cog fa-spin",
                 text: "Generating you map canvas"
@@ -69,8 +69,8 @@ function intializeMap() {
                     $('.canvas-container').css('display', 'block');
                     const imageBackgroundUrl = "" + url + "";
                     canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
-                }
-                $('.map-canvas').LoadingOverlay("hide");
+                };
+                $.LoadingOverlay("hide");
             })
 
         })
