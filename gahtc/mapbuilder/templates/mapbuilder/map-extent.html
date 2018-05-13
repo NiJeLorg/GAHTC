@@ -27,17 +27,27 @@
         'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
     // initialize the map
-    var map = L.map('map').setView([38, 0], 2)
+    var map = L.map('map').setView([38, 0], 2);
 
     map.fitBounds(mapBounds);
-
+    var areaSelect = L.areaSelect({
+        width: 300,
+        height: 250,
+        keepAspectRatio: true
+    });
+    areaSelect.addTo(map);
     var marker = L.marker(center).addTo(map);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         // maxZoom: 18,
         id: layerId,
         accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
-    }).addTo(map);
+    }).addTo(map).on('load', function () {
+        map.invalidateSize();
+        setTimeout(function(){ $('.leaflet-areaselect-container').css('display', 'block');}, 1000);
+
+
+    });
 
     $(document).ready(function () {
         if (layerId == 'streets') {
@@ -49,14 +59,6 @@
 
         }
     });
-
-    // Add it to the map
-    var areaSelect = L.areaSelect({
-        width: 300,
-        height: 250,
-        keepAspectRatio: true
-    });
-    areaSelect.addTo(map);
 
     // Read the bounding box
     var bounds = areaSelect.getBounds();
@@ -94,11 +96,11 @@
     $('.layer-buttons').click(function (e) {
         $('.layer-buttons').removeClass('button-active');
         $(this).addClass('button-active');
-        if (this.id == 'btn1') {
+        if (this.id === 'btn1') {
             map.removeLayer(streets, satellite);
             map.addLayer(terrain);
             layerId = 'mapbox.outdoors';
-        } else if (this.id == 'btn2') {
+        } else if (this.id === 'btn2') {
             map.removeLayer(terrain, satellite);
             map.addLayer(streets);
             layerId = 'mapbox.run-bike-hike';

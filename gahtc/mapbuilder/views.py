@@ -20,11 +20,11 @@ def index(request):
 
 	query = request.GET.get('q')
 	if query:
-		maps = Map.objects.filter(public=True, name__icontains=query)
+		maps = Map.objects.filter(public=True, name__icontains=query).order_by('-created_date')
 	else:
-		maps = Map.objects.filter(public=True).order_by('created_date')
+		maps = Map.objects.filter(public=True).order_by('-created_date')
 
-	paginator = Paginator(maps, 1)
+	paginator = Paginator(maps, 10)
 	page = request.GET.get('page')
 	try:
 		maps = paginator.page(page)
@@ -44,7 +44,7 @@ def startmap(request):
 	if query:
 		maps = Map.objects.filter(public=True,  name__icontains=query)
 	else:
-		maps = Map.objects.filter(public=True).order_by('created_date')[:4]
+		maps = Map.objects.filter(public=True).order_by('-created_date')[:4]
 	return render(request, 'mapbuilder/start-map.html',{'maps':maps, 'recentMap': recentMap})
 
 @login_required
@@ -91,7 +91,21 @@ def mapexport(request):
 
 @login_required
 def mymaps(request):
-	mymaps = Map.objects.filter(user=request.user)
+	query = request.GET.get('q')
+	if query:
+		mymaps = Map.objects.filter(public=True, user=request.user, name__icontains=query).order_by('-created_date')
+	else:
+		mymaps = Map.objects.filter(public=True, user=request.user).order_by('-created_date')
+	paginator = Paginator(mymaps, 10)
+	page = request.GET.get('page')
+	try:
+		mymaps = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		mymaps = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		mymaps = paginator.page(paginator.num_pages)
 	return render(request, 'mapbuilder/mymaps.html', {'mymaps':mymaps})
 
 

@@ -18,14 +18,14 @@
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
     var center = [lat, long]
-    var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
+    var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}';
     var mapBoxAttribution =
         'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
     // initialize the map
     var map = L.map('map', {
         center: center,
-        zoom: 5,
+        zoom: 5
     });
 
 
@@ -49,26 +49,25 @@
             maxZoom: 18,
             id: 'mapbox.satellite',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
-        });
+        })
 
     $('.layer-buttons').click(function (e) {
         $('.layer-buttons').removeClass('button-active');
         $(this).addClass('button-active');
-        if (this.id == 'btn1') {
+        if (this.id === 'btn1') {
             map.addLayer(terrain);
             map.removeLayer(streets);
-            map.removeLayer(satellite)
+            map.removeLayer(satellite);
             layerId = 'terrain';
-        } else if (this.id == 'btn2') {
+        } else if (this.id === 'btn2') {
             map.addLayer(streets);
             map.removeLayer(terrain);
-            map.removeLayer(satellite)
-
+            map.removeLayer(satellite);
             layerId = 'streets';
         } else {
             map.addLayer(satellite);
             map.removeLayer(streets);
-            map.removeLayer(terrain)
+            map.removeLayer(terrain);
             layerId = 'satellite';
         }
         localStorage.setItem('layerId', layerId);
@@ -76,11 +75,11 @@
 
     $(document).ready(function () {
         $("#btn2").trigger('click');
+        localStorage.setItem('bounds', JSON.stringify(map.getBounds()));
     });
 
     map.on('moveend', function (e) {
-        var bounds = map.getBounds();
-        localStorage.setItem('bounds', JSON.stringify(bounds));
+        localStorage.setItem('bounds', JSON.stringify(map.getBounds()));
     });
     map.on('move', function (e) {
         marker.setLatLng(map.getCenter())

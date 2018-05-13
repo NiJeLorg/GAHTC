@@ -3,7 +3,8 @@
     <div class="start-map">
         <h1 class="main-title">GAHTC</h1>
         <h2 class="sub-title">Map Builder</h2>
-        <p class="start-content">Map builder is a new tool to create maps for your lectures. Select to start from your recent projects or create a
+        <p class="start-content">Map builder is a new tool to create maps for your lectures. Select to start from your
+            recent projects or create a
             new map by searching for a location below.</p>
         <div class="index-content">
             <div class="search-bar start-bar">
@@ -13,7 +14,8 @@
                 <input type="text" class="search-input" placeholder="Search for a location" id="search-value">
             </div>
             <div class="step-button-holder">
-                <a href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New Map
+                <a href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New
+                    Map
                 </a>
             </div>
         </div>
@@ -24,13 +26,13 @@
                     <span>{{recentMap.name}}</span>&nbsp;&nbsp;&nbsp;
                     <span> Created {{ recentMap.created_date|date:"m/d/Y" }}</span>
                 </a>
-                <a href="#" class="nav-action">View all My Maps
+                <a href="{% url 'mapbuilder:mymaps' %}" class="nav-action">View all My Maps
                     <img src="{% static 'css/images/arr.svg' %}" alt="">
                 </a>
             </div>
             <div class="nav-component">
                 <span class="title">Community Maps</span>
-                <a href="#" class="nav-link">View Map Index</a>
+                <a href="{% url 'mapbuilder:index' %}" class="nav-link">View Map Index</a>
                 <a href="#" class="nav-action">Edit an Existing Map</a>
             </div>
         </div>
@@ -56,28 +58,28 @@
                     <a href="#" class="nav-link map-link">
                         <span>{{ map.name }}</span>
                         <!-- <span>Created {{ map.created_date|date:"m/d/Y" }}</span> -->
-                    <!-- </a> -->
-                    <!-- {% endfor %} -->
-                <!-- </div>
-            </div>
-        
-        </div>
-    </div>
+<!-- </a> -->
+<!-- {% endfor %} -->
+<!-- </div>
+</div>
+
+</div>
+</div>
 </div>  -->
 
 <script>
-    $("input").geocomplete().bind("geocode:result", function (event, result) {
-        var lat = result.geometry.location.lat();
-        var long = result.geometry.location.lng();
-        localStorage.setItem('lat', lat);
-        localStorage.setItem('long', long);
+    $(document).ready( function() {
+        $("input").geocomplete().bind("geocode:result", function (event, result) {
+            var lat = result.geometry.location.lat();
+            var long = result.geometry.location.lng();
+            localStorage.setItem('lat', lat);
+            localStorage.setItem('long', long);
+        });
+        if(localStorage.getItem('edit'))
+        {
+            $('.edit-map-modal').css("display", "flex");
+        }
+        localStorage.clear()
     })
-
-  $(document).ready(() => {
-    if (localStorage.getItem('edit')) {
-        $('.edit-map-modal').css("display", "flex");
-    }
-    localStorage.clear()
- })
 </script>
 {% endblock %}

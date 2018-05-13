@@ -12,7 +12,7 @@ const southWest = [
     mapBounds = [southWest, northEast];
 var imageQuality = 'medium';
 // initialize the map
-var map;
+var map, isDown;
 
 
 function initializeFabric() {
@@ -28,6 +28,11 @@ function initializeFabric() {
 }
 
 function intializeMap() {
+    $.LoadingOverlay("show", {
+                image: "",
+                fontawesome: "fa fa-cog fa-spin",
+                text: "Generating you map canvas"
+            });
     map = L.map('lmap', {
         center: [
             localStorage.getItem('lat'),
@@ -40,30 +45,32 @@ function intializeMap() {
         printable: true,
         maxBounds: mapBounds,
         preferCanvas: true
-    }).on('load', function() {
-        const tileLayer =  L
-        .tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
-            's, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
-            'y © <a href="http://mapbox.com">Mapbox</a>',
-            id: layerId,
-            accessToken: window.MAPBOX_ACCESS_TOKEN
-        })
-        .addTo(map);
-        tileLayer.on('load', function() {
-            leafletImage(map, function(err, canvas) {
-            var url = canvas.toDataURL('image/png');
-            const img  = new Image;
-            var dimensions = map.getSize();
-            img.width = dimensions.x;
-            img.height = dimensions.y;
-            img.src = url;
-            img.onload = function () {
-                $('#lmap').remove();
-                $('.canvas-container').css('display', 'block');
-                const imageBackgroundUrl = "" + url + "";
-                canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
-                }
+    }).on('load', function () {
+        const tileLayer = L
+            .tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
+                's, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
+                'y © <a href="http://mapbox.com">Mapbox</a>',
+                id: layerId,
+                accessToken: window.MAPBOX_ACCESS_TOKEN
+            })
+            .addTo(map);
+        tileLayer.on('load', function () {
+
+            leafletImage(map, function (err, canvas) {
+                var url = canvas.toDataURL('image/png');
+                const img = new Image;
+                var dimensions = map.getSize();
+                img.width = dimensions.x;
+                img.height = dimensions.y;
+                img.src = url;
+                img.onload = function () {
+                    $('#lmap').remove();
+                    $('.canvas-container').css('display', 'block');
+                    const imageBackgroundUrl = "" + url + "";
+                    canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
+                };
+                $.LoadingOverlay("hide");
             })
 
         })
@@ -111,10 +118,27 @@ function saveMapDetails() {
     });
 }
 
+function changeObjectSelection(value) {
+    canvasF.forEachObject(function (obj) {
+        obj.selectable = value;
+    });
+    canvasF.renderAll();
+}
+
+function removeEvents() {
+    canvasF.isDrawingMode = false;
+    canvasF.selection = true;
+    canvasF.off('mouse:down');
+    canvasF.off('mouse:up');
+    canvasF.off('mouse:move');
+}
+
 function mapbuilderShapeEventHandlers() {
     // mapbuilder toolbar event handlers
     $("#freedraw")
         .click(function () {
+            removeEvents();
+            changeObjectSelection(false);
             canvasF.isDrawingMode = true;
             canvasF.freeDrawingBrush.width = 6;
             canvasF.on("mouse:up", function () {
@@ -123,33 +147,103 @@ function mapbuilderShapeEventHandlers() {
         });
 
     $("#rect").click(function () {
-        var rect = new fabric.Rect({
-            left: 100,
-            top: 100,
-            fill: "rgba(233,116,81,0.5)",
-            width: 100,
-            height: 100,
-            hasBorder: true,
-            strokeWidth: 3,
-            stroke: "#000"
+
+        removeEvents();
+        changeObjectSelection(false);
+
+        canvasF.on('mouse:down', function (o) {
+            isDown = true;
+            var pointer = canvasF.getPointer(o.e);
+            origX = pointer.x;
+            origY = pointer.y;
+            var pointer = canvasF.getPointer(o.e);
+            rect = new fabric.Rect({
+                left: origX,
+                top: origY,
+                originX: 'left',
+                originY: 'top',
+                width: pointer.x - origX,
+                height: pointer.y - origY,
+                angle: 0,
+                strokeWidth: 3,
+                selectable: false,
+                fill: "rgba(233,116,81,0.5)",
+                stroke: 'black',
+                transparentCorners: false
+            });
+            canvasF.add(rect);
         });
-        canvasF
-            .add(rect)
-            .setActiveObject(rect);
+
+        canvasF.on('mouse:move', function (o) {
+            if (!isDown) return;
+            var pointer = canvasF.getPointer(o.e);
+
+            if (origX > pointer.x) {
+                rect.set({
+                    left: Math.abs(pointer.x)
+                });
+            }
+            if (origY > pointer.y) {
+                rect.set({
+                    top: Math.abs(pointer.y)
+                });
+            }
+
+            rect.set({
+                width: Math.abs(origX - pointer.x)
+            });
+            rect.set({
+                height: Math.abs(origY - pointer.y)
+            });
+
+
+            canvasF.renderAll();
+        });
+
+        canvasF.on('mouse:up', function (o) {
+            isDown = false;
+            rect.setCoords();
+        });
     });
 
     $("#circle").click(function () {
-        var circle = new fabric.Circle({
-            radius: 50,
-            fill: "rgba(233,116,81,0.5)",
-            top: 100,
-            left: 100,
-            strokeWidth: 3,
-            stroke: "black"
+        var circle, isDown, origX, origY;
+        removeEvents();
+        changeObjectSelection(true);
+        canvasF.on('mouse:down', function (o) {
+            isDown = true;
+            var pointer = canvasF.getPointer(o.e);
+            origX = pointer.x;
+            origY = pointer.y;
+            circle = new fabric.Circle({
+                left: pointer.x,
+                top: pointer.y,
+                radius: 1,
+                strokeWidth: 3,
+                fill: "rgba(233,116,81,0.5)",
+                stroke: 'black',
+                selectable: false,
+                originX: 'center',
+                originY: 'center'
+            });
+            canvasF.add(circle);
         });
-        canvasF
-            .add(circle)
-            .setActiveObject(circle);
+
+        canvasF.on('mouse:move', function (o) {
+            if (!isDown) return;
+            var pointer = canvasF.getPointer(o.e);
+            circle.set({
+                radius: Math.abs(origX - pointer.x)
+            });
+            canvasF.renderAll();
+        });
+
+        canvasF.on('mouse:up', function (o) {
+            isDown = false;
+            circle.setCoords();
+        });
+
+
     });
 
     $("#text").click(function () {
@@ -166,24 +260,40 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#line").click(function () {
-        var line = new fabric.Line([
-            50, 100, 200, 200
-        ], {
-            left: 170,
-            top: 150,
-            stroke: "black",
-            strokeWidth: 8,
-            originX: "center",
-            originY: "center",
-            hasControls: true,
-            hasBorders: false
+        removeEvents();
+        changeObjectSelection(false);
+        canvasF.on('mouse:down', function (o) {
+            isDown = true;
+            var pointer = canvasF.getPointer(o.e);
+            var points = [pointer.x, pointer.y, pointer.x, pointer.y];
+            line = new fabric.Line(points, {
+                strokeWidth: 8,
+                stroke: 'black',
+                originX: 'center',
+                originY: 'center',
+                selectable: false
+            });
+            canvasF.add(line);
         });
-        canvasF
-            .add(line)
-            .setActiveObject(line);
+        canvasF.on('mouse:move', function (o) {
+            if (!isDown) return;
+            var pointer = canvasF.getPointer(o.e);
+            line.set({
+                x2: pointer.x,
+                y2: pointer.y
+            });
+            canvasF.renderAll();
+        });
+
+        canvasF.on('mouse:up', function (o) {
+            isDown = false;
+            line.setCoords();
+        });
     });
 
     $("#poly").click(function () {
+        removeEvents();
+        changeObjectSelection(false);
         var startPoint = new fabric.Point(0, 0);
         var polygonPoints = [];
         var lines = [];
@@ -280,6 +390,8 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#pin").click(function () {
+        removeEvents();
+        changeObjectSelection(false);
         fabric
             .Image
             .fromURL("../../static/mapbuilder/css/images/marker-icon.png", function (oImg) {
@@ -291,10 +403,13 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#image").click(function () {
+        removeEvents();
+        changeObjectSelection(false);
         $("#file-image").trigger("click");
     });
 
     $("#file-image").change(function (e) {
+
         var file = e.target.files[0];
         var reader = new FileReader();
         reader.onload = function (f) {
@@ -312,11 +427,15 @@ function mapbuilderShapeEventHandlers() {
         reader.readAsDataURL(file);
     });
 
-    $("select").click(function () {
+    $("#select").click(function () {
+        removeEvents();
+        changeObjectSelection(true);
         canvasF.selection = true;
     });
 
     $("#arrow").click(function () {
+        removeEvents();
+        changeObjectSelection(false);
         event.preventDefault();
         var triangle = new fabric.Triangle({
             width: 10,
@@ -389,7 +508,6 @@ function mapbuilderFontFormattingEventHandlers() {
         canvasF.renderAll();
     });
     $(".font-family-option").on("click", function () {
-        console.log("object");
         fontFamily = $(this).text();
         canvasF
             .getActiveObject()
@@ -557,11 +675,9 @@ function mapActionHandlers() {
             height = 1080;
         }
         if (document.getElementById('pdf').checked) {
-            downloadPdf(canvasF);
+            downloadPdf(canvasF, width, height);
         } else {
-            console.log("Calling Download");
-            downloadImage();
-            console.log("Download Complete");
+            downloadImage(width, height);
         }
         if (document.getElementById('public-check').checked) {
             saveMapDetails();
@@ -593,12 +709,10 @@ function resizeImage(img, width, height) {
     return result;
 }
 
-function downloadImage() {
-    console.log("DOWNLOADING");
+function downloadImage(width, height) {
     var link = document.createElement('a');
     var fabricImage = new Image();
     if (document.getElementById('png').checked) {
-        console.log("HERERE")
         fabricImage.src = canvasF.toDataURL('image/png');
         var resizedImage = resizeImage(fabricImage, width, height);
         var blob = dataURLtoBlob(resizedImage.src);
@@ -606,21 +720,25 @@ function downloadImage() {
         link.href = objectUrl
         link.download = "mymap.png";
     } else {
-        console.log("THERE");
         fabricImage.src = canvasF.toDataURL('image/jpeg');
         var resizedImage = resizeImage(fabricImage, width, height);
         var blob = dataURLtoBlob(resizedImage.src);
-        var objectUrl = URL.createObjectURL(blob)
+        var objectUrl = URL.createObjectURL(blob);
         link.href = objectUrl
         link.download = "mymap.jpg";
     }
     link.click()
 }
 
-function downloadPdf(canvasF) {
-    const url = canvasF.toDataURL("image/svg+xml", 1.0);
+function downloadPdf(canvasF, width, height) {
+    // const url = canvasF.toDataURL("image/svg+xml", 1.0);
+    var fabricImage = new Image();
+    fabricImage.src = canvasF.toDataURL("image/svg+xml", 1.0);
     var pdf = new jsPDF();
-    pdf.addImage(url, 'PNG', 15, 30, 180, 160);
+    var resizedImage = resizeImage(fabricImage, width, height);
+    // var blob = dataURLtoBlob(resizedImage.src);
+    // var objectUrl = URL.createObjectURL(blob);
+    pdf.addImage(resizedImage.src, 'PNG', 15, 30, 180, 160);
     pdf.save("mymap.pdf");
 
 }
@@ -654,14 +772,13 @@ $(document).ready(function () {
     $('.button-switcher button').click(function () {
         $(this).siblings().removeClass('size-btn-active');
         $(this).addClass('size-btn-active');
-        if (this.id == 'small') {
+        if (this.id === 'small') {
             imageQuality = 'small'
-        } else if (this.id == 'medium') {
+        } else if (this.id === 'medium') {
             imageQuality = 'medium'
         } else {
             imageQuality = 'large'
         }
-        console.log(imageQuality)
     })
 });
 
