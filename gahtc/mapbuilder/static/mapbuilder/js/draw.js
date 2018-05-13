@@ -674,10 +674,10 @@ function mapActionHandlers() {
             height = 1080;
         }
         if (document.getElementById('pdf').checked) {
-            downloadPdf(canvasF);
+            downloadPdf(canvasF, width, height);
         } else {
             console.log("Calling Download");
-            downloadImage();
+            downloadImage(width, height);
             console.log("Download Complete");
         }
         if (document.getElementById('public-check').checked) {
@@ -710,8 +710,7 @@ function resizeImage(img, width, height) {
     return result;
 }
 
-function downloadImage() {
-    console.log("DOWNLOADING");
+function downloadImage(width, height) {
     var link = document.createElement('a');
     var fabricImage = new Image();
     if (document.getElementById('png').checked) {
@@ -723,21 +722,25 @@ function downloadImage() {
         link.href = objectUrl
         link.download = "mymap.png";
     } else {
-        console.log("THERE");
         fabricImage.src = canvasF.toDataURL('image/jpeg');
         var resizedImage = resizeImage(fabricImage, width, height);
         var blob = dataURLtoBlob(resizedImage.src);
-        var objectUrl = URL.createObjectURL(blob)
+        var objectUrl = URL.createObjectURL(blob);
         link.href = objectUrl
         link.download = "mymap.jpg";
     }
     link.click()
 }
 
-function downloadPdf(canvasF) {
-    const url = canvasF.toDataURL("image/svg+xml", 1.0);
+function downloadPdf(canvasF, width, height) {
+    // const url = canvasF.toDataURL("image/svg+xml", 1.0);
+     var fabricImage = new Image();
+     fabricImage.src = canvasF.toDataURL("image/svg+xml", 1.0);
     var pdf = new jsPDF();
-    pdf.addImage(url, 'PNG', 15, 30, 180, 160);
+    var resizedImage = resizeImage(fabricImage, width, height);
+    // var blob = dataURLtoBlob(resizedImage.src);
+    // var objectUrl = URL.createObjectURL(blob);
+    pdf.addImage(resizedImage.src, 'PNG', 15, 30, 180, 160);
     pdf.save("mymap.pdf");
 
 }
@@ -771,9 +774,9 @@ $(document).ready(function () {
     $('.button-switcher button').click(function () {
         $(this).siblings().removeClass('size-btn-active');
         $(this).addClass('size-btn-active');
-        if (this.id == 'small') {
+        if (this.id === 'small') {
             imageQuality = 'small'
-        } else if (this.id == 'medium') {
+        } else if (this.id === 'medium') {
             imageQuality = 'medium'
         } else {
             imageQuality = 'large'
