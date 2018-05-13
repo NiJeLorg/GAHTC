@@ -40,37 +40,37 @@ function intializeMap() {
         printable: true,
         maxBounds: mapBounds,
         preferCanvas: true
-    }).on('load', function() {
-        const tileLayer =  L
-        .tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
-            's, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
-            'y © <a href="http://mapbox.com">Mapbox</a>',
-            id: layerId,
-            accessToken: window.MAPBOX_ACCESS_TOKEN
-        })
-        .addTo(map);
-        tileLayer.on('load', function() {
+    }).on('load', function () {
+        const tileLayer = L
+            .tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
+                's, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
+                'y © <a href="http://mapbox.com">Mapbox</a>',
+                id: layerId,
+                accessToken: window.MAPBOX_ACCESS_TOKEN
+            })
+            .addTo(map);
+        tileLayer.on('load', function () {
             $('.map-canvas').LoadingOverlay("show", {
-                image       : "",
-                fontawesome : "fa fa-cog fa-spin",
+                image: "",
+                fontawesome: "fa fa-cog fa-spin",
                 text: "Generating you map canvas"
             });
 
-            leafletImage(map, function(err, canvas) {
-            var url = canvas.toDataURL('image/png');
-            const img  = new Image;
-            var dimensions = map.getSize();
-            img.width = dimensions.x;
-            img.height = dimensions.y;
-            img.src = url;
-            img.onload = function () {
-                $('#lmap').remove();
-                $('.canvas-container').css('display', 'block');
-                const imageBackgroundUrl = "" + url + "";
-                canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
+            leafletImage(map, function (err, canvas) {
+                var url = canvas.toDataURL('image/png');
+                const img = new Image;
+                var dimensions = map.getSize();
+                img.width = dimensions.x;
+                img.height = dimensions.y;
+                img.src = url;
+                img.onload = function () {
+                    $('#lmap').remove();
+                    $('.canvas-container').css('display', 'block');
+                    const imageBackgroundUrl = "" + url + "";
+                    canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF));
                 }
-                 $('.map-canvas').LoadingOverlay("hide");
+                $('.map-canvas').LoadingOverlay("hide");
             })
 
         })
@@ -117,26 +117,28 @@ function saveMapDetails() {
         }
     });
 }
+
 function changeObjectSelection(value) {
-  canvasF.forEachObject(function (obj) {
-    obj.selectable = value;
-  });
-  canvasF.renderAll();
+    canvasF.forEachObject(function (obj) {
+        obj.selectable = value;
+    });
+    canvasF.renderAll();
 }
 
 function removeEvents() {
-  canvasF.isDrawingMode = false;
-  canvasF.selection = true;
-  canvasF.off('mouse:down');
-  canvasF.off('mouse:up');
-  canvasF.off('mouse:move');
+    canvasF.isDrawingMode = false;
+    canvasF.selection = true;
+    canvasF.off('mouse:down');
+    canvasF.off('mouse:up');
+    canvasF.off('mouse:move');
 }
+
 function mapbuilderShapeEventHandlers() {
     // mapbuilder toolbar event handlers
     $("#freedraw")
         .click(function () {
-             removeEvents();
-        changeObjectSelection(false);
+            removeEvents();
+            changeObjectSelection(false);
             canvasF.isDrawingMode = true;
             canvasF.freeDrawingBrush.width = 6;
             canvasF.on("mouse:up", function () {
@@ -205,41 +207,41 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#circle").click(function () {
-          var circle, isDown, origX, origY;
-          removeEvents();
-          changeObjectSelection(true);
-          canvasF.on('mouse:down', function(o) {
+        var circle, isDown, origX, origY;
+        removeEvents();
+        changeObjectSelection(true);
+        canvasF.on('mouse:down', function (o) {
             isDown = true;
             var pointer = canvasF.getPointer(o.e);
             origX = pointer.x;
             origY = pointer.y;
             circle = new fabric.Circle({
-              left: pointer.x,
-              top: pointer.y,
-              radius: 1,
-              strokeWidth: 3,
-              fill: "rgba(233,116,81,0.5)",
-              stroke: 'black',
-              selectable: false,
-              originX: 'center',
-              originY: 'center'
+                left: pointer.x,
+                top: pointer.y,
+                radius: 1,
+                strokeWidth: 3,
+                fill: "rgba(233,116,81,0.5)",
+                stroke: 'black',
+                selectable: false,
+                originX: 'center',
+                originY: 'center'
             });
             canvasF.add(circle);
-          });
+        });
 
-          canvasF.on('mouse:move', function(o) {
+        canvasF.on('mouse:move', function (o) {
             if (!isDown) return;
             var pointer = canvasF.getPointer(o.e);
             circle.set({
-              radius: Math.abs(origX - pointer.x)
+                radius: Math.abs(origX - pointer.x)
             });
             canvasF.renderAll();
-          });
+        });
 
-          canvasF.on('mouse:up', function(o) {
+        canvasF.on('mouse:up', function (o) {
             isDown = false;
             circle.setCoords();
-          });
+        });
 
 
     });
@@ -258,40 +260,40 @@ function mapbuilderShapeEventHandlers() {
     });
 
     $("#line").click(function () {
-          removeEvents();
-          changeObjectSelection(false);
-          canvasF.on('mouse:down', function(o) {
+        removeEvents();
+        changeObjectSelection(false);
+        canvasF.on('mouse:down', function (o) {
             isDown = true;
             var pointer = canvasF.getPointer(o.e);
             var points = [pointer.x, pointer.y, pointer.x, pointer.y];
             line = new fabric.Line(points, {
-              strokeWidth: 8,
-              stroke: 'black',
-              originX: 'center',
-              originY: 'center',
-              selectable: false
+                strokeWidth: 8,
+                stroke: 'black',
+                originX: 'center',
+                originY: 'center',
+                selectable: false
             });
             canvasF.add(line);
-          });
-          canvasF.on('mouse:move', function(o) {
+        });
+        canvasF.on('mouse:move', function (o) {
             if (!isDown) return;
             var pointer = canvasF.getPointer(o.e);
             line.set({
-              x2: pointer.x,
-              y2: pointer.y
+                x2: pointer.x,
+                y2: pointer.y
             });
             canvasF.renderAll();
-          });
+        });
 
-          canvasF.on('mouse:up', function(o) {
+        canvasF.on('mouse:up', function (o) {
             isDown = false;
             line.setCoords();
-          });
+        });
     });
 
     $("#poly").click(function () {
         removeEvents();
-          changeObjectSelection(false);
+        changeObjectSelection(false);
         var startPoint = new fabric.Point(0, 0);
         var polygonPoints = [];
         var lines = [];
@@ -389,7 +391,7 @@ function mapbuilderShapeEventHandlers() {
 
     $("#pin").click(function () {
         removeEvents();
-          changeObjectSelection(false);
+        changeObjectSelection(false);
         fabric
             .Image
             .fromURL("../../static/mapbuilder/css/images/marker-icon.png", function (oImg) {
@@ -402,7 +404,7 @@ function mapbuilderShapeEventHandlers() {
 
     $("#image").click(function () {
         removeEvents();
-          changeObjectSelection(false);
+        changeObjectSelection(false);
         $("#file-image").trigger("click");
     });
 
@@ -433,7 +435,7 @@ function mapbuilderShapeEventHandlers() {
 
     $("#arrow").click(function () {
         removeEvents();
-          changeObjectSelection(false);
+        changeObjectSelection(false);
         event.preventDefault();
         var triangle = new fabric.Triangle({
             width: 10,
@@ -506,7 +508,6 @@ function mapbuilderFontFormattingEventHandlers() {
         canvasF.renderAll();
     });
     $(".font-family-option").on("click", function () {
-        console.log("object");
         fontFamily = $(this).text();
         canvasF
             .getActiveObject()
@@ -676,9 +677,7 @@ function mapActionHandlers() {
         if (document.getElementById('pdf').checked) {
             downloadPdf(canvasF, width, height);
         } else {
-            console.log("Calling Download");
             downloadImage(width, height);
-            console.log("Download Complete");
         }
         if (document.getElementById('public-check').checked) {
             saveMapDetails();
@@ -714,7 +713,6 @@ function downloadImage(width, height) {
     var link = document.createElement('a');
     var fabricImage = new Image();
     if (document.getElementById('png').checked) {
-        console.log("HERERE")
         fabricImage.src = canvasF.toDataURL('image/png');
         var resizedImage = resizeImage(fabricImage, width, height);
         var blob = dataURLtoBlob(resizedImage.src);
@@ -734,8 +732,8 @@ function downloadImage(width, height) {
 
 function downloadPdf(canvasF, width, height) {
     // const url = canvasF.toDataURL("image/svg+xml", 1.0);
-     var fabricImage = new Image();
-     fabricImage.src = canvasF.toDataURL("image/svg+xml", 1.0);
+    var fabricImage = new Image();
+    fabricImage.src = canvasF.toDataURL("image/svg+xml", 1.0);
     var pdf = new jsPDF();
     var resizedImage = resizeImage(fabricImage, width, height);
     // var blob = dataURLtoBlob(resizedImage.src);
@@ -781,7 +779,6 @@ $(document).ready(function () {
         } else {
             imageQuality = 'large'
         }
-        console.log(imageQuality)
     })
 });
 
