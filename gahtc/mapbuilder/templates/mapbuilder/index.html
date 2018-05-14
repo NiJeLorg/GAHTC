@@ -38,7 +38,7 @@
                     <span class="map-info"> {{ map.name }}  Created {{ map.created_date|date:"m/d/Y" }} by {{ map.user }}</span>
                     <div class="list-item__actions">
                         <a download="{{ map.image }}" target="_blank" href="/media/{{ map.image }}" >Download</a>
-                        <a href="#" >Edit</a>
+                        <a href="{% url 'mapbuilder:map-export' id=map.id %}" >Edit</a>
                     </div>
                 </div>
             </li>
