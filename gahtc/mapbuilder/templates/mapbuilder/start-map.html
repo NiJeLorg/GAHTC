@@ -22,7 +22,7 @@
         <div class="maps-nav">
             <div class="nav-component">
                 <span class="title">My Recent Maps</span>
-                <a href="#" class="nav-link">
+                <a href="{% url 'mapbuilder:map-export' id=recentMap.id %}" class="nav-link">
                     <span>{{recentMap.name}}</span>&nbsp;&nbsp;&nbsp;
                     <span> Created {{ recentMap.created_date|date:"m/d/Y" }}</span>
                 </a>
