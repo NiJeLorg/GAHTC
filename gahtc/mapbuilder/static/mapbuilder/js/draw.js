@@ -173,7 +173,7 @@ function mapbuilderShapeEventHandlers() {
                 height: pointer.y - origY,
                 angle: 0,
                 strokeWidth: 3,
-                selectable: false,
+                selectable: true,
                 fill: "rgba(233,116,81,0.5)",
                 stroke: 'black',
                 transparentCorners: false
@@ -211,7 +211,6 @@ function mapbuilderShapeEventHandlers() {
             isDown = false;
             rect.setCoords();
             removeEvents();
-            changeObjectSelection(false);
         });
     });
 
@@ -231,7 +230,7 @@ function mapbuilderShapeEventHandlers() {
                 strokeWidth: 3,
                 fill: "rgba(233,116,81,0.5)",
                 stroke: 'black',
-                selectable: false,
+                selectable: true,
                 originX: 'center',
                 originY: 'center'
             });
@@ -250,6 +249,7 @@ function mapbuilderShapeEventHandlers() {
         canvasF.on('mouse:up', function (o) {
             isDown = false;
             circle.setCoords();
+            removeEvents();
         });
 
 
@@ -280,7 +280,7 @@ function mapbuilderShapeEventHandlers() {
                 stroke: 'black',
                 originX: 'center',
                 originY: 'center',
-                selectable: false
+                selectable: true
             });
             canvasF.add(line);
         });
@@ -297,6 +297,7 @@ function mapbuilderShapeEventHandlers() {
         canvasF.on('mouse:up', function (o) {
             isDown = false;
             line.setCoords();
+            removeEvents();
         });
     });
 
