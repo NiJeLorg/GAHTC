@@ -30,24 +30,14 @@
     var map = L.map('map').setView([38, 0], 2);
 
     map.fitBounds(mapBounds);
-    var areaSelect = L.areaSelect({
-        width: 300,
-        height: 250,
-        keepAspectRatio: true
-    });
-    areaSelect.addTo(map);
+
     var marker = L.marker(center).addTo(map);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         // maxZoom: 18,
         id: layerId,
         accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
-    }).addTo(map).on('load', function () {
-        map.invalidateSize();
-        setTimeout(function(){ $('.leaflet-areaselect-container').css('display', 'block');}, 1000);
-
-
-    });
+    }).addTo(map)
 
     $(document).ready(function () {
         if (layerId == 'streets') {
@@ -61,16 +51,14 @@
     });
 
     // Read the bounding box
-    var bounds = areaSelect.getBounds();
-    localStorage.setItem('zoom', map.getZoom());
-    localStorage.setItem('bounds', JSON.stringify(bounds));
 
 
-    areaSelect.on("change", function () {
-        var bounds = this.getBounds();
+    map.on('moveend', function() {
+      var bounds = map.getBounds();
         localStorage.setItem('zoom', map.getZoom());
         localStorage.setItem('bounds', JSON.stringify(bounds));
-    });
+});
+
 
 
     var streets = L.tileLayer(mapBoxURL, {

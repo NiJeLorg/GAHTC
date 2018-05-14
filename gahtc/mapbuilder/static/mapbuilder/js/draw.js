@@ -3,13 +3,17 @@ var canvasF;
 const layerId = localStorage.getItem('layerId');
 const zoom = localStorage.getItem('zoom');
 const mapBound = JSON.parse(localStorage.getItem('bounds'));
-const southWest = [
+var mapBounds;
+if(mapBound) {
+    const southWest = [
         mapBound._southWest.lat, mapBound._southWest.lng
     ],
     northEast = [
         mapBound._northEast.lat, mapBound._northEast.lng
-    ],
+    ];
     mapBounds = [southWest, northEast];
+}
+
 var imageQuality = 'medium';
 // initialize the map
 var map, isDown;
@@ -776,8 +780,11 @@ function updateCanvasWithExistingMap() {
                     });
                             // canvasF.renderAll();
                 }, function (o, object) {
-
+                        object.on('mousedown', function(e){
+                           $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+                        });
                 });
+
             }
         }
         ;
@@ -805,7 +812,7 @@ $(document).ready(function () {
             if (e.keyCode == 8) {
                 canvasF.remove(canvasF.getActiveObject());
             }
-        })
+        });
     // disable event handling
     $('.edit-icons,.format-icons ').css('pointer-events', 'none');
 

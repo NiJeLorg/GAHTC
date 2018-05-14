@@ -34,9 +34,9 @@
             </span>
         </a>
         <a href="#" id="poly" class="toolbar-icon" title="Star">
-            <img src="{%static 'mapbuilder/css/images/star.svg' %}" alt="">
+            <img style="width: 20px; height: 20px" src="{%static 'mapbuilder/css/images/irregular_polygon.svg' %}" alt="">
             <span class="tooltip">
-                Star
+                Polygon
             </span>
         </a>
         <a href="#" id="rect" class="toolbar-icon" title="Rectangle">
@@ -259,7 +259,8 @@
                     <br>
                     <input type="radio" name="fileFormat" id="pdf"> PDF
                     <a class="button download" id="download">Download</a>
-                    <input type="checkbox" id="public-check" checked>Share your map with the GAHTC community in the Map Index?
+                    <input type="checkbox" id="public-check" {% if map.public %}checked{% endif %} >Share your map with the GAHTC community in the Map Index?
+                    "{{map.public}}"
                 </div>
             </div>
         </div>
