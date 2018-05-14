@@ -33,7 +33,7 @@
             <div class="nav-component">
                 <span class="title">Community Maps</span>
                 <a href="{% url 'mapbuilder:index' %}" class="nav-link">View Map Index</a>
-                <a href="#" class="nav-action">Edit an Existing Map</a>
+                <a href="#" class="nav-action" id="existing-map">Edit an Existing Map</a>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
 <div class="edit-map-modal">
     <div class="edit-map-modal-content">
         <span class="close-button close-icon" id="cancel-button">&times;</span>
-        <div class="edit-map-title-holder">Edit An Existing Map</h3>
+        <div class="edit-map-title-holder" >Edit An Existing Map</h3>
         </div>
         <div class="edit-map-content-holder">
             <div class="search-bar modal-search">
@@ -110,9 +110,13 @@
     });
     }
 
-    $('$cancel-button').click(function(){
+    $('#cancel-button').click(function(){
         $('.edit-map-modal').css("display", "none");
     })
+    $('#existing-map').click(function(){
+        $('.edit-map-modal').css("display", "flex");
+    })
+
 
 
 </script>
