@@ -67,7 +67,7 @@ def mapexport(request, id=False):
 		# pdb.set_trace()
 		# if not os.path.exists(os.path.join(settings.MEDIA_URL, 'mapbuilder')):
 		# 	os.makedirs(os.path.join(settings.MEDIA_URL, 'mapbuilder'))
-		currentMap = {'data': '', 'image': '', id: ''}
+		currentMap = {'data': '', 'image': '', id: '', 'public': True}
 		if request.method == 'GET' and id:
 			currentMap =   Map.objects.get(pk=id)
 			if currentMap.user != request.user:

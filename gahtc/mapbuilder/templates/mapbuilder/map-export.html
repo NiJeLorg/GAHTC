@@ -259,7 +259,8 @@
                     <br>
                     <input type="radio" name="fileFormat" id="pdf"> PDF
                     <a class="button download" id="download">Download</a>
-                    <input type="checkbox" id="public-check" {% if map.public %}checked{% endif %}>Share your map with the GAHTC community in the Map Index?
+                    <input type="checkbox" id="public-check" {% if map.public %}checked{% endif %} >Share your map with the GAHTC community in the Map Index?
+                    "{{map.public}}"
                 </div>
             </div>
         </div>
