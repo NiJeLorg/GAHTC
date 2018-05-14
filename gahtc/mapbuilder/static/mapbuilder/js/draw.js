@@ -779,8 +779,11 @@ function updateCanvasWithExistingMap() {
                     });
                             // canvasF.renderAll();
                 }, function (o, object) {
-
+                        object.on('mousedown', function(e){
+                           $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+                        });
                 });
+
             }
         }
         ;
@@ -808,7 +811,7 @@ $(document).ready(function () {
             if (e.keyCode == 8) {
                 canvasF.remove(canvasF.getActiveObject());
             }
-        })
+        });
     // disable event handling
     $('.edit-icons,.format-icons ').css('pointer-events', 'none');
 
