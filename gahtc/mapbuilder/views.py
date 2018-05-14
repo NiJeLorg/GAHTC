@@ -48,8 +48,18 @@ def startmap(request):
 	if(len(recentMap)):
 		recentMap = recentMap[0]
 	if(len(maps)):
-		maps = maps[:4]
+		maps = maps
 	return render(request, 'mapbuilder/start-map.html',{'maps':maps, 'recentMap': recentMap})
+
+@login_required
+def communitymaps(request):
+	query = request.GET.get('q')
+	if query:
+		maps = Map.objects.filter(public=True,  name__icontains=query)
+	else:
+		maps = Map.objects.filter(public=True).order_by('-created_date')
+
+	return render(request, 'mapbuilder/community-maps.html',{'maps':maps})
 
 @login_required
 def map(request):

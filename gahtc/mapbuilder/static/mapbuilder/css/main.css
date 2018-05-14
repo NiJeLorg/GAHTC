@@ -170,6 +170,13 @@ search-icon {
     margin-left: 10px;
 }
 
+.modal-nav{
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100px;
+}
+
+
 .main-title {
     font-family: LinLibertineZ;
     font-size: 87px;
@@ -845,15 +852,15 @@ input[type="range"] {
 }
 
 .map-link span {
-    font-size: .8em;
+    font-size: 18px;
 }
 
 .map-link span:last-child {
-    font-size: .6em;
+    font-size: 14px;
 }
 
 .modal-search {
-    width: 100%;
+    width: 90%;
     margin: 0 auto;
 }
 

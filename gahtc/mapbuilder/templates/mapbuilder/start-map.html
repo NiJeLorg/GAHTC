@@ -40,36 +40,38 @@
 
     </div>
 </div>
-<!-- <div class="edit-map-modal">
+<div class="edit-map-modal">
     <div class="edit-map-modal-content">
-        <span class="close-button close-icon" id="close-icon">&times;</span>
+        <span class="close-button close-icon" id="cancel-button">&times;</span>
         <div class="edit-map-title-holder">Edit An Existing Map</h3>
         </div>
         <div class="edit-map-content-holder">
             <div class="search-bar modal-search">
+            <form   class="data-form" action="." method="GET" accept-charset="utf-8">
                 <button class="search-button">
                     <i class="fa fa-search search-icon"></i>
                 </button>
-                <input type="text" class="search-input" placeholder="Search for a community map" name='q' value="{{ request.GET.q }}">
+                <input id="q" type="text" class="search-input" placeholder="Search for a community map" name='q' value="">
+            </form>
             </div>
             <div class="maps-nav">
-                <div class="nav-component">
-                    {% for map in maps %}
-                    <a href="#" class="nav-link map-link">
-                        <span>{{ map.name }}</span>
-                        <!-- <span>Created {{ map.created_date|date:"m/d/Y" }}</span> -->
-<!-- </a> -->
-<!-- {% endfor %} -->
-<!-- </div>
-</div>
+                <div id ="results-container" class="nav-component modal-nav">
+                        {% for map in maps %}
+                        <a href="{% url 'mapbuilder:map-export' id=map.id %}" class="nav-link map-link">
+                            <span>{{ map.name }}</span>
+                            <span>Created {{ map.created_date|date:"m/d/Y" }}</span>
+                        </a>
+                        {% endfor %}
+                </div>
+            </div>
 
-</div>
-</div>
-</div>  -->
+        </div>
+    </div>
+</div> 
 
 <script>
     $(document).ready( function() {
-        $("input").geocomplete().bind("geocode:result", function (event, result) {
+        $("#search-value").geocomplete().bind("geocode:result", function (event, result) {
             var lat = result.geometry.location.lat();
             var long = result.geometry.location.lng();
             localStorage.setItem('lat', lat);
@@ -81,5 +83,37 @@
         }
         localStorage.clear()
     })
+    $('#cancel-button').click(function(){
+
+    })
+    $("form").submit(function(e){
+        e.preventDefault();
+        searchMaps();
+    });
+     $('#search-button').click(function(){
+        searchMaps();
+    })
+
+    function searchMaps(){
+        $.ajax({
+        type: "GET",
+        url: "/mapbuilder/communitymaps/",
+        data: {
+            q: $("#q").val(),
+        },
+        success: function (data) {
+            $("#results-container").html(data);
+        },
+        error: function (e) {
+            console.log(e, "ERROR");
+        }
+    });
+    }
+
+    $('$cancel-button').click(function(){
+        $('.edit-map-modal').css("display", "none");
+    })
+
+
 </script>
 {% endblock %}
