@@ -67,7 +67,7 @@ def mapexport(request, id=False):
 		# pdb.set_trace()
 		# if not os.path.exists(os.path.join(settings.MEDIA_URL, 'mapbuilder')):
 		# 	os.makedirs(os.path.join(settings.MEDIA_URL, 'mapbuilder'))
-		currentMap = {'data': '', 'image': '', id: ''}
+		currentMap = {'data': '', 'image': '', id: '', 'public': True}
 		if request.method == 'GET' and id:
 			currentMap =   Map.objects.get(pk=id)
 			if currentMap.user != request.user:
@@ -99,8 +99,10 @@ def mapexport(request, id=False):
 				base_map_data = b64decode(base_map_image)
 				file_name_string = format_filename(map_name) + '.png'
 				map, created = Map.objects.get_or_create(id=map_id, user=request.user)
-				if public_map :
-					map.public =True
+				if public_map == "False":
+					map.public = False
+				else:
+					map.public = True
 				map.data = map_data
 				map.name = file_name_string
 				map.image =  ContentFile(img_data, file_name_string)
@@ -113,9 +115,9 @@ def mapexport(request, id=False):
 def mymaps(request):
 	query = request.GET.get('q')
 	if query:
-		mymaps = Map.objects.filter(public=True, user=request.user, name__icontains=query).order_by('-created_date')
+		mymaps = Map.objects.filter(user=request.user, name__icontains=query).order_by('-created_date')
 	else:
-		mymaps = Map.objects.filter(public=True, user=request.user).order_by('-created_date')
+		mymaps = Map.objects.filter(user=request.user).order_by('-created_date')
 	paginator = Paginator(mymaps, 10)
 	page = request.GET.get('page')
 	try:
