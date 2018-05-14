@@ -225,7 +225,7 @@
     <div id="lmap"></div>
     <canvas id="c"></canvas>
 </div>
-<div id="map-modal" class="modal">
+<div id="map-modal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close-button" id="close-button">&times;</span>
         <h3 class="modal-title">Let's Make A Map!</h3>
@@ -264,6 +264,17 @@
             </div>
         </div>
 
+    </div>
+</div>
+<div id="dowload-save-modal" class="download-save-modal">
+    <div class="download-save-modal-content">
+        <span class="close-button" id="modal-close-button">&times;</span>
+        <h3 class="download-save-modal-title" id="dowload-title" ></h3>
+        <div class="modal-button-holder">
+            <a class="modal-button" href="{% url 'mapbuilder:mymaps' %}">Exit Map Builder</a>
+            <a class="modal-button" id="exit-modal">Continue Editing</a>
+            <a class="modal-button" href="{% url 'mapbuilder:mymaps' %}" id="publish">View All My Maps</a>
+        </div>
     </div>
 </div>
 <script>
