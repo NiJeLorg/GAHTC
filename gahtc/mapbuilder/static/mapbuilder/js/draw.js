@@ -82,11 +82,12 @@ function intializeMap() {
 }
 
 function saveMapDetails() {
-    var map_id = $("#projectid").text();
+    var map_id = mapId || $("#projectid").text();
     var map_name = $("#projectname").text();
     var csrftoken = Cookies.get('csrftoken');
     var map_image = canvasF.toDataURL('image/png').replace("data:image/jpeg;base64,", "");
     var public_map = 'True';
+    var map_data = JSON.stringify(canvasF);
 
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
@@ -107,7 +108,8 @@ function saveMapDetails() {
             map_id: map_id,
             map_name: map_name,
             public_map: public_map,
-            map_image: map_image
+            map_image: map_image,
+            map_data:map_data
         },
         success: function (data) {
             $("#projectid").text(data.map_id);
@@ -743,10 +745,37 @@ function downloadPdf(canvasF, width, height) {
 
 }
 
+function updateCanvasWithExistingMap(){
+    if(currentMapImage) {
+        // var dimensions = map.getSize();
 
+        const img = new Image;
+        // img.width = $("#map-canvas").height();
+        // img.height = $("#map-canvas").width();
+        img.src = currentMapImage;
+        img.onload = function () {
+            $('#lmap').remove();
+            $('.canvas-container').css('display', 'block');
+            const imageBackgroundUrl = "" + currentMapImage + "";
+            // canvasF.drawImage(img, 0, 0, img.width,    img.height,     // source rectangle
+                   // 0, 0, canvasF.width, canvasF.height);
+            canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF),  {
+            scaleX: canvasF.width / img.width,
+            scaleY: canvasF.height / img.height
+         });
+        };
+        console.log("Set Exisitng Image as map");
+    }
+}
 $(document).ready(function () {
     initializeFabric();
-    intializeMap();
+    console.log(currentMap, currentMapImage);
+    if(currentMap || currentMapImage){
+        updateCanvasWithExistingMap();
+    }else{
+        intializeMap();
+    }
+
     mapbuilderShapeEventHandlers();
     mapbuilderShapeFormattingEventHandlers();
     mapbuilderFontFormattingEventHandlers();

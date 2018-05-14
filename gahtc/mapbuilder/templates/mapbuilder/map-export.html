@@ -268,6 +268,9 @@
 </div>
 <script>
     window.MAPBOX_ACCESS_TOKEN = '{{ MAPBOX_ACCESS_TOKEN }}';
+    window.currentMap = '{{map.data}}';
+    window.currentMapImage = '/media/{{ map.image }}';
+    window.mapId = '{{map.id}}'
 </script>
 <!--<script type="text/javascript" src="{% static 'mapbuilder/js/circle.js' %}"></script>-->
 <script type="text/javascript" src="{% static 'mapbuilder/js/draw.js' %}"></script>

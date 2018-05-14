@@ -62,12 +62,16 @@ def mapextent(request):
 	return render(request, 'mapbuilder/map-extent.html')
 
 @login_required
-def mapexport(request):
+def mapexport(request, id=False):
 		# import pdb
 		# pdb.set_trace()
 		# if not os.path.exists(os.path.join(settings.MEDIA_URL, 'mapbuilder')):
 		# 	os.makedirs(os.path.join(settings.MEDIA_URL, 'mapbuilder'))
-		if request.method == 'POST' and request.is_ajax():
+		currentMap = {'data': '', 'image': '', id: ''}
+		if request.method == 'GET' and id:
+			currentMap =   Map.objects.get(pk=id)
+
+		elif request.method == 'POST' and request.is_ajax():
 				# import pdb; pdb.set_trace()
 				map_id = request.POST.get('map_id')
 				if not map_id or map_id == '':
@@ -91,7 +95,7 @@ def mapexport(request):
 				map.image =  ContentFile(img_data, file_name_string)
 				map.save()
 				return HttpResponse(json.dumps({'map_id': map.id}), content_type="application/json")
-		return render(request, 'mapbuilder/map-export.html')
+		return render(request, 'mapbuilder/map-export.html', {'map': currentMap})
 
 @login_required
 def mymaps(request):
