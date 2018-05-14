@@ -40,11 +40,15 @@ def index(request):
 @login_required
 def startmap(request):
 	query = request.GET.get('q')
-	recentMap =  Map.objects.filter(user=request.user).order_by('-id')[0]
+	recentMap =  Map.objects.filter(user=request.user).order_by('-id')
 	if query:
 		maps = Map.objects.filter(public=True,  name__icontains=query)
 	else:
-		maps = Map.objects.filter(public=True).order_by('-created_date')[:4]
+		maps = Map.objects.filter(public=True).order_by('-created_date')
+	if(len(recentMap)):
+		recentMap = recentMap[0]
+	if(len(maps)):
+		maps = maps[:4]
 	return render(request, 'mapbuilder/start-map.html',{'maps':maps, 'recentMap': recentMap})
 
 @login_required
