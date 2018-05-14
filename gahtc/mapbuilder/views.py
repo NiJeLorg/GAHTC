@@ -99,10 +99,10 @@ def mapexport(request, id=False):
 				base_map_data = b64decode(base_map_image)
 				file_name_string = format_filename(map_name) + '.png'
 				map, created = Map.objects.get_or_create(id=map_id, user=request.user)
-				if public_map == "True":
-					map.public =True
-				else:
+				if public_map == "False":
 					map.public = False
+				else:
+					map.public = True
 				map.data = map_data
 				map.name = file_name_string
 				map.image =  ContentFile(img_data, file_name_string)
