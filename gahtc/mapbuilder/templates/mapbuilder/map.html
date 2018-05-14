@@ -81,8 +81,6 @@
     map.on('moveend', function (e) {
         localStorage.setItem('bounds', JSON.stringify(map.getBounds()));
     });
-    map.on('move', function (e) {
-        marker.setLatLng(map.getCenter())
-    })
+    
 </script>
 {% endblock%}
