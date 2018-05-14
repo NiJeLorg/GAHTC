@@ -3,13 +3,14 @@ var canvasF;
 const layerId = localStorage.getItem('layerId');
 const zoom = localStorage.getItem('zoom');
 const mapBound = JSON.parse(localStorage.getItem('bounds'));
+var mapBounds;
 if(mapBound) {
     const southWest = [
         mapBound._southWest.lat, mapBound._southWest.lng
     ],
     northEast = [
         mapBound._northEast.lat, mapBound._northEast.lng
-    ],
+    ];
     mapBounds = [southWest, northEast];
 }
 
