@@ -1,0 +1,6 @@
+{% for map in maps %}
+<a href="{% url 'mapbuilder:map-export' id=map.id %}" class="nav-link map-link">
+    <span>{{ map.name }}</span>
+    <span>Created {{ map.created_date|date:"m/d/Y" }}</span>
+</a>
+{% endfor %}

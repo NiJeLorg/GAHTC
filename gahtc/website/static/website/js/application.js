@@ -33,6 +33,11 @@ $(document).ready(function () {
         $('footer').css('position', 'static');
     }
 
+    if (window.location.href.indexOf('mapbuilder') > -1) {
+        $('.navbar').css('height', '110px');
+        $('.main-content').css('margin-top', '110px');
+    }
+
     // truncateElementText($('.lecture-description-text'));
 
 
@@ -44,97 +49,99 @@ $(document).ready(function () {
         }
     });
 
-    if ($(this).width() < 768) {
-        $('.user-nav .user-profile').css({
-            'border-radius': '10%'
-        });
-        $('.navbar .navigation-links').css({
-            'display': 'none'
-        });
-        $('.uncollapsed-logo').css({
-            'opacity': '0'
-        });
-        $('.collapsed-container').css({
-            'opacity': '1'
-        });
-        $('.navbar-header-holder').css({
-            'padding': '0'
-        });
-        $('.main-nav').css({
-            'height': '80px'
-        });
-        $('.user-nav p').css({
-            'color': '#a1a0a1'
-        });
-        $('.main-content').css({
-            'margin-top': '80px'
-        });
-        $('.navbar-header-holder').css({
-            'min-height': '0'
-        });            
-    }
+    // if ($(this).width() < 768) {
+    //     $('.user-nav .user-profile').css({
+    //         'border-radius': '10%'
+    //     });
+    //     $('.navbar .navigation-links').css({
+    //         'display': 'none'
+    //     });
+    //     $('.uncollapsed-logo').css({
+    //         'opacity': '0'
+    //     });
+    //     $('.collapsed-container').css({
+    //         'opacity': '1'
+    //     });
+    //     $('.navbar-header-holder').css({
+    //         'padding': '0'
+    //     });
+    //     $('.main-nav').css({
+    //         'height': '80px'
+    //     });
+    //     $('.user-nav p').css({
+    //         'color': '#a1a0a1'
+    //     });
+    //     $('.main-content').css({
+    //         'margin-top': '80px'
+    //     });
+    //     $('.navbar-header-holder').css({
+    //         'min-height': '0'
+    //     });
+    // }
 
-    $(window).scroll(() => {
-        if ($(this).scrollTop() > 146 || $(this).width() < 768) {
-            $('.user-nav .user-profile').css({
-                'border-radius': '10%'
-            });
-            $('.navbar .navigation-links').css({
-                'display': 'none'
-            });
-            $('.uncollapsed-logo').css({
-                'opacity': '0'
-            });
-            $('.collapsed-container').css({
-                'opacity': '1'
-            });
-            $('.navbar-header-holder').css({
-                'padding': '0'
-            });
-            $('.main-nav').css({
-                'height': '80px'
-            });
-            $('.user-nav p').css({
-                'color': '#a1a0a1'
-            }); 
-            $('.navbar-header-holder').css({
-                'min-height': '0'
-            }); 
-        } else {
-            $('.collapsed-container aside').css({
-                'display': 'none'
-            })
-            $('.user-nav .user-profile').css({
-                'border-radius': '50%'
-            });
-            $('.navbar .navigation-links').css({
-                'display': 'flex'
-            });
-            $('.uncollapsed-logo').css({
-                'opacity': '1'
-            });
-            $('.collapsed-container').css({
-                'opacity': '0'
-            });
-            $('.navbar-header-holder').css({
-                'padding': '15px 0'
-            })
-            $('.main-nav').css({
-                'height': '146px'
-            });
-            $('.user-nav p').css({
-                'color': '#ffffff'
-            });
-            $('.main-content').css({
-                'margin-top': '146px'
-            }); 
-            $('.navbar-header-holder').css({
-                'min-height': '110px'
-            }); 
-            isAsideNavOpen = false;
-        }
+    // $(window).scroll(() => {
+    //     if ($(this).scrollTop() > 146 || $(this).width() < 768) {
+    //         $('.user-nav .user-profile').css({
+    //             'border-radius': '10%'
+    //         });
+    //         $('.navbar .navigation-links').css({
+    //             'display': 'none'
+    //         });
+    //         $('.uncollapsed-logo').css({
+    //             'opacity': '0'
+    //         });
+    //         $('.collapsed-container').css({
+    //             'opacity': '1'
+    //         });
+    //         $('.navbar-header-holder').css({
+    //             'padding': '0'
+    //         });
+    //         $('.main-nav').css({
+    //             'height': '80px'
+    //         });
+    //         $('.user-nav p').css({
+    //             'color': '#a1a0a1'
+    //         });
+    //         $('.navbar-header-holder').css({
+    //             'min-height': '0'
+    //         });
+    //     } else if (window.location.href.indexOf('mapbuilder') > -1) {
 
-    });
+    //     } else {
+    //         $('.collapsed-container aside').css({
+    //             'display': 'none'
+    //         })
+    //         $('.user-nav .user-profile').css({
+    //             'border-radius': '50%'
+    //         });
+    //         $('.navbar .navigation-links').css({
+    //             'display': 'flex'
+    //         });
+    //         $('.uncollapsed-logo').css({
+    //             'opacity': '1'
+    //         });
+    //         $('.collapsed-container').css({
+    //             'opacity': '0'
+    //         });
+    //         $('.navbar-header-holder').css({
+    //             'padding': '15px 0'
+    //         })
+    //         $('.main-nav').css({
+    //             'height': '146px'
+    //         });
+    //         $('.user-nav p').css({
+    //             'color': '#ffffff'
+    //         });
+    //         $('.main-content').css({
+    //             'margin-top': '146px'
+    //         });
+    //         $('.navbar-header-holder').css({
+    //             'min-height': '110px'
+    //         });
+    //         isAsideNavOpen = false;
+    //     }
+
+    // });
 
     if ($(document).width() <= 425) {
         $('.main-nav').css({
@@ -200,7 +207,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.hamburger-icon').mouseenter(() => {    
+    $('.hamburger-icon').mouseenter(() => {
         $('.hamburger-icon').attr('src', '/static/website/css/images/hamburger_icon.svg');
     });
 
@@ -253,3 +260,10 @@ $(document).ready(function () {
     horizontalScroll();
 
 });
+
+
+$('#btn2').hover(() => {
+    $('.layer-tooltip').css('display', 'flex')
+}, () => [
+    $('.layer-tooltip').css('display', 'none')
+])
