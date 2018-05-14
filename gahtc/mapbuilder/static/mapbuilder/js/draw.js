@@ -30,7 +30,7 @@ function intializeMap() {
     $.LoadingOverlay("show", {
         image: "",
         fontawesome: "fa fa-cog fa-spin",
-        text: "Generating you map canvas"
+        text: "Generating your map canvas"
     });
     map = L.map('lmap', {
         center: [
@@ -86,7 +86,7 @@ function saveMapDetails() {
     var csrftoken = Cookies.get('csrftoken');
     var map_image = canvasF.toDataURL('image/png').replace("data:image/png;base64,", "");
     var base_map_image = canvasF.backgroundImage.toDataURL('image/png').replace("data:image/png;base64,", "");
-    var public_map = 'True';
+    var public_map = document.getElementById('public-check').checked ?  "True": 'False';
     var canvasCopy = _.cloneDeep(canvasF);
     canvasCopy.backgroundImage = null;
     var map_data = JSON.stringify(canvasCopy);
@@ -122,6 +122,8 @@ function saveMapDetails() {
         }
     });
 }
+
+
 
 function changeObjectSelection(value) {
     canvasF.forEachObject(function (obj) {
@@ -693,6 +695,9 @@ function mapActionHandlers() {
     });
     $('#save').click(function () {
         saveMapDetails();
+    });
+    $('#public-check').change(function(){
+        saveMapDetails()
     });
 
 }
