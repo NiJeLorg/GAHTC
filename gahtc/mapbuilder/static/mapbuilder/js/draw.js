@@ -804,7 +804,7 @@ function updateCanvasWithExistingMap() {
 $(document).ready(function () {
     initializeFabric();
     // console.log(currentMapJson, currentMapImage);
-    if (mapId === "") {
+    if (mapId === "" || mapId === "False"  || mapId === false) {
         intializeMap();
 
     } else {
