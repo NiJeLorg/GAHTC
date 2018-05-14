@@ -170,6 +170,13 @@ search-icon {
     margin-left: 10px;
 }
 
+.modal-nav{
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100px;
+}
+
+
 .main-title {
     font-family: LinLibertineZ;
     font-size: 87px;
@@ -847,15 +854,15 @@ input[type="range"] {
 }
 
 .map-link span {
-    font-size: .8em;
+    font-size: 18px;
 }
 
 .map-link span:last-child {
-    font-size: .6em;
+    font-size: 14px;
 }
 
 .modal-search {
-    width: 100%;
+    width: 90%;
     margin: 0 auto;
 }
 
@@ -880,4 +887,64 @@ input[type="range"] {
 
 .leaflet-areaselect-container {
     display: none;
+}
+
+.download-save-modal {
+    display:none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 340px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.download-save-modal-content {
+    background-color: rgba(251, 237, 144, 0.8);
+    margin: auto;
+    padding: 80px 150px;
+    border: 1px solid #888;
+    width: 50%;
+    position: relative;
+}
+
+.download-save-modal-title {
+    font-style: normal;
+    text-align: center;
+    text-transform: none;
+    font-size: 24px;
+    margin-bottom: 37px;
+}
+
+
+.modal-button-holder{
+    display: flex;
+}
+.modal-button-holder a{
+    box-sizing: border-box;
+}
+.modal-button {
+    margin: 0 5px;
+    display: inline-block;
+    width: 220px;
+    height: 50px;
+    border-radius: 3px;
+    color: #323232;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: content-box;
+    font-size: 16px;
+    line-height: 50px;
+    vertical-align: middle;
+    border: 2px solid #323232;
+    text-decoration: none;
+}
+
+.modal-button:hover,
+.modal-button:focus {
+    color: #ffffff;
+    background: #323232;
+    text-decoration: none;
 }

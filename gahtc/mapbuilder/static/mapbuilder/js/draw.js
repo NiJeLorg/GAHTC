@@ -120,6 +120,8 @@ function saveMapDetails() {
         },
         success: function (data) {
             $("#projectid").text(data.map_id);
+            $('.publish-modal').css("display", "none");
+            $('.download-save-modal').css("display", "block");
         },
         error: function (e) {
             console.log(e, "ERROR");
@@ -661,6 +663,12 @@ function mapActionHandlers() {
     $('#close-button').click(function (e) {
         $('.modal').css("display", "none");
     });
+    $('#modal-close-button').click(function (e) {
+        $('.download-save-modal').css("display", "none");
+    });
+    $('#exit-modal').click(function (e) {
+        $('.download-save-modal').css("display", "none");
+    });
     $('.ok-button').click(function (e) {
         $('.modal').css("display", "none");
         var val = $("#project-title").val()
@@ -695,10 +703,11 @@ function mapActionHandlers() {
         }
         if (document.getElementById('public-check').checked) {
             saveMapDetails();
-
         }
-    });
+        $('.download-save-modal-content h3').html('Great! your Map has been Downloaded');
+    })
     $('#save').click(function () {
+        $('.download-save-modal-content h3').html('Great! Your map has been Saved');
         saveMapDetails();
     });
     $('#public-check').change(function(){
