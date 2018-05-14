@@ -30,7 +30,7 @@ function intializeMap() {
     $.LoadingOverlay("show", {
         image: "",
         fontawesome: "fa fa-cog fa-spin",
-        text: "Generating you map canvas"
+        text: "Generating your map canvas"
     });
     map = L.map('lmap', {
         center: [
@@ -86,7 +86,7 @@ function saveMapDetails() {
     var csrftoken = Cookies.get('csrftoken');
     var map_image = canvasF.toDataURL('image/png').replace("data:image/png;base64,", "");
     var base_map_image = canvasF.backgroundImage.toDataURL('image/png').replace("data:image/png;base64,", "");
-    var public_map = 'True';
+    var public_map = document.getElementById('public-check').checked ?  "True": 'False';
     var canvasCopy = _.cloneDeep(canvasF);
     canvasCopy.backgroundImage = null;
     var map_data = JSON.stringify(canvasCopy);
@@ -122,6 +122,8 @@ function saveMapDetails() {
         }
     });
 }
+
+
 
 function changeObjectSelection(value) {
     canvasF.forEachObject(function (obj) {
@@ -171,7 +173,7 @@ function mapbuilderShapeEventHandlers() {
                 height: pointer.y - origY,
                 angle: 0,
                 strokeWidth: 3,
-                selectable: false,
+                selectable: true,
                 fill: "rgba(233,116,81,0.5)",
                 stroke: 'black',
                 transparentCorners: false
@@ -209,7 +211,6 @@ function mapbuilderShapeEventHandlers() {
             isDown = false;
             rect.setCoords();
             removeEvents();
-            changeObjectSelection(false);
         });
     });
 
@@ -229,7 +230,7 @@ function mapbuilderShapeEventHandlers() {
                 strokeWidth: 3,
                 fill: "rgba(233,116,81,0.5)",
                 stroke: 'black',
-                selectable: false,
+                selectable: true,
                 originX: 'center',
                 originY: 'center'
             });
@@ -248,6 +249,7 @@ function mapbuilderShapeEventHandlers() {
         canvasF.on('mouse:up', function (o) {
             isDown = false;
             circle.setCoords();
+            removeEvents();
         });
 
 
@@ -278,7 +280,7 @@ function mapbuilderShapeEventHandlers() {
                 stroke: 'black',
                 originX: 'center',
                 originY: 'center',
-                selectable: false
+                selectable: true
             });
             canvasF.add(line);
         });
@@ -295,6 +297,7 @@ function mapbuilderShapeEventHandlers() {
         canvasF.on('mouse:up', function (o) {
             isDown = false;
             line.setCoords();
+            removeEvents();
         });
     });
 
@@ -693,6 +696,9 @@ function mapActionHandlers() {
     });
     $('#save').click(function () {
         saveMapDetails();
+    });
+    $('#public-check').change(function(){
+        saveMapDetails()
     });
 
 }

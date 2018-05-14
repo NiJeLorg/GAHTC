@@ -70,6 +70,13 @@ def mapexport(request, id=False):
 		currentMap = {'data': '', 'image': '', id: ''}
 		if request.method == 'GET' and id:
 			currentMap =   Map.objects.get(pk=id)
+			if currentMap.user != request.user:
+				copiedMap =  currentMap
+				copiedMap.pk = None
+				copiedMap.user = request.user
+				copiedMap.save()
+				currentMap = copiedMap
+
 
 		elif request.method == 'POST' and request.is_ajax():
 				# import pdb; pdb.set_trace()
