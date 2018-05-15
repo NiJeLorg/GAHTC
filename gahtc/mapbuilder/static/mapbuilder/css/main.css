@@ -476,7 +476,7 @@ h3.map-header-text {
 .img-holder {
     display: inline-block;
     margin-bottom: 8px;
-    border: 1px dashed;
+    /* border: 1px dashed; */
     margin-right: 10px;
     flex: 2;
     text-align: center;
