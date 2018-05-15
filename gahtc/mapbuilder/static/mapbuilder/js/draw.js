@@ -827,7 +827,7 @@ $(document).ready(function () {
     initializeSpectrum();
     $(document)
         .keyup(function (e) {
-            if (e.keyCode == 8) {
+            if (e.keyCode == 8 && canvasF.getActiveObject().get('type')!=="i-text") {
                 canvasF.remove(canvasF.getActiveObject());
             }
         });
