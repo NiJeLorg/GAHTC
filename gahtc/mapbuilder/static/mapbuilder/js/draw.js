@@ -576,6 +576,12 @@ function mapbuilderShapeFormattingEventHandlers() {
         }
         canvasF.renderAll();
     });
+    $('.opacity-slider').change(function (){
+        var opacity = $(".opacity-slider").val();
+        opacity = opacity / 100;
+        canvasF.getActiveObject().setOpacity(opacity)
+        canvasF.renderAll();
+    });
 }
 
 function initializeSpectrum() {
