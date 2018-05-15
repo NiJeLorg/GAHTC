@@ -20,9 +20,10 @@
             </div>
         </div>
         <div class="maps-nav">
+            {% if recentMap %}
             <div class="nav-component">
                 <span class="title">My Recent Maps</span>
-                <a href="#" class="nav-link">
+                <a href="{% url 'mapbuilder:map-export' id=recentMap.id %}" class="nav-link">
                     <span>{{recentMap.name}}</span>&nbsp;&nbsp;&nbsp;
                     <span> Created {{ recentMap.created_date|date:"m/d/Y" }}</span>
                 </a>
@@ -30,6 +31,7 @@
                     <img src="{% static 'css/images/arr.svg' %}" alt="">
                 </a>
             </div>
+            {% endif %}
             <div class="nav-component">
                 <span class="title">Community Maps</span>
                 <a href="{% url 'mapbuilder:index' %}" class="nav-link">View Map Index</a>
