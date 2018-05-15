@@ -656,6 +656,11 @@ h3.map-header-text {
     transition: opacity 0.3s;
 }
 
+#free-draw-tip {
+    left: 85%;
+   
+}
+
 .toolbar-icon .tooltip::after {
     content: "";
     position: absolute;
