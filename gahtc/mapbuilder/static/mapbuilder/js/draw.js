@@ -651,7 +651,7 @@ const createImage = function (canvasF) {
     $('#images').css({
         'background': imageBackgroundUrl,
         'background-repeat': 'no-repeat',
-        'background-size': '100% 100%'
+        'background-size': 'auto auto'
     })
     img.src = url;
     img.onload = function () {
@@ -686,15 +686,18 @@ function mapActionHandlers() {
         $('.publish-modal').css("display", "none");
     });
     $('#download').click(function (e) {
+        // get the dimensions of #map-canvas and calculate the appropriate sizes for image quality
+        var canvasWidth = $('#map-canvas').width();
+        var canvasHeight = $('#map-canvas').height();
         if (imageQuality === 'small') {
-            width = 854;
             height = 480;
+            width = (height / canvasHeight) * canvasWidth;
         } else if (imageQuality === 'medium') {
-            width = 1280;
             height = 720;
+            width = (height / canvasHeight) * canvasWidth;
         } else if (imageQuality === 'large') {
-            width = 1920;
             height = 1080;
+            width = (height / canvasHeight) * canvasWidth;
         }
         if (document.getElementById('pdf').checked) {
             downloadPdf(canvasF, width, height);
@@ -704,14 +707,14 @@ function mapActionHandlers() {
         if (document.getElementById('public-check').checked) {
             saveMapDetails();
         }
-        $('.download-save-modal-content h3').html('Great! your Map has been Downloaded');
+        $('.download-save-modal-content h3').html('Great! Your map has been downloaded.');
     })
     $('#save').click(function () {
-        $('.download-save-modal-content h3').html('Great! Your map has been Saved');
+        $('.download-save-modal-content h3').html('Great! Your map has been saved.');
         saveMapDetails();
     });
     $('#public-check').change(function(){
-        saveMapDetails()
+        saveMapDetails();
     });
 
 }
