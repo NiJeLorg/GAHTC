@@ -15,55 +15,55 @@
 </div>
 <div class="draw-toolbar">
     <div class="toolbar-section draw-icons">
-        <a href="#" id="freedraw" class="toolbar-icon" title="Free Draw">
+        <a href="#" id="freedraw" class="toolbar-icon" >
             <img src="{% static 'mapbuilder/css/images/freedraw.svg' %}" alt="">
             <span class="tooltip">
                 Free Draw
             </span>
         </a>
-        <a href="#" id="line" class="toolbar-icon" title="Line">
+        <a href="#" id="line" class="toolbar-icon" >
             <img src="{%static 'mapbuilder/css/images/line.svg' %}" alt="">
             <span class="tooltip">
                 Line
             </span>
         </a>
-        <a href="#" class="toolbar-icon" title="Arrow" id="arrow">
+        <a href="#" class="toolbar-icon"  id="arrow">
             <img src="{% static 'mapbuilder/css/images/right_arrow.svg' %}" alt="">
             <span class="tooltip">
                 Arrow
             </span>
         </a>
-        <a href="#" id="poly" class="toolbar-icon" title="Star">
+        <a href="#" id="poly" class="toolbar-icon" >
             <img style="width: 20px; height: 20px" src="{%static 'mapbuilder/css/images/irregular_polygon.svg' %}" alt="">
             <span class="tooltip">
                 Polygon
             </span>
         </a>
-        <a href="#" id="rect" class="toolbar-icon" title="Rectangle">
+        <a href="#" id="rect" class="toolbar-icon" >
             <img src="{% static 'mapbuilder/css/images/rectangle.svg' %}" alt="">
             <span class="tooltip">
                 Rectangle
             </span>
         </a>
-        <a href="#" id="circle" class="toolbar-icon" title="Cirlce">
+        <a href="#" id="circle" class="toolbar-icon">
             <img src="{%static 'mapbuilder/css/images/circle.svg' %}" alt="">
             <span class="tooltip">
                 Circle
             </span>
         </a>
-        <a href="#" id="pin" class="toolbar-icon" title="Pin">
+        <a href="#" id="pin" class="toolbar-icon" >
             <img src="{% static 'mapbuilder/css/images/pin.svg' %}" alt="">
             <span class="tooltip">
                 Pin
             </span>
         </a>
-        <a href="#" id="text" class="toolbar-icon" title="Text">
+        <a href="#" id="text" class="toolbar-icon" >
             <img src="{% static 'mapbuilder/css/images/type.svg' %}" alt="">
             <span class="tooltip">
                 Text
             </span>
         </a>
-        <a href="#" id="image" class="toolbar-icon" title="Image">
+        <a href="#" id="image" class="toolbar-icon">
             <img src="{% static 'mapbuilder/css/images/insert_img.svg' %}" alt="">
             <span class="tooltip">
                 Image
@@ -72,33 +72,33 @@
         <input type="file" id="file-image" style="display: none;" accept="image/*">
     </div>
     <div class="toolbar-section edit-icons">
-        <a href="#" class="toolbar-icon" id="select" title="Select">
+        <a href="#" class="toolbar-icon" id="select">
             <img src="{% static 'mapbuilder/css/images/select.svg' %}" alt="">
             <span class="tooltip">
                 Select
             </span>
         </a>
         <input type="text" id="fillColorPicker">
-        <a href="#" class="toolbar-icon" title="Fill" id='fillColor'>
+        <a href="#" class="toolbar-icon" id='fillColor'>
             <img src="{% static 'mapbuilder/css/images/format_color_fill.svg' %}" alt="">
             <span class="tooltip">
                 Fill
             </span>
         </a>
         <input type="text" id="strokeColorPicker">
-        <a href="#" class="toolbar-icon" title="Stroke Color" id="strokeColor">
+        <a href="#" class="toolbar-icon"  id="strokeColor">
             <img src="{% static 'mapbuilder/css/images/stroke_color.svg' %}" alt="">
             <span class="tooltip">
                 Stroke Color
             </span>
         </a>
-        <a class="toolbar-icon" title="Opacity" id="opacity">
+        <a class="toolbar-icon"  id="opacity">
             <img src="{% static 'mapbuilder/css/images/opacity.svg'%}" alt="">
             <div class="slider-container">
                 <input class="opacity-slider" type="range" max="100" min="0" step="1" value="50">
             </div>
         </a>
-        <a href="#" class="toolbar-icon" title="Stroke Weight">
+        <a href="#" class="toolbar-icon" >
             <img src="{% static 'mapbuilder/css/images/stroke_weight.svg' %}" alt="">
             <ul class="toolbar-icon-dropdown">
                 <li class='stroke-weight-option'>1px</li>
@@ -112,7 +112,7 @@
                 Stroke Weight
             </span>
         </a>
-        <a href="#" class="toolbar-icon" title="Stroke Style">
+        <a href="#" class="toolbar-icon" >
             <img src="{% static 'mapbuilder/css/images/stroke_style.svg' %}" alt="">
             <ul class="toolbar-icon-dropdown">
                 <li class="stroke-style-option" id="solid">
@@ -138,7 +138,7 @@
         </a>
     </div>
     <div class="toolbar-section format-icons">
-        <a href="#" class="toolbar-icon" title="Font Family">
+        <a href="#" class="toolbar-icon" >
             <i class="fa fa-font"></i>
             <ul class="toolbar-icon-dropdown">
                 <li class="font-family-option">Source Sans Pro</li>
@@ -148,7 +148,7 @@
                 Font Family
             </span>
         </a>
-        <a href="#" class="toolbar-icon" title="Font Size">
+        <a href="#" class="toolbar-icon">
             <i class="fa fa-text-height"></i>
             <ul class="toolbar-icon-dropdown">
                 <li class="font-size-option">8</li>
