@@ -651,7 +651,7 @@ const createImage = function (canvasF) {
     $('#images').css({
         'background': imageBackgroundUrl,
         'background-repeat': 'no-repeat',
-        'background-size': 'auto auto'
+        'background-size': '100% auto'
     })
     img.src = url;
     img.onload = function () {
