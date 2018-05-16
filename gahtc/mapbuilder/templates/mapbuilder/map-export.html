@@ -10,7 +10,7 @@
     <div class="step-button-holder">
         <a class="button button-group" href="{% url 'mapbuilder:mymaps' %}">My Maps</a>
         <a class="button button-group" id="save">Save</a>
-        <a class="button button-group" id="publish">Download and Publish</a>
+        <a class="button button-group" id="publish">Download</a>
     </div>
 </div>
 <div class="draw-toolbar">
@@ -263,7 +263,7 @@
                     <br>
                     <input type="radio" name="fileFormat" id="pdf"> PDF
                     <input type="checkbox" id="public-check" {% if map.public %}checked{% endif %} >Publish your map to the GAHTC Community Map Index?
-                    <a class="button download" id="download">Download and Publish</a>
+                    <a class="button download" id="download">Download</a>
                 </div>
             </div>
         </div>
