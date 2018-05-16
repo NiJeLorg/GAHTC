@@ -258,8 +258,11 @@ h3.map-header-text {
 #map {
     height: calc(100vh - 146px);
     z-index: 1;
-    border: solid 3px;
-    border-color: #1b8dbb;
+}
+
+.red-outline {
+    border: solid 5px;
+    border-color: #e97451;
 }
 
 /*#map-canvas {*/

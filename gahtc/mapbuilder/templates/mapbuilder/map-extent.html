@@ -1,10 +1,10 @@
 {% extends "mapbuilder/base.html" %} {% block content%}
 <div class="map-header">
     <h3 class="map-header-text">
-        <strong>Step 2 of 3:</strong>Set Your Map Canvas Extents</h3>
+        <strong>Step 2 of 3:</strong> Set your map's extent inside the red box</h3>
     <a class="button step-button" href="{% url 'mapbuilder:map-export' %}">Done</a>
 </div>
-<div id="map"></div>
+<div id="map" class="red-outline"></div>
 <div class="layer-switcher">
     <button class="layer-buttons" id="btn1">Terrain</button>
     <button class="layer-buttons button-active" id="btn2">Political</button>
