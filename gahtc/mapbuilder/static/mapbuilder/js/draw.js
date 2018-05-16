@@ -267,7 +267,7 @@ function mapbuilderShapeEventHandlers() {
             top: 50,
             fontWeight: "normal",
             fontFamily: "Source Sans Pro",
-            fontSize: 20
+            fontSize: 16
         });
         canvasF
             .add(text)
