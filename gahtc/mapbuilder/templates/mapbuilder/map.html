@@ -35,13 +35,13 @@
     var streets = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
-            id: 'mapbox.run-bike-hike',
+            id: 'mapbox.light',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
         }),
         terrain = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
-            id: 'mapbox.outdoors',
+            id: 'mapbox.emerald',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
         }),
         satellite = L.tileLayer(mapBoxURL, {

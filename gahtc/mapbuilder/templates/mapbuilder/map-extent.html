@@ -64,13 +64,13 @@
     var streets = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
-            id: 'mapbox.run-bike-hike',
+            id: 'mapbox.light',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
         }),
         terrain = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
-            id: 'mapbox.outdoors',
+            id: 'mapbox.emerald',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
         }),
         satellite = L.tileLayer(mapBoxURL, {
@@ -87,11 +87,11 @@
         if (this.id === 'btn1') {
             map.removeLayer(streets, satellite);
             map.addLayer(terrain);
-            layerId = 'mapbox.outdoors';
+            layerId = 'mapbox.emerald';
         } else if (this.id === 'btn2') {
             map.removeLayer(terrain, satellite);
             map.addLayer(streets);
-            layerId = 'mapbox.run-bike-hike';
+            layerId = 'mapbox.light';
         } else {
             map.removeLayer(streets, terrain);
             map.addLayer(satellite);
