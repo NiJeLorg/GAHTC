@@ -315,15 +315,12 @@ function mapbuilderShapeEventHandlers() {
         var lines = [];
         var isDrawing = false;
 
-        document
-            .getElementById("poly")
-            .onclick = function () {
-            if (isDrawing) {
-                finalize();
-            } else {
-                isDrawing = true;
-            }
-        };
+        if (isDrawing) {
+            finalize();
+        } else {
+            isDrawing = true;
+        }
+
         fabric
             .util
             .addListener(window, "dblclick", function () {
@@ -346,10 +343,9 @@ function mapbuilderShapeEventHandlers() {
                 var line = new fabric.Line([
                     _x, _y, _x, _y
                 ], {
-                    strokeWidth: 5,
+                    strokeWidth: 3,
                     stroke: "black",
                     selectable: false,
-                    stroke: "red"
                 });
                 polygonPoints.push(new fabric.Point(_x, _y));
                 lines.push(line);
