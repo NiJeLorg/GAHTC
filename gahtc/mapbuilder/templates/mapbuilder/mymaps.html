@@ -4,7 +4,7 @@
 
 <div class="mapbuilder">
     <h3 class="mapbuilder-header">
-        {{ user.username| title }} Account Settings
+        {{ request.user.userProfile.first_name }} {{ request.user.userProfile.last_name }} Account Settings
     </h3>
     <div class="index-content">
             <span class="map-index">My Maps Index</span>
