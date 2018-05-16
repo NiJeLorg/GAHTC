@@ -39,7 +39,7 @@
                         {% elif athlete_in_locker_room_list %}
                         <i class="map-private"></i>
                         {% endif %}
-                        <span>{{ map.name }}  Created {{ map.created_date|date:"m/d/Y" }} by {{ map.user }}</span></div>
+                        <span>{{ map.name }}  Created {{ map.created_date|date:"m/d/Y" }} by {{ map.user.userProfile.first_name }} {{ map.user.userProfile.last_name }}</span></div>
                     <div class="list-item__actions">
                         <a download="{{ map.image }}" target="_blank" href="/media/{{ map.image }}">Download</a>
                         <a href="{% url 'mapbuilder:map-export' id=map.id %}">Edit</a>
