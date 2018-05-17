@@ -90,7 +90,7 @@ function saveMapDetails() {
     var csrftoken = Cookies.get('csrftoken');
     var map_image = canvasF.toDataURL('image/png').replace("data:image/png;base64,", "");
     var base_map_image = canvasF.backgroundImage.toDataURL('image/png').replace("data:image/png;base64,", "");
-    var public_map = document.getElementById('public-check').checked ?  "True": 'False';
+    var public_map = document.getElementById('public-check').checked && $('#publish').data('clicked')?  "True": 'False';
     var canvasCopy = _.cloneDeep(canvasF);
     canvasCopy.backgroundImage = null;
     var map_data = JSON.stringify(canvasCopy);
@@ -682,6 +682,7 @@ function mapActionHandlers() {
 
     $('#publish').click(function (e) {
         $('.publish-modal').css("display", "flex");
+        $(this).data('clicked', true);
         createImage(canvasF);
     });
     $('#close-icon').click(function (e) {
@@ -712,11 +713,8 @@ function mapActionHandlers() {
         $('.download-save-modal-content h3').html('Great! Your map has been downloaded.');
     })
     $('#save').click(function () {
+        saveMapDetails();
         $('.download-save-modal-content h3').html('Great! Your map has been saved.');
-        saveMapDetails();
-    });
-    $('#public-check').change(function(){
-        saveMapDetails();
     });
 
 }
