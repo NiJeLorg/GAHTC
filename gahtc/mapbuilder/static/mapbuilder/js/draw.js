@@ -713,11 +713,8 @@ function mapActionHandlers() {
         $('.download-save-modal-content h3').html('Great! Your map has been downloaded.');
     })
     $('#save').click(function () {
+        saveMapDetails();
         $('.download-save-modal-content h3').html('Great! Your map has been saved.');
-        saveMapDetails();
-    });
-    $('#public-check').change(function(){
-        saveMapDetails();
     });
 
 }
