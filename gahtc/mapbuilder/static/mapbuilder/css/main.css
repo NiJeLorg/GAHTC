@@ -779,13 +779,7 @@ input[type="range"] {
     text-decoration: none;
 }
 
-/*.canvas-container {*/
-/*height: 100%;*/
-/*width: 100%;*/
-/*display: none;*/
-/*}*/
 .canvas-container {
-    height: calc(100vh - 146px) !important;
     width: 100% !important;
     display: none;
 }

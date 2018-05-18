@@ -121,6 +121,7 @@ function saveMapDetails() {
         success: function (data) {
             $("#projectid").text(data.map_id);
             $('.publish-modal').css("display", "none");
+            $.LoadingOverlay("hide");
             $('.download-save-modal').css("display", "block");
         },
         error: function (e) {
@@ -713,6 +714,11 @@ function mapActionHandlers() {
         $('.download-save-modal-content h3').html('Great! Your map has been downloaded.');
     })
     $('#save').click(function () {
+        $.LoadingOverlay("show", {
+            image: "",
+            fontawesome: "fa fa-cog fa-spin",
+            text: "Saving Map Details"
+        });
         saveMapDetails();
         $('.download-save-modal-content h3').html('Great! Your map has been saved.');
     });
