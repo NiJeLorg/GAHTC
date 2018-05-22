@@ -52,5 +52,9 @@ gahtc/gahtc/settings.py
 gahtc/gahtc/whoosh_index/
 Backup-codes-gahtcweb.txt
 
-*/.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
