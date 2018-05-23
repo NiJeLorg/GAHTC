@@ -726,9 +726,6 @@ input[type="range"] {
     display: none;
 }
 
-#opacity:hover .slider-container {
-    display: block;
-}
 
 .toolbar-icon-dropdown li {
     padding: 5px 20px;

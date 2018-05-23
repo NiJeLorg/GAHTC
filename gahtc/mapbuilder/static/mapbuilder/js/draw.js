@@ -193,7 +193,8 @@ function mapbuilderShapeEventHandlers() {
                 selectable: true,
                 fill: "rgba(233,116,81,0.5)",
                 stroke: 'black',
-                transparentCorners: false
+                transparentCorners: false,
+                opacity: 0.5
             });
             canvasF.add(rect);
         });
@@ -249,7 +250,8 @@ function mapbuilderShapeEventHandlers() {
                 stroke: 'black',
                 selectable: true,
                 originX: 'center',
-                originY: 'center'
+                originY: 'center',
+                opacity: 0.5
             });
             canvasF.add(circle);
         });
@@ -407,7 +409,8 @@ function mapbuilderShapeEventHandlers() {
                 top: top,
                 fill: "rgba(233,116,81,0.5)",
                 stroke: "black",
-                strokeWidth: 3
+                strokeWidth: 3,
+                opacity: 0.5
             });
         }
     });
@@ -583,6 +586,25 @@ function mapbuilderShapeFormattingEventHandlers() {
         }
         canvasF.renderAll();
     });
+
+    $('#opacity').click(function (e){
+        $('.slider-container').css('display','block')
+        var objectOpacity = canvasF.getActiveObject().opacity
+        var input = document.getElementById('opacitySlider')
+        input.value = objectOpacity * 100
+        // console.log('object opacity-->', canvasF.getActiveObject().opacity);
+        // console.log('opacity slider value-->', input.value)
+
+    })
+    $(document).mouseup(function(e) {
+     var container = $(".slider-container");
+     if (!container.is(e.target) && container.has(e.target).length === 0) 
+    {
+        container.hide();
+    }
+    });
+
+
     $('.opacity-slider').change(function (){
         var opacity = $(".opacity-slider").val();
         opacity = opacity / 100;
