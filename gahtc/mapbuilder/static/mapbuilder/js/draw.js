@@ -3,6 +3,9 @@ var canvasF;
 const layerId = localStorage.getItem('layerId');
 const zoom = localStorage.getItem('zoom');
 const mapBound = JSON.parse(localStorage.getItem('bounds'));
+const mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
+'s, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
+'y © <a href="http://mapbox.com">Mapbox</a>'
 var mapBounds;
 if(mapBound) {
     const southWest = [
@@ -49,15 +52,22 @@ function intializeMap() {
         maxBounds: mapBounds,
         preferCanvas: true
     }).on('load', function () {
-        const tileLayer = L
+        if (layerId == 'mapbox.light' || layerId == 'mapbox.satellite'){
+            tileLayer = L
             .tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
-                's, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
-                'y © <a href="http://mapbox.com">Mapbox</a>',
+                attribution: mapBoxAttribution,
                 id: layerId,
                 accessToken: window.MAPBOX_ACCESS_TOKEN
             })
             .addTo(map);
+        } else {
+            tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/nijeldev/cjh1t3o2l08ao2snw8gljsp5q/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlqZWxkZXYiLCJhIjoiY2pmMWRpdW93MDJnbTJ4bXE0YTA1amZmdSJ9.bmSlHYHyP5zaIwuKJtPjPQ', {
+                attribution: mapBoxAttribution,
+                id: 'cjhgodu8f4x4p2smizw2o0btn',
+                accessToken: window.MAPBOX_ACCESS_TOKEN
+            }).addTo(map)
+        }
+        
         tileLayer.on('load', function () {
 
             leafletImage(map, function (err, canvas) {
