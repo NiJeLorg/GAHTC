@@ -594,15 +594,15 @@ function mapbuilderShapeFormattingEventHandlers() {
         input.value = objectOpacity * 100
         // console.log('object opacity-->', canvasF.getActiveObject().opacity);
         // console.log('opacity slider value-->', input.value)
-
+        $(document).mouseup(function(e) {
+            var container = $(".slider-container");
+            if (!container.is(e.target) && container.has(e.target).length === 0) 
+           {
+               container.hide();
+           }
+        });
     })
-    $(document).mouseup(function(e) {
-     var container = $(".slider-container");
-     if (!container.is(e.target) && container.has(e.target).length === 0) 
-    {
-        container.hide();
-    }
-    });
+    
 
 
     $('.opacity-slider').change(function (){
