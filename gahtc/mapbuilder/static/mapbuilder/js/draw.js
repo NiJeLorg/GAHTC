@@ -171,7 +171,6 @@ function mapbuilderShapeEventHandlers() {
         });
 
     $("#rect").click(function () {
-
         removeEvents();
         changeObjectSelection(false);
 
@@ -485,6 +484,7 @@ function mapbuilderShapeEventHandlers() {
         var alltogetherObj = new fabric.Group(objs);
         canvasF.add(alltogetherObj);
     });
+    
 }
 
 function mapbuilderFontFormattingEventHandlers() {
@@ -564,6 +564,16 @@ function mapbuilderShapeFormattingEventHandlers() {
 
     $(".delete-shape-icon").on("click", function () {
         canvasF.remove(canvasF.getActiveObject());
+        var objects = canvasF.getObjects();
+        var objectsCount=canvasF.getObjects().length;
+        var notTextObjectCount = 0;
+    
+        if (objectsCount === 0) {
+            $('.edit-icons,.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+        }
+        if (canvasF.getObjects("i-text").length === 0) {
+                $('.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+        }
     });
 
     $(".stroke-style-option").on("click", function () {
@@ -592,8 +602,6 @@ function mapbuilderShapeFormattingEventHandlers() {
         var objectOpacity = canvasF.getActiveObject().opacity
         var input = document.getElementById('opacitySlider')
         input.value = objectOpacity * 100
-        // console.log('object opacity-->', canvasF.getActiveObject().opacity);
-        // console.log('opacity slider value-->', input.value)
         $(document).mouseup(function(e) {
             var container = $(".slider-container");
             if (!container.is(e.target) && container.has(e.target).length === 0) 
@@ -844,6 +852,7 @@ function updateCanvasWithExistingMap() {
 
 $(document).ready(function () {
     initializeFabric();
+    
     // console.log(currentMapJson, currentMapImage);
     if (mapId === "" || mapId === "False"  || mapId === false) {
         intializeMap();
@@ -861,8 +870,16 @@ $(document).ready(function () {
         .keyup(function (e) {
             if (e.keyCode == 8 && canvasF.getActiveObject().get('type')!=="i-text") {
                 canvasF.remove(canvasF.getActiveObject());
+                console.log(canvasF.getObjects().length)
+                console.log(canvasF.getObjects("i-text").length)
+                if (canvasF.getObjects().length === 0) {
+                $('.edit-icons,.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+                } else if (canvasF.getObjects("i-text").length === 0 && canvasF.getObjects().length !== 0 ){
+                    $('.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+                }
             }
         });
+    
     // disable event handling
     $('.edit-icons,.format-icons ').css('pointer-events', 'none');
 
