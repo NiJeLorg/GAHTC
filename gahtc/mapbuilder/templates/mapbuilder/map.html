@@ -32,17 +32,18 @@
     var marker = L.marker([lat, long]).addTo(map);
 
 
-    var streets = L.tileLayer(mapBoxURL, {
+   var streets = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
             id: 'mapbox.light',
             accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
         }),
-        terrain = L.tileLayer('https://api.mapbox.com/styles/v1/nijeldev/cjhgodu8f4x4p2smizw2o0btn/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
-           attribution: mapBoxAttribution,
-           maxZoom: 18,
-           accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
-       }),
+        terrain = L.tileLayer(mapBoxURL, {
+            attribution: mapBoxAttribution,
+            maxZoom: 18,
+            id: 'mapbox.emerald',
+            accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+        }),
         satellite = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
@@ -57,7 +58,7 @@
             map.addLayer(terrain);
             map.removeLayer(streets);
             map.removeLayer(satellite);
-            layerId = 'terrain';
+            layerId = 'mapbox.emerald';
         } else if (this.id === 'btn2') {
             map.addLayer(streets);
             map.removeLayer(terrain);

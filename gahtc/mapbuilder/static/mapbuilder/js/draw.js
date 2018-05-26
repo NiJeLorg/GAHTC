@@ -3,9 +3,6 @@ var canvasF;
 const layerId = localStorage.getItem('layerId');
 const zoom = localStorage.getItem('zoom');
 const mapBound = JSON.parse(localStorage.getItem('bounds'));
-const mapBoxAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
-'s, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
-'y © <a href="http://mapbox.com">Mapbox</a>'
 var mapBounds;
 if(mapBound) {
     const southWest = [
@@ -52,22 +49,15 @@ function intializeMap() {
         maxBounds: mapBounds,
         preferCanvas: true
     }).on('load', function () {
-        if (layerId == 'mapbox.light' || layerId == 'mapbox.satellite'){
-            tileLayer = L
+        const tileLayer = L
             .tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                attribution: mapBoxAttribution,
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributor' +
+                's, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imager' +
+                'y © <a href="http://mapbox.com">Mapbox</a>',
                 id: layerId,
                 accessToken: window.MAPBOX_ACCESS_TOKEN
             })
             .addTo(map);
-        } else {
-            tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/nijeldev/cjh1t3o2l08ao2snw8gljsp5q/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlqZWxkZXYiLCJhIjoiY2pmMWRpdW93MDJnbTJ4bXE0YTA1amZmdSJ9.bmSlHYHyP5zaIwuKJtPjPQ', {
-                attribution: mapBoxAttribution,
-                id: 'cjhgodu8f4x4p2smizw2o0btn',
-                accessToken: window.MAPBOX_ACCESS_TOKEN
-            }).addTo(map)
-        }
-        
         tileLayer.on('load', function () {
 
             leafletImage(map, function (err, canvas) {
@@ -564,16 +554,7 @@ function mapbuilderShapeFormattingEventHandlers() {
 
     $(".delete-shape-icon").on("click", function () {
         canvasF.remove(canvasF.getActiveObject());
-        var objects = canvasF.getObjects();
-        var objectsCount=canvasF.getObjects().length;
-        var notTextObjectCount = 0;
-    
-        if (objectsCount === 0) {
-            $('.edit-icons,.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
-        }
-        if (canvasF.getObjects("i-text").length === 0) {
-                $('.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
-        }
+        disableToolbars();
     });
 
     $(".stroke-style-option").on("click", function () {
@@ -765,6 +746,19 @@ function mapActionHandlers() {
 
 }
 
+function disableToolbars(){
+    var objects = canvasF.getObjects();
+    var objectsCount=canvasF.getObjects().length;
+    var notTextObjectCount = 0;
+
+    if (objectsCount === 0) {
+        $('.edit-icons,.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+    }
+    if (canvasF.getObjects("i-text").length === 0) {
+            $('.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+    }
+}
+
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
@@ -870,13 +864,7 @@ $(document).ready(function () {
         .keyup(function (e) {
             if (e.keyCode == 8 && canvasF.getActiveObject().get('type')!=="i-text") {
                 canvasF.remove(canvasF.getActiveObject());
-                console.log(canvasF.getObjects().length)
-                console.log(canvasF.getObjects("i-text").length)
-                if (canvasF.getObjects().length === 0) {
-                $('.edit-icons,.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
-                } else if (canvasF.getObjects("i-text").length === 0 && canvasF.getObjects().length !== 0 ){
-                    $('.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
-                }
+                disableToolbars()
             }
         });
     
