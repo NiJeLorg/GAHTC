@@ -161,7 +161,6 @@ function mapbuilderShapeEventHandlers() {
         });
 
     $("#rect").click(function () {
-
         removeEvents();
         changeObjectSelection(false);
 
@@ -183,7 +182,8 @@ function mapbuilderShapeEventHandlers() {
                 selectable: true,
                 fill: "rgba(233,116,81,0.5)",
                 stroke: 'black',
-                transparentCorners: false
+                transparentCorners: false,
+                opacity: 0.5
             });
             canvasF.add(rect);
         });
@@ -239,7 +239,8 @@ function mapbuilderShapeEventHandlers() {
                 stroke: 'black',
                 selectable: true,
                 originX: 'center',
-                originY: 'center'
+                originY: 'center',
+                opacity: 0.5
             });
             canvasF.add(circle);
         });
@@ -397,7 +398,8 @@ function mapbuilderShapeEventHandlers() {
                 top: top,
                 fill: "rgba(233,116,81,0.5)",
                 stroke: "black",
-                strokeWidth: 3
+                strokeWidth: 3,
+                opacity: 0.5
             });
         }
     });
@@ -472,6 +474,7 @@ function mapbuilderShapeEventHandlers() {
         var alltogetherObj = new fabric.Group(objs);
         canvasF.add(alltogetherObj);
     });
+    
 }
 
 function mapbuilderFontFormattingEventHandlers() {
@@ -551,6 +554,7 @@ function mapbuilderShapeFormattingEventHandlers() {
 
     $(".delete-shape-icon").on("click", function () {
         canvasF.remove(canvasF.getActiveObject());
+        disableToolbars();
     });
 
     $(".stroke-style-option").on("click", function () {
@@ -573,6 +577,23 @@ function mapbuilderShapeFormattingEventHandlers() {
         }
         canvasF.renderAll();
     });
+
+    $('#opacity').click(function (e){
+        $('.slider-container').css('display','block')
+        var objectOpacity = canvasF.getActiveObject().opacity
+        var input = document.getElementById('opacitySlider')
+        input.value = objectOpacity * 100
+        $(document).mouseup(function(e) {
+            var container = $(".slider-container");
+            if (!container.is(e.target) && container.has(e.target).length === 0) 
+           {
+               container.hide();
+           }
+        });
+    })
+    
+
+
     $('.opacity-slider').change(function (){
         var opacity = $(".opacity-slider").val();
         opacity = opacity / 100;
@@ -725,6 +746,19 @@ function mapActionHandlers() {
 
 }
 
+function disableToolbars(){
+    var objects = canvasF.getObjects();
+    var objectsCount=canvasF.getObjects().length;
+    var notTextObjectCount = 0;
+
+    if (objectsCount === 0) {
+        $('.edit-icons,.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+    }
+    if (canvasF.getObjects("i-text").length === 0) {
+            $('.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+    }
+}
+
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
@@ -812,6 +846,7 @@ function updateCanvasWithExistingMap() {
 
 $(document).ready(function () {
     initializeFabric();
+    
     // console.log(currentMapJson, currentMapImage);
     if (mapId === "" || mapId === "False"  || mapId === false) {
         intializeMap();
@@ -829,8 +864,10 @@ $(document).ready(function () {
         .keyup(function (e) {
             if (e.keyCode == 8 && canvasF.getActiveObject().get('type')!=="i-text") {
                 canvasF.remove(canvasF.getActiveObject());
+                disableToolbars()
             }
         });
+    
     // disable event handling
     $('.edit-icons,.format-icons ').css('pointer-events', 'none');
 

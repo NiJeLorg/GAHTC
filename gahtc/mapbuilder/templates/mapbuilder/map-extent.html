@@ -32,19 +32,19 @@
     map.fitBounds(mapBounds);
 
     var marker = L.marker(center).addTo(map);
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        // maxZoom: 18,
-        id: layerId,
-        accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
-    }).addTo(map)
+    
+    // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    //     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    //     id: layerId,
+    //     accessToken: '{{ MAPBOX_ACCESS_TOKEN }}'
+    // }).addTo(map)
 
     $(document).ready(function () {
-        if (layerId == 'streets') {
+        if (layerId == 'mapbox.light') {
             $("#btn2").trigger('click');
-        } else if (layerId == 'terrain') {
+        } else if (layerId == 'mapbox.emarald') {
             $("#btn1").trigger('click');
-        } else if (layerId == 'satellite') {
+        } else if (layerId == 'mapbox.satellite') {
             $("#btn3").trigger('click');
 
         }
@@ -57,7 +57,7 @@
       var bounds = map.getBounds();
         localStorage.setItem('zoom', map.getZoom());
         localStorage.setItem('bounds', JSON.stringify(bounds));
-});
+    });
 
 
 
@@ -85,19 +85,21 @@
         $('.layer-buttons').removeClass('button-active');
         $(this).addClass('button-active');
         if (this.id === 'btn1') {
-            map.removeLayer(streets, satellite);
             map.addLayer(terrain);
+            map.removeLayer(streets);
+            map.removeLayer(satellite);
             layerId = 'mapbox.emerald';
         } else if (this.id === 'btn2') {
-            map.removeLayer(terrain, satellite);
             map.addLayer(streets);
+            map.removeLayer(terrain);
+            map.removeLayer(satellite);
             layerId = 'mapbox.light';
         } else {
-            map.removeLayer(streets, terrain);
             map.addLayer(satellite);
+            map.removeLayer(streets);
+            map.removeLayer(terrain);
             layerId = 'mapbox.satellite';
         }
-
         localStorage.setItem('layerId', layerId);
     });
 </script>

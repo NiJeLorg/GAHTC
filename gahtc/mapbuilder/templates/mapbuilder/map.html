@@ -32,7 +32,7 @@
     var marker = L.marker([lat, long]).addTo(map);
 
 
-    var streets = L.tileLayer(mapBoxURL, {
+   var streets = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
             maxZoom: 18,
             id: 'mapbox.light',
@@ -58,17 +58,17 @@
             map.addLayer(terrain);
             map.removeLayer(streets);
             map.removeLayer(satellite);
-            layerId = 'terrain';
+            layerId = 'mapbox.emerald';
         } else if (this.id === 'btn2') {
             map.addLayer(streets);
             map.removeLayer(terrain);
             map.removeLayer(satellite);
-            layerId = 'streets';
+            layerId = 'mapbox.light';
         } else {
             map.addLayer(satellite);
             map.removeLayer(streets);
             map.removeLayer(terrain);
-            layerId = 'satellite';
+            layerId = 'mapbox.satellite';
         }
         localStorage.setItem('layerId', layerId);
     });
