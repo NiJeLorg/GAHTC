@@ -88,7 +88,7 @@ function saveMapDetails() {
     var map_id = mapId || $("#projectid").text();
     var map_name = $("#projectname").text();
     var csrftoken = Cookies.get('csrftoken');
-    var map_image = canvasF.toDataURL('image/png').replace("data:image/png;base64,", "");
+    // var map_image = canvasF.toDataURL('image/png').replace("data:image/png;base64,", "");
     var base_map_image = canvasF.backgroundImage.toDataURL('image/png').replace("data:image/png;base64,", "");
     var public_map = document.getElementById('public-check').checked && $('#publish').data('clicked')?  "True": 'False';
     var canvasCopy = _.cloneDeep(canvasF);
@@ -114,7 +114,7 @@ function saveMapDetails() {
             map_id: map_id,
             map_name: map_name,
             public_map: public_map,
-            map_image: map_image,
+            // map_image: map_image,
             map_data: map_data,
             base_map_image: base_map_image
         },
@@ -820,10 +820,9 @@ function updateCanvasWithExistingMap() {
             $('#lmap').remove();
             $('.canvas-container').css('display', 'block');
             const imageBackgroundUrl = "" + currentMapImage + "";
-            console.log("Loaded");
 
 
-            if (currentMapObjects) {
+            if (currentMapObjects !== 'None') {
                 console.log(JSON.parse(currentMapObjects.replace(/&quot;/g, '"')), "objects");
                 canvasF.loadFromJSON(JSON.parse(currentMapObjects.replace(/&quot;/g, '"')), function () {
                      canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF), {
@@ -837,6 +836,11 @@ function updateCanvasWithExistingMap() {
                         });
                 });
 
+            }else{
+                canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF), {
+                    scaleX: canvasF.width / img.width,
+                    scaleY: canvasF.height / img.height
+                })
             }
         }
         ;
