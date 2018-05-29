@@ -180,10 +180,10 @@ function mapbuilderShapeEventHandlers() {
                 angle: 0,
                 strokeWidth: 3,
                 selectable: true,
-                fill: "rgba(233,116,81,0.5)",
+                fill: "rgba(233,116,81,1)",
                 stroke: 'black',
                 transparentCorners: false,
-                opacity: 0.5
+                opacity: 1
             });
             canvasF.add(rect);
         });
@@ -235,12 +235,12 @@ function mapbuilderShapeEventHandlers() {
                 top: pointer.y,
                 radius: 1,
                 strokeWidth: 3,
-                fill: "rgba(233,116,81,0.5)",
+                fill: "rgba(233,116,81,1)",
                 stroke: 'black',
                 selectable: true,
                 originX: 'center',
                 originY: 'center',
-                opacity: 0.5
+                opacity: 1
             });
             canvasF.add(circle);
         });
@@ -396,10 +396,10 @@ function mapbuilderShapeEventHandlers() {
             return new fabric.Polygon(polygonPoints.slice(), {
                 left: left,
                 top: top,
-                fill: "rgba(233,116,81,0.5)",
+                fill: "rgba(233,116,81,1)",
                 stroke: "black",
                 strokeWidth: 3,
-                opacity: 0.5
+                opacity: 1
             });
         }
     });
@@ -455,7 +455,7 @@ function mapbuilderShapeEventHandlers() {
         var triangle = new fabric.Triangle({
             width: 10,
             height: 15,
-            fill: "red",
+            fill: "rgba(233,116,81,1)",
             left: 235,
             top: 65,
             angle: 90
