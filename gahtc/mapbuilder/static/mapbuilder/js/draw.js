@@ -814,6 +814,8 @@ function downloadPdf(canvasF, width, height) {
 
 function updateCanvasWithExistingMap() {
     if (currentMapImage) {
+        document.getElementById("project-title").value = currentMapName;
+        $("#projectname").html(currentMapName);
         var img = new Image;
         img.src = currentMapImage;
         img.onload = function () {
