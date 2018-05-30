@@ -22,7 +22,7 @@ function initializeFabric() {
     canvasF = new fabric.Canvas("c");
     canvasF.setHeight($("#map-canvas").height());
     canvasF.setWidth($("#map-canvas").width());
-    canvasF.selection = false;
+    // canvasF.selection = false;
 
     fabric
         .Object
@@ -152,7 +152,7 @@ function mapbuilderShapeEventHandlers() {
     $("#freedraw")
         .click(function () {
             removeEvents();
-            changeObjectSelection(false);
+            // changeObjectSelection(false);
             canvasF.isDrawingMode = true;
             canvasF.freeDrawingBrush.width = 6;
             canvasF.on("mouse:up", function () {
@@ -162,7 +162,7 @@ function mapbuilderShapeEventHandlers() {
 
     $("#rect").click(function () {
         removeEvents();
-        changeObjectSelection(false);
+        // changeObjectSelection(false);
 
         canvasF.on('mouse:down', function (o) {
             isDown = true;
@@ -224,7 +224,7 @@ function mapbuilderShapeEventHandlers() {
     $("#circle").click(function () {
         var circle, isDown, origX, origY;
         removeEvents();
-        changeObjectSelection(true);
+        // changeObjectSelection(true);
         canvasF.on('mouse:down', function (o) {
             isDown = true;
             var pointer = canvasF.getPointer(o.e);
@@ -278,7 +278,7 @@ function mapbuilderShapeEventHandlers() {
 
     $("#line").click(function () {
         removeEvents();
-        changeObjectSelection(false);
+        // changeObjectSelection(false);
         canvasF.on('mouse:down', function (o) {
             isDown = true;
             var pointer = canvasF.getPointer(o.e);
@@ -311,7 +311,7 @@ function mapbuilderShapeEventHandlers() {
 
     $("#poly").click(function () {
         removeEvents();
-        changeObjectSelection(false);
+        // changeObjectSelection(false);
         var startPoint = new fabric.Point(0, 0);
         var polygonPoints = [];
         var lines = [];
@@ -406,7 +406,7 @@ function mapbuilderShapeEventHandlers() {
 
     $("#pin").click(function () {
         removeEvents();
-        changeObjectSelection(false);
+        // changeObjectSelection(false);
         fabric
             .Image
             .fromURL("../../static/mapbuilder/css/images/marker-icon.png", function (oImg) {
@@ -419,7 +419,7 @@ function mapbuilderShapeEventHandlers() {
 
     $("#image").click(function () {
         removeEvents();
-        changeObjectSelection(false);
+        // changeObjectSelection(false);
         $("#file-image").trigger("click");
     });
 
