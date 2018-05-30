@@ -30,6 +30,7 @@ function initializeFabric() {
         .set({transparentCorners: false, borderColor: "#3D95F6", cornerColor: "#3D95F6"});
 }
 
+
 function intializeMap() {
     $.LoadingOverlay("show", {
         image: "",
@@ -474,8 +475,23 @@ function mapbuilderShapeEventHandlers() {
         var alltogetherObj = new fabric.Group(objs);
         canvasF.add(alltogetherObj);
     });
-    
+   canvasF.on('selection:cleared', function (){
+        $('.edit-icons,.format-icons ').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+    }); 
+
+    canvasF.on('object:selected', function () {
+        // console.log('an object is selected')
+        // console.log()
+        if (canvasF.getActiveObject().get('type')==="i-text"){
+            $('.format-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+        } else {
+            $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+        }
+     });
+     
 }
+
+
 
 function mapbuilderFontFormattingEventHandlers() {
     // font formating
