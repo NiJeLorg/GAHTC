@@ -89,36 +89,36 @@ def mapexport(request, id=False):
 
 
 		elif request.method == 'POST' and request.is_ajax():
-				# import pdb; pdb.set_trace()
-				map_id = request.POST.get('map_id')
-				if not map_id or map_id == '':
-					map_id = None
-				else:
-					map_id =int(map_id)
-				map_name = request.POST.get('map_name')
-				if not map_name:
-					map_name = 'untitled' + datetime.now().strftime('%Y-%m-%d')
-				map_data = request.POST.get('map_data')
-				# map_image = request.POST.get('map_image')
-				base_map_image = request.POST.get('base_map_image')
-				public_map = request.POST.get('public_map')
-				# print map_image
-				# params, map_image = map_image.split(',', 1)
-				# param2, base_map_image = base_map_image.split(',', 1)
-				# img_data = b64decode(map_image)
-				base_map_data = b64decode(base_map_image)
-				file_name_string = format_filename(map_name) + '.png'
-				map, created = Map.objects.get_or_create(id=map_id, user=request.user)
-				if public_map == "False":
-					map.public = False
-				else:
-					map.public = True
-				map.data = map_data
-				map.name = file_name_string
-				# map.image =  ContentFile(img_data, file_name_string)
-				map.base_map_image =  ContentFile(base_map_data, file_name_string)
-				map.save()
-				return HttpResponse(json.dumps({'map_id': map.id}), content_type="application/json")
+			# import pdb; pdb.set_trace()
+			map_id = request.POST.get('map_id')
+			if not map_id or map_id == '':
+				map_id = None
+			else:
+				map_id =int(map_id)
+			map_name = request.POST.get('map_name')
+			if not map_name:
+				map_name = 'untitled' + datetime.now().strftime('%Y-%m-%d')
+			map_data = request.POST.get('map_data')
+			map_image = request.POST.get('map_image')
+			base_map_image = request.POST.get('base_map_image')
+			public_map = request.POST.get('public_map')
+			# print map_image
+			# params, map_image = map_image.split(',', 1)
+			# param2, base_map_image = base_map_image.split(',', 1)
+			img_data = b64decode(map_image)
+			base_map_data = b64decode(base_map_image)
+			file_name_string = format_filename(map_name) + '.png'
+			map, created = Map.objects.get_or_create(id=map_id, user=request.user)
+			if public_map == "False":
+				map.public = False
+			else:
+				map.public = True
+			map.data = map_data
+			map.name = map_name
+			map.image =  ContentFile(img_data, file_name_string)
+			map.base_map_image =  ContentFile(base_map_data, file_name_string)
+			map.save()
+			return HttpResponse(json.dumps({'map_id': map.id}), content_type="application/json")
 		return render(request, 'mapbuilder/map-export.html', {'map': currentMap})
 
 @login_required

@@ -19,7 +19,7 @@ class Map(models.Model):
     public = models.BooleanField(default=False)
     published = models.BooleanField(default=False)
     data = JSONField(null=True, blank=True)
-    # image = models.ImageField(upload_to=b'mapbuilder/%Y_%m_%d_%h_%M_%s', null=True,blank=True)
+    image = models.ImageField(upload_to=b'mapbuilder/%Y_%m_%d_%h_%M_%s', null=True,blank=True)
     base_map_image = models.ImageField(upload_to=b'mapbuilder/%Y_%m_%d_%h_%M_%s/base/', null=True,blank=True)
     published_date = models.DateTimeField(blank=True, null=True)
 

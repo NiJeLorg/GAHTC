@@ -3,9 +3,6 @@
 {% block content %}
 
 <div class="mapbuilder">
-    <h3 class="mapbuilder-header">
-        {{ request.user.userProfile.first_name }} {{ request.user.userProfile.last_name }} Account Settings
-    </h3>
     <div class="index-content">
             <span class="map-index">My Maps Index</span>
             <div class="search-bar">
@@ -29,7 +26,7 @@
             <!--Flexbox list item-->
             <li class="list-item">
                 <div class="list-item__image">
-                    <img src="/media/{{ map.base_map_image }}" alt="{{ map.name }}">
+                    <img src="/media/{{ map.image }}" alt="{{ map.name }}">
                 </div>
                 <div class="list-item__content">
 
@@ -41,7 +38,7 @@
                         {% endif %}
                         <span>{{ map.name }}  Created {{ map.created_date|date:"m/d/Y" }} by {{ map.user.userProfile.first_name }} {{ map.user.userProfile.last_name }}</span></div>
                     <div class="list-item__actions">
-                        <a download="{{ map.base_map_image }}" target="_blank" href="/media/{{ map.base_map_image }}">Download</a>
+                        <a download="{{ map.image }}" target="_blank" href="/media/{{ map.image }}">Download</a>
                         <a href="{% url 'mapbuilder:map-export' id=map.id %}">Edit</a>
                     </div>
                 </div>

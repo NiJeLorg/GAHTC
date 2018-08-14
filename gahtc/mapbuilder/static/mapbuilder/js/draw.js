@@ -88,8 +88,10 @@ function saveMapDetails() {
     var map_id = mapId || $("#projectid").text();
     var map_name = $("#projectname").text();
     var csrftoken = Cookies.get('csrftoken');
-    // var map_image = canvasF.toDataURL('image/png').replace("data:image/png;base64,", "");
+    var map_image = canvasF.toDataURL('image/png').replace("data:image/png;base64,", "");
     var base_map_image = canvasF.backgroundImage.toDataURL('image/png').replace("data:image/png;base64,", "");
+    //var map_image = canvasF.toDataURL('image/png');
+    //var base_map_image = canvasF.backgroundImage.toDataURL('image/png');
     var public_map = document.getElementById('public-check').checked && $('#publish').data('clicked')?  "True": 'False';
     var canvasCopy = _.cloneDeep(canvasF);
     canvasCopy.backgroundImage = null;
@@ -114,7 +116,7 @@ function saveMapDetails() {
             map_id: map_id,
             map_name: map_name,
             public_map: public_map,
-            // map_image: map_image,
+            map_image: map_image,
             map_data: map_data,
             base_map_image: base_map_image
         },
@@ -942,6 +944,7 @@ function mapActionHandlers() {
         $('.publish-modal').css("display", "none");
     });
     $('#download').click(function (e) {
+        console.log("hello");
         // get the dimensions of #map-canvas and calculate the appropriate sizes for image quality
         var canvasWidth = $('#map-canvas').width();
         var canvasHeight = $('#map-canvas').height();
@@ -1025,7 +1028,8 @@ function downloadImage(width, height) {
         link.href = objectUrl
         link.download = "mymap.jpg";
     }
-    link.click()
+    console.log(link);
+    link.click();
 }
 
 function downloadPdf(canvasF, width, height) {
@@ -1042,6 +1046,11 @@ function downloadPdf(canvasF, width, height) {
 }
 
 function updateCanvasWithExistingMap() {
+    console.log(currentMapImage);
+    if (currentMapImage == '/media/') {
+        currentMapImage = preloadedMapImage; 
+    }
+
     if (currentMapImage) {
         document.getElementById("project-title").value = currentMapName;
         $("#projectname").html(currentMapName);
@@ -1057,10 +1066,9 @@ function updateCanvasWithExistingMap() {
                 console.log(JSON.parse(currentMapObjects.replace(/&quot;/g, '"')), "objects");
                 canvasF.loadFromJSON(JSON.parse(currentMapObjects.replace(/&quot;/g, '"')), function () {
                      canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF), {
-                        scaleX: canvasF.width / img.width,
-                        scaleY: canvasF.height / img.height
-                    });
-                            // canvasF.renderAll();
+                        originX: 'left',
+                        originY: 'top'
+                      });
                 }, function (o, object) {
                         object.on('mousedown', function(e){
                            $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
@@ -1069,9 +1077,9 @@ function updateCanvasWithExistingMap() {
 
             }else{
                 canvasF.setBackgroundImage(imageBackgroundUrl, canvasF.renderAll.bind(canvasF), {
-                    scaleX: canvasF.width / img.width,
-                    scaleY: canvasF.height / img.height
-                })
+                    originX: 'left',
+                    originY: 'top'
+                });
             }
         }
         ;

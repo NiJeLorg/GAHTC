@@ -257,7 +257,7 @@
                 </div>
                 <div class="publish-options">
                     <h4 class="modal-sub">File Format</h4>
-                    <input type="radio" name="fileFormat" id="jpeg"> JPEG
+                    <input type="radio" name="fileFormat" id="jpeg" checked> JPEG
                     <br>
                     <input type="radio" name="fileFormat" id="png"> PNG
                     <br>
@@ -285,6 +285,7 @@
 <script>
     window.MAPBOX_ACCESS_TOKEN = '{{ MAPBOX_ACCESS_TOKEN }}';
     window.currentMapObjects = '{{map.data}}';
+    window.preloadedMapImage = '/media/{{ map.image }}';
     window.currentMapImage = '/media/{{ map.base_map_image }}';
     window.mapId = '{{map.id}}';
     window.currentMapName = '{{ map.name }}'
