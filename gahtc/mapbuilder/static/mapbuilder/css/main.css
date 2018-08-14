@@ -57,6 +57,23 @@
     text-decoration: none;
 }
 
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    background: #ffffff;
+    color: #999;
+    border: 2px solid #999; 
+}
+.disabled:hover,
+.disabled:focus {
+    pointer-events: none;
+    cursor: not-allowed;
+    background: #ffffff;
+    color: #999;  
+    border: 2px solid #999;  
+}
+
+
 .btn-next {
     margin-left: 50px;
 }
@@ -644,12 +661,12 @@ h3.map-header-text {
 
 .toolbar-icon .tooltip {
     visibility: hidden;
-    width: 80px;
+    width: auto;
     background-color: #555;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 0;
+    padding: 5px;
     position: absolute;
     z-index: 1;
     bottom: 125%;
@@ -680,7 +697,7 @@ h3.map-header-text {
     opacity: 1;
 }
 
-.toolbar-icon:focus {
+.toolbar-icon.active {
     outline: none;
     background: #e0e0e0;
 }
@@ -717,12 +734,14 @@ input[type="range"] {
 .slider-container {
     position: absolute;
     top: 2.4em;
+    left: -46px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
     background-color: #fff;
-    padding: 10px 0;
+    padding: 10px;
     z-index: 5;
     box-sizing: border-box;
-    min-width: 40px;
+    min-width: 100px;
+    width: 150px;
     display: none;
 }
 

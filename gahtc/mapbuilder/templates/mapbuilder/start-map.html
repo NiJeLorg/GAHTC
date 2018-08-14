@@ -14,9 +14,7 @@
                 <input type="text" class="search-input" placeholder="Search for a location" id="search-value">
             </div>
             <div class="step-button-holder">
-                <a href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn" id="submit-search">Start A New
-                    Map
-                </a>
+                <a href="{% url 'mapbuilder:map' %}" class="button btn-next start-btn disabled" id="submit-search">Start A New Map</a>
             </div>
         </div>
         <div class="maps-nav">
@@ -78,12 +76,21 @@
             var long = result.geometry.location.lng();
             localStorage.setItem('lat', lat);
             localStorage.setItem('long', long);
+            // enable the start new map button
+            $("#submit-search").removeClass('disabled');
+
         });
         if(localStorage.getItem('edit'))
         {
             $('.edit-map-modal').css("display", "flex");
         }
-        localStorage.clear()
+        localStorage.clear();
+
+        $('#search-value').bind('input', function() { 
+            if ($(this).val() == '') {
+                $("#submit-search").addClass('disabled');
+            }
+        });
     })
     $('#cancel-button').click(function(){
 
