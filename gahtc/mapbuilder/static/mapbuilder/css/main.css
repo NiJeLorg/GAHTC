@@ -661,7 +661,7 @@ h3.map-header-text {
 
 .toolbar-icon .tooltip {
     visibility: hidden;
-    width: auto;
+    width: 80px;
     background-color: #555;
     color: #fff;
     text-align: center;

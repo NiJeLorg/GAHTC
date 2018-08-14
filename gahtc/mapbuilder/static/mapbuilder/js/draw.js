@@ -698,7 +698,7 @@ function mapbuilderShapeEventHandlers() {
 
     canvasF.on('object:selected', function () {
         if (canvasF.getActiveObject().get('type')==="i-text"){
-            $('.format-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+            $('.format-icons,.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
         } else {
             $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
             $('#select').addClass('active');
