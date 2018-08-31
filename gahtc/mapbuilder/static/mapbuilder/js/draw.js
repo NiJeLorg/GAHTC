@@ -697,6 +697,7 @@ function mapbuilderShapeEventHandlers() {
     }); 
 
     canvasF.on('object:selected', function () {
+        disableToolbars();
         if (canvasF.getActiveObject().get('type')==="i-text"){
             $('.format-icons').css({'pointer-events': 'auto', 'background': '#fff'});
         } else {
@@ -998,14 +999,9 @@ function mapActionHandlers() {
 }
 
 function disableToolbars(){
-    //console.log(canvasF.getObjects().length);
-    if (canvasF.getObjects().length === 0) {
-        $('.edit-icons').css({'pointer-events': 'none', 'background': '#d2d2d2'});
-        $('.toolbar-icon').removeClass('active');
-    }
-    if (canvasF.getObjects("i-text").length === 0) {
-        $('.format-icons').css({'pointer-events': 'none', 'background': '#d2d2d2'});
-    }
+    $('.edit-icons').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+    $('.format-icons').css({'pointer-events': 'none', 'background': '#d2d2d2'});
+    //$('.toolbar-icon').removeClass('active');
 }
 
 function dataURLtoBlob(dataurl) {
