@@ -248,6 +248,7 @@ function mapbuilderShapeEventHandlers() {
                 rect.setCoords();
                 changeObjectSelection(false);
                 canvasF.deactivateAll().renderAll();
+                disableToolbars();
             });
 
         }
@@ -300,6 +301,7 @@ function mapbuilderShapeEventHandlers() {
                 circle.setCoords();
                 changeObjectSelection(false);
                 canvasF.deactivateAll().renderAll();
+                disableToolbars();
             });
 
         }
@@ -378,7 +380,8 @@ function mapbuilderShapeEventHandlers() {
                 isDown = false;
                 line.setCoords();
                 changeObjectSelection(false);
-                canvasF.deactivateAll().renderAll();    
+                canvasF.deactivateAll().renderAll();
+                disableToolbars();
             });
         
         }
@@ -529,6 +532,7 @@ function mapbuilderShapeEventHandlers() {
             canvasF.on('mouse:up', function (o) {
                 changeObjectSelection(false);
                 canvasF.deactivateAll().renderAll();
+                disableToolbars();
             });
 
         }
@@ -685,6 +689,7 @@ function mapbuilderShapeEventHandlers() {
                 changeObjectSelection(false);
                 // lastDrawnID = this._objects.length - 1;
                 // canvasF.setActiveObject(canvasF.item(lastDrawnID));
+                disableToolbars();
     
             });
 
@@ -1084,7 +1089,7 @@ function updateCanvasWithExistingMap() {
                       });
                 }, function (o, object) {
                         object.on('mousedown', function(e){
-                           $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+                           //$('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
                         });
                 });
 
@@ -1133,14 +1138,14 @@ $(document).ready(function () {
     // disable event handling
     $('.edit-icons,.format-icons ').css('pointer-events', 'none');
 
-    $('#text').on('click', function () {
-        $('.format-icons').css({'pointer-events': 'auto', 'background': '#fff'});
-    });
-    $('.draw-icons a')
-        .not('#text')
-        .on('click', function () {
-            $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
-        });
+    // $('#text').on('click', function () {
+    //     $('.format-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+    // });
+    // $('.draw-icons a')
+    //     .not('#text')
+    //     .on('click', function () {
+    //         $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+    //     });
     $('.button-switcher button').click(function () {
         $(this).siblings().removeClass('size-btn-active');
         $(this).addClass('size-btn-active');
