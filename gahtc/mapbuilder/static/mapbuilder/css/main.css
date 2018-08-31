@@ -118,11 +118,12 @@
 
 .search-input {
     border: 0;
+    padding-left: 0;
     font-size: 18px;
     color: #969696;
     width: 100%;
     height: 100%;
-    padding: 11px 0 0 50px;
+    padding-left: 50px;
     font-weight: normal;
 }
 
