@@ -8,7 +8,7 @@
         </p>
     </div>
     <div class="step-button-holder">
-        <a class="button button-group" href="{% url 'mapbuilder:mymaps' %}">My Maps</a>
+        <a class="button button-group" href="{% url 'mymaps' %}">My Maps</a>
         <a class="button button-group" id="save">Save</a>
         <a class="button button-group" id="publish">Download</a>
     </div>
@@ -70,14 +70,20 @@
             </span>
         </a>
         <input type="file" id="file-image" style="display: none;" accept="image/*">
-    </div>
-    <div class="toolbar-section edit-icons">
         <a href="#" class="toolbar-icon" id="select">
             <img src="{% static 'mapbuilder/css/images/select.svg' %}" alt="">
             <span class="tooltip">
                 Select
             </span>
         </a>
+        <a href="#" class="toolbar-icon delete-shape-icon">
+            <i class="fa fa-trash"></i>
+            <span class="tooltip">
+                Delete
+            </span>
+        </a>
+    </div>
+    <div class="toolbar-section edit-icons">
         <input type="text" id="fillColorPicker">
         <a href="#" class="toolbar-icon" id='fillColor'>
             <img src="{% static 'mapbuilder/css/images/format_color_fill.svg' %}" alt="">
@@ -133,12 +139,6 @@
             </span>
         </a>
 
-        <a href="#" class="toolbar-icon delete-shape-icon">
-            <i class="fa fa-trash"></i>
-            <span class="tooltip">
-                Delete
-            </span>
-        </a>
     </div>
     <div class="toolbar-section format-icons">
         <a href="#" class="toolbar-icon" >
@@ -278,7 +278,7 @@
         <div class="modal-button-holder">
             <a class="modal-button" href="/">Exit Map Builder</a>
             <a class="modal-button" id="exit-modal">Continue Editing</a>
-            <a class="modal-button" href="{% url 'mapbuilder:mymaps' %}" id="publish">View All My Maps</a>
+            <a class="modal-button" href="{% url 'mymaps' %}" id="publish">View All My Maps</a>
         </div>
     </div>
 </div>

@@ -1,10 +1,10 @@
 {% extends "mapbuilder/base.html" %} {% block content%}
 <div class="map-header">
     <h3 class="map-header-text">
-        <strong>Step 1 of 3: </strong>Refine Your Location Search</h3>
-    <a class="button step-button" href="{% url 'mapbuilder:map-extent' %}">Next</a>
+        <strong>Step 1 of 2: </strong>Refine your location and set your map extents</h3>
+    <a class="button step-button" href="{% url 'mapbuilder:map-export' %}">Next</a>
 </div>
-<div id="map" class="no-outline"></div>
+<div id="map" class="red-outline"></div>
 <div class="layer-switcher">
     <button class="layer-buttons" id="btn1">Terrain</button>
     <button class="layer-buttons button-active" id="btn2">Political</button>
@@ -17,10 +17,11 @@
 <script>
     var lat = localStorage.getItem('lat');
     var long = localStorage.getItem('long');
-    var center = [lat, long]
-    var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}';
+    var center = [lat, long];
+    var mapBoxURL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
     var mapBoxAttribution =
-        'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
+        'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>';
+
 
     // initialize the map
     var map = L.map('map', {
@@ -31,6 +32,11 @@
 
     var marker = L.marker([lat, long]).addTo(map);
 
+    map.on('moveend', function() {
+        var bounds = map.getBounds();
+        localStorage.setItem('zoom', map.getZoom());
+        localStorage.setItem('bounds', JSON.stringify(bounds));
+    });  
 
    var streets = L.tileLayer(mapBoxURL, {
             attribution: mapBoxAttribution,
@@ -75,10 +81,6 @@
 
     $(document).ready(function () {
         $("#btn2").trigger('click');
-        localStorage.setItem('bounds', JSON.stringify(map.getBounds()));
-    });
-
-    map.on('moveend', function (e) {
         localStorage.setItem('bounds', JSON.stringify(map.getBounds()));
     });
 

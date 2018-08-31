@@ -505,18 +505,14 @@ function mapbuilderShapeEventHandlers() {
             removeEvents();
             changeObjectSelection(true);
         } else {
-
             removeEvents();
             $(this).addClass('active');
             changeCursor('crosshair');
-            changeObjectSelection(false);
 
             canvasF.on('mouse:down', function (o) {
                 var pointer = canvasF.getPointer(o.e);
                 var x = pointer.x - 17;
                 var y = pointer.y - 40;
-                removeEvents();
-                changeObjectSelection(true);
                 fabric
                     .Image
                     .fromURL("../../static/mapbuilder/css/images/marker-icon.png", function (oImg) {
@@ -525,12 +521,14 @@ function mapbuilderShapeEventHandlers() {
                             .set("flipX", true)
                             .set({ left: x, top: y });
                             canvasF
-                                .add(oImg)
-                                .setActiveObject(oImg);
+                                .add(oImg);
                     });
 
- 
+            });
 
+            canvasF.on('mouse:up', function (o) {
+                changeObjectSelection(false);
+                canvasF.deactivateAll().renderAll();
             });
 
         }
@@ -700,7 +698,7 @@ function mapbuilderShapeEventHandlers() {
 
     canvasF.on('object:selected', function () {
         if (canvasF.getActiveObject().get('type')==="i-text"){
-            $('.format-icons,.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
+            $('.format-icons').css({'pointer-events': 'auto', 'background': '#fff'});
         } else {
             $('.edit-icons').css({'pointer-events': 'auto', 'background': '#fff'});
             $('#select').addClass('active');
@@ -715,22 +713,41 @@ function mapbuilderFontFormattingEventHandlers() {
     // font formating
     $("#f-bold")
         .click(function (e) {
-            canvasF
-                .getActiveObject()
-                .set("fontWeight", "bold");
+            if (canvasF.getActiveObject().get("fontWeight") != 'bold') {
+                canvasF
+                    .getActiveObject()
+                    .set("fontWeight", "bold");
+            } else {
+                canvasF
+                    .getActiveObject()
+                    .set("fontWeight", "normal");
+            }
             canvasF.renderAll();
         });
     $("#f-italic").click(function (e) {
-        canvasF
-            .getActiveObject()
-            .set("fontWeight", "italic");
+        if (canvasF.getActiveObject().get("fontStyle") != 'italic') {
+            canvasF
+                .getActiveObject()
+                .set("fontStyle", "italic");
+        } else {
+            canvasF
+                .getActiveObject()
+                .set("fontStyle", "normal");
+        }
         canvasF.renderAll();
     });
 
     $("#underline").click(function (e) {
-        canvasF
-            .getActiveObject()
-            .setTextDecoration("underline");
+        console.log(canvasF.getActiveObject());
+        if (canvasF.getActiveObject().get("textDecoration") != 'underline') {
+            canvasF
+                .getActiveObject()
+                .set("textDecoration", "underline");
+        } else {
+            canvasF
+                .getActiveObject()
+                .set("textDecoration", "none");
+        }
         canvasF.renderAll();
     });
     $("#align-left").click(function (e) {
@@ -1109,6 +1126,11 @@ $(document).ready(function () {
                 e.preventDefault();
                 canvasF.remove(canvasF.getActiveObject());
                 disableToolbars();
+            }
+            if (e.keyCode == 13 && $(".modal").css('display').toLowerCase() == 'block') {
+                $('.modal').css("display", "none");
+                var val = $("#project-title").val()
+                $("#projectname").html(val);
             }
         });
     

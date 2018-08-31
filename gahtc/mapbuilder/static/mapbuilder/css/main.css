@@ -85,7 +85,7 @@
 }
 
 .index-content {
-    margin-top: 30px;
+    margin-top: 10px;
     display: flex;
 }
 
@@ -111,19 +111,18 @@
     height: 100%;
 }
 
-search-icon {
+.search-icon {
     color: #969696;
     font-weight: bold;
 }
 
 .search-input {
     border: 0;
-    padding-left: 0;
     font-size: 18px;
     color: #969696;
     width: 100%;
     height: 100%;
-    padding-left: 50px;
+    padding: 11px 0 0 50px;
     font-weight: normal;
 }
 

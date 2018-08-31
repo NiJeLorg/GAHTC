@@ -19,12 +19,16 @@ MEDIA_ROOT = settings.MEDIA_ROOT
 # import all website models and forms
 from website.models import *
 from website.forms import *
+from mapbuilder.models import Map
 
 #for email
 from django.core.mail import send_mail
 
 #for csv export
 from djqscsv import render_to_csv_response
+
+# paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # GAHTC Views
 def index(request):
@@ -339,8 +343,10 @@ def mybundles(request):
 		tab = 'profile'
 	elif request.path == '/bundles/':
 		tab = 'bundle'
-	else:
+	elif request.path == '/searches/':
 		tab = 'searches'
+	else: 
+		tab = 'maps'
 
 	"""
 	  Pulls all user bundles and prints
@@ -456,7 +462,25 @@ def mybundles(request):
 	else:
 		user_profile = profile.objects.none()
 
-	context_dict = {'bundles_returned':bundles_returned, 'saved_searches':saved_searches, 'user_profile': user_profile, 'tab':tab}
+
+	# also pull mapbuilder data
+	query = request.GET.get('q')
+	if query:
+		mymaps = Map.objects.filter(user=request.user, name__icontains=query).order_by('-created_date')
+	else:
+		mymaps = Map.objects.filter(user=request.user).order_by('-created_date')
+	paginator = Paginator(mymaps, 10)
+	page = request.GET.get('page')
+	try:
+		mymaps = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		mymaps = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		mymaps = paginator.page(paginator.num_pages)
+
+	context_dict = {'bundles_returned':bundles_returned, 'saved_searches':saved_searches, 'user_profile': user_profile, 'tab':tab, 'mymaps':mymaps}
 
 
 	return render(request, 'website/bundle_list.html', context_dict)

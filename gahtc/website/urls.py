@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^bundles/$', views.mybundles, name='mybundles'),
     url(r'^profile/$', views.mybundles, name='myprofile'),
     url(r'^searches/$', views.mybundles, name='mysavedsearches'),
+    url(r'^maps/$', views.mybundles, name='mymaps'),
     url(r'^show_module/(?P<id>\d+)/$', views.showModule, name='showModule'),
     url(r'^show_lecture/(?P<id>\d+)/$', views.showLecture, name='showLecture'),
     url(r'^show_lecture_segment/(?P<id>\d+)/$', views.showLectureSegment, name='showLectureSegment'),

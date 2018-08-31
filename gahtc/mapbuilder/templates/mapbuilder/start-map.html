@@ -25,7 +25,7 @@
                     <span>{{recentMap.name}}</span>&nbsp;&nbsp;&nbsp;
                     <span> Created {{ recentMap.created_date|date:"m/d/Y" }}</span>
                 </a>
-                <a href="{% url 'mapbuilder:mymaps' %}" class="nav-action">View all My Maps
+                <a href="{% url 'mymaps' %}" class="nav-action">View all My Maps
                     <img src="{% static 'css/images/arr.svg' %}" alt="">
                 </a>
             </div>
