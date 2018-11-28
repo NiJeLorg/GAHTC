@@ -263,7 +263,8 @@
                     <br>
                     <input type="radio" name="fileFormat" id="pdf"> PDF
                     <br><br>
-                    <input type="checkbox" id="public-check" {% if map.public %}checked{% endif %} >Publish your map to the GAHTC Community Map Index?
+                    <input type="checkbox" id="public-check" {% if map.public is None or map.public is True %}checked{% endif %} >
+                    <span style="font-size: 16px;">Publish your map to the GAHTC Community Map Index?</span>
                     <a class="button download" id="download">Download</a>
                 </div>
             </div>

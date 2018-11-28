@@ -22,12 +22,18 @@ function initializeFabric() {
     canvasF = new fabric.Canvas("c");
     canvasF.setHeight($("#map-canvas").height());
     canvasF.setWidth($("#map-canvas").width());
-    // canvasF.selection = false;
+    canvasF.observe('object:added', function (e) {
+        e.target._origStrokeWidth = e.target.strokeWidth;
+    });
 
     fabric
         .Object
         .prototype
         .set({transparentCorners: false, borderColor: "#3D95F6", cornerColor: "#3D95F6"});
+
+    canvasF.on('object:scaling', function (e) {
+        e.target.resizeToScale();
+    });
 }
 
 
@@ -239,6 +245,8 @@ function mapbuilderShapeEventHandlers() {
                 rect.set({
                     height: Math.abs(origY - pointer.y)
                 });
+
+
                 
                 canvasF.renderAll();
             });
@@ -373,6 +381,14 @@ function mapbuilderShapeEventHandlers() {
                     x2: pointer.x,
                     y2: pointer.y
                 });
+                line.set({straighten: true });
+                fabric
+                    .util
+                    .addListener(window, "keydown", function (evt) {
+                        if (evt.which === 16) {
+                            
+                        }
+                    });
                 canvasF.renderAll();
             });
     
@@ -561,6 +577,7 @@ function mapbuilderShapeEventHandlers() {
             fabric
                 .Image
                 .fromURL(data, function (img) {
+                    img.set("lockUniScaling", true)
                     canvasF
                         .add(img)
                         .renderAll();
@@ -618,7 +635,7 @@ function mapbuilderShapeEventHandlers() {
             // canvasF.add(alltogetherObj);
 
             function createArrowHead(line) {
-                var headLength = 15,
+                var headLength = 24,
               
                     x1 = line.x1,
                     y1 = line.y1,
@@ -744,7 +761,6 @@ function mapbuilderFontFormattingEventHandlers() {
     });
 
     $("#underline").click(function (e) {
-        console.log(canvasF.getActiveObject());
         if (canvasF.getActiveObject().get("textDecoration") != 'underline') {
             canvasF
                 .getActiveObject()
@@ -796,7 +812,8 @@ function mapbuilderShapeFormattingEventHandlers() {
             strokeWidth = parseInt(/\d+/g.exec($(this).text())[0]);
             canvasF
                 .getActiveObject()
-                .set("strokeWidth", strokeWidth);
+                .set("strokeWidth", strokeWidth)
+                .set("_origStrokeWidth", strokeWidth);
             canvasF.renderAll();
             strokeWidth = 1;
         });
@@ -967,20 +984,19 @@ function mapActionHandlers() {
         $('.publish-modal').css("display", "none");
     });
     $('#download').click(function (e) {
-        console.log("hello");
         // get the dimensions of #map-canvas and calculate the appropriate sizes for image quality
         var canvasWidth = $('#map-canvas').width();
         var canvasHeight = $('#map-canvas').height();
+        var height = 0;
+        var width = 0;
         if (imageQuality === 'small') {
             height = 480;
-            width = (height / canvasHeight) * canvasWidth;
         } else if (imageQuality === 'medium') {
             height = 720;
-            width = (height / canvasHeight) * canvasWidth;
         } else if (imageQuality === 'large') {
             height = 1080;
-            width = (height / canvasHeight) * canvasWidth;
         }
+        width = (height / canvasHeight) * canvasWidth;
         if (document.getElementById('pdf').checked) {
             downloadPdf(canvasF, width, height);
         } else {
@@ -990,6 +1006,7 @@ function mapActionHandlers() {
             saveMapDetails();
         }
         $('.download-save-modal-content h3').html('Great! Your map has been downloaded.');
+        $('.publish-modal').css("display", "none");
     })
     $('#save').click(function () {
         $.LoadingOverlay("show", {
@@ -1044,21 +1061,23 @@ function downloadImage(width, height) {
         var blob = dataURLtoBlob(resizedImage.src);
         var objectUrl = URL.createObjectURL(blob);
         link.href = objectUrl
-        link.download = "mymap.jpg";
+        link.download = "mymap.jpeg";
     }
     console.log(link);
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
 }
 
 function downloadPdf(canvasF, width, height) {
     // const url = canvasF.toDataURL("image/svg+xml", 1.0);
     var fabricImage = new Image();
     fabricImage.src = canvasF.toDataURL("image/svg+xml", 1.0);
-    var pdf = new jsPDF();
+    var pdf = new jsPDF('l', 'px', [width+60, height+60]);
     var resizedImage = resizeImage(fabricImage, width, height);
     // var blob = dataURLtoBlob(resizedImage.src);
     // var objectUrl = URL.createObjectURL(blob);
-    pdf.addImage(resizedImage.src, 'PNG', 15, 30, 180, 160);
+    pdf.addImage(resizedImage.src, 'PNG', 30, 30, width, height);
     pdf.save("mymap.pdf");
 
 }
@@ -1104,6 +1123,20 @@ function updateCanvasWithExistingMap() {
         console.log("Set Exisitng Image as map");
     }
 }
+
+// customise fabric.Object with a method to resize rather than just scale after tranformation
+fabric.Object.prototype.resizeToScale = function () {
+    if  (this.type !=='group') {
+      this.strokeWidth = this._origStrokeWidth / Math.max(this.scaleX, this.scaleY);
+    }
+    else {
+      this._objects.forEach( function(obj){
+        console.log(obj);
+        obj.strokeWidth = obj._origStrokeWidth / Math.max(obj.group.scaleX, obj.group.scaleY);
+      });
+    }
+}
+  
 
 $(document).ready(function () {
     initializeFabric();

@@ -16,7 +16,7 @@ class Map(models.Model):
     user = models.ForeignKey(User)
     created_date = models.DateTimeField(default=timezone.now)
     name = models.CharField(max_length=200)
-    public = models.BooleanField(default=False)
+    public = models.NullBooleanField(default=None, null=True, blank=True)
     published = models.BooleanField(default=False)
     data = JSONField(null=True, blank=True)
     image = models.ImageField(upload_to=b'mapbuilder/%Y_%m_%d_%h_%M_%s', null=True,blank=True)
