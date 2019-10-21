@@ -27,7 +27,7 @@ docx2txt==0.6
 elasticsearch==5.3.0
 html5lib==0.999999999
 lxml==3.7.3
-nltk==3.2.2
+nltk==3.4.5
 olefile==0.44
 pdfminer==20140328
 pilkit==2.0
