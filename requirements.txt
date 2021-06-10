@@ -1,4 +1,4 @@
-Django==1.11
+Django==2.2.24
 EbookLib==0.16
 Markdown==2.6.8
 Pillow==4.1.0
