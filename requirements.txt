@@ -1,7 +1,7 @@
 Django==1.11
 EbookLib==0.16
 Markdown==2.6.8
-Pillow==4.1.0
+Pillow==8.3.2
 SpeechRecognition==3.6.5
 Unidecode==0.04.20
 Whoosh==2.7.4
